@@ -12,11 +12,13 @@ class AppStorage {
   static const customMantrasBoxName = 'custom_mantras';
   static const mantraOverridesBoxName = 'mantra_overrides';
   static const voiceTemplatesBoxName = 'voice_templates';
+  static const calendarMarksBoxName = 'calendar_marks';
 
   static late KvStore _settings;
   static late KvStore _customMantras;
   static late KvStore _mantraOverrides;
   static late KvStore _voiceTemplates;
+  static late KvStore _calendarMarks;
 
   /// Initialises Hive for Flutter and opens every box the app uses.
   static Future<void> init() async {
@@ -31,6 +33,7 @@ class AppStorage {
     _mantraOverrides =
         HiveKvStore(await Hive.openBox(mantraOverridesBoxName));
     _voiceTemplates = HiveKvStore(await Hive.openBox(voiceTemplatesBoxName));
+    _calendarMarks = HiveKvStore(await Hive.openBox(calendarMarksBoxName));
   }
 
   /// Swaps in empty in-memory stores. For tests only.
@@ -39,6 +42,7 @@ class AppStorage {
     _customMantras = MemoryKvStore();
     _mantraOverrides = MemoryKvStore();
     _voiceTemplates = MemoryKvStore();
+    _calendarMarks = MemoryKvStore();
   }
 
   /// Key/value app + sadhana settings and the in-progress session.
@@ -54,4 +58,7 @@ class AppStorage {
   /// Voice-training feature templates (MFCC numbers, never audio), keyed by
   /// mantra id.
   static KvStore get voiceTemplates => _voiceTemplates;
+
+  /// Calendar marks, keyed by mark id.
+  static KvStore get calendarMarks => _calendarMarks;
 }

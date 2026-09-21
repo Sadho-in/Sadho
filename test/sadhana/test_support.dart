@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:advance_calendar/core/storage/app_storage.dart';
+import 'package:advance_calendar/features/calendar/application/now_provider.dart';
 import 'package:advance_calendar/features/sadhana/application/voice_training_provider.dart';
 import 'package:advance_calendar/features/sadhana/data/ringtone.dart';
 import 'package:advance_calendar/features/sadhana/services/feedback_service.dart';
@@ -13,6 +14,8 @@ import 'package:advance_calendar/features/sadhana/voice/match_model.dart';
 import 'package:advance_calendar/features/sadhana/voice/mfcc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
+
+import '../calendar/calendar_support.dart' show FakeNow;
 
 class FakeFeedback implements FeedbackService {
   int milestones = 0;
@@ -220,6 +223,9 @@ List<Override> testOverrides({
 }) =>
     [
       pcmInputProvider.overrideWithValue(pcm ?? FakePcmInput()),
+      // The real clock ticks on a timer, which widget tests must not leave
+      // running (and a fixed date keeps them independent of today's).
+      nowProvider.overrideWith(() => FakeNow(DateTime(2026, 9, 21, 8, 0))),
       feedbackServiceProvider.overrideWithValue(feedback ?? FakeFeedback()),
       voiceCounterServiceProvider.overrideWithValue(voice ?? FakeVoice()),
       volumeButtonServiceProvider.overrideWithValue(volume ?? FakeVolume()),

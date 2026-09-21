@@ -13,10 +13,64 @@ still `advance_calendar`; the Android/iOS display name and the in-app title are
   runtime (choice is saved). Fraunces for headings, Karla for body text.
 - Bottom navigation: **Clock · Calendar · Sadhana · Home**. Top bar with a
   language button, a light/dark toggle and a profile avatar.
-- Clock, Calendar and Home are placeholders ("Coming soon"). Profile is a
-  placeholder too, but already hosts **Sadhana settings** (the Count setting below).
+- **Calendar** and **Home** are real screens (below). Clock is still a
+  placeholder ("Coming soon"). Profile is a placeholder too, but already hosts
+  **Sadhana settings** (the Count setting below).
 - The language button saves your choice (English / हिन्दी / ਪੰਜਾਬੀ); actual
   translations come later.
+
+**Calendar**
+
+Local only (Hive, no backend). Marks you make are saved on the phone, restored on
+relaunch, and their reminders are rebuilt every time the app starts.
+- **Month grid** (`table_calendar`) with previous / next month (arrows or a swipe)
+  and a *Today* button. Tap a date to open the editor.
+- **Editor** for a date (a date can hold several marks; pick one or *New mark*):
+  - **Mark type**: Good / Cautious / Neutral, drawn green / red / amber.
+  - **Icon**: 🕉 ☬ 📿 🪔 🔔 🌅 ⭐ ✦ 💰 🤝 🚫 ✅ (or none), shown on the date and on
+    the mark's card.
+  - **Label** (40 characters) and **Details / notes** (500).
+  - **Remind me at**: *No time*, *One time* (a time picker, default 9:00) or
+    *Several times* (add and remove up to 8 times).
+  - **Repeat**: Once, Daily, Weekly, Monthly, Quarterly, Half-yearly, Yearly. A
+    repeat is one mark that comes back (editing or deleting it affects every
+    repeat). A monthly mark on the 31st falls on the last day of shorter months;
+    a Feb 29 yearly mark falls on Feb 28 in other years.
+  - **On your home screen**: *Don't show*, *Once in the morning* (with a time) or
+    *Keep all day*.
+- **Mark display style** (one choice for every mark, saved): **Dot**, **Filled**
+  (the date on a solid circle), **Highlight** (a light tint behind the date),
+  **Circle** or **Square**. Each style draws the mark in its own colour WITH a
+  darker outline of the same hue. Several marks on one date: Dot shows a dot per
+  kind, the other styles use the most severe (Cautious, then Good, then Neutral).
+- **Today** is shown separately from marks: a bold number and a small dot in the
+  theme's accent (indigo / lavender), which is never a mark colour.
+- A legend, and a list of the month's marks as cards (a repeating mark is one card).
+
+**Home**
+- Shows today's cards for the marks flagged for the home screen, using the same
+  card as the Calendar (emoji, label, notes, tags, colour stripe).
+- **Once in the morning** cards appear at their time and **swipe away for the
+  day** (with Undo); they come back on the next date the mark repeats.
+- **Keep all day** cards are **pinned**: they stay all day and cannot be swiped.
+- Tap a card to edit its mark. The clock is watched while the app is open, so a
+  card appears at its time and the day rolls over at midnight by itself.
+
+**Reminders** (`flutter_local_notifications` + `timezone` + `flutter_timezone`):
+local notifications, no server, working offline.
+- Daily and weekly reminders are ONE repeating alarm each (so they keep ringing
+  without opening the app, and stay at the same wall-clock time across daylight
+  saving). Monthly, quarterly, half-yearly and yearly reminders are scheduled as
+  the next dates individually (monthly: the next 12, quarterly 8, half-yearly 6,
+  yearly 5) and topped up every time the app starts or the mark changes.
+  If you did not open the app for longer than that window, they stop until you do.
+- Nothing is ever scheduled in the past or before a mark's first date.
+- The notification permission is requested when you first save a reminder. If it
+  is refused, the mark is still saved and you are told the reminder will not ring.
+- Android rings at the exact minute when exact alarms are allowed for the app and
+  otherwise a little flexibly (it falls back on its own). Reminders survive a
+  reboot. iOS is configured (permission, notification delegate) but has not been
+  built or tried; iOS keeps at most 64 pending notifications in total.
 
 **Sadhana — Japa & Paath counter**
 
@@ -160,12 +214,16 @@ Behaviour notes
 Flutter (stable) · Dart · Material 3 · `flutter_riverpod` · `hive` /
 `hive_flutter` · `vibration` · `audioplayers` · `google_fonts` ·
 `record` (PCM16 16 kHz microphone stream) · `fftea` (FFT) ·
-`permission_handler` · `volume_button_listener`. MFCC and DTW are implemented in
-Dart in this repo (`lib/features/sadhana/voice/`).
+`permission_handler` · `volume_button_listener` · `table_calendar` ·
+`flutter_local_notifications` · `timezone` · `flutter_timezone`. MFCC and DTW are
+implemented in Dart in this repo (`lib/features/sadhana/voice/`).
 
-**Permissions**: Android `RECORD_AUDIO` (+ `VIBRATE`; `INTERNET` is only for
-Google Fonts); iOS `NSMicrophoneUsageDescription`. Voice needs no speech
-recognition permission or service.
+**Permissions**: Android `RECORD_AUDIO`, `POST_NOTIFICATIONS`,
+`RECEIVE_BOOT_COMPLETED`, `SCHEDULE_EXACT_ALARM` (+ `VIBRATE`; `INTERNET` is only
+for Google Fonts); iOS `NSMicrophoneUsageDescription`. Voice needs no speech
+recognition permission or service. The Android build enables core-library
+desugaring and registers the plugin's alarm and boot receivers (required by
+`flutter_local_notifications`).
 
 ### Voice (Beta): how it works
 
@@ -226,7 +284,10 @@ lib/
     widgets/     shared widgets (ComingSoon)
   features/
     shell/       app bar, bottom nav, language sheet
-    clock/ calendar/ home/ profile/   placeholders
+    clock/ profile/   placeholders (Profile hosts the Sadhana settings)
+    calendar/    marks (data), Hive store + providers, reminder planner and
+                 notification scheduler, month grid, editor, mark styles
+    home/        today's cards
     sadhana/
       data/          Mantra model, seeds, ringtone list
       application/   Riverpod providers: session, library, completion settings,
@@ -238,7 +299,9 @@ lib/
       presentation/  Sadhana screen, library, focus mode, widgets
 assets/sounds/   generated completion sounds
 test/            session logic, focus-mode gestures, real-Hive persistence,
-                 voice DSP on synthetic signals, training store and UI
+                 voice DSP on synthetic signals, training store and UI;
+                 test/calendar: recurrence, reminder planning, marks store,
+                 month grid + styles, editor, Home cards, end-to-end flows
 ```
 
 ## Run
@@ -266,7 +329,9 @@ Clearly marked in code as `TODO(phase-2)` / `TODO(later-phase)`.
       (`lib/features/sadhana/services/volume_button_service.dart`).
 - [ ] **OCR**: scan a page/gutka to add a mantra or paath to the library.
 - [ ] **Home-screen widgets** (Android/iOS).
-- [ ] Real **Clock**, **Calendar**, **Home** and **Profile** screens.
+- [ ] Real **Clock** and **Profile** screens.
+- [ ] **Calendar, later**: sync marks with the backend, an end date for repeats,
+      and (if wanted) tithi / panchang data.
 - [ ] **Localisation**: wire the language button into `flutter_localizations`.
 - [ ] Keep the screen awake during Focus mode (needs a wakelock package).
 - [ ] Bundle Noto Sans Devanagari / Gurmukhi so script text renders identically on

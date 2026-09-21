@@ -2,6 +2,10 @@ import 'dart:io';
 
 import 'package:advance_calendar/core/storage/app_storage.dart';
 import 'package:advance_calendar/features/sadhana/data/mantra.dart';
+import 'package:advance_calendar/features/calendar/application/calendar_marks_provider.dart';
+import 'package:advance_calendar/features/calendar/application/home_cards_provider.dart';
+import 'package:advance_calendar/features/calendar/application/mark_style_provider.dart';
+import 'package:advance_calendar/features/calendar/data/calendar_mark.dart';
 import 'package:advance_calendar/features/sadhana/application/mantra_library_provider.dart';
 import 'package:advance_calendar/features/sadhana/application/voice_training_provider.dart';
 import 'package:advance_calendar/features/sadhana/voice/dtw.dart';
@@ -220,5 +224,61 @@ void main() {
     ]));
     expect(loaded.toModel().evaluate(again, 0.5).matched, isTrue);
     expect(c2.read(voiceSensitivityProvider), 0.8);
+  });
+
+  test('calendar marks, the mark style and home dismissals survive closing Hive',
+      () async {
+    final dir = await Directory.systemTemp.createTemp('sadho_hive_cal_');
+    addTearDown(() async {
+      await Hive.close();
+      await dir.delete(recursive: true);
+    });
+
+    Hive.init(dir.path);
+    await AppStorage.openBoxes();
+
+    final c1 = ProviderContainer();
+    final notifier = c1.read(calendarMarksProvider.notifier);
+    final saved = await notifier.save(CalendarMark(
+      id: 'm1',
+      date: DateTime(2026, 9, 24),
+      type: MarkType.cautious,
+      emoji: '🪔',
+      label: 'Amavasya',
+      details: 'Light a lamp.',
+      reminderMode: ReminderMode.several,
+      reminderTimes: const [360, 1080],
+      repeat: RepeatRule.monthly,
+      homeMode: HomeMode.morning,
+      homeMinutes: 405,
+    ));
+    await notifier.save(CalendarMark(id: 'm2', date: DateTime(2026, 10, 1), label: 'gone'));
+    await notifier.delete('m2');
+    c1.read(markStyleProvider.notifier).set(MarkStyle.square);
+    c1.read(homeDismissalsProvider.notifier).dismiss('m1', DateTime(2099, 1, 1));
+    c1.dispose();
+
+    await Hive.close();
+    await AppStorage.openBoxes();
+
+    final c2 = ProviderContainer();
+    addTearDown(c2.dispose);
+    final marks = c2.read(calendarMarksProvider);
+    expect(marks.length, 1, reason: 'the deleted one stays deleted');
+    final m = marks.single;
+    expect(m.id, 'm1');
+    expect(m.type, MarkType.cautious);
+    expect(m.emoji, '🪔');
+    expect(m.label, 'Amavasya');
+    expect(m.details, 'Light a lamp.');
+    expect(m.date, DateTime(2026, 9, 24));
+    expect(m.reminderMode, ReminderMode.several);
+    expect(m.reminderTimes, [360, 1080]);
+    expect(m.repeat, RepeatRule.monthly);
+    expect(m.homeMode, HomeMode.morning);
+    expect(m.homeMinutes, 405);
+    expect(m.createdAt, saved.createdAt);
+    expect(c2.read(markStyleProvider), MarkStyle.square);
+    expect(c2.read(homeDismissalsProvider), contains('m1|2099-01-01'));
   });
 }
