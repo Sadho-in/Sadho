@@ -31,6 +31,10 @@ class FakeScheduler implements ReminderScheduler {
   final cancelled = <String>[];
   final rescheduledAll = <List<CalendarMark>>[];
 
+  /// The alerts currently held per group (a group is replaced as a whole).
+  final alerts = <String, List<ScheduledAlert>>{};
+  final alertReplacements = <String>[];
+
   @override
   bool get isSupported => true;
 
@@ -52,6 +56,12 @@ class FakeScheduler implements ReminderScheduler {
   @override
   Future<void> rescheduleAll(Iterable<CalendarMark> marks) async =>
       rescheduledAll.add(marks.toList());
+
+  @override
+  Future<void> replaceAlerts(String group, List<ScheduledAlert> next) async {
+    alertReplacements.add(group);
+    alerts[group] = [...next];
+  }
 }
 
 /// Overrides for the calendar feature in tests.

@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../../clock/services/tz_init.dart';
 import '../data/calendar_mark.dart';
 import 'reminder_planner.dart';
 import 'reminder_scheduler.dart';
@@ -22,6 +22,7 @@ class LocalNotificationsScheduler implements ReminderScheduler {
   bool? _exactAllowed;
 
   static const _channelId = 'calendar_reminders';
+  static const _alarmChannelId = 'alarms_timers';
 
   static bool get platformSupported =>
       !kIsWeb &&
@@ -34,7 +35,7 @@ class LocalNotificationsScheduler implements ReminderScheduler {
   /// Sets up the timezone database (so 7:00 stays 7:00 across daylight-saving
   /// changes) and the notification plugin. Call once from `main()`.
   Future<void> init() async {
-    tzdata.initializeTimeZones();
+    ensureTimeZonesLoaded();
     try {
       final zone = await FlutterTimezone.getLocalTimezone();
       tz.setLocalLocation(tz.getLocation(zone.identifier));
@@ -66,6 +67,25 @@ class LocalNotificationsScheduler implements ReminderScheduler {
         iOS: DarwinNotificationDetails(),
       );
 
+  /// Alarm-style: loud, on the ALARM stream (so a muted media volume does not
+  /// silence it), and marked as an alarm/timer for the system.
+  NotificationDetails get _alarmDetails => const NotificationDetails(
+        android: AndroidNotificationDetails(
+          _alarmChannelId,
+          'Alarms and timers',
+          channelDescription: 'The sun-based alarm and finished timers',
+          importance: Importance.max,
+          priority: Priority.max,
+          category: AndroidNotificationCategory.alarm,
+          audioAttributesUsage: AudioAttributesUsage.alarm,
+        ),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentSound: true,
+          interruptionLevel: InterruptionLevel.timeSensitive,
+        ),
+      );
+
   @override
   Future<bool> requestPermission() async {
     try {
@@ -85,14 +105,17 @@ class LocalNotificationsScheduler implements ReminderScheduler {
   }
 
   @override
-  Future<void> cancel(String markId) async {
+  Future<void> cancel(String markId) => _cancelWhere((p) => p == markId);
+
+  /// Cancels every pending notification whose payload satisfies [test].
+  Future<void> _cancelWhere(bool Function(String? payload) test) async {
     try {
       final pending = await _plugin.pendingNotificationRequests();
       for (final r in pending) {
-        if (r.payload == markId) await _plugin.cancel(id: r.id);
+        if (test(r.payload)) await _plugin.cancel(id: r.id);
       }
     } catch (e) {
-      debugPrint('Could not cancel reminders for $markId: $e');
+      debugPrint('Could not cancel notifications: $e');
     }
   }
 
@@ -104,13 +127,29 @@ class LocalNotificationsScheduler implements ReminderScheduler {
 
   @override
   Future<void> rescheduleAll(Iterable<CalendarMark> marks) async {
-    try {
-      await _plugin.cancelAllPendingNotifications();
-    } catch (e) {
-      debugPrint('Could not clear pending reminders: $e');
-    }
+    // Only the calendar's own reminders: the sun alarm and timers are kept.
+    await _cancelWhere((p) => !alertGroups.contains(p));
     for (final m in marks) {
       await _scheduleAll(m);
+    }
+  }
+
+  @override
+  Future<void> replaceAlerts(String group, List<ScheduledAlert> alerts) async {
+    await _cancelWhere((p) => p == group);
+    for (final a in alerts) {
+      try {
+        await _zonedAt(
+          id: a.id,
+          when: a.when,
+          details: _alarmDetails,
+          title: a.title,
+          body: a.body,
+          payload: group,
+        );
+      } catch (e) {
+        debugPrint('Could not schedule alert ${a.id}: $e');
+      }
     }
   }
 
@@ -125,23 +164,41 @@ class LocalNotificationsScheduler implements ReminderScheduler {
     }
   }
 
-  Future<void> _zoned(PlannedReminder p) async {
-    final when = tz.TZDateTime(
-        tz.local, p.when.year, p.when.month, p.when.day, p.when.hour, p.when.minute);
+  Future<void> _zoned(PlannedReminder p) => _zonedAt(
+        id: p.id,
+        when: p.when,
+        details: _details,
+        title: p.title,
+        body: p.body,
+        payload: p.markId,
+        repeat: switch (p.repeat) {
+          PlannedRepeat.daily => DateTimeComponents.time,
+          PlannedRepeat.weekly => DateTimeComponents.dayOfWeekAndTime,
+          PlannedRepeat.none => null,
+        },
+      );
+
+  Future<void> _zonedAt({
+    required int id,
+    required DateTime when,
+    required NotificationDetails details,
+    required String title,
+    required String body,
+    required String payload,
+    DateTimeComponents? repeat,
+  }) async {
+    final at = tz.TZDateTime(
+        tz.local, when.year, when.month, when.day, when.hour, when.minute, when.second);
 
     Future<void> go(AndroidScheduleMode mode) => _plugin.zonedSchedule(
-          id: p.id,
-          scheduledDate: when,
-          notificationDetails: _details,
+          id: id,
+          scheduledDate: at,
+          notificationDetails: details,
           androidScheduleMode: mode,
-          title: p.title,
-          body: p.body,
-          payload: p.markId,
-          matchDateTimeComponents: switch (p.repeat) {
-            PlannedRepeat.daily => DateTimeComponents.time,
-            PlannedRepeat.weekly => DateTimeComponents.dayOfWeekAndTime,
-            PlannedRepeat.none => null,
-          },
+          title: title,
+          body: body,
+          payload: payload,
+          matchDateTimeComponents: repeat,
         );
 
     _exactAllowed ??= await _canScheduleExact();

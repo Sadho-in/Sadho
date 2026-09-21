@@ -8,6 +8,8 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Sadho listens to your chanting so it can count each recitation of your trained mantra. Audio is analysed on this device and never leaves it.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Sadho uses your approximate location to work out sunrise and sunset for the sun-based alarm and the vrat timer. It stays on this device.</string>
 	<key>CFBundleDisplayName</key>
 	<string>Sadho</string>
 	<key>CFBundleExecutable</key>

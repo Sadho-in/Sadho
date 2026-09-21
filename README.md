@@ -13,11 +13,55 @@ still `advance_calendar`; the Android/iOS display name and the in-app title are
   runtime (choice is saved). Fraunces for headings, Karla for body text.
 - Bottom navigation: **Clock · Calendar · Sadhana · Home**. Top bar with a
   language button, a light/dark toggle and a profile avatar.
-- **Calendar** and **Home** are real screens (below). Clock is still a
-  placeholder ("Coming soon"). Profile is a placeholder too, but already hosts
-  **Sadhana settings** (the Count setting below).
+- **Clock**, **Calendar** and **Home** are real screens (below). Profile is a
+  placeholder, but already hosts **Sadhana settings** (the Count setting below).
 - The language button saves your choice (English / हिन्दी / ਪੰਜਾਬੀ); actual
   translations come later.
+
+**Clock**
+
+A list of five tools; each opens **full-screen** (a full-screen dialog route with
+a close button).
+- **Clock** — a large live time (seconds, AM/PM or 24-hour following the phone),
+  the full date and the zone name. Upright, the hours and minutes fill the width
+  and the seconds sit beneath; sideways it is one line.
+- **Sun-based alarm** — an on/off switch, a **Sunrise ⟷ Sunset** switch, quick
+  offsets (*1 hr / 45 / 30 / 15 min before, At sunrise|sunset, 15 / 30 min after*)
+  and a **Custom** offset (any minutes, 0–1440, before or after). The screen shows
+  the computed alarm time (and which day), today's sunrise and sunset, and where
+  they are measured. Turning it on asks for notification permission.
+  - *Sun times* are computed on the device with the NOAA solar algorithm
+    (`lib/features/clock/data/sun_times.dart`, pure Dart), checked against known
+    sunrise/sunset times for London, New York, Sydney, Delhi and Mumbai (within
+    about 3-4 minutes). No network, no API.
+  - *Location*: `geolocator` (approximate/low accuracy is enough). Without
+    permission the app uses **Amritsar** and says so ("Using Amritsar. Allow
+    location for exact times."). Permission is only asked when you press **Use my
+    location** (never by surprise); the last position is saved and used next
+    time; if location is blocked in Settings the button opens Settings.
+  - *Recomputed daily*: the alarm follows the sun, so its time changes every day.
+    The app schedules the next **30 days** as one local notification each (via
+    `flutter_local_notifications`, alarm-category channel `alarms_timers`) and
+    schedules them again whenever it opens or returns to the front, and when the
+    setting or the location changes. Beyond 30 days without opening the app the
+    alarm stops until the app is opened once.
+- **World clock** — a fixed example list (Amritsar, Haridwar, London, Dubai, New
+  York, Toronto, Sydney) with each city's time, "Today / Tomorrow / Yesterday" and
+  how far ahead/behind you it is. Uses IANA zones, so daylight saving is right.
+- **Sadhana & vrat timer** — presets **Aarti 5 min, Chalisa 11, Path 21, Havan
+  30**, and **Vrat → sunset**, which counts down to the next sunset at your
+  location (today's, or tomorrow's with a note once it has passed). Start / Pause
+  / Resume / Reset. It runs on a fixed end time, so it stays right in the
+  background. At zero it **vibrates and rings** through the same completion
+  feedback as Sadhana (Completion settings, alarm stream). A notification is also
+  scheduled for the end, so it rings if the app is closed; when the screen sees
+  zero it cancels that notification so there is only one ring.
+- **Paath stopwatch** — Start / Stop / Lap / Reset with hundredths, and a lap
+  list (newest first, lap time and total; fastest/slowest marked from 3 laps). It
+  keeps running when you leave the screen.
+
+The list shows a live one-liner under a tool that is doing something (alarm on,
+timer counting, stopwatch running).
 
 **Calendar**
 
@@ -242,12 +286,13 @@ Flutter (stable) · Dart · Material 3 · `flutter_riverpod` · `hive` /
 `hive_flutter` · `vibration` · `audioplayers` · `google_fonts` ·
 `record` (PCM16 16 kHz microphone stream) · `fftea` (FFT) ·
 `permission_handler` · `volume_button_listener` · `table_calendar` ·
-`flutter_local_notifications` · `timezone` · `flutter_timezone`. MFCC and DTW are
+`flutter_local_notifications` · `timezone` · `flutter_timezone` · `geolocator` ·
+`intl`. MFCC and DTW are
 implemented in Dart in this repo (`lib/features/sadhana/voice/`).
 
-**Permissions**: Android `RECORD_AUDIO`, `POST_NOTIFICATIONS`,
+**Permissions**: Android `RECORD_AUDIO`, `ACCESS_COARSE_LOCATION`, `POST_NOTIFICATIONS`,
 `RECEIVE_BOOT_COMPLETED`, `SCHEDULE_EXACT_ALARM` (+ `VIBRATE`; `INTERNET` is only
-for Google Fonts); iOS `NSMicrophoneUsageDescription`. Voice needs no speech
+for Google Fonts); iOS `NSMicrophoneUsageDescription` and `NSLocationWhenInUseUsageDescription`. Voice needs no speech
 recognition permission or service. The Android build enables core-library
 desugaring and registers the plugin's alarm and boot receivers (required by
 `flutter_local_notifications`).
@@ -311,7 +356,11 @@ lib/
     widgets/     shared widgets (ComingSoon)
   features/
     shell/       app bar, bottom nav, language sheet
-    clock/ profile/   placeholders (Profile hosts the Sadhana settings)
+    profile/     placeholder (hosts the Sadhana settings)
+    clock/       data/ (sun times, sun alarm, tools, cities, timer presets),
+                 application/ (location, sun alarm, timer, stopwatch, clock
+                 source), services/ (location, time zones), presentation/
+                 (tool list + the five full-screen tools)
     calendar/    marks (data), Hive store + providers, reminder planner and
                  notification scheduler, month grid, editor, mark styles
     home/        today's cards
@@ -328,7 +377,9 @@ assets/sounds/   generated completion sounds
 test/            session logic, focus-mode gestures, real-Hive persistence,
                  voice DSP on synthetic signals, training store and UI;
                  test/calendar: recurrence, reminder planning, marks store,
-                 month grid + styles, editor, Home cards, end-to-end flows
+                 month grid + styles, editor, Home cards, end-to-end flows;
+                 test/clock: sun maths, sun alarm, location, timer, stopwatch,
+                 world clock and every Clock screen (run in several time zones)
 ```
 
 ## Run
@@ -356,7 +407,10 @@ Clearly marked in code as `TODO(phase-2)` / `TODO(later-phase)`.
       (`lib/features/sadhana/services/volume_button_service.dart`).
 - [ ] **OCR**: scan a page/gutka to add a mantra or paath to the library.
 - [ ] **Home-screen widgets** (Android/iOS).
-- [ ] Real **Clock** and **Profile** screens.
+- [ ] A real **Profile** screen.
+- [ ] **Clock, later**: a user-editable world-clock city list, a sun alarm that
+      keeps ringing past 30 days without opening the app (a background job), an
+      immersive/keep-awake big clock, and stopwatch/timer in a notification.
 - [ ] **Calendar, later**: sync marks with the backend, an end date for repeats,
       and (if wanted) tithi / panchang data.
 - [ ] **Localisation**: wire the language button into `flutter_localizations`.
