@@ -179,8 +179,9 @@ local notifications, no server, working offline.
 *Screen layout.* Everything you need to count fits **above the fold** (no
 scrolling, checked by tests on 360×640 up to 411×915 phones, at the default text
 size): a **mantra card** (script, name, transliteration, small tradition and
-"Voice trained / not trained" tags, a small *Library* button and an **A− / A+**
-text-size stepper); directly under it the slim **Combined | Separate** toggle
+"Voice trained / not trained" tags, the **A− / A+** text-size stepper in the
+**top-right** corner and a small *Library* button in the **bottom-right** corner,
+with a gap between them); directly under it the slim **Combined | Separate** toggle
 (just the two options, no label); the **progress ring**; **one row** of four
 controls (Reset, − undo, + count, Focus); and the primary **Start / Pause /
 Resume** button with a one-line mode status. The ring shrinks on short screens,
@@ -322,7 +323,21 @@ panel only for Voice), target, vibration and ringtone, and the sankalp.
     mode and in both Combined and Separate (in Separate, when the active mode
     reaches its own target). The milestone counts the count you see: all modes
     together in Combined, the active mode's own in Separate. Tested end to end
-    (`test/sadhana/completion_feedback_test.dart`) with a fake vibrator and speaker.
+    (`test/sadhana/completion_feedback_test.dart`, `time_target_test.dart`) with a
+    fake vibrator and speaker.
+  - **Time targets** are measured against the real clock, not just against the
+    app's one-second timer, because a phone with the screen off can stop that
+    timer for minutes. When the target time is reached with the app running, it
+    vibrates and rings once. If the phone was locked, a notification (alarm
+    channel, set just after the end time) rings instead, and the session catches
+    up as soon as the app is back; the app then stays quiet so it never rings
+    twice. If the notification could not be set (permission refused) the app
+    rings when it is back, unless that is hours later. Turning on a time target
+    run asks for the notification permission the first time.
+  - **Tap after the target**: in Tap mode every extra tap still gives a short
+    vibration tick (50 ms at level 1 up to 90 ms at level 5; no sound), on every
+    tap, while Vibration is on, and the count stays at the target. Other modes'
+    inputs are ignored silently.
 - The in-progress session (count, target, mantra, sankalp, mode, pace) is saved
   and restored on the next launch; it always reopens paused.
 

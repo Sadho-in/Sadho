@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/storage/app_storage.dart';
+import '../../calendar/services/reminder_planner.dart' show reminderId;
+import '../../calendar/services/reminder_scheduler.dart';
+import '../../clock/application/clock_source.dart';
 import '../services/feedback_service.dart';
 import '../services/voice_counter_service.dart';
 import '../services/volume_button_service.dart';
@@ -283,8 +287,27 @@ class SadhanaState {
 class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   static const _storageKey = 'sadhana.session';
 
+  /// A time target that ends this long ago (or less) rings from here; older
+  /// than that, the phone's own notification has already rung.
+  static const ringGrace = Duration(seconds: 5);
+
+  /// The notification is set this much AFTER the end, so when the app is in
+  /// the foreground its own clock finishes first and cancels it (one ring, not
+  /// two).
+  static const alarmMargin = Duration(seconds: 2);
+
   Timer? _clock;
   Timer? _rhythm;
+
+  // The time target is measured against the real clock, not just against
+  // ticks: a phone with the screen off can stop the app's timers for minutes.
+  DateTime? _lastTickAt;
+  DateTime? _endsAt;
+  bool _alarmScheduled = false;
+  bool _askedNotifications = false;
+  int _alarmGen = 0;
+  late ReminderScheduler _scheduler;
+  _ResumeWatcher? _watcher;
 
   late VoiceCounterService _voice;
   late VolumeButtonService _volume;
@@ -303,10 +326,27 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
     // Read once here: ref cannot be used inside onDispose.
     _voice = ref.read(voiceCounterServiceProvider);
     _volume = ref.read(volumeButtonServiceProvider);
+    _scheduler = ref.read(reminderSchedulerProvider);
     _disposed = false;
+    // Catch the clock up when the app comes back to the front.
+    try {
+      _watcher = _ResumeWatcher(_tickClock);
+      WidgetsBinding.instance.addObserver(_watcher!);
+    } catch (_) {
+      // No Flutter binding (plain unit tests): nothing to watch.
+    }
+    // A time-target ring left over from a session that no longer exists (unless
+    // a run has already started in the meantime).
+    Future.microtask(() {
+      if (_alarmGen == 0 && !_disposed) _setAlarm(null);
+    });
     ref.onDispose(() {
       _disposed = true;
       _cancelTimers();
+      if (_watcher != null) WidgetsBinding.instance.removeObserver(_watcher!);
+      unawaited(_scheduler
+          .replaceAlerts(sadhanaTimerGroup, const [])
+          .catchError((Object _) {}));
       if (_voiceActive) unawaited(_voice.stop());
       if (_malaActive) unawaited(_volume.stop());
     });
@@ -323,8 +363,17 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   /// in Tap mode: in Voice, Rhythm and Mala the only things that count are that
   /// mode's own input (a voice match, the rhythm timer, a volume key), plus the
   /// deliberate + / − buttons, which call [increment] / [decrement] directly.
+  ///
+  /// Once the target is reached a tap counts for nothing, but the phone still
+  /// answers with a short vibration tick on EVERY tap (see
+  /// [FeedbackService.acknowledge]).
   void tap() {
-    if (state.mode == CountMode.tap) increment();
+    if (state.mode != CountMode.tap) return;
+    if (state.completed) {
+      ref.read(feedbackServiceProvider).acknowledge();
+      return;
+    }
+    increment();
   }
 
   /// Adds one count to the active mode. Ignored once the target has been
@@ -460,6 +509,8 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
         previous.mode != next.mode ||
         previous.targetType != next.targetType ||
         previous.rhythmSeconds != next.rhythmSeconds ||
+        previous.targetSeconds != next.targetSeconds ||
+        previous.scope != next.scope ||
         previous.completed != next.completed) {
       _syncTimers();
       _syncInputs();
@@ -469,10 +520,19 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   void _syncTimers() {
     _cancelTimers();
     final s = state;
-    if (!s.running || s.completed) return;
+    if (!s.running || s.completed) {
+      _setAlarm(null);
+      return;
+    }
 
     if (s.isTimeTarget) {
+      final now = ref.read(clockNowProvider)();
+      _lastTickAt = now;
+      _endsAt = now.add(Duration(seconds: s.targetSeconds - s.elapsedSeconds));
       _clock = Timer.periodic(const Duration(seconds: 1), (_) => _tickClock());
+      _setAlarm(_endsAt!.add(alarmMargin));
+    } else {
+      _setAlarm(null);
     }
     if (s.mode == CountMode.rhythm) {
       _rhythm = Timer.periodic(
@@ -482,15 +542,72 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
     }
   }
 
+  /// One second of the time target has passed (or, after the app was away, a
+  /// whole stretch of them: the real clock decides how many).
   void _tickClock() {
     final s = state;
-    if (!s.running || s.completed) return;
+    if (!s.running || s.completed || !s.isTimeTarget) return;
+    final last = _lastTickAt;
+    if (last == null) return;
+    final now = ref.read(clockNowProvider)();
+
+    var add = now.difference(last).inSeconds;
+    if (add < 1) add = 1; // a normal tick (and tests with a frozen clock)
+    _lastTickAt = last.add(Duration(seconds: add));
+    final remaining = s.targetSeconds - s.elapsedSeconds;
+    if (add > remaining) add = remaining;
+
     var next = s.withProgress(s.activeProgress
-        .copyWith(elapsedSeconds: s.activeProgress.elapsedSeconds + 1));
+        .copyWith(elapsedSeconds: s.activeProgress.elapsedSeconds + add));
     final done = next.elapsedSeconds >= next.targetSeconds;
     if (done) next = next.copyWith(running: false);
+    final endedAt = _endsAt;
+    final rangByPhone = _alarmScheduled;
     _emit(next);
-    if (done) ref.read(feedbackServiceProvider).complete();
+    if (!done) return;
+
+    // (`_emit` above already cancelled the phone's own notification: it is no
+    // longer needed, or has already rung, which `rangByPhone` remembers.)
+    final late = endedAt == null ? Duration.zero : now.difference(endedAt);
+    if (late <= ringGrace || (!rangByPhone && late <= const Duration(minutes: 10))) {
+      ref.read(feedbackServiceProvider).complete();
+    }
+  }
+
+  /// Puts (or, with null, removes) the notification that rings at the end of a
+  /// time target even when the app's clock is not running.
+  Future<void> _setAlarm(DateTime? at) async {
+    final gen = ++_alarmGen;
+    if (at == null) {
+      final had = _alarmScheduled;
+      _alarmScheduled = false;
+      if (had || gen == 1) {
+        try {
+          await _scheduler.replaceAlerts(sadhanaTimerGroup, const []);
+        } catch (e) {
+          debugPrint('Could not cancel the session ring: $e');
+        }
+      }
+      return;
+    }
+    try {
+      if (!_askedNotifications) {
+        _askedNotifications = true;
+        if (!await _scheduler.requestPermission()) return;
+      }
+      if (gen != _alarmGen || _disposed) return; // paused or changed meanwhile
+      await _scheduler.replaceAlerts(sadhanaTimerGroup, [
+        ScheduledAlert(
+          id: reminderId(sadhanaTimerGroup, 0, 0),
+          when: at,
+          title: '🔔 Sadhana time complete',
+          body: 'Your session time is up 🙏',
+        ),
+      ]);
+      _alarmScheduled = gen == _alarmGen;
+    } catch (e) {
+      debugPrint('Could not schedule the session ring: $e');
+    }
   }
 
   void _cancelTimers() {
@@ -633,3 +750,16 @@ final sadhanaSessionProvider =
     NotifierProvider<SadhanaSessionNotifier, SadhanaState>(
   SadhanaSessionNotifier.new,
 );
+
+/// Tells the session the app is back on screen, so a time target that ran out
+/// (or moved on) while the phone was locked is caught up at once.
+class _ResumeWatcher with WidgetsBindingObserver {
+  _ResumeWatcher(this.onResume);
+
+  final void Function() onResume;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) onResume();
+  }
+}

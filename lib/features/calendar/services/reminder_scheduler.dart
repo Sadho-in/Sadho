@@ -36,7 +36,16 @@ class ScheduledAlert {
 const sunAlarmGroup = 'sun-alarm';
 const timerGroup = 'timer';
 const dailyReminderGroup = 'daily-sadhana';
-const alertGroups = {sunAlarmGroup, timerGroup, dailyReminderGroup};
+
+/// The end of a Sadhana session with a time target (rings if the app is not
+/// running its own clock, e.g. with the screen off).
+const sadhanaTimerGroup = 'sadhana-timer';
+const alertGroups = {
+  sunAlarmGroup,
+  timerGroup,
+  dailyReminderGroup,
+  sadhanaTimerGroup,
+};
 
 /// Puts a mark's reminders on the phone's alarm system (local notifications:
 /// no server, works offline). Behind an interface so tests never touch a

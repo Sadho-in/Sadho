@@ -17,6 +17,11 @@ abstract class FeedbackService {
   /// Target reached. Stronger buzz (if enabled) and ringtone (if enabled).
   Future<void> complete();
 
+  /// A tap that counted for nothing because the target is already reached:
+  /// a very short tick (if vibration is on), on EVERY such tap, so the phone
+  /// answers you instead of feeling dead. No sound.
+  Future<void> acknowledge();
+
   /// Settings-screen previews; these ignore the on/off switches.
   Future<void> previewVibration({required bool strong});
   Future<void> previewRingtone(Ringtone ringtone);
@@ -129,6 +134,11 @@ class DeviceFeedbackService implements FeedbackService {
   /// be 100-260 ms, too short to notice reliably.)
   static int pulseMs(int level) => 120 + level.clamp(1, 5) * 80;
 
+  /// The acknowledgement tick after the target is reached: short (50 ms at
+  /// level 1 up to 90 ms at level 5) so it reads as a tick, not a buzz, and
+  /// clearly different from a milestone or the completion buzz.
+  static int ackMs(int level) => 40 + level.clamp(1, 5) * 10;
+
   /// The completion buzz on such a phone: three long pulses with short gaps,
   /// so it is unmistakably longer and stronger than a milestone buzz.
   static List<int> completionPattern(int level) {
@@ -149,6 +159,26 @@ class DeviceFeedbackService implements FeedbackService {
     // vibrator never stops the sound).
     if (s.vibrationEnabled) await _buzz(s.vibrationLevel, strong: true);
     if (s.ringtoneEnabled) await _play(s.ringtone);
+  }
+
+  @override
+  Future<void> acknowledge() async {
+    final s = _settings();
+    if (!s.vibrationEnabled) return;
+    try {
+      _hasVibrator ??= await _haptics.hasVibrator();
+      if (_hasVibrator != true) return;
+      _hasAmplitude ??= await _haptics.hasAmplitudeControl();
+      final ms = ackMs(s.vibrationLevel);
+      if (_hasAmplitude == true) {
+        await _haptics.vibrate(
+            duration: ms, amplitude: amplitudeFor(s.vibrationLevel));
+      } else {
+        await _haptics.vibrate(duration: ms);
+      }
+    } catch (e) {
+      debugPrint('Vibration unavailable: $e');
+    }
   }
 
   @override

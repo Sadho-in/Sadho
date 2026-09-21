@@ -20,12 +20,16 @@ import '../calendar/calendar_support.dart' show FakeNow;
 class FakeFeedback implements FeedbackService {
   int milestones = 0;
   int completions = 0;
+  int acknowledgements = 0;
 
   @override
   Future<void> milestone() async => milestones++;
 
   @override
   Future<void> complete() async => completions++;
+
+  @override
+  Future<void> acknowledge() async => acknowledgements++;
 
   @override
   Future<void> previewRingtone(Ringtone ringtone) async {}

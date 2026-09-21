@@ -28,11 +28,13 @@ Future<void> pickMantra(BuildContext context, WidgetRef ref) async {
         content: const Text('Your current count will be reset.'),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Keep current')),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Keep current'),
+          ),
           FilledButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Switch')),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Switch'),
+          ),
         ],
       ),
     );
@@ -70,98 +72,118 @@ class MantraCard extends ConsumerWidget {
           onTap: () => pickMantra(context, ref),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(14, 8, 4, 8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (mantra.script.isNotEmpty)
-                        ScriptText(
-                          mantra.script,
+            // The right edge holds two things at opposite corners: A− / A+ at
+            // the top, Library at the bottom, so Library is never right under
+            // A+. (IntrinsicHeight lets that column stretch to the card.)
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (mantra.script.isNotEmpty)
+                          ScriptText(
+                            mantra.script,
+                            style: scaledMantraStyle(
+                              theme.textTheme.titleMedium?.copyWith(
+                                color: onCard,
+                              ),
+                              scale,
+                            ),
+                          ),
+                        Text(
+                          mantra.title,
                           style: scaledMantraStyle(
-                              theme.textTheme.titleMedium
-                                  ?.copyWith(color: onCard),
-                              scale),
-                        ),
-                      Text(
-                        mantra.title,
-                        style: scaledMantraStyle(
                             theme.textTheme.titleSmall?.copyWith(
                               color: onCard,
                               fontWeight: FontWeight.w700,
                             ),
-                            scale),
-                      ),
-                      if (mantra.transliteration.isNotEmpty &&
-                          mantra.transliteration != mantra.title)
-                        Text(
-                          mantra.transliteration,
-                          style: scaledMantraStyle(
+                            scale,
+                          ),
+                        ),
+                        if (mantra.transliteration.isNotEmpty &&
+                            mantra.transliteration != mantra.title)
+                          Text(
+                            mantra.transliteration,
+                            style: scaledMantraStyle(
                               theme.textTheme.bodySmall?.copyWith(
                                 fontStyle: FontStyle.italic,
                                 color: onCard.withValues(alpha: 0.8),
                               ),
-                              scale),
-                        ),
-                      const SizedBox(height: 4),
-                      Wrap(
-                        spacing: 10,
-                        runSpacing: 2,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          if (mantra.tradition.isNotEmpty)
-                            Text(
-                              mantra.tradition,
-                              style: theme.textTheme.labelMedium?.copyWith(
-                                  color: onCard.withValues(alpha: 0.85)),
+                              scale,
                             ),
-                          // Voice counts only a trained mantra: say whether
-                          // this one is.
-                          VoiceTrainedTag(mantra.id),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _SizeButton(
-                          label: 'A−',
-                          fontSize: 13,
-                          tooltip: 'Smaller mantra text',
-                          onPressed:
-                              scale > minMantraTextScale ? sizer.smaller : null,
-                        ),
-                        _SizeButton(
-                          label: 'A+',
-                          fontSize: 19,
-                          tooltip: 'Larger mantra text',
-                          onPressed:
-                              scale < maxMantraTextScale ? sizer.larger : null,
+                          ),
+                        const SizedBox(height: 4),
+                        Wrap(
+                          spacing: 10,
+                          runSpacing: 2,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            if (mantra.tradition.isNotEmpty)
+                              Text(
+                                mantra.tradition,
+                                style: theme.textTheme.labelMedium?.copyWith(
+                                  color: onCard.withValues(alpha: 0.85),
+                                ),
+                              ),
+                            // Voice counts only a trained mantra: say whether
+                            // this one is.
+                            VoiceTrainedTag(mantra.id),
+                          ],
                         ),
                       ],
                     ),
-                    TextButton.icon(
-                      onPressed: () => pickMantra(context, ref),
-                      icon: const Icon(Icons.library_music_outlined, size: 16),
-                      label: const Text('Library'),
-                      style: TextButton.styleFrom(
-                        visualDensity: VisualDensity.compact,
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  Column(
+                    key: const ValueKey('mantra-card-controls'),
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Row(
+                        key: const ValueKey('mantra-size-controls'),
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _SizeButton(
+                            label: 'A−',
+                            fontSize: 13,
+                            tooltip: 'Smaller mantra text',
+                            onPressed: scale > minMantraTextScale
+                                ? sizer.smaller
+                                : null,
+                          ),
+                          _SizeButton(
+                            label: 'A+',
+                            fontSize: 19,
+                            tooltip: 'Larger mantra text',
+                            onPressed: scale < maxMantraTextScale
+                                ? sizer.larger
+                                : null,
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      // A little air between the two, whatever the text size.
+                      const SizedBox(height: 16),
+                      TextButton.icon(
+                        key: const ValueKey('mantra-library-button'),
+                        onPressed: () => pickMantra(context, ref),
+                        icon: const Icon(
+                          Icons.library_music_outlined,
+                          size: 16,
+                        ),
+                        label: const Text('Library'),
+                        style: TextButton.styleFrom(
+                          visualDensity: VisualDensity.compact,
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -187,26 +209,26 @@ class _SizeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Tooltip(
-        message: tooltip,
-        // A disabled button (at the smallest / largest size) must still take the
-        // tap: otherwise it falls through to the card, which opens the Library.
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {},
-          child: TextButton(
-            onPressed: onPressed,
-            style: TextButton.styleFrom(
-              minimumSize: const Size(38, 34),
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: Text(
-              label,
-              style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700),
-            ),
-          ),
+    message: tooltip,
+    // A disabled button (at the smallest / largest size) must still take the
+    // tap: otherwise it falls through to the card, which opens the Library.
+    child: GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {},
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          minimumSize: const Size(38, 34),
+          padding: const EdgeInsets.symmetric(horizontal: 6),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
-      );
+        child: Text(
+          label,
+          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700),
+        ),
+      ),
+    ),
+  );
 }
 
 /// Two-finger pinch on [child] changes the mantra text size.
@@ -265,11 +287,11 @@ class _PinchToZoomState extends ConsumerState<_PinchToZoom> {
 
   @override
   Widget build(BuildContext context) => Listener(
-        behavior: HitTestBehavior.translucent,
-        onPointerDown: _down,
-        onPointerMove: _move,
-        onPointerUp: _up,
-        onPointerCancel: _up,
-        child: widget.child,
-      );
+    behavior: HitTestBehavior.translucent,
+    onPointerDown: _down,
+    onPointerMove: _move,
+    onPointerUp: _up,
+    onPointerCancel: _up,
+    child: widget.child,
+  );
 }
