@@ -291,15 +291,33 @@ void main() {
   });
 
   group('Count: Combined | Separate', () {
-    testWidgets('is a compact one-line control, defaulting to Combined',
-        (tester) async {
+    testWidgets('is a compact one-line control with just the two options, '
+        'no label', (tester) async {
       final c = await pump(tester, const CountScopeControl(compact: true));
-      expect(find.text('Count:'), findsOneWidget);
       expect(find.text('Combined'), findsOneWidget);
       expect(find.text('Separate'), findsOneWidget);
+      expect(find.text('Count:'), findsNothing, reason: 'the word is gone');
+      expect(find.text('Count'), findsNothing);
+      // Nothing but the two options.
+      expect(find.byType(Text), findsNWidgets(2));
       expect(read(c).scope, CountScope.combined);
       final size = tester.getSize(find.byType(CountScopeControl));
       expect(size.height, lessThan(44), reason: 'small, not a card');
+    });
+
+    testWidgets('the segmented control spans the row now that the label is gone',
+        (tester) async {
+      await pump(tester, const CountScopeControl(compact: true));
+      final row = tester.getSize(find.byType(CountScopeControl)).width;
+      final control = tester.getSize(find.byType(SegmentedButton<CountScope>)).width;
+      expect(control, closeTo(row, 1));
+    });
+
+    testWidgets('screen readers still hear what it is', (tester) async {
+      await pump(tester, const CountScopeControl(compact: true));
+      final handle = tester.ensureSemantics();
+      expect(find.bySemanticsLabel('Count mode'), findsOneWidget);
+      handle.dispose();
     });
 
     testWidgets('toggling switches the scope and persists to Hive',
@@ -339,7 +357,9 @@ void main() {
         (tester) async {
       final c = await pump(tester, const ProfileScreen(), scrollable: false);
       expect(find.text('Sadhana settings'), findsOneWidget);
-      expect(find.text('Count'), findsOneWidget);
+      expect(find.text('Count'), findsNothing, reason: 'no label here either');
+      expect(find.text('Combined'), findsOneWidget);
+      expect(find.text('Separate'), findsOneWidget);
       expect(find.textContaining('one shared count'), findsOneWidget);
       await tester.tap(find.text('Separate'));
       await tester.pumpAndSettle();

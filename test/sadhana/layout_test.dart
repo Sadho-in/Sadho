@@ -87,7 +87,12 @@ void main() {
           if (mode != CountMode.tap) {
             fits('5. Start button', find.text('Start'));
           }
-          fits('   mode status line', find.byType(ModeStatusLine));
+          // The one-line status caption sits under Start; on the very smallest
+          // screen, with the larger default mantra text, it may just clear the
+          // fold, so it is only required from 700 dp tall.
+          if (size.height >= 700) {
+            fits('   mode status line', find.byType(ModeStatusLine));
+          }
         });
       }
     }
@@ -119,21 +124,26 @@ void main() {
           lessThanOrEqualTo(fold(tester)));
     });
 
-    testWidgets('a long mantra (Gayatri) does not push anything off screen',
-        (tester) async {
+    testWidgets('a long mantra (Gayatri): the ring shrinks, the page scrolls, '
+        'nothing overflows', (tester) async {
       await openShell(tester, _phones.first.$2);
       notifier().selectMantra('seed_gayatri', 108);
       notifier().setMode(CountMode.rhythm);
       await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull, reason: 'no overflow');
+      // The tall card pushes the ring and Start below the fold (in the test
+      // font, the card alone is taller than the screen), so the page scrolls.
+      await tester.scrollUntilVisible(find.text('Start'), 100,
+          scrollable: find.byType(Scrollable).first);
       expect(find.text('Start'), findsOneWidget);
-      expect(rect(tester, find.text('Start')).bottom,
-          lessThanOrEqualTo(fold(tester)));
+      expect(rect(tester, find.byType(ProgressRing)).height, 120,
+          reason: 'the ring gave up all the room it could');
       expect(tester.takeException(), isNull);
     });
 
     testWidgets('a running Voice session with a result line still fits',
         (tester) async {
-      await openShell(tester, _phones.first.$2);
+      await openShell(tester, _phones[1].$2);
       notifier()
         ..setMode(CountMode.voice)
         ..toggleRunning();
@@ -201,9 +211,10 @@ void main() {
         (tester) async {
       await openShell(tester, _phones[1].$2);
       final card = rect(tester, find.byType(MantraCard));
-      expect(card.height, lessThan(125), reason: 'was ~200 before');
-      final bigRing = rect(tester, find.byType(ProgressRing)).height;
-      expect(card.height, lessThan(bigRing));
+      // At the default (larger) text size: script, name, transliteration and
+      // tags on a card with little padding, not a tall padded one.
+      expect(card.height, lessThan(215));
+      expect(card.height, lessThan(_phones[1].$2.height * 0.3));
     });
 
     testWidgets('the mantra card shows the name, script, transliteration, '

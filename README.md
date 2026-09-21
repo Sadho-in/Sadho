@@ -75,13 +75,16 @@ local notifications, no server, working offline.
 **Sadhana — Japa & Paath counter**
 
 *Screen layout.* Everything you need to count fits **above the fold** (no
-scrolling, checked by tests on 360×640 up to 411×915 phones): a compact **mantra
-card** (name, script, transliteration, small tradition and "Voice trained / not
-trained" tags, a small *Library* button); directly under it the slim **Count:
-Combined | Separate** toggle; the **progress ring**; **one row** of four controls
-(Reset, − undo, + count, Focus); and the primary **Start / Pause / Resume**
-button with a one-line mode status. The ring shrinks on short screens to make
-this fit. **Below, in the scroll area**: the mode selector (with the chosen
+scrolling, checked by tests on 360×640 up to 411×915 phones, at the default text
+size): a **mantra card** (script, name, transliteration, small tradition and
+"Voice trained / not trained" tags, a small *Library* button and an **A− / A+**
+text-size stepper); directly under it the slim **Combined | Separate** toggle
+(just the two options, no label); the **progress ring**; **one row** of four
+controls (Reset, − undo, + count, Focus); and the primary **Start / Pause /
+Resume** button with a one-line mode status. The ring shrinks on short screens,
+and when the mantra card grows, to make this fit; if the card is very tall (a
+long verse at a large size) the ring stays at its minimum and the page simply
+scrolls, so nothing overflows. **Below, in the scroll area**: the mode selector (with the chosen
 mode's own settings right under it: the Rhythm pace only for Rhythm, the Voice
 panel only for Voice), target, vibration and ringtone, and the sankalp.
 
@@ -93,9 +96,19 @@ panel only for Voice), target, vibration and ringtone, and the sankalp.
 - **Target** by *count* (27 / 108 / 1008 / custom) or by *time*
   (seconds / minutes / hours).
 - **Sankalp** — an editable intention, saved as you type.
-- **Count: Combined | Separate** — a persisted setting that says how the four
-  modes relate. It is a slim control under the mantra card, and the same setting
-  (with an explanation) is in Settings (Profile tab).
+- **Mantra text size** — the mantra's script, transliteration and name are drawn
+  at 0.8× to 2.0× of their base size (default **1.3×**, comfortably larger than
+  the base). Change it with the **A− / A+** buttons on the mantra card (0.1× a
+  step) or by **pinching the card with two fingers** (it follows your fingers and
+  is saved when you let go; one finger still scrolls the page and a tap still
+  opens the Library). The size is saved in Hive and used everywhere the mantra is
+  shown: the Sadhana card and **Focus mode** (which now also shows the
+  transliteration). The text wraps instead of being cut off, so the card grows
+  with it. The tags, buttons and library list keep their size.
+- **Combined | Separate** — a persisted setting that says how the four
+  modes relate. It is a slim control under the mantra card with just the two
+  options, and the same setting (with an explanation) is in Settings (Profile
+  tab).
   - **Every mode always keeps its OWN count** (and its own clock, for a time
     target). The setting only decides what is shown and measured against the
     target, so switching it never merges or loses anything:

@@ -3,15 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/sadhana_session_provider.dart';
 
-/// "Count: Combined | Separate".
+/// "Combined | Separate": just the two options, no label.
 ///
 /// - **Combined**: Tap, Voice, Rhythm and Mala all add to ONE shared count
 ///   (the sum of the four) toward one target.
 /// - **Separate**: each mode keeps its own count and its own progress toward
 ///   the target; Reset and completion apply only to the active mode.
 ///
-/// [compact] is the one-line version under the mantra card on the Sadhana
-/// screen; the full version (with an explanation) lives in Settings. Both read
+/// [compact] is the slim version under the mantra card on the Sadhana screen;
+/// the full version (with an explanation below) lives in Settings. Both read
 /// and write the same persisted setting.
 class CountScopeControl extends ConsumerWidget {
   const CountScopeControl({super.key, this.compact = false});
@@ -39,41 +39,30 @@ class CountScopeControl extends ConsumerWidget {
       ),
     ];
 
-    if (compact) {
-      return Row(
-        children: [
-          Text('Count:', style: theme.textTheme.labelLarge),
-          const SizedBox(width: 10),
-          Expanded(
-            child: SegmentedButton<CountScope>(
-              segments: segments,
-              selected: {scope},
-              showSelectedIcon: false,
-              style: const ButtonStyle(
+    final control = SizedBox(
+      width: double.infinity,
+      child: SegmentedButton<CountScope>(
+        segments: segments,
+        selected: {scope},
+        showSelectedIcon: false,
+        style: compact
+            ? const ButtonStyle(
                 visualDensity: VisualDensity(horizontal: -2, vertical: -3),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              onSelectionChanged: (v) => notifier.setCountScope(v.first),
-            ),
-          ),
-        ],
-      );
-    }
+              )
+            : null,
+        onSelectionChanged: (v) => notifier.setCountScope(v.first),
+      ),
+    );
+
+    // No visible label, but screen readers still hear what this is.
+    final labelled = Semantics(container: true, label: 'Count mode', child: control);
+    if (compact) return labelled;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Count', style: theme.textTheme.titleMedium),
-        const SizedBox(height: 8),
-        SizedBox(
-          width: double.infinity,
-          child: SegmentedButton<CountScope>(
-            segments: segments,
-            selected: {scope},
-            showSelectedIcon: false,
-            onSelectionChanged: (v) => notifier.setCountScope(v.first),
-          ),
-        ),
+        labelled,
         const SizedBox(height: 8),
         Text(
           scope == CountScope.combined

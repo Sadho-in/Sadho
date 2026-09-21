@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../application/sadhana_session_provider.dart';
+import '../application/mantra_text_scale_provider.dart';
 import '../application/selected_mantra_provider.dart';
 import 'format.dart';
 import 'widgets/counter_section.dart' show ringLabels;
@@ -146,6 +147,7 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
     final scheme = theme.colorScheme;
     final s = ref.watch(sadhanaSessionProvider);
     final mantra = ref.watch(selectedMantraProvider);
+    final textScale = ref.watch(mantraTextScaleProvider);
     final labels = ringLabels(s);
 
     ref.listen(sadhanaSessionProvider.select((v) => v.count), (prev, next) {
@@ -177,23 +179,51 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
                     child: Column(
                       children: [
                         const SizedBox(height: 16),
+                        // The mantra, at the size chosen on the Sadhana card.
+                        // It wraps to the screen width (so a bigger size really
+                        // is bigger) and only shrinks if it would not fit the
+                        // height.
                         Flexible(
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (mantra.script.isNotEmpty)
-                                  ScriptText(
-                                    mantra.script,
-                                    textAlign: TextAlign.center,
-                                    style: theme.textTheme.headlineMedium,
-                                  ),
-                                Text(mantra.title,
-                                    style: theme.textTheme.titleMedium?.copyWith(
-                                      color: scheme.onSurfaceVariant,
-                                    )),
-                              ],
+                          child: LayoutBuilder(
+                            builder: (context, c) => FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: SizedBox(
+                                width: c.maxWidth,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (mantra.script.isNotEmpty)
+                                      ScriptText(
+                                        mantra.script,
+                                        textAlign: TextAlign.center,
+                                        style: scaledMantraStyle(
+                                            theme.textTheme.headlineMedium,
+                                            textScale),
+                                      ),
+                                    Text(
+                                      mantra.title,
+                                      textAlign: TextAlign.center,
+                                      style: scaledMantraStyle(
+                                          theme.textTheme.titleMedium?.copyWith(
+                                            color: scheme.onSurfaceVariant,
+                                          ),
+                                          textScale),
+                                    ),
+                                    if (mantra.transliteration.isNotEmpty &&
+                                        mantra.transliteration != mantra.title)
+                                      Text(
+                                        mantra.transliteration,
+                                        textAlign: TextAlign.center,
+                                        style: scaledMantraStyle(
+                                            theme.textTheme.bodyMedium?.copyWith(
+                                              fontStyle: FontStyle.italic,
+                                              color: scheme.onSurfaceVariant,
+                                            ),
+                                            textScale),
+                                      ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
