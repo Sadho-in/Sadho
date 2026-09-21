@@ -112,19 +112,23 @@ ProviderContainer clockContainer({
   FakeHaptics? haptics,
   FakeSound? sound,
   Map<String, Object?> saved = const {},
+  List<Override> extra = const [],
 }) {
   AppStorage.useMemoryForTests();
   // Whatever an earlier run of the app would have left in the settings box.
   saved.forEach(AppStorage.settings.put);
   final c = ProviderContainer(
-    overrides: clockOverrides(
-      clock: clock,
-      scheduler: scheduler,
-      location: location,
-      feedback: feedback,
-      haptics: haptics,
-      sound: sound,
-    ),
+    overrides: [
+      ...clockOverrides(
+        clock: clock,
+        scheduler: scheduler,
+        location: location,
+        feedback: feedback,
+        haptics: haptics,
+        sound: sound,
+      ),
+      ...extra,
+    ],
   );
   addTearDown(c.dispose);
   return c;

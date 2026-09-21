@@ -142,10 +142,11 @@ class LocalNotificationsScheduler implements ReminderScheduler {
         await _zonedAt(
           id: a.id,
           when: a.when,
-          details: _alarmDetails,
+          details: a.gentle ? _details : _alarmDetails,
           title: a.title,
           body: a.body,
           payload: group,
+          repeat: a.repeatsDaily ? DateTimeComponents.time : null,
         );
       } catch (e) {
         debugPrint('Could not schedule alert ${a.id}: $e');

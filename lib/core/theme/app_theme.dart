@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'palettes.dart';
+
 /// Sadho's warm devotional palette.
 class SadhoColors {
   SadhoColors._();
@@ -13,54 +15,38 @@ class SadhoColors {
 class AppTheme {
   AppTheme._();
 
-  static ThemeData get light => _build(
-        ColorScheme.fromSeed(
-          seedColor: SadhoColors.marigold,
-          brightness: Brightness.light,
-        ).copyWith(
-          primary: SadhoColors.marigold,
-          // Marigold is too light for white text (~2.7:1); use deep brown.
-          onPrimary: const Color(0xFF2A1600),
-          primaryContainer: const Color(0xFFFFDDB2),
-          onPrimaryContainer: const Color(0xFF2A1600),
-          secondary: SadhoColors.indigo,
-          onSecondary: Colors.white,
-          secondaryContainer: const Color(0xFFE3DFFF),
-          onSecondaryContainer: const Color(0xFF14104A),
-          surface: SadhoColors.parchment,
-          onSurface: const Color(0xFF2B2118),
-          surfaceContainerLowest: const Color(0xFFFFFFFF),
-          surfaceContainerLow: const Color(0xFFF7F1E6),
-          surfaceContainer: const Color(0xFFF3EBDD),
-          surfaceContainerHigh: const Color(0xFFEDE4D3),
-          surfaceContainerHighest: const Color(0xFFE7DDCA),
-        ),
-      );
+  /// The default (Marigold) themes.
+  static ThemeData get light => build(defaultPalette, Brightness.light);
+  static ThemeData get dark => build(defaultPalette, Brightness.dark);
 
-  static ThemeData get dark => _build(
-        ColorScheme.fromSeed(
-          seedColor: SadhoColors.marigold,
-          brightness: Brightness.dark,
-        ).copyWith(
-          primary: SadhoColors.marigold,
-          onPrimary: const Color(0xFF2A1600),
-          primaryContainer: const Color(0xFF6B3F00),
-          onPrimaryContainer: const Color(0xFFFFDDB2),
-          // Deep indigo is too dim on a dark ground, so the accent is lifted
-          // and the brand indigo becomes the container.
-          secondary: const Color(0xFFC3BEFF),
-          onSecondary: const Color(0xFF14104A),
-          secondaryContainer: SadhoColors.indigo,
-          onSecondaryContainer: const Color(0xFFE3DFFF),
-          surface: const Color(0xFF17130F),
-          onSurface: const Color(0xFFF1E9DC),
-          surfaceContainerLowest: const Color(0xFF110E0B),
-          surfaceContainerLow: const Color(0xFF1E1913),
-          surfaceContainer: const Color(0xFF241E17),
-          surfaceContainerHigh: const Color(0xFF2E271F),
-          surfaceContainerHighest: const Color(0xFF393127),
-        ),
-      );
+  /// The theme for [palette] in [brightness].
+  static ThemeData build(SadhoPalette palette, Brightness brightness) =>
+      _build(colorScheme(palette, brightness));
+
+  /// Just the colours (no fonts), for palette previews and tests.
+  static ColorScheme colorScheme(SadhoPalette palette, Brightness brightness) {
+    final c = palette.colors(brightness);
+    return ColorScheme.fromSeed(
+      seedColor: palette.light.primary,
+      brightness: brightness,
+    ).copyWith(
+      primary: c.primary,
+      onPrimary: c.onPrimary,
+      primaryContainer: c.primaryContainer,
+      onPrimaryContainer: c.onPrimaryContainer,
+      secondary: c.secondary,
+      onSecondary: c.onSecondary,
+      secondaryContainer: c.secondaryContainer,
+      onSecondaryContainer: c.onSecondaryContainer,
+      surface: c.surface,
+      onSurface: c.onSurface,
+      surfaceContainerLowest: c.surfaceContainerLowest,
+      surfaceContainerLow: c.surfaceContainerLow,
+      surfaceContainer: c.surfaceContainer,
+      surfaceContainerHigh: c.surfaceContainerHigh,
+      surfaceContainerHighest: c.surfaceContainerHighest,
+    );
+  }
 
   static ThemeData _build(ColorScheme scheme) {
     final base = ThemeData(

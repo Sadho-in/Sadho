@@ -45,6 +45,22 @@ class AppStorage {
     _calendarMarks = MemoryKvStore();
   }
 
+  /// Every store by box name (backup, restore and "delete everything").
+  static Map<String, KvStore> get all => {
+        settingsBoxName: _settings,
+        customMantrasBoxName: _customMantras,
+        mantraOverridesBoxName: _mantraOverrides,
+        voiceTemplatesBoxName: _voiceTemplates,
+        calendarMarksBoxName: _calendarMarks,
+      };
+
+  /// Erases everything the app has saved on this phone.
+  static Future<void> clearAll() async {
+    for (final store in all.values) {
+      await store.clear();
+    }
+  }
+
   /// Key/value app + sadhana settings and the in-progress session.
   static KvStore get settings => _settings;
 

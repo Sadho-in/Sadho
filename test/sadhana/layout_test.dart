@@ -39,6 +39,8 @@ void main() {
     addTearDown(tester.view.reset);
     container = ProviderContainer(overrides: testOverrides());
     addTearDown(container.dispose);
+    // The app opens on Home; these tests are about the Sadhana tab.
+    container.read(shellTabProvider.notifier).select(ShellTab.sadhana);
     await tester.pumpWidget(UncontrolledProviderScope(
       container: container,
       child: const MaterialApp(home: AppShell()),

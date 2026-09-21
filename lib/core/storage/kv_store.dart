@@ -9,6 +9,9 @@ abstract class KvStore {
   Future<void> delete(String key);
   Future<void> clear();
   Iterable<dynamic> get values;
+
+  /// Every key, for backup.
+  Iterable<String> get keys;
 }
 
 class HiveKvStore implements KvStore {
@@ -30,6 +33,9 @@ class HiveKvStore implements KvStore {
 
   @override
   Iterable<dynamic> get values => _box.values;
+
+  @override
+  Iterable<String> get keys => _box.keys.map((k) => '$k');
 }
 
 class MemoryKvStore implements KvStore {
@@ -50,4 +56,7 @@ class MemoryKvStore implements KvStore {
 
   @override
   Iterable<dynamic> get values => _data.values;
+
+  @override
+  Iterable<String> get keys => _data.keys.toList();
 }

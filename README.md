@@ -11,10 +11,12 @@ still `advance_calendar`; the Android/iOS display name and the in-app title are
 - Material 3, warm devotional theme: marigold `#DE8517`, deep indigo `#4B4691`,
   warm off-white `#FBF7F0`. Full light **and** dark themes, switchable at
   runtime (choice is saved). Fraunces for headings, Karla for body text.
-- Bottom navigation: **Clock · Calendar · Sadhana · Home**. Top bar with a
+- Bottom navigation: **Home · Sadhana · Calendar · Clock** (Home leftmost, and
+  the screen the app opens on). Top bar with a
   language button, a light/dark toggle and a profile avatar.
-- **Clock**, **Calendar** and **Home** are real screens (below). Profile is a
-  placeholder, but already hosts **Sadhana settings** (the Count setting below).
+- **Home**, **Calendar** and **Clock** are real screens (below), and so is
+  **Profile** (opened from the avatar in the top bar; it shows your initial once
+  you have set a name).
 - The language button saves your choice (English / हिन्दी / ਪੰਜਾਬੀ); actual
   translations come later.
 
@@ -91,14 +93,70 @@ relaunch, and their reminders are rebuilt every time the app starts.
   theme's accent (indigo / lavender), which is never a mark colour.
 - A legend, and a list of the month's marks as cards (a repeating mark is one card).
 
-**Home**
-- Shows today's cards for the marks flagged for the home screen, using the same
-  card as the Calendar (emoji, label, notes, tags, colour stripe).
-- **Once in the morning** cards appear at their time and **swipe away for the
-  day** (with Undo); they come back on the next date the mark repeats.
-- **Keep all day** cards are **pinned**: they stay all day and cannot be swiped.
-- Tap a card to edit its mark. The clock is watched while the app is open, so a
-  card appears at its time and the day rolls over at midnight by itself.
+**Home** (the dashboard)
+- **Greeting and today line**: "Good morning, Asha" (by the hour; your first name
+  once you have set one in Profile) and the full date. The clock is watched while
+  the app is open, so the greeting and the day roll over by themselves.
+- **Today card** with a **Hindu / Sikh / By place** switch (saved). Hindu shows
+  tithi, nakshatra, Rahu Kaal and Abhijit muhurat; Sikh shows the Hukamnama
+  (Ang), Nitnem due, sunrise and the next Gurpurab; By place shows sunrise,
+  sunset, a local festival and an auspicious window.
+  **Only sunrise and sunset are real** (worked out on the phone for its place, as
+  in the Clock tab). **Everything else is an EXAMPLE value**, tagged EXAMPLE on
+  screen and listed in `ExampleValues` (`lib/features/home/data/tradition.dart`).
+  TODO(later-phase): wire real panchang, Hukamnama, Nitnem, Gurpurab and festival
+  data.
+- **Calendar cards**: today's cards for the marks flagged for the home screen,
+  using the same card as the Calendar (emoji, label, notes, tags, colour stripe).
+  **Once in the morning** cards appear at their time and **swipe away for the
+  day** (with Undo); **Keep all day** cards are **pinned** and cannot be swiped.
+  Tap a card to edit its mark.
+- **Paath & mantra plans**: set a paath or mantra for N days (1 to 365), from a
+  suggestion (Hanuman Chalisa 40 days, Japji Sahib 40, Sukhmani Sahib 11, Gayatri
+  Mantra 21, Om Namah Shivaya 108, Waheguru 21) or your own name, kind and number
+  of days. Each plan has a progress bar ("3 of 21 days"), a **Mark today done**
+  button (tap again to undo) and a delete option (asks first). A finished plan
+  says Completed and takes no more days. A **daily streak** counts the days in a
+  row on which at least one plan was marked done (it stays alive until the day
+  ends, so it does not show 0 first thing in the morning), next to the number of
+  **active plans**. Saved in Hive. Days are marked by hand for now;
+  TODO(later-phase): count a day automatically from Sadhana sessions.
+
+**Profile** (avatar in the top bar)
+- **Profile completion**: a percentage in five equal steps (name, a valid email,
+  a tradition picked on Home, the daily reminder on, a first plan), the steps
+  still missing, and a note: at 100% "your free premium reward will be waiting
+  when premium launches". There is no premium yet; nothing is unlocked.
+- **Your details**: editable Name and Email (email optional, checked if given),
+  saved on the phone. TODO(auth): they come from the account once sign-in exists.
+- **Theme**: five soothing colour palettes, each with a light and a dark form,
+  chosen so all text stays readable (contrast is tested): **Marigold** (the
+  original), **Sandalwood**, **Tulsi green**, **Twilight indigo**, **Lotus rose**;
+  plus **Light / Dark / System**. Both are saved and apply to the whole app at
+  once (`lib/core/theme/palettes.dart`).
+- **Language**: the same chooser as the top bar (English, हिन्दी, ਪੰਜਾਬੀ); the choice
+  is saved, real translations come in the i18n phase (TODO).
+- **Daily reminder**: a switch and a time (default 6:00 AM). It is ONE repeating
+  local notification (an ordinary, not alarm-loud, one), scheduled again every
+  time the app starts. Turning it on asks for the notification permission.
+- **Sadhana settings**: the Combined / Separate count setting.
+- **Backup & restore**: *Export* writes one JSON file with everything saved on the
+  phone (marks, plans, custom and edited mantras, voice-training numbers, profile
+  and settings) to a place you choose; *Restore* reads such a file, checks it
+  first (a file that is not a Sadho backup, is damaged, or comes from a newer
+  Sadho is refused with a plain message and nothing changes), asks to confirm,
+  replaces the phone's data and reloads the app. Uses the system file dialogs
+  (`file_picker`). **Cloud sync** is shown as "Coming later" (TODO phase-2).
+- **Account**: *Change password* checks your entries but does nothing yet, and
+  says so; *Sign out* says there is no account to sign out of yet.
+  TODO(auth): both become real with accounts (Supabase).
+- **About**: Sadho, sadho.in, version (kept equal to `pubspec.yaml`; a test
+  checks it).
+- **Danger zone** (red, at the bottom): **Delete account** asks "Are you sure?
+  Yes / No". Only Yes does anything: it erases everything saved on this phone
+  (profile, plans, marks, mantras, voice training, settings), cancels every
+  scheduled notification and reloads the app. There is no server account to
+  delete yet (TODO(auth)).
 
 **Reminders** (`flutter_local_notifications` + `timezone` + `flutter_timezone`):
 local notifications, no server, working offline.
@@ -287,7 +345,7 @@ Flutter (stable) · Dart · Material 3 · `flutter_riverpod` · `hive` /
 `record` (PCM16 16 kHz microphone stream) · `fftea` (FFT) ·
 `permission_handler` · `volume_button_listener` · `table_calendar` ·
 `flutter_local_notifications` · `timezone` · `flutter_timezone` · `geolocator` ·
-`intl`. MFCC and DTW are
+`intl` · `file_picker`. MFCC and DTW are
 implemented in Dart in this repo (`lib/features/sadhana/voice/`).
 
 **Permissions**: Android `RECORD_AUDIO`, `ACCESS_COARSE_LOCATION`, `POST_NOTIFICATIONS`,
@@ -355,15 +413,17 @@ lib/
     theme/       light/dark ThemeData, theme provider
     widgets/     shared widgets (ComingSoon)
   features/
-    shell/       app bar, bottom nav, language sheet
-    profile/     placeholder (hosts the Sadhana settings)
+    shell/       app bar, bottom nav (Home · Sadhana · Calendar · Clock), language sheet
+    profile/     name/email, completion, theme, reminder, backup/restore,
+                 account and danger-zone screens + their providers/services
     clock/       data/ (sun times, sun alarm, tools, cities, timer presets),
                  application/ (location, sun alarm, timer, stopwatch, clock
                  source), services/ (location, time zones), presentation/
                  (tool list + the five full-screen tools)
     calendar/    marks (data), Hive store + providers, reminder planner and
                  notification scheduler, month grid, editor, mark styles
-    home/        today's cards
+    home/        dashboard: greeting, Today card (tradition), calendar cards,
+                 paath & mantra plans
     sadhana/
       data/          Mantra model, seeds, ringtone list
       application/   Riverpod providers: session, library, completion settings,
@@ -379,7 +439,9 @@ test/            session logic, focus-mode gestures, real-Hive persistence,
                  test/calendar: recurrence, reminder planning, marks store,
                  month grid + styles, editor, Home cards, end-to-end flows;
                  test/clock: sun maths, sun alarm, location, timer, stopwatch,
-                 world clock and every Clock screen (run in several time zones)
+                 world clock and every Clock screen (run in several time zones);
+                 test/home, test/profile, test/shell: dashboard, plans and streak,
+                 palettes (contrast), profile screen, backup, delete, tab order
 ```
 
 ## Run
@@ -407,7 +469,11 @@ Clearly marked in code as `TODO(phase-2)` / `TODO(later-phase)`.
       (`lib/features/sadhana/services/volume_button_service.dart`).
 - [ ] **OCR**: scan a page/gutka to add a mantra or paath to the library.
 - [ ] **Home-screen widgets** (Android/iOS).
-- [ ] A real **Profile** screen.
+- [ ] **Profile, later**: real accounts (sign-in, working sign-out, change
+      password, delete on the server) and premium; the profile fields then come
+      from the account.
+- [ ] **Home, later**: real panchang and Sikh calendar data, and counting a
+      plan's day automatically from Sadhana sessions.
 - [ ] **Clock, later**: a user-editable world-clock city list, a sun alarm that
       keeps ringing past 30 days without opening the app (a background job), an
       immersive/keep-awake big clock, and stopwatch/timer in a notification.

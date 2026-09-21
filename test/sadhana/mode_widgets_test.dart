@@ -355,6 +355,10 @@ void main() {
 
     testWidgets('the full version in Settings explains it and stays in sync',
         (tester) async {
+      // The Profile page is long: a tall screen shows all of it at once.
+      tester.view.physicalSize = const Size(411, 5000);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
       final c = await pump(tester, const ProfileScreen(), scrollable: false);
       expect(find.text('Sadhana settings'), findsOneWidget);
       expect(find.text('Count'), findsNothing, reason: 'no label here either');

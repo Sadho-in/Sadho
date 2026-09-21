@@ -9,6 +9,8 @@ class ScheduledAlert {
     required this.when,
     required this.title,
     required this.body,
+    this.repeatsDaily = false,
+    this.gentle = false,
   });
 
   /// Stable notification id.
@@ -18,6 +20,14 @@ class ScheduledAlert {
   final DateTime when;
   final String title;
   final String body;
+
+  /// Rings again at the same time every day after [when] (one notification,
+  /// repeated by the phone), instead of just once.
+  final bool repeatsDaily;
+
+  /// An ordinary notification (the calendar's channel) rather than a loud
+  /// alarm-style one.
+  final bool gentle;
 }
 
 /// Groups of alerts (they share a notification payload, so a whole group can
@@ -25,7 +35,8 @@ class ScheduledAlert {
 /// reminders are refreshed).
 const sunAlarmGroup = 'sun-alarm';
 const timerGroup = 'timer';
-const alertGroups = {sunAlarmGroup, timerGroup};
+const dailyReminderGroup = 'daily-sadhana';
+const alertGroups = {sunAlarmGroup, timerGroup, dailyReminderGroup};
 
 /// Puts a mark's reminders on the phone's alarm system (local notifications:
 /// no server, works offline). Behind an interface so tests never touch a
@@ -49,9 +60,9 @@ abstract class ReminderScheduler {
   /// not touched.
   Future<void> rescheduleAll(Iterable<CalendarMark> marks);
 
-  /// Replaces every alert of [group] ([sunAlarmGroup] or [timerGroup]) with
-  /// [alerts]; an empty list just cancels them. These ring loudly, on the
-  /// alarm stream, like an alarm clock.
+  /// Replaces every alert of [group] (one of [alertGroups]) with [alerts]; an
+  /// empty list just cancels them. Unless an alert is [ScheduledAlert.gentle]
+  /// it rings loudly, on the alarm stream, like an alarm clock.
   Future<void> replaceAlerts(String group, List<ScheduledAlert> alerts);
 }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
+import 'core/app_restart.dart';
 import 'core/storage/app_storage.dart';
 import 'features/calendar/services/local_notifications_scheduler.dart';
 import 'features/calendar/services/reminder_scheduler.dart';
@@ -26,8 +27,10 @@ Future<void> main() async {
     }
   }
 
-  runApp(ProviderScope(
-    overrides: [reminderSchedulerProvider.overrideWithValue(scheduler)],
-    child: const SadhoApp(),
+  runApp(AppRestart(
+    builder: (_) => ProviderScope(
+      overrides: [reminderSchedulerProvider.overrideWithValue(scheduler)],
+      child: const SadhoApp(),
+    ),
   ));
 }

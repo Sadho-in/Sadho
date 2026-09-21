@@ -12,13 +12,15 @@ import '../../sadhana/application/mantra_library_provider.dart';
 import '../../sadhana/application/session_notice_provider.dart';
 import '../../sadhana/presentation/sadhana_screen.dart';
 import '../../sadhana/presentation/voice_training_screen.dart';
-import '../language_provider.dart';
+import '../../profile/application/profile_provider.dart';
+import 'language_sheet.dart';
 
+/// The bottom navigation, left to right. Home is first and opens by default.
 enum ShellTab {
-  clock('Clock', Icons.schedule_outlined, Icons.schedule),
-  calendar('Calendar', Icons.calendar_month_outlined, Icons.calendar_month),
+  home('Home', Icons.home_outlined, Icons.home),
   sadhana('Sadhana', Icons.self_improvement_outlined, Icons.self_improvement),
-  home('Home', Icons.home_outlined, Icons.home);
+  calendar('Calendar', Icons.calendar_month_outlined, Icons.calendar_month),
+  clock('Clock', Icons.schedule_outlined, Icons.schedule);
 
   const ShellTab(this.label, this.icon, this.selectedIcon);
   final String label;
@@ -26,11 +28,12 @@ enum ShellTab {
   final IconData selectedIcon;
 }
 
-final _tabProvider = NotifierProvider<_TabNotifier, ShellTab>(_TabNotifier.new);
+final shellTabProvider =
+    NotifierProvider<ShellTabNotifier, ShellTab>(ShellTabNotifier.new);
 
-class _TabNotifier extends Notifier<ShellTab> {
+class ShellTabNotifier extends Notifier<ShellTab> {
   @override
-  ShellTab build() => ShellTab.sadhana;
+  ShellTab build() => ShellTab.home;
   void select(ShellTab tab) => state = tab;
 }
 
@@ -40,9 +43,10 @@ class AppShell extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tab = ref.watch(_tabProvider);
+    final tab = ref.watch(shellTabProvider);
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final profile = ref.watch(profileProvider);
 
     // Session messages (permission denied, unsupported mode...). Listening
     // here, above every route, shows them once and over Focus mode too.
@@ -78,7 +82,7 @@ class AppShell extends ConsumerWidget {
           IconButton(
             tooltip: 'Language',
             icon: const Icon(Icons.translate),
-            onPressed: () => _showLanguageSheet(context),
+            onPressed: () => showLanguageSheet(context),
           ),
           IconButton(
             tooltip: isDark ? 'Switch to light theme' : 'Switch to dark theme',
@@ -93,13 +97,17 @@ class AppShell extends ConsumerWidget {
               child: InkResponse(
                 radius: 22,
                 onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(builder: (_) => const _ProfilePage()),
+                  MaterialPageRoute<void>(builder: (_) => const ProfilePage()),
                 ),
                 child: CircleAvatar(
                   radius: 16,
                   backgroundColor: theme.colorScheme.secondaryContainer,
                   foregroundColor: theme.colorScheme.onSecondaryContainer,
-                  child: const Icon(Icons.person, size: 20),
+                  child: profile.hasName
+                      ? Text(profile.initial,
+                          key: const ValueKey('avatar-initial'),
+                          style: const TextStyle(fontWeight: FontWeight.w700))
+                      : const Icon(Icons.person, size: 20),
                 ),
               ),
             ),
@@ -109,17 +117,18 @@ class AppShell extends ConsumerWidget {
       // IndexedStack keeps the Sadhana tab's local UI state alive.
       body: IndexedStack(
         index: tab.index,
+        // In the same order as [ShellTab].
         children: const [
-          ClockScreen(),
-          CalendarScreen(),
-          SadhanaScreen(),
           HomeScreen(),
+          SadhanaScreen(),
+          CalendarScreen(),
+          ClockScreen(),
         ],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: tab.index,
         onDestinationSelected: (i) =>
-            ref.read(_tabProvider.notifier).select(ShellTab.values[i]),
+            ref.read(shellTabProvider.notifier).select(ShellTab.values[i]),
         destinations: [
           for (final t in ShellTab.values)
             NavigationDestination(
@@ -128,72 +137,6 @@ class AppShell extends ConsumerWidget {
               label: t.label,
             ),
         ],
-      ),
-    );
-  }
-
-  void _showLanguageSheet(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      showDragHandle: true,
-      builder: (_) => const _LanguageSheet(),
-    );
-  }
-}
-
-class _ProfilePage extends StatelessWidget {
-  const _ProfilePage();
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('Profile')),
-        body: const ProfileScreen(),
-      );
-}
-
-class _LanguageSheet extends ConsumerWidget {
-  const _LanguageSheet();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selected = ref.watch(languageProvider);
-    final theme = Theme.of(context);
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Language', style: theme.textTheme.titleLarge),
-            const SizedBox(height: 4),
-            Text(
-              'Your choice is saved. Translations arrive in a later phase.',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 8),
-            RadioGroup<String>(
-              groupValue: selected,
-              onChanged: (code) {
-                if (code != null) {
-                  ref.read(languageProvider.notifier).set(code);
-                }
-              },
-              child: Column(
-                children: [
-                  for (final l in appLanguages)
-                    RadioListTile<String>(
-                      value: l.code,
-                      title: Text(l.nativeName),
-                      subtitle: Text(l.name),
-                    ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
