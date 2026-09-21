@@ -188,12 +188,26 @@ panel only for Voice), target, vibration and ringtone, and the sankalp.
   gesture is blocked. It shows the current mode's status (rhythm pace, Listening…,
   volume buttons active) and a Start/Pause button for Rhythm/Voice/Mala/time.
 - **Completion settings** — *Vibration* and *Ringtone* are two separate switches:
-  - Vibration: 5 intensity levels (Android amplitude via the `vibration`
-    package; devices without amplitude control approximate intensity with
-    duration). A buzz every 108 counts and a stronger double-pulse at the target.
+  - Vibration: 5 intensity levels. A single-pulse buzz every **108 counts** and
+    a stronger completion buzz at the target. On a phone that can set vibration
+    *strength* (Android amplitude via the `vibration` package) the level is the
+    strength and the completion buzz is a stronger double pulse. Many phones
+    (some Samsung models, e.g. the Galaxy A23) cannot: there a level is the
+    *length* of the buzz (200 ms at level 1 up to 520 ms at level 5) and the
+    completion buzz is three long pulses (about 1.5 to 3.3 s), so it is clearly
+    felt and clearly different from a milestone. Vibrations use Android's
+    *alarm* usage, so they are not held back by silent mode.
   - Ringtone: four bundled sounds (temple bell, singing bowl, soft chime, deep
     gong) played with `audioplayers` at the target, on/off independent of
-    vibration.
+    vibration. **The sound plays on the alarm stream**, so it follows the phone's
+    *alarm* volume and is not silenced by a muted *media* volume (a phone with
+    its media volume at 0 used to play the bell inaudibly). It briefly ducks other
+    audio instead of stopping it. If the phone's alarm volume is 0 it is silent.
+  - Both fire when a count target OR a time target is reached, in every counting
+    mode and in both Combined and Separate (in Separate, when the active mode
+    reaches its own target). The milestone counts the count you see: all modes
+    together in Combined, the active mode's own in Separate. Tested end to end
+    (`test/sadhana/completion_feedback_test.dart`) with a fake vibrator and speaker.
 - The in-progress session (count, target, mantra, sankalp, mode, pace) is saved
   and restored on the next launch; it always reopens paused.
 

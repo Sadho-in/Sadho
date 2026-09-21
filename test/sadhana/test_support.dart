@@ -34,6 +34,78 @@ class FakeFeedback implements FeedbackService {
   Future<void> previewVibration({required bool strong}) async {}
 }
 
+/// One call made to the vibrator.
+class HapticCall {
+  const HapticCall({
+    required this.duration,
+    required this.amplitude,
+    required this.pattern,
+    required this.intensities,
+  });
+
+  final int duration;
+  final int amplitude;
+  final List<int> pattern;
+  final List<int> intensities;
+
+  /// A pattern (the completion buzz) rather than a single pulse.
+  bool get isPattern => pattern.isNotEmpty;
+
+  /// How long the buzz lasts in total, in ms.
+  int get totalMs => isPattern ? pattern.fold(0, (a, b) => a + b) : duration;
+}
+
+/// Scriptable stand-in for the phone's vibrator.
+class FakeHaptics implements HapticsDriver {
+  FakeHaptics({this.vibrator = true, this.amplitude = true, this.failing = false});
+
+  final bool vibrator;
+  final bool amplitude;
+
+  /// Every call throws, like a broken plugin.
+  bool failing;
+  final calls = <HapticCall>[];
+
+  @override
+  Future<bool> hasVibrator() async => vibrator;
+
+  @override
+  Future<bool> hasAmplitudeControl() async => amplitude;
+
+  @override
+  Future<void> vibrate({
+    int duration = 0,
+    int amplitude = -1,
+    List<int> pattern = const [],
+    List<int> intensities = const [],
+  }) async {
+    if (failing) throw StateError('vibrator failed');
+    calls.add(HapticCall(
+        duration: duration,
+        amplitude: amplitude,
+        pattern: pattern,
+        intensities: intensities));
+  }
+}
+
+/// Scriptable stand-in for the sound player.
+class FakeSound implements SoundDriver {
+  FakeSound({this.failing = false});
+
+  bool failing;
+  final plays = <String>[];
+  int stops = 0;
+
+  @override
+  Future<void> play(String asset) async {
+    if (failing) throw StateError('player failed');
+    plays.add(asset);
+  }
+
+  @override
+  Future<void> stop() async => stops++;
+}
+
 /// Fresh in-memory storage; call from setUp.
 void resetStorage() => AppStorage.useMemoryForTests();
 
@@ -215,18 +287,28 @@ class FakeVolume implements VolumeButtonService {
 }
 
 /// Provider overrides that replace every plugin-backed service.
+///
+/// Pass [haptics] and/or [sound] to run the REAL feedback service (settings
+/// switches, intensity, wiring) on top of those fake drivers instead of the
+/// counting [FakeFeedback].
 List<Override> testOverrides({
   FakeFeedback? feedback,
   FakeVoice? voice,
   FakeVolume? volume,
   FakePcmInput? pcm,
+  FakeHaptics? haptics,
+  FakeSound? sound,
 }) =>
     [
       pcmInputProvider.overrideWithValue(pcm ?? FakePcmInput()),
       // The real clock ticks on a timer, which widget tests must not leave
       // running (and a fixed date keeps them independent of today's).
       nowProvider.overrideWith(() => FakeNow(DateTime(2026, 9, 21, 8, 0))),
-      feedbackServiceProvider.overrideWithValue(feedback ?? FakeFeedback()),
+      if (haptics != null || sound != null) ...[
+        hapticsDriverProvider.overrideWithValue(haptics ?? FakeHaptics()),
+        soundDriverProvider.overrideWithValue(sound ?? FakeSound()),
+      ] else
+        feedbackServiceProvider.overrideWithValue(feedback ?? FakeFeedback()),
       voiceCounterServiceProvider.overrideWithValue(voice ?? FakeVoice()),
       volumeButtonServiceProvider.overrideWithValue(volume ?? FakeVolume()),
     ];
