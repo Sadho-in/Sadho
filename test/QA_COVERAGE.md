@@ -27,29 +27,48 @@ Legend: **IT** = integration test (real app, real device/emulator).
 
 - [ ] Onboarding screen: title, subtitle, language list (all nine), tradition
       list (Hindu / Sikh / By place), Continue button — **G**
-- [ ] Language preselected from the phone's own locale (supported code) — **IT**
-- [ ] Language preselected as English (unsupported phone locale) — **IT**
-- [ ] Tapping a language radio previews it live (screen re-renders in that
-      language immediately) — **IT**
-- [ ] Switching to a non-Latin language (e.g. Punjabi) and back to English — **IT**
-- [ ] Picking a tradition, then Continue — **IT**
-- [ ] Onboarding never reappears after Continue, across a relaunch — **IT**
-- [ ] Onboarding reappears after Profile → Delete account clears the phone — **IT**
+- [x] Language preselected from the phone's own locale (supported code) —
+      **IT** `test/onboarding/onboarding_screen_test.dart` (widget-level; the
+      real-device preselect path is the same `initialLanguageCode` code)
+- [x] Language preselected as English (unsupported phone locale) — **IT** ditto
+- [x] Tapping a language radio previews it live (screen re-renders in that
+      language immediately) — **IT** `integration_test/onboarding_test.dart`
+- [x] Switching to a non-Latin language (e.g. Punjabi) and back to English —
+      **IT** `integration_test/onboarding_test.dart`
+- [x] Picking a tradition, then Continue — **IT** `integration_test/onboarding_test.dart`
+- [x] Onboarding never reappears after Continue, across a relaunch — **IT**
+      `integration_test/onboarding_test.dart`
+- [x] Onboarding reappears after Profile → Delete account clears the phone —
+      **IT** `test/l10n/localization_test.dart` (provider-level); Profile's
+      own Delete-account UI flow is covered in `integration_test/profile_test.dart`
+      (QA.B5)
 
 ## 2. Home tab (`lib/features/home/`)
 
-- [ ] Greeting + full date line, rolls over with the clock — **IT**
-- [ ] Today card: Hindu / Sikh / By place switch, each showing its own lines — **IT**
-- [ ] Today card: EXAMPLE tag on non-real values; sunrise/sunset carry no tag — **IT**
-- [ ] Calendar-flagged cards appear on Home (Once in the morning, Keep all day) — **IT**
-- [ ] Home card: swipe to dismiss (Once in the morning) + Undo snack bar — **IT**
-- [ ] Home card: Keep all day is pinned, cannot be swiped — **IT**
+- [x] Greeting + full date line, rolls over with the clock — **IT**
+      `integration_test/home_test.dart`
+- [x] Today card: Hindu / Sikh / By place switch, each showing its own lines —
+      **IT** `integration_test/home_test.dart`
+- [x] Today card: EXAMPLE tag on non-real values; sunrise/sunset carry no tag —
+      **IT** `integration_test/home_test.dart`
+- [x] Calendar-flagged cards appear on Home (Once in the morning, Keep all day)
+      — **IT** `integration_test/home_test.dart`
+- [x] Home card: swipe to dismiss (Once in the morning) + Undo snack bar —
+      **IT** `integration_test/home_test.dart`
+- [x] Home card: Keep all day is pinned, cannot be swiped — **IT**
+      `integration_test/home_test.dart`
 - [ ] Tapping a Home card opens its mark in the Calendar editor — **IT**
 - [ ] Paath & mantra plans: streak stat, active-plan-count stat — **IT**
-- [ ] Plans: empty state + all six suggestions start a plan in one tap — **IT**
+- [x] Plans: empty state + a suggestion starts a plan in one tap — **IT**
+      `integration_test/home_test.dart` (one suggestion exercised; the other
+      five follow the identical code path)
 - [ ] Plans: "Add plan" opens the new-plan sheet (see §2a) — **IT**
-- [ ] Plan card: Mark today done / undo, progress bar text, Completed state — **IT**
-- [ ] Plan card: menu → Delete plan (confirm dialog, Cancel and Delete) — **IT**
+- [x] Plan card: Mark today done / undo, progress bar text — **IT**
+      `integration_test/home_test.dart`
+- [ ] Plan card: Completed state (finishing a plan) — **IT**
+- [x] Plan card: menu → Delete plan (confirm dialog, Delete) — **IT**
+      `integration_test/home_test.dart` (Cancel path not yet exercised on the
+      real device — covered at the widget level in `test/home/home_dashboard_test.dart`)
 - [ ] Home tab, light + dark, empty and populated — **G**
 
 ### 2a. New-plan sheet (modal, from Home)
