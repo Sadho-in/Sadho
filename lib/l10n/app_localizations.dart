@@ -9,9 +9,11 @@ import 'app_localizations_bn.dart';
 import 'app_localizations_en.dart';
 import 'app_localizations_gu.dart';
 import 'app_localizations_hi.dart';
+import 'app_localizations_kn.dart';
 import 'app_localizations_mr.dart';
 import 'app_localizations_pa.dart';
 import 'app_localizations_ta.dart';
+import 'app_localizations_te.dart';
 
 // ignore_for_file: type=lint
 
@@ -103,9 +105,11 @@ abstract class AppLocalizations {
     Locale('en'),
     Locale('gu'),
     Locale('hi'),
+    Locale('kn'),
     Locale('mr'),
     Locale('pa'),
     Locale('ta'),
+    Locale('te'),
   ];
 
   /// Bottom navigation: the Home tab
@@ -3298,9 +3302,11 @@ class _AppLocalizationsDelegate
     'en',
     'gu',
     'hi',
+    'kn',
     'mr',
     'pa',
     'ta',
+    'te',
   ].contains(locale.languageCode);
 
   @override
@@ -3318,12 +3324,16 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsGu();
     case 'hi':
       return AppLocalizationsHi();
+    case 'kn':
+      return AppLocalizationsKn();
     case 'mr':
       return AppLocalizationsMr();
     case 'pa':
       return AppLocalizationsPa();
     case 'ta':
       return AppLocalizationsTa();
+    case 'te':
+      return AppLocalizationsTe();
   }
 
   throw FlutterError(
