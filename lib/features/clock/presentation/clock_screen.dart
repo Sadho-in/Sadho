@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../l10n/l10n.dart';
+import '../../../l10n/labels.dart';
 import '../application/stopwatch_provider.dart';
 import '../application/sun_alarm_provider.dart';
 import '../application/timer_provider.dart';
 import '../data/clock_tool.dart';
-import '../data/sun_alarm.dart';
 import '../data/timer_presets.dart';
 import 'tools/big_clock_page.dart';
 import 'tools/stopwatch_page.dart';
@@ -63,6 +64,7 @@ class _ToolCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     return Card(
       key: ValueKey('tool-${tool.name}'),
       child: InkWell(
@@ -83,10 +85,10 @@ class _ToolCard extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(tool.title, style: theme.textTheme.titleLarge),
+                    Text(tool.localizedTitle(l), style: theme.textTheme.titleLarge),
                     const SizedBox(height: 2),
                     Text(
-                      tool.subtitle,
+                      tool.localizedSubtitle(l),
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: scheme.onSurfaceVariant,
                       ),
@@ -112,6 +114,7 @@ class _Status extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.l10n;
     final style = Theme.of(context).textTheme.labelLarge?.copyWith(
           color: Theme.of(context).colorScheme.primary,
         );
@@ -134,19 +137,20 @@ class _Status extends ConsumerWidget {
         final at = upcoming.isEmpty
             ? ''
             : ' · ${DateFormat.jm().format(upcoming.first.alarm)}';
-        return line('On · ${offsetLabel(s.offsetMinutes, s.event)}$at');
+        return line('${l.statusOn} · ${offsetLabelIn(l, s.offsetMinutes, s.event)}$at');
       case ClockTool.timer:
         final t = ref.watch(timerProvider);
         if (t.phase == TimerPhase.idle) return const SizedBox.shrink();
+        final label = presetLabelFor(l, t.presetId, t.label);
         return TickBuilder(
           active: t.running,
           builder: (context, now) {
             final left = t.remainingAt(now);
             if (t.phase == TimerPhase.finished || (t.running && left <= 0)) {
-              return line('${t.label} · finished');
+              return line('$label · ${l.finished}');
             }
             return line(
-                '${t.label} · ${formatCountdown(left)} ${t.running ? 'left' : 'paused'}');
+                '$label · ${formatCountdown(left)} ${t.running ? l.left : l.paused}');
           },
         );
       case ClockTool.stopwatch:
@@ -156,7 +160,7 @@ class _Status extends ConsumerWidget {
           interval: const Duration(milliseconds: 200),
           active: sw.running,
           builder: (context, now) => line(
-              '${sw.running ? 'Running' : 'Stopped'} · ${formatStopwatch(sw.elapsedAt(now))}'),
+              '${sw.running ? l.runningStatus : l.stoppedStatus} · ${formatStopwatch(sw.elapsedAt(now))}'),
         );
       case ClockTool.clock:
       case ClockTool.worldClock:

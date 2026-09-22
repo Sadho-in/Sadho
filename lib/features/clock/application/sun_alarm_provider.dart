@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/storage/app_storage.dart';
+import '../../../l10n/labels.dart';
+import '../../../l10n/locale_provider.dart';
 import '../../calendar/application/now_provider.dart';
 import '../../calendar/services/reminder_planner.dart' show reminderId;
 import '../../calendar/services/reminder_scheduler.dart';
@@ -77,14 +79,16 @@ class SunAlarmNotifier extends Notifier<SunAlarmSettings> {
       );
       final time = DateFormat.jm();
       final emoji = state.event == SunEventKind.sunrise ? '🌅' : '🌇';
+      final l = ref.read(l10nProvider);
+      final event = state.event.localized(l);
       await scheduler.replaceAlerts(sunAlarmGroup, [
         for (var i = 0; i < upcoming.length; i++)
           ScheduledAlert(
             id: reminderId(sunAlarmGroup, 0, i),
             when: upcoming[i].alarm,
-            title: '$emoji ${state.event.label} alarm',
-            body: '${state.event.label} is at ${time.format(upcoming[i].event)}'
-                ' · ${offsetLabel(state.offsetMinutes, state.event)}',
+            title: l.sunAlarmNotifTitle(emoji, event),
+            body: l.sunAlarmNotifBody(event, time.format(upcoming[i].event),
+                offsetLabelIn(l, state.offsetMinutes, state.event)),
           ),
       ]);
     } catch (e) {

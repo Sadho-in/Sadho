@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/storage/app_storage.dart';
+import '../../../l10n/labels.dart';
+import '../../../l10n/locale_provider.dart';
 import '../../calendar/services/reminder_planner.dart' show reminderId;
 import '../../calendar/services/reminder_scheduler.dart';
 import '../../sadhana/services/feedback_service.dart';
@@ -164,8 +166,7 @@ class TimerNotifier extends Notifier<TimerState> {
     final p = ref.read(locationProvider).point;
     final next = nextSunEvent(SunEventKind.sunset, now, p.lat, p.lon);
     if (next == null) {
-      _set(state.copyWith(
-          message: 'There is no sunset to count down to here right now.'));
+      _set(state.copyWith(message: ref.read(l10nProvider).clockNoSunsetHere));
       return;
     }
     _set(_vratTo(next, now));
@@ -179,9 +180,7 @@ class TimerNotifier extends Notifier<TimerState> {
       totalSeconds: secs,
       remainingSeconds: secs,
       vratTarget: next.time,
-      message: next.laterDay
-          ? "Today's sunset has passed: counting to tomorrow's."
-          : null,
+      message: next.laterDay ? ref.read(l10nProvider).clockSunsetPassedTomorrow : null,
     );
   }
 
@@ -260,12 +259,14 @@ class TimerNotifier extends Notifier<TimerState> {
 
   Future<void> _scheduleRing(TimerState s, DateTime ends) async {
     try {
+      final l = ref.read(l10nProvider);
+      final label = presetLabelFor(l, s.presetId, s.label);
       await ref.read(reminderSchedulerProvider).replaceAlerts(timerGroup, [
         ScheduledAlert(
           id: reminderId(timerGroup, 0, 0),
           when: ends,
-          title: '🔔 ${s.label} finished',
-          body: s.isVrat ? 'Sunset has arrived 🙏' : 'Your ${s.label} time is up 🙏',
+          title: l.timerFinishedTitle(label),
+          body: s.isVrat ? l.sunsetArrived : l.timerTimeUp(label),
         ),
       ]);
     } catch (e) {

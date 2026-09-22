@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../l10n/l10n.dart';
 import '../widgets/tick_builder.dart';
 
 /// Full-screen clock: a large live time with the date beneath it.
@@ -21,7 +22,7 @@ class BigClockPage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Clock')),
+      appBar: AppBar(title: Text(context.l10n.navClock)),
       body: SafeArea(
         child: Center(
           child: Padding(

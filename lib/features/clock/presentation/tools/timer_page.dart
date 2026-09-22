@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 import '../../application/location_provider.dart';
 import '../../application/timer_provider.dart';
 import '../../data/timer_presets.dart';
@@ -22,9 +24,10 @@ class TimerPage extends ConsumerWidget {
     final t = ref.watch(timerProvider);
     final notifier = ref.read(timerProvider.notifier);
     final locked = t.running;
+    final l = context.l10n;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Sadhana & vrat timer')),
+      appBar: AppBar(title: Text(l.clockToolTimerTitle)),
       body: SafeArea(
         child: Align(
           alignment: Alignment.topCenter,
@@ -44,7 +47,8 @@ class TimerPage extends ConsumerWidget {
                             ChoiceChip(
                               key: ValueKey('preset-${p.id}'),
                               avatar: Icon(p.icon, size: 18),
-                              label: Text('${p.label} · ${p.minutes} min'),
+                              label: Text(l.presetChipLabel(
+                                  presetLabelFor(l, p.id, p.label), p.minutes)),
                               selected: t.presetId == p.id,
                               onSelected: locked
                                   ? null
@@ -53,7 +57,7 @@ class TimerPage extends ConsumerWidget {
                           ChoiceChip(
                             key: const ValueKey('preset-vrat'),
                             avatar: const Icon(Icons.wb_twilight, size: 18),
-                            label: const Text('Vrat → sunset'),
+                            label: Text(l.vratToSunset),
                             selected: t.isVrat,
                             onSelected: locked
                                 ? null
@@ -119,7 +123,9 @@ class TimerPage extends ConsumerWidget {
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          done ? 'Time’s up 🙏' : t.label,
+                                          done
+                                              ? l.timesUp
+                                              : presetLabelFor(l, t.presetId, t.label),
                                           key: const ValueKey('timer-label'),
                                           textAlign: TextAlign.center,
                                           style: theme.textTheme.titleMedium
@@ -166,7 +172,7 @@ class TimerPage extends ConsumerWidget {
                               ? null
                               : notifier.reset,
                           icon: const Icon(Icons.restart_alt),
-                          label: const Text('Reset'),
+                          label: Text(l.actionReset),
                           style: _big,
                         ),
                       ),
@@ -181,10 +187,10 @@ class TimerPage extends ConsumerWidget {
                             t.running ? Icons.pause : Icons.play_arrow,
                           ),
                           label: Text(switch (t.phase) {
-                            TimerPhase.running => 'Pause',
-                            TimerPhase.paused => 'Resume',
-                            TimerPhase.finished => 'Start again',
-                            TimerPhase.idle => 'Start',
+                            TimerPhase.running => l.pause,
+                            TimerPhase.paused => l.resume,
+                            TimerPhase.finished => l.startAgain,
+                            TimerPhase.idle => l.start,
                           }),
                           style: _big,
                         ),
@@ -216,7 +222,8 @@ class _VratNote extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final where = ref.watch(locationProvider).summary;
+    final l = context.l10n;
+    final where = ref.watch(locationProvider).summaryIn(l);
     final target = t.vratTarget;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -224,7 +231,7 @@ class _VratNote extends ConsumerWidget {
         children: [
           if (target != null)
             Text(
-              'Sunset at ${DateFormat.jm().format(target)}',
+              l.sunsetAtTime(DateFormat.jm().format(target)),
               key: const ValueKey('vrat-sunset'),
               style: theme.textTheme.titleMedium,
             ),

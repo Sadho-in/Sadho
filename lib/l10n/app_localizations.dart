@@ -1911,6 +1911,486 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A card stays pinned on Home all day (it cannot be swiped away).'**
   String get homeModeAllDayExplain;
+
+  /// A relative day label
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get tomorrow;
+
+  /// A relative day label
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
+  /// Button: restarts a finished timer
+  ///
+  /// In en, this message translates to:
+  /// **'Start again'**
+  String get startAgain;
+
+  /// Button that opens the phone's system Settings
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsAction;
+
+  /// Clock tool card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'A large, live time and date'**
+  String get clockToolClockSubtitle;
+
+  /// Clock tool card title
+  ///
+  /// In en, this message translates to:
+  /// **'Sun-based alarm'**
+  String get clockToolSunAlarmTitle;
+
+  /// Clock tool card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Wake at sunrise or sunset, with an offset'**
+  String get clockToolSunAlarmSubtitle;
+
+  /// Clock tool card title
+  ///
+  /// In en, this message translates to:
+  /// **'World clock'**
+  String get clockToolWorldClockTitle;
+
+  /// Clock tool card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Amritsar, Haridwar, London and more'**
+  String get clockToolWorldClockSubtitle;
+
+  /// Clock tool card title
+  ///
+  /// In en, this message translates to:
+  /// **'Sadhana & vrat timer'**
+  String get clockToolTimerTitle;
+
+  /// Clock tool card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Aarti, Chalisa, Path, Havan, or until sunset'**
+  String get clockToolTimerSubtitle;
+
+  /// Clock tool card title
+  ///
+  /// In en, this message translates to:
+  /// **'Paath stopwatch'**
+  String get clockToolStopwatchTitle;
+
+  /// Clock tool card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Start, stop and lap'**
+  String get clockToolStopwatchSubtitle;
+
+  /// Which sun event the alarm follows
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise'**
+  String get sunEventSunrise;
+
+  /// Which sun event the alarm follows
+  ///
+  /// In en, this message translates to:
+  /// **'Sunset'**
+  String get sunEventSunset;
+
+  /// e.g. At sunrise
+  ///
+  /// In en, this message translates to:
+  /// **'At {event}'**
+  String offsetAtEvent(String event);
+
+  /// An offset of only minutes
+  ///
+  /// In en, this message translates to:
+  /// **'{m} min'**
+  String offsetMinutesOnly(int m);
+
+  /// An offset of only hours
+  ///
+  /// In en, this message translates to:
+  /// **'{h} hr'**
+  String offsetHoursOnly(int h);
+
+  /// An offset of hours and minutes
+  ///
+  /// In en, this message translates to:
+  /// **'{h} hr {m} min'**
+  String offsetHoursMinutes(int h, int m);
+
+  /// e.g. 30 min before
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} before'**
+  String offsetBefore(String amount);
+
+  /// e.g. 30 min after
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} after'**
+  String offsetAfter(String amount);
+
+  /// Where a place came from: read from the phone
+  ///
+  /// In en, this message translates to:
+  /// **'Your location'**
+  String get locationSourceDevice;
+
+  /// Where a place came from: a saved past reading
+  ///
+  /// In en, this message translates to:
+  /// **'Your last known location'**
+  String get locationSourceSaved;
+
+  /// Where a place came from: nothing known
+  ///
+  /// In en, this message translates to:
+  /// **'Amritsar (default)'**
+  String get locationSourceFallback;
+
+  /// One-line explanation of the place used for sun times
+  ///
+  /// In en, this message translates to:
+  /// **'Using your location'**
+  String get locSummaryDevice;
+
+  /// One-line explanation of the place used for sun times
+  ///
+  /// In en, this message translates to:
+  /// **'Using your last known location'**
+  String get locSummarySaved;
+
+  /// One-line explanation of the place used for sun times
+  ///
+  /// In en, this message translates to:
+  /// **'Using Amritsar. Location is blocked in Settings.'**
+  String get locSummaryBlocked;
+
+  /// One-line explanation of the place used for sun times
+  ///
+  /// In en, this message translates to:
+  /// **'Using Amritsar. Turn on location for exact times.'**
+  String get locSummaryServiceOff;
+
+  /// One-line explanation of the place used for sun times
+  ///
+  /// In en, this message translates to:
+  /// **'Using Amritsar.'**
+  String get locSummaryUnsupported;
+
+  /// One-line explanation of the place used for sun times
+  ///
+  /// In en, this message translates to:
+  /// **'Using Amritsar. Allow location for exact times.'**
+  String get locSummaryDefault;
+
+  /// A devotional-practice timer preset
+  ///
+  /// In en, this message translates to:
+  /// **'Aarti'**
+  String get presetAarti;
+
+  /// A devotional-practice timer preset
+  ///
+  /// In en, this message translates to:
+  /// **'Chalisa'**
+  String get presetChalisa;
+
+  /// A devotional-practice timer preset
+  ///
+  /// In en, this message translates to:
+  /// **'Path'**
+  String get presetPath;
+
+  /// A devotional-practice timer preset
+  ///
+  /// In en, this message translates to:
+  /// **'Havan'**
+  String get presetHavan;
+
+  /// The timer option that counts down to sunset
+  ///
+  /// In en, this message translates to:
+  /// **'Vrat → sunset'**
+  String get vratToSunset;
+
+  /// A timer preset choice, e.g. Aarti · 5 min
+  ///
+  /// In en, this message translates to:
+  /// **'{label} · {minutes} min'**
+  String presetChipLabel(String label, int minutes);
+
+  /// Shown when Vrat → sunset has no sunset to target (polar day/night)
+  ///
+  /// In en, this message translates to:
+  /// **'There is no sunset to count down to here right now.'**
+  String get clockNoSunsetHere;
+
+  /// Shown when the vrat timer starts after today's sunset
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s sunset has passed: counting to tomorrow\'s.'**
+  String get clockSunsetPassedTomorrow;
+
+  /// Notification title when a timer ends
+  ///
+  /// In en, this message translates to:
+  /// **'🔔 {label} finished'**
+  String timerFinishedTitle(String label);
+
+  /// Notification body when the vrat timer ends
+  ///
+  /// In en, this message translates to:
+  /// **'Sunset has arrived 🙏'**
+  String get sunsetArrived;
+
+  /// Notification body when a preset timer ends
+  ///
+  /// In en, this message translates to:
+  /// **'Your {label} time is up 🙏'**
+  String timerTimeUp(String label);
+
+  /// Notification title for the sun-based alarm
+  ///
+  /// In en, this message translates to:
+  /// **'{emoji} {event} alarm'**
+  String sunAlarmNotifTitle(String emoji, String event);
+
+  /// Notification body for the sun-based alarm
+  ///
+  /// In en, this message translates to:
+  /// **'{event} is at {time} · {offset}'**
+  String sunAlarmNotifBody(String event, String time, String offset);
+
+  /// Status line prefix: the sun alarm is on
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get statusOn;
+
+  /// Status line suffix: a timer has ended
+  ///
+  /// In en, this message translates to:
+  /// **'finished'**
+  String get finished;
+
+  /// Status line suffix: time remaining on a running timer
+  ///
+  /// In en, this message translates to:
+  /// **'left'**
+  String get left;
+
+  /// Status line suffix: a timer is paused
+  ///
+  /// In en, this message translates to:
+  /// **'paused'**
+  String get paused;
+
+  /// Status line: the stopwatch is running
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get runningStatus;
+
+  /// Status line: the stopwatch is stopped
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped'**
+  String get stoppedStatus;
+
+  /// Button and column header: records/labels a stopwatch lap
+  ///
+  /// In en, this message translates to:
+  /// **'Lap'**
+  String get lap;
+
+  /// Column header on the stopwatch's lap list
+  ///
+  /// In en, this message translates to:
+  /// **'Lap time'**
+  String get lapTime;
+
+  /// Column header on the stopwatch's lap list: running total
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// Tag on the stopwatch's quickest lap
+  ///
+  /// In en, this message translates to:
+  /// **'Fastest'**
+  String get fastest;
+
+  /// Tag on the stopwatch's slowest lap
+  ///
+  /// In en, this message translates to:
+  /// **'Slowest'**
+  String get slowest;
+
+  /// Empty state before the stopwatch has any laps
+  ///
+  /// In en, this message translates to:
+  /// **'Tap Lap to mark a lap.'**
+  String get tapLapToMark;
+
+  /// Empty state before the stopwatch has started
+  ///
+  /// In en, this message translates to:
+  /// **'Start, then tap Lap at each round.'**
+  String get startThenTapLap;
+
+  /// Shown when notification permission was refused for the sun alarm
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications in Settings so the alarm can ring.'**
+  String get allowNotificationsForAlarm;
+
+  /// Heading above the computed alarm time, when the alarm is on
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm rings at'**
+  String get alarmRingsAt;
+
+  /// Heading above the computed alarm time, when the alarm is off
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm would ring at'**
+  String get alarmWouldRingAt;
+
+  /// Shown when there is no sunrise/sunset to compute (polar day/night)
+  ///
+  /// In en, this message translates to:
+  /// **'No {event} to follow here right now.'**
+  String noEventToFollow(String event);
+
+  /// The sun alarm's on/off switch label
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm on'**
+  String get alarmOnLabel;
+
+  /// Subtitle under the sun alarm's on/off switch
+  ///
+  /// In en, this message translates to:
+  /// **'Recalculated every day as the sun moves'**
+  String get recalculatedDaily;
+
+  /// Today's sunrise and sunset at the chosen place
+  ///
+  /// In en, this message translates to:
+  /// **'Today here: sunrise {rise} · sunset {set}'**
+  String todayHereSunriseSunset(String rise, String set);
+
+  /// Heading above the offset choices
+  ///
+  /// In en, this message translates to:
+  /// **'When'**
+  String get whenLabel;
+
+  /// Label of the custom-offset minutes field
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get minutesLabel;
+
+  /// Helper text under the custom-offset minutes field
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 1440'**
+  String get upTo1440;
+
+  /// Direction: the offset is before the sun event
+  ///
+  /// In en, this message translates to:
+  /// **'Before'**
+  String get before;
+
+  /// Direction: the offset is after the sun event
+  ///
+  /// In en, this message translates to:
+  /// **'After'**
+  String get after;
+
+  /// Button that asks for the phone's location
+  ///
+  /// In en, this message translates to:
+  /// **'Use my location'**
+  String get useMyLocation;
+
+  /// Appended when the phone allowed location but gave no position
+  ///
+  /// In en, this message translates to:
+  /// **' · could not read your position'**
+  String get couldNotReadPosition;
+
+  /// Shown on the timer's face once it reaches zero
+  ///
+  /// In en, this message translates to:
+  /// **'Time’s up 🙏'**
+  String get timesUp;
+
+  /// The vrat timer's target time
+  ///
+  /// In en, this message translates to:
+  /// **'Sunset at {time}'**
+  String sunsetAtTime(String time);
+
+  /// A city's date, days ahead of the viewer's
+  ///
+  /// In en, this message translates to:
+  /// **'In {days} days'**
+  String cityInDays(int days);
+
+  /// A city's date, days behind the viewer's
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days ago'**
+  String cityDaysAgo(int days);
+
+  /// A city that is in the same time zone as the viewer
+  ///
+  /// In en, this message translates to:
+  /// **'Same time as you'**
+  String get citySameTime;
+
+  /// A time difference of only minutes
+  ///
+  /// In en, this message translates to:
+  /// **'{m} m'**
+  String cityAmountMinutes(int m);
+
+  /// A time difference of only hours
+  ///
+  /// In en, this message translates to:
+  /// **'{h} h'**
+  String cityAmountHours(int h);
+
+  /// A time difference of hours and minutes
+  ///
+  /// In en, this message translates to:
+  /// **'{h} h {m} m'**
+  String cityAmountHoursMinutes(int h, int m);
+
+  /// e.g. 5 h 30 m ahead of you
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} ahead of you'**
+  String cityAheadOfYou(String amount);
+
+  /// e.g. 4 h behind you
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} behind you'**
+  String cityBehindYou(String amount);
 }
 
 class _AppLocalizationsDelegate

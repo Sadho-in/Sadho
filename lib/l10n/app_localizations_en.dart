@@ -1091,4 +1091,295 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get homeModeAllDayExplain =>
       'A card stays pinned on Home all day (it cannot be swiped away).';
+
+  @override
+  String get tomorrow => 'Tomorrow';
+
+  @override
+  String get yesterday => 'Yesterday';
+
+  @override
+  String get startAgain => 'Start again';
+
+  @override
+  String get settingsAction => 'Settings';
+
+  @override
+  String get clockToolClockSubtitle => 'A large, live time and date';
+
+  @override
+  String get clockToolSunAlarmTitle => 'Sun-based alarm';
+
+  @override
+  String get clockToolSunAlarmSubtitle =>
+      'Wake at sunrise or sunset, with an offset';
+
+  @override
+  String get clockToolWorldClockTitle => 'World clock';
+
+  @override
+  String get clockToolWorldClockSubtitle =>
+      'Amritsar, Haridwar, London and more';
+
+  @override
+  String get clockToolTimerTitle => 'Sadhana & vrat timer';
+
+  @override
+  String get clockToolTimerSubtitle =>
+      'Aarti, Chalisa, Path, Havan, or until sunset';
+
+  @override
+  String get clockToolStopwatchTitle => 'Paath stopwatch';
+
+  @override
+  String get clockToolStopwatchSubtitle => 'Start, stop and lap';
+
+  @override
+  String get sunEventSunrise => 'Sunrise';
+
+  @override
+  String get sunEventSunset => 'Sunset';
+
+  @override
+  String offsetAtEvent(String event) {
+    return 'At $event';
+  }
+
+  @override
+  String offsetMinutesOnly(int m) {
+    return '$m min';
+  }
+
+  @override
+  String offsetHoursOnly(int h) {
+    return '$h hr';
+  }
+
+  @override
+  String offsetHoursMinutes(int h, int m) {
+    return '$h hr $m min';
+  }
+
+  @override
+  String offsetBefore(String amount) {
+    return '$amount before';
+  }
+
+  @override
+  String offsetAfter(String amount) {
+    return '$amount after';
+  }
+
+  @override
+  String get locationSourceDevice => 'Your location';
+
+  @override
+  String get locationSourceSaved => 'Your last known location';
+
+  @override
+  String get locationSourceFallback => 'Amritsar (default)';
+
+  @override
+  String get locSummaryDevice => 'Using your location';
+
+  @override
+  String get locSummarySaved => 'Using your last known location';
+
+  @override
+  String get locSummaryBlocked =>
+      'Using Amritsar. Location is blocked in Settings.';
+
+  @override
+  String get locSummaryServiceOff =>
+      'Using Amritsar. Turn on location for exact times.';
+
+  @override
+  String get locSummaryUnsupported => 'Using Amritsar.';
+
+  @override
+  String get locSummaryDefault =>
+      'Using Amritsar. Allow location for exact times.';
+
+  @override
+  String get presetAarti => 'Aarti';
+
+  @override
+  String get presetChalisa => 'Chalisa';
+
+  @override
+  String get presetPath => 'Path';
+
+  @override
+  String get presetHavan => 'Havan';
+
+  @override
+  String get vratToSunset => 'Vrat → sunset';
+
+  @override
+  String presetChipLabel(String label, int minutes) {
+    return '$label · $minutes min';
+  }
+
+  @override
+  String get clockNoSunsetHere =>
+      'There is no sunset to count down to here right now.';
+
+  @override
+  String get clockSunsetPassedTomorrow =>
+      'Today\'s sunset has passed: counting to tomorrow\'s.';
+
+  @override
+  String timerFinishedTitle(String label) {
+    return '🔔 $label finished';
+  }
+
+  @override
+  String get sunsetArrived => 'Sunset has arrived 🙏';
+
+  @override
+  String timerTimeUp(String label) {
+    return 'Your $label time is up 🙏';
+  }
+
+  @override
+  String sunAlarmNotifTitle(String emoji, String event) {
+    return '$emoji $event alarm';
+  }
+
+  @override
+  String sunAlarmNotifBody(String event, String time, String offset) {
+    return '$event is at $time · $offset';
+  }
+
+  @override
+  String get statusOn => 'On';
+
+  @override
+  String get finished => 'finished';
+
+  @override
+  String get left => 'left';
+
+  @override
+  String get paused => 'paused';
+
+  @override
+  String get runningStatus => 'Running';
+
+  @override
+  String get stoppedStatus => 'Stopped';
+
+  @override
+  String get lap => 'Lap';
+
+  @override
+  String get lapTime => 'Lap time';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get fastest => 'Fastest';
+
+  @override
+  String get slowest => 'Slowest';
+
+  @override
+  String get tapLapToMark => 'Tap Lap to mark a lap.';
+
+  @override
+  String get startThenTapLap => 'Start, then tap Lap at each round.';
+
+  @override
+  String get allowNotificationsForAlarm =>
+      'Allow notifications in Settings so the alarm can ring.';
+
+  @override
+  String get alarmRingsAt => 'Alarm rings at';
+
+  @override
+  String get alarmWouldRingAt => 'Alarm would ring at';
+
+  @override
+  String noEventToFollow(String event) {
+    return 'No $event to follow here right now.';
+  }
+
+  @override
+  String get alarmOnLabel => 'Alarm on';
+
+  @override
+  String get recalculatedDaily => 'Recalculated every day as the sun moves';
+
+  @override
+  String todayHereSunriseSunset(String rise, String set) {
+    return 'Today here: sunrise $rise · sunset $set';
+  }
+
+  @override
+  String get whenLabel => 'When';
+
+  @override
+  String get minutesLabel => 'Minutes';
+
+  @override
+  String get upTo1440 => 'Up to 1440';
+
+  @override
+  String get before => 'Before';
+
+  @override
+  String get after => 'After';
+
+  @override
+  String get useMyLocation => 'Use my location';
+
+  @override
+  String get couldNotReadPosition => ' · could not read your position';
+
+  @override
+  String get timesUp => 'Time’s up 🙏';
+
+  @override
+  String sunsetAtTime(String time) {
+    return 'Sunset at $time';
+  }
+
+  @override
+  String cityInDays(int days) {
+    return 'In $days days';
+  }
+
+  @override
+  String cityDaysAgo(int days) {
+    return '$days days ago';
+  }
+
+  @override
+  String get citySameTime => 'Same time as you';
+
+  @override
+  String cityAmountMinutes(int m) {
+    return '$m m';
+  }
+
+  @override
+  String cityAmountHours(int h) {
+    return '$h h';
+  }
+
+  @override
+  String cityAmountHoursMinutes(int h, int m) {
+    return '$h h $m m';
+  }
+
+  @override
+  String cityAheadOfYou(String amount) {
+    return '$amount ahead of you';
+  }
+
+  @override
+  String cityBehindYou(String amount) {
+    return '$amount behind you';
+  }
 }

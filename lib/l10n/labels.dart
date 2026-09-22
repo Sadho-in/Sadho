@@ -3,6 +3,12 @@ import 'package:flutter/widgets.dart';
 import '../core/storage/app_storage.dart';
 import '../features/calendar/application/mark_style_provider.dart' show MarkStyle;
 import '../features/calendar/data/calendar_mark.dart';
+import '../features/clock/application/location_provider.dart'
+    show LocationSource, LocationState;
+import '../features/clock/data/clock_tool.dart';
+import '../features/clock/data/sun_alarm.dart' show SunEventKind;
+import '../features/clock/data/world_cities.dart' show CityTime;
+import '../features/clock/services/location_service.dart' show LocationAccess;
 import '../features/sadhana/application/sadhana_session_provider.dart' show CountMode;
 import '../features/sadhana/application/rhythm_pace.dart' show PaceUnit;
 import '../features/sadhana/data/ringtone.dart';
@@ -154,4 +160,103 @@ AppLocalizations currentL10n() {
   final locale = AppLocalizations.supportedLocales
       .firstWhere((l) => l.languageCode == code, orElse: () => const Locale('en'));
   return lookupAppLocalizations(locale);
+}
+
+// ---- Clock ------------------------------------------------------------------
+
+extension ClockToolL10n on ClockTool {
+  String localizedTitle(AppLocalizations l) => switch (this) {
+        ClockTool.clock => l.navClock,
+        ClockTool.sunAlarm => l.clockToolSunAlarmTitle,
+        ClockTool.worldClock => l.clockToolWorldClockTitle,
+        ClockTool.timer => l.clockToolTimerTitle,
+        ClockTool.stopwatch => l.clockToolStopwatchTitle,
+      };
+
+  String localizedSubtitle(AppLocalizations l) => switch (this) {
+        ClockTool.clock => l.clockToolClockSubtitle,
+        ClockTool.sunAlarm => l.clockToolSunAlarmSubtitle,
+        ClockTool.worldClock => l.clockToolWorldClockSubtitle,
+        ClockTool.timer => l.clockToolTimerSubtitle,
+        ClockTool.stopwatch => l.clockToolStopwatchSubtitle,
+      };
+}
+
+extension SunEventKindL10n on SunEventKind {
+  String localized(AppLocalizations l) => switch (this) {
+        SunEventKind.sunrise => l.sunEventSunrise,
+        SunEventKind.sunset => l.sunEventSunset,
+      };
+}
+
+/// [offsetLabel], but in the chosen language: "1 hr before", "45 min before",
+/// "At sunrise", "15 min after"...
+String offsetLabelIn(AppLocalizations l, int minutes, SunEventKind kind) {
+  if (minutes == 0) return l.offsetAtEvent(kind.localized(l).toLowerCase());
+  final abs = minutes.abs();
+  final h = abs ~/ 60, m = abs % 60;
+  final amount = h == 0
+      ? l.offsetMinutesOnly(m)
+      : (m == 0 ? l.offsetHoursOnly(h) : l.offsetHoursMinutes(h, m));
+  return minutes < 0 ? l.offsetBefore(amount) : l.offsetAfter(amount);
+}
+
+extension LocationSourceL10n on LocationSource {
+  String localized(AppLocalizations l) => switch (this) {
+        LocationSource.device => l.locationSourceDevice,
+        LocationSource.saved => l.locationSourceSaved,
+        LocationSource.fallback => l.locationSourceFallback,
+      };
+}
+
+extension LocationStateL10n on LocationState {
+  /// [LocationState.summary], but in the chosen language.
+  String summaryIn(AppLocalizations l) => switch (point.source) {
+        LocationSource.device => l.locSummaryDevice,
+        LocationSource.saved => l.locSummarySaved,
+        LocationSource.fallback => switch (access) {
+            LocationAccess.deniedForever => l.locSummaryBlocked,
+            LocationAccess.serviceOff => l.locSummaryServiceOff,
+            LocationAccess.unsupported => l.locSummaryUnsupported,
+            _ => l.locSummaryDefault,
+          },
+      };
+}
+
+/// The localized name of a [TimerPreset]/vrat-to-sunset id ('aarti',
+/// 'chalisa', 'path', 'havan', 'vrat_sunset'), or [fallback] (the stored
+/// English label) for anything else.
+String presetLabelFor(AppLocalizations l, String presetId, String fallback) =>
+    switch (presetId) {
+      'aarti' => l.presetAarti,
+      'chalisa' => l.presetChalisa,
+      'path' => l.presetPath,
+      'havan' => l.presetHavan,
+      'vrat_sunset' => l.vratToSunset,
+      _ => fallback,
+    };
+
+extension CityTimeL10n on CityTime {
+  /// [CityTime.dayLabel], but in the chosen language.
+  String dayLabelIn(AppLocalizations l) => switch (dayOffset) {
+        0 => l.today,
+        1 => l.tomorrow,
+        -1 => l.yesterday,
+        _ => dayOffset > 0 ? l.cityInDays(dayOffset) : l.cityDaysAgo(-dayOffset),
+      };
+
+  /// [CityTime.relativeLabel], but in the chosen language.
+  String relativeLabelIn(AppLocalizations l) => relativeToViewerIn(l, aheadBy);
+}
+
+/// [relativeToViewer], but in the chosen language: "Same time as you",
+/// "5 h 30 m ahead of you", "4 h behind you"...
+String relativeToViewerIn(AppLocalizations l, Duration d) {
+  if (d == Duration.zero) return l.citySameTime;
+  final abs = d.abs();
+  final h = abs.inHours, m = abs.inMinutes % 60;
+  final amount = h == 0
+      ? l.cityAmountMinutes(m)
+      : (m == 0 ? l.cityAmountHours(h) : l.cityAmountHoursMinutes(h, m));
+  return d.isNegative ? l.cityBehindYou(amount) : l.cityAheadOfYou(amount);
 }

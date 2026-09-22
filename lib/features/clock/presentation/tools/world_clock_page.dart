@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 import '../../data/world_cities.dart';
 import '../widgets/tick_builder.dart';
 
@@ -12,7 +14,7 @@ class WorldClockPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final use24 = MediaQuery.alwaysUse24HourFormatOf(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('World clock')),
+      appBar: AppBar(title: Text(context.l10n.clockToolWorldClockTitle)),
       body: SafeArea(
         child: Align(
           alignment: Alignment.topCenter,
@@ -46,6 +48,7 @@ class _CityCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     final time = (use24 ? DateFormat('HH:mm') : DateFormat.jm()).format(ct.time);
     final name = ct.city.name;
     return Card(
@@ -72,7 +75,7 @@ class _CityCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    '${ct.dayLabel} · ${ct.relativeLabel}',
+                    '${ct.dayLabelIn(l)} · ${ct.relativeLabelIn(l)}',
                     key: ValueKey('city-$name-note'),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: scheme.onSurfaceVariant,

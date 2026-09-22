@@ -1062,5 +1062,451 @@
   "homeModeAllDayExplain": "A card stays pinned on Home all day (it cannot be swiped away).",
   "@homeModeAllDayExplain": {
     "description": "Explains the Keep all day Home option"
+  },
+  "tomorrow": "Tomorrow",
+  "@tomorrow": {
+    "description": "A relative day label"
+  },
+  "yesterday": "Yesterday",
+  "@yesterday": {
+    "description": "A relative day label"
+  },
+  "startAgain": "Start again",
+  "@startAgain": {
+    "description": "Button: restarts a finished timer"
+  },
+  "settingsAction": "Settings",
+  "@settingsAction": {
+    "description": "Button that opens the phone's system Settings"
+  },
+  "clockToolClockSubtitle": "A large, live time and date",
+  "@clockToolClockSubtitle": {
+    "description": "Clock tool card subtitle"
+  },
+  "clockToolSunAlarmTitle": "Sun-based alarm",
+  "@clockToolSunAlarmTitle": {
+    "description": "Clock tool card title"
+  },
+  "clockToolSunAlarmSubtitle": "Wake at sunrise or sunset, with an offset",
+  "@clockToolSunAlarmSubtitle": {
+    "description": "Clock tool card subtitle"
+  },
+  "clockToolWorldClockTitle": "World clock",
+  "@clockToolWorldClockTitle": {
+    "description": "Clock tool card title"
+  },
+  "clockToolWorldClockSubtitle": "Amritsar, Haridwar, London and more",
+  "@clockToolWorldClockSubtitle": {
+    "description": "Clock tool card subtitle"
+  },
+  "clockToolTimerTitle": "Sadhana & vrat timer",
+  "@clockToolTimerTitle": {
+    "description": "Clock tool card title"
+  },
+  "clockToolTimerSubtitle": "Aarti, Chalisa, Path, Havan, or until sunset",
+  "@clockToolTimerSubtitle": {
+    "description": "Clock tool card subtitle"
+  },
+  "clockToolStopwatchTitle": "Paath stopwatch",
+  "@clockToolStopwatchTitle": {
+    "description": "Clock tool card title"
+  },
+  "clockToolStopwatchSubtitle": "Start, stop and lap",
+  "@clockToolStopwatchSubtitle": {
+    "description": "Clock tool card subtitle"
+  },
+  "sunEventSunrise": "Sunrise",
+  "@sunEventSunrise": {
+    "description": "Which sun event the alarm follows"
+  },
+  "sunEventSunset": "Sunset",
+  "@sunEventSunset": {
+    "description": "Which sun event the alarm follows"
+  },
+  "offsetAtEvent": "At {event}",
+  "@offsetAtEvent": {
+    "description": "e.g. At sunrise",
+    "placeholders": {
+      "event": {
+        "type": "String"
+      }
+    }
+  },
+  "offsetMinutesOnly": "{m} min",
+  "@offsetMinutesOnly": {
+    "description": "An offset of only minutes",
+    "placeholders": {
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "offsetHoursOnly": "{h} hr",
+  "@offsetHoursOnly": {
+    "description": "An offset of only hours",
+    "placeholders": {
+      "h": {
+        "type": "int"
+      }
+    }
+  },
+  "offsetHoursMinutes": "{h} hr {m} min",
+  "@offsetHoursMinutes": {
+    "description": "An offset of hours and minutes",
+    "placeholders": {
+      "h": {
+        "type": "int"
+      },
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "offsetBefore": "{amount} before",
+  "@offsetBefore": {
+    "description": "e.g. 30 min before",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offsetAfter": "{amount} after",
+  "@offsetAfter": {
+    "description": "e.g. 30 min after",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "locationSourceDevice": "Your location",
+  "@locationSourceDevice": {
+    "description": "Where a place came from: read from the phone"
+  },
+  "locationSourceSaved": "Your last known location",
+  "@locationSourceSaved": {
+    "description": "Where a place came from: a saved past reading"
+  },
+  "locationSourceFallback": "Amritsar (default)",
+  "@locationSourceFallback": {
+    "description": "Where a place came from: nothing known"
+  },
+  "locSummaryDevice": "Using your location",
+  "@locSummaryDevice": {
+    "description": "One-line explanation of the place used for sun times"
+  },
+  "locSummarySaved": "Using your last known location",
+  "@locSummarySaved": {
+    "description": "One-line explanation of the place used for sun times"
+  },
+  "locSummaryBlocked": "Using Amritsar. Location is blocked in Settings.",
+  "@locSummaryBlocked": {
+    "description": "One-line explanation of the place used for sun times"
+  },
+  "locSummaryServiceOff": "Using Amritsar. Turn on location for exact times.",
+  "@locSummaryServiceOff": {
+    "description": "One-line explanation of the place used for sun times"
+  },
+  "locSummaryUnsupported": "Using Amritsar.",
+  "@locSummaryUnsupported": {
+    "description": "One-line explanation of the place used for sun times"
+  },
+  "locSummaryDefault": "Using Amritsar. Allow location for exact times.",
+  "@locSummaryDefault": {
+    "description": "One-line explanation of the place used for sun times"
+  },
+  "presetAarti": "Aarti",
+  "@presetAarti": {
+    "description": "A devotional-practice timer preset"
+  },
+  "presetChalisa": "Chalisa",
+  "@presetChalisa": {
+    "description": "A devotional-practice timer preset"
+  },
+  "presetPath": "Path",
+  "@presetPath": {
+    "description": "A devotional-practice timer preset"
+  },
+  "presetHavan": "Havan",
+  "@presetHavan": {
+    "description": "A devotional-practice timer preset"
+  },
+  "vratToSunset": "Vrat → sunset",
+  "@vratToSunset": {
+    "description": "The timer option that counts down to sunset"
+  },
+  "presetChipLabel": "{label} · {minutes} min",
+  "@presetChipLabel": {
+    "description": "A timer preset choice, e.g. Aarti · 5 min",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "clockNoSunsetHere": "There is no sunset to count down to here right now.",
+  "@clockNoSunsetHere": {
+    "description": "Shown when Vrat → sunset has no sunset to target (polar day/night)"
+  },
+  "clockSunsetPassedTomorrow": "Today's sunset has passed: counting to tomorrow's.",
+  "@clockSunsetPassedTomorrow": {
+    "description": "Shown when the vrat timer starts after today's sunset"
+  },
+  "timerFinishedTitle": "🔔 {label} finished",
+  "@timerFinishedTitle": {
+    "description": "Notification title when a timer ends",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "sunsetArrived": "Sunset has arrived 🙏",
+  "@sunsetArrived": {
+    "description": "Notification body when the vrat timer ends"
+  },
+  "timerTimeUp": "Your {label} time is up 🙏",
+  "@timerTimeUp": {
+    "description": "Notification body when a preset timer ends",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "sunAlarmNotifTitle": "{emoji} {event} alarm",
+  "@sunAlarmNotifTitle": {
+    "description": "Notification title for the sun-based alarm",
+    "placeholders": {
+      "emoji": {
+        "type": "String"
+      },
+      "event": {
+        "type": "String"
+      }
+    }
+  },
+  "sunAlarmNotifBody": "{event} is at {time} · {offset}",
+  "@sunAlarmNotifBody": {
+    "description": "Notification body for the sun-based alarm",
+    "placeholders": {
+      "event": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      },
+      "offset": {
+        "type": "String"
+      }
+    }
+  },
+  "statusOn": "On",
+  "@statusOn": {
+    "description": "Status line prefix: the sun alarm is on"
+  },
+  "finished": "finished",
+  "@finished": {
+    "description": "Status line suffix: a timer has ended"
+  },
+  "left": "left",
+  "@left": {
+    "description": "Status line suffix: time remaining on a running timer"
+  },
+  "paused": "paused",
+  "@paused": {
+    "description": "Status line suffix: a timer is paused"
+  },
+  "runningStatus": "Running",
+  "@runningStatus": {
+    "description": "Status line: the stopwatch is running"
+  },
+  "stoppedStatus": "Stopped",
+  "@stoppedStatus": {
+    "description": "Status line: the stopwatch is stopped"
+  },
+  "lap": "Lap",
+  "@lap": {
+    "description": "Button and column header: records/labels a stopwatch lap"
+  },
+  "lapTime": "Lap time",
+  "@lapTime": {
+    "description": "Column header on the stopwatch's lap list"
+  },
+  "total": "Total",
+  "@total": {
+    "description": "Column header on the stopwatch's lap list: running total"
+  },
+  "fastest": "Fastest",
+  "@fastest": {
+    "description": "Tag on the stopwatch's quickest lap"
+  },
+  "slowest": "Slowest",
+  "@slowest": {
+    "description": "Tag on the stopwatch's slowest lap"
+  },
+  "tapLapToMark": "Tap Lap to mark a lap.",
+  "@tapLapToMark": {
+    "description": "Empty state before the stopwatch has any laps"
+  },
+  "startThenTapLap": "Start, then tap Lap at each round.",
+  "@startThenTapLap": {
+    "description": "Empty state before the stopwatch has started"
+  },
+  "allowNotificationsForAlarm": "Allow notifications in Settings so the alarm can ring.",
+  "@allowNotificationsForAlarm": {
+    "description": "Shown when notification permission was refused for the sun alarm"
+  },
+  "alarmRingsAt": "Alarm rings at",
+  "@alarmRingsAt": {
+    "description": "Heading above the computed alarm time, when the alarm is on"
+  },
+  "alarmWouldRingAt": "Alarm would ring at",
+  "@alarmWouldRingAt": {
+    "description": "Heading above the computed alarm time, when the alarm is off"
+  },
+  "noEventToFollow": "No {event} to follow here right now.",
+  "@noEventToFollow": {
+    "description": "Shown when there is no sunrise/sunset to compute (polar day/night)",
+    "placeholders": {
+      "event": {
+        "type": "String"
+      }
+    }
+  },
+  "alarmOnLabel": "Alarm on",
+  "@alarmOnLabel": {
+    "description": "The sun alarm's on/off switch label"
+  },
+  "recalculatedDaily": "Recalculated every day as the sun moves",
+  "@recalculatedDaily": {
+    "description": "Subtitle under the sun alarm's on/off switch"
+  },
+  "todayHereSunriseSunset": "Today here: sunrise {rise} · sunset {set}",
+  "@todayHereSunriseSunset": {
+    "description": "Today's sunrise and sunset at the chosen place",
+    "placeholders": {
+      "rise": {
+        "type": "String"
+      },
+      "set": {
+        "type": "String"
+      }
+    }
+  },
+  "whenLabel": "When",
+  "@whenLabel": {
+    "description": "Heading above the offset choices"
+  },
+  "minutesLabel": "Minutes",
+  "@minutesLabel": {
+    "description": "Label of the custom-offset minutes field"
+  },
+  "upTo1440": "Up to 1440",
+  "@upTo1440": {
+    "description": "Helper text under the custom-offset minutes field"
+  },
+  "before": "Before",
+  "@before": {
+    "description": "Direction: the offset is before the sun event"
+  },
+  "after": "After",
+  "@after": {
+    "description": "Direction: the offset is after the sun event"
+  },
+  "useMyLocation": "Use my location",
+  "@useMyLocation": {
+    "description": "Button that asks for the phone's location"
+  },
+  "couldNotReadPosition": " · could not read your position",
+  "@couldNotReadPosition": {
+    "description": "Appended when the phone allowed location but gave no position"
+  },
+  "timesUp": "Time’s up 🙏",
+  "@timesUp": {
+    "description": "Shown on the timer's face once it reaches zero"
+  },
+  "sunsetAtTime": "Sunset at {time}",
+  "@sunsetAtTime": {
+    "description": "The vrat timer's target time",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "cityInDays": "In {days} days",
+  "@cityInDays": {
+    "description": "A city's date, days ahead of the viewer's",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "cityDaysAgo": "{days} days ago",
+  "@cityDaysAgo": {
+    "description": "A city's date, days behind the viewer's",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "citySameTime": "Same time as you",
+  "@citySameTime": {
+    "description": "A city that is in the same time zone as the viewer"
+  },
+  "cityAmountMinutes": "{m} m",
+  "@cityAmountMinutes": {
+    "description": "A time difference of only minutes",
+    "placeholders": {
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "cityAmountHours": "{h} h",
+  "@cityAmountHours": {
+    "description": "A time difference of only hours",
+    "placeholders": {
+      "h": {
+        "type": "int"
+      }
+    }
+  },
+  "cityAmountHoursMinutes": "{h} h {m} m",
+  "@cityAmountHoursMinutes": {
+    "description": "A time difference of hours and minutes",
+    "placeholders": {
+      "h": {
+        "type": "int"
+      },
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "cityAheadOfYou": "{amount} ahead of you",
+  "@cityAheadOfYou": {
+    "description": "e.g. 5 h 30 m ahead of you",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "cityBehindYou": "{amount} behind you",
+  "@cityBehindYou": {
+    "description": "e.g. 4 h behind you",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
   }
 }

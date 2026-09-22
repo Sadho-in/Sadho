@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 import '../../../calendar/application/now_provider.dart';
 import '../../application/location_provider.dart';
 import '../../application/sun_alarm_provider.dart';
@@ -39,12 +41,13 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
   }
 
   Future<void> _toggle(bool on) async {
+    final l = context.l10n;
     final allowed = await ref.read(sunAlarmProvider.notifier).setEnabled(on);
     if (!mounted || !on || allowed) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(const SnackBar(
-        content: Text('Allow notifications in Settings so the alarm can ring.'),
+      ..showSnackBar(SnackBar(
+        content: Text(l.allowNotificationsForAlarm),
       ));
   }
 
@@ -61,6 +64,7 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     final s = ref.watch(sunAlarmProvider);
     final notifier = ref.read(sunAlarmProvider.notifier);
     final where = ref.watch(locationProvider);
@@ -75,7 +79,7 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
     final kind = s.event;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Sun-based alarm')),
+      appBar: AppBar(title: Text(l.clockToolSunAlarmTitle)),
       body: SafeArea(
         child: Align(
           alignment: Alignment.topCenter,
@@ -92,7 +96,7 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                     child: Column(
                       children: [
                         Text(
-                          s.enabled ? 'Alarm rings at' : 'Alarm would ring at',
+                          s.enabled ? l.alarmRingsAt : l.alarmWouldRingAt,
                           style: theme.textTheme.titleMedium?.copyWith(
                             color: scheme.onPrimaryContainer,
                           ),
@@ -113,10 +117,10 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                         const SizedBox(height: 4),
                         Text(
                           next == null
-                              ? 'No ${kind.label.toLowerCase()} to follow here right now.'
-                              : '${_dayName(next.alarm, today)} · '
-                                  '${kind.label} ${time.format(next.event)} · '
-                                  '${offsetLabel(s.offsetMinutes, kind).toLowerCase()}',
+                              ? l.noEventToFollow(kind.localized(l).toLowerCase())
+                              : '${_dayName(l, next.alarm, today)} · '
+                                  '${kind.localized(l)} ${time.format(next.event)} · '
+                                  '${offsetLabelIn(l, s.offsetMinutes, kind).toLowerCase()}',
                           key: const ValueKey('sun-alarm-detail'),
                           textAlign: TextAlign.center,
                           style: theme.textTheme.bodyMedium?.copyWith(
@@ -130,8 +134,8 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                 SwitchListTile(
                   key: const ValueKey('sun-alarm-switch'),
                   contentPadding: const EdgeInsets.symmetric(horizontal: 4),
-                  title: const Text('Alarm on'),
-                  subtitle: const Text('Recalculated every day as the sun moves'),
+                  title: Text(l.alarmOnLabel),
+                  subtitle: Text(l.recalculatedDaily),
                   value: s.enabled,
                   onChanged: _toggle,
                 ),
@@ -140,16 +144,16 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                 SegmentedButton<SunEventKind>(
                   key: const ValueKey('sun-event'),
                   showSelectedIcon: false,
-                  segments: const [
+                  segments: [
                     ButtonSegment(
                       value: SunEventKind.sunrise,
-                      icon: Icon(Icons.wb_twilight),
-                      label: Text('Sunrise'),
+                      icon: const Icon(Icons.wb_twilight),
+                      label: Text(l.sunEventSunrise),
                     ),
                     ButtonSegment(
                       value: SunEventKind.sunset,
-                      icon: Icon(Icons.nights_stay_outlined),
-                      label: Text('Sunset'),
+                      icon: const Icon(Icons.nights_stay_outlined),
+                      label: Text(l.sunEventSunset),
                     ),
                   ],
                   selected: {kind},
@@ -157,8 +161,9 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Today here: sunrise ${rise == null ? '—' : time.format(rise)}'
-                  ' · sunset ${set == null ? '—' : time.format(set)}',
+                  l.todayHereSunriseSunset(
+                      rise == null ? '—' : time.format(rise),
+                      set == null ? '—' : time.format(set)),
                   key: const ValueKey('sun-today'),
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -167,7 +172,7 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                 ),
                 const SizedBox(height: 20),
                 // ---- offset ------------------------------------------------
-                Text('When', style: theme.textTheme.titleMedium),
+                Text(l.whenLabel, style: theme.textTheme.titleMedium),
                 const SizedBox(height: 8),
                 Wrap(
                   spacing: 8,
@@ -176,7 +181,7 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                     for (final m in presetOffsets)
                       ChoiceChip(
                         key: ValueKey('offset-$m'),
-                        label: Text(offsetLabel(m, kind)),
+                        label: Text(offsetLabelIn(l, m, kind)),
                         selected: !_customOpen && s.offsetMinutes == m,
                         onSelected: (_) {
                           setState(() => _customOpen = false);
@@ -186,7 +191,7 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                     ChoiceChip(
                       key: const ValueKey('offset-custom'),
                       avatar: const Icon(Icons.tune, size: 18),
-                      label: const Text('Custom'),
+                      label: Text(l.custom),
                       selected: _customOpen,
                       onSelected: (_) => setState(() {
                         _customOpen = true;
@@ -211,10 +216,10 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                             FilteringTextInputFormatter.digitsOnly,
                             LengthLimitingTextInputFormatter(4),
                           ],
-                          decoration: const InputDecoration(
-                            labelText: 'Minutes',
-                            border: OutlineInputBorder(),
-                            helperText: 'Up to 1440',
+                          decoration: InputDecoration(
+                            labelText: l.minutesLabel,
+                            border: const OutlineInputBorder(),
+                            helperText: l.upTo1440,
                           ),
                           onChanged: (_) => _applyCustom(),
                         ),
@@ -226,9 +231,9 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                           child: SegmentedButton<bool>(
                             key: const ValueKey('custom-direction'),
                             showSelectedIcon: false,
-                            segments: const [
-                              ButtonSegment(value: false, label: Text('Before')),
-                              ButtonSegment(value: true, label: Text('After')),
+                            segments: [
+                              ButtonSegment(value: false, label: Text(l.before)),
+                              ButtonSegment(value: true, label: Text(l.after)),
                             ],
                             selected: {_after},
                             onSelectionChanged: (v) {
@@ -250,10 +255,10 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                           ? Icons.location_off_outlined
                           : Icons.my_location,
                     ),
-                    title: Text(where.summary, key: const ValueKey('sun-where')),
+                    title: Text(where.summaryIn(l), key: const ValueKey('sun-where')),
                     subtitle: Text(
                       '${p.lat.toStringAsFixed(2)}°, ${p.lon.toStringAsFixed(2)}°'
-                      '${where.failed ? ' · could not read your position' : ''}',
+                      '${where.failed ? l.couldNotReadPosition : ''}',
                     ),
                     trailing: where.busy
                         ? const SizedBox.square(
@@ -269,8 +274,8 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                                     .refresh(ask: true),
                             child: Text(
                               where.access == LocationAccess.deniedForever
-                                  ? 'Settings'
-                                  : 'Use my location',
+                                  ? l.settingsAction
+                                  : l.useMyLocation,
                             ),
                           ),
                   ),
@@ -283,11 +288,11 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
     );
   }
 
-  static String _dayName(DateTime t, DateTime today) {
+  static String _dayName(AppLocalizations l, DateTime t, DateTime today) {
     final d = DateTime(t.year, t.month, t.day);
     final diff = d.difference(today).inDays;
-    if (diff == 0) return 'Today';
-    if (diff == 1) return 'Tomorrow';
+    if (diff == 0) return l.today;
+    if (diff == 1) return l.tomorrow;
     return DateFormat('EEE d MMM').format(t);
   }
 }

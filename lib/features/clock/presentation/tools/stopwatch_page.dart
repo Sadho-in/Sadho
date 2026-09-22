@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/l10n.dart';
 import '../../application/stopwatch_provider.dart';
 import '../widgets/tick_builder.dart';
 
@@ -15,9 +16,10 @@ class StopwatchPage extends ConsumerWidget {
     final scheme = theme.colorScheme;
     final sw = ref.watch(stopwatchProvider);
     final notifier = ref.read(stopwatchProvider.notifier);
+    final l = context.l10n;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Paath stopwatch')),
+      appBar: AppBar(title: Text(l.clockToolStopwatchTitle)),
       body: SafeArea(
         child: Align(
           alignment: Alignment.topCenter,
@@ -57,14 +59,14 @@ class StopwatchPage extends ConsumerWidget {
                                 key: const ValueKey('sw-lap'),
                                 onPressed: notifier.lap,
                                 icon: const Icon(Icons.flag_outlined),
-                                label: const Text('Lap'),
+                                label: Text(l.lap),
                                 style: _big,
                               )
                             : OutlinedButton.icon(
                                 key: const ValueKey('sw-reset'),
                                 onPressed: sw.isZero ? null : notifier.reset,
                                 icon: const Icon(Icons.restart_alt),
-                                label: const Text('Reset'),
+                                label: Text(l.actionReset),
                                 style: _big,
                               ),
                       ),
@@ -74,7 +76,7 @@ class StopwatchPage extends ConsumerWidget {
                           key: const ValueKey('sw-toggle'),
                           onPressed: sw.running ? notifier.stop : notifier.start,
                           icon: Icon(sw.running ? Icons.stop : Icons.play_arrow),
-                          label: Text(sw.running ? 'Stop' : 'Start'),
+                          label: Text(sw.running ? l.stop : l.start),
                           style: _big,
                         ),
                       ),
@@ -86,9 +88,7 @@ class StopwatchPage extends ConsumerWidget {
                   child: sw.laps.isEmpty
                       ? Center(
                           child: Text(
-                            sw.running
-                                ? 'Tap Lap to mark a lap.'
-                                : 'Start, then tap Lap at each round.',
+                            sw.running ? l.tapLapToMark : l.startThenTapLap,
                             key: const ValueKey('sw-empty'),
                             style: theme.textTheme.bodyLarge?.copyWith(
                               color: scheme.onSurfaceVariant,
@@ -123,11 +123,12 @@ class _LapList extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     // Fastest and slowest only mean something once there are three laps.
     Duration? best, worst;
     if (laps.length >= 3) {
-      best = laps.map((l) => l.lap).reduce((a, b) => a < b ? a : b);
-      worst = laps.map((l) => l.lap).reduce((a, b) => a > b ? a : b);
+      best = laps.map((e) => e.lap).reduce((a, b) => a < b ? a : b);
+      worst = laps.map((e) => e.lap).reduce((a, b) => a > b ? a : b);
       if (best == worst) best = worst = null;
     }
     final mono = theme.textTheme.titleMedium?.copyWith(
@@ -147,36 +148,36 @@ class _LapList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               children: [
-                SizedBox(width: 72, child: Text('Lap', style: head)),
-                Expanded(child: Text('Lap time', style: head)),
-                Text('Total', style: head),
+                SizedBox(width: 72, child: Text(l.lap, style: head)),
+                Expanded(child: Text(l.lapTime, style: head)),
+                Text(l.total, style: head),
               ],
             ),
           );
         }
-        final l = laps[i - 1];
-        final tag = l.lap == best
-            ? 'Fastest'
-            : (l.lap == worst ? 'Slowest' : null);
-        final color = l.lap == best
+        final entry = laps[i - 1];
+        final tag = entry.lap == best
+            ? l.fastest
+            : (entry.lap == worst ? l.slowest : null);
+        final color = entry.lap == best
             ? scheme.tertiary
-            : (l.lap == worst ? scheme.error : null);
+            : (entry.lap == worst ? scheme.error : null);
         return Padding(
-          key: ValueKey('lap-${l.number}'),
+          key: ValueKey('lap-${entry.number}'),
           padding: const EdgeInsets.symmetric(vertical: 12),
           child: Row(
             children: [
               SizedBox(
                 width: 72,
-                child: Text('${l.number}', style: mono?.copyWith(color: color)),
+                child: Text('${entry.number}', style: mono?.copyWith(color: color)),
               ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      formatStopwatch(l.lap),
-                      key: ValueKey('lap-${l.number}-time'),
+                      formatStopwatch(entry.lap),
+                      key: ValueKey('lap-${entry.number}-time'),
                       style: mono?.copyWith(color: color),
                     ),
                     if (tag != null)
@@ -187,8 +188,8 @@ class _LapList extends StatelessWidget {
                 ),
               ),
               Text(
-                formatStopwatch(l.total),
-                key: ValueKey('lap-${l.number}-total'),
+                formatStopwatch(entry.total),
+                key: ValueKey('lap-${entry.number}-total'),
                 style: mono?.copyWith(color: scheme.onSurfaceVariant),
               ),
             ],
