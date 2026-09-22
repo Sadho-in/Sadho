@@ -3243,6 +3243,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Train'**
   String get trainAction;
+
+  /// First-launch screen heading
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Sadho'**
+  String get onboardingTitle;
+
+  /// First-launch screen explanation
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your language and tradition to begin. You can change either later in Profile.'**
+  String get onboardingSubtitle;
+
+  /// Heading above the tradition choices on first launch
+  ///
+  /// In en, this message translates to:
+  /// **'Tradition'**
+  String get traditionHeading;
+
+  /// Button that finishes the first-launch screen
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueAction;
 }
 
 class _AppLocalizationsDelegate

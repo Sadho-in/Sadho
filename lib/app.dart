@@ -5,6 +5,8 @@ import 'core/constants/app_constants.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
 import 'features/clock/application/sun_alarm_provider.dart';
+import 'features/onboarding/application/onboarding_provider.dart';
+import 'features/onboarding/presentation/onboarding_screen.dart';
 import 'features/profile/application/daily_reminder_provider.dart';
 import 'features/shell/presentation/app_shell.dart';
 import 'l10n/app_localizations.dart';
@@ -21,6 +23,7 @@ class SadhoApp extends ConsumerWidget {
     ref.watch(dailyReminderProvider);
     final palette = ref.watch(paletteProvider);
     final locale = ref.watch(localeProvider);
+    final onboarded = ref.watch(onboardingCompleteProvider);
     return MaterialApp(
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
@@ -30,7 +33,7 @@ class SadhoApp extends ConsumerWidget {
       locale: locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const AppShell(),
+      home: onboarded ? const AppShell() : const OnboardingScreen(),
     );
   }
 }

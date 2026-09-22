@@ -1857,4 +1857,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trainAction => 'Train';
+
+  @override
+  String get onboardingTitle => 'Welcome to Sadho';
+
+  @override
+  String get onboardingSubtitle =>
+      'Choose your language and tradition to begin. You can change either later in Profile.';
+
+  @override
+  String get traditionHeading => 'Tradition';
+
+  @override
+  String get continueAction => 'Continue';
 }

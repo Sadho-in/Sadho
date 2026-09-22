@@ -16,7 +16,7 @@ void main() {
   setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false); // no network in tests
 
   Future<ProfileRig> open(WidgetTester tester, {ProfileRig? rig}) async {
-    final r = rig ?? profileRig();
+    final r = rig ?? profileRig(saved: {'onboarding.done': true});
     phoneScreen(tester, height: 915);
     await tester.pumpWidget(UncontrolledProviderScope(
         container: r.container, child: const SadhoApp()));
@@ -59,7 +59,13 @@ void main() {
   });
 
   testWidgets('the palette saved last time is used on launch', (tester) async {
-    await open(tester, rig: profileRig(saved: {'themePalette': 'lotus', 'themeMode': 'dark'}));
+    await open(
+        tester,
+        rig: profileRig(saved: {
+          'themePalette': 'lotus',
+          'themeMode': 'dark',
+          'onboarding.done': true,
+        }));
     expect(scheme(tester).primary, sadhoPalettes[4].dark.primary);
     expect(scheme(tester).brightness, Brightness.dark);
   });
@@ -78,6 +84,7 @@ void main() {
       tester,
       rig: profileRig(saved: {
         'profile.dailyReminder': const DailyReminder(enabled: true, minutes: 7 * 60).toMap(),
+        'onboarding.done': true,
       }),
     );
     await tester.pump();

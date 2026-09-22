@@ -15,7 +15,7 @@ class HomeDismissalsNotifier extends Notifier<Set<String>> {
   @override
   Set<String> build() {
     final raw = AppStorage.settings.get(_key);
-    final today = dateOnly(DateTime.now());
+    final today = dateOnly(ref.watch(nowProvider));
     // Old days can never matter again: drop them so the list stays small.
     return {
       if (raw is List)

@@ -2161,5 +2161,21 @@
   "trainAction": "Train",
   "@trainAction": {
     "description": "Snack bar action: opens voice training for a mantra"
+  },
+  "onboardingTitle": "Welcome to Sadho",
+  "@onboardingTitle": {
+    "description": "First-launch screen heading"
+  },
+  "onboardingSubtitle": "Choose your language and tradition to begin. You can change either later in Profile.",
+  "@onboardingSubtitle": {
+    "description": "First-launch screen explanation"
+  },
+  "traditionHeading": "Tradition",
+  "@traditionHeading": {
+    "description": "Heading above the tradition choices on first launch"
+  },
+  "continueAction": "Continue",
+  "@continueAction": {
+    "description": "Button that finishes the first-launch screen"
   }
 }

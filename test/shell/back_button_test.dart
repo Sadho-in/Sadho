@@ -44,7 +44,7 @@ void main() {
 
   Future<ProfileRig> open(WidgetTester tester,
       {ProfileRig? rig, double height = 3000}) async {
-    final r = rig ?? profileRig();
+    final r = rig ?? profileRig(saved: {'onboarding.done': true});
     phoneScreen(tester, height: height);
     await tester.pumpWidget(UncontrolledProviderScope(
         container: r.container, child: const SadhoApp()));
@@ -213,7 +213,8 @@ void main() {
         'does not lose its only remaining route',
         (tester) async {
       final scheduler = _PendingScheduler();
-      await open(tester, rig: profileRig(scheduler: scheduler));
+      await open(tester,
+          rig: profileRig(scheduler: scheduler, saved: {'onboarding.done': true}));
 
       await tester.tap(find.descendant(
           of: find.byType(NavigationBar), matching: find.text('Calendar')));
