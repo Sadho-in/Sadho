@@ -17,8 +17,8 @@ still `advance_calendar`; the Android/iOS display name and the in-app title are
 - **Home**, **Calendar** and **Clock** are real screens (below), and so is
   **Profile** (opened from the avatar in the top bar; it shows your initial once
   you have set a name).
-- The language button saves your choice (English / हिन्दी / ਪੰਜਾਬੀ); actual
-  translations come later.
+- The language button offers all nine supported languages and applies your
+  choice across the whole app immediately (see Localization below).
 
 **Clock**
 
@@ -134,8 +134,8 @@ relaunch, and their reminders are rebuilt every time the app starts.
   original), **Sandalwood**, **Tulsi green**, **Twilight indigo**, **Lotus rose**;
   plus **Light / Dark / System**. Both are saved and apply to the whole app at
   once (`lib/core/theme/palettes.dart`).
-- **Language**: the same chooser as the top bar (English, हिन्दी, ਪੰਜਾਬੀ); the choice
-  is saved, real translations come in the i18n phase (TODO).
+- **Language**: the same chooser as the top bar, all nine supported languages;
+  the choice is saved and applied right away (see Localization below).
 - **Daily reminder**: a switch and a time (default 6:00 AM). It is ONE repeating
   local notification (an ordinary, not alarm-loud, one), scheduled again every
   time the app starts. Turning it on asks for the notification permission.
@@ -353,6 +353,34 @@ Behaviour notes
 - Switching mantra with a count in progress asks first, then starts fresh with the
   new mantra's default count.
 
+## Localization
+
+The whole app (shell, Sadhana, Calendar, Clock, Home, Profile, first-launch
+onboarding) is localized via `flutter_localizations` + `intl`, generated with
+`flutter gen-l10n` from ARB files in `lib/l10n/`. Generated output
+(`app_localizations*.dart`) is committed to git — `flutter analyze`/`flutter
+test` do not regenerate it, so run `flutter gen-l10n` by hand after any ARB
+edit.
+
+- `app_en.arb` is the template and the source of truth: every key, with a
+  `description` for translators. English is written and reviewed directly in
+  this file, not translated.
+- `app_hi.arb`, `app_pa.arb`, `app_mr.arb`, `app_bn.arb`, `app_gu.arb`,
+  `app_ta.arb`, `app_te.arb`, `app_kn.arb` (Hindi, Punjabi, Marathi, Bengali,
+  Gujarati, Tamil, Telugu, Kannada) are a **first-pass machine translation**,
+  generated in one pass for i18n Step 4. **They have not been reviewed by a
+  native speaker of each language** — treat every one as needing review before
+  depending on it in production. Each file marks itself as such in an
+  `"@@x-machine-translation"` note at the top (an informational `@@` key gen-l10n
+  ignores; it is not part of the generated API).
+- Mantra/Gurbani script, transliteration text, plan-suggestion titles and the
+  Home tab's EXAMPLE panchang placeholder values are deliberately **not**
+  translated anywhere — they are proper-noun/scripture content, not UI chrome.
+- First launch shows a language + tradition picker
+  (`lib/features/onboarding/`); the language preselects the phone's own locale
+  when it is one of the nine, else English. Both choices can be changed again
+  later in Profile.
+
 ## Tech
 
 Flutter (stable) · Dart · Material 3 · `flutter_riverpod` · `hive` /
@@ -494,7 +522,9 @@ Clearly marked in code as `TODO(phase-2)` / `TODO(later-phase)`.
       immersive/keep-awake big clock, and stopwatch/timer in a notification.
 - [ ] **Calendar, later**: sync marks with the backend, an end date for repeats,
       and (if wanted) tithi / panchang data.
-- [ ] **Localisation**: wire the language button into `flutter_localizations`.
+- [ ] **Localisation**: native-speaker review of the 8 machine-translated
+      languages (see Localization section below); onboarding tradition options
+      for non-Hindu/Sikh traditions.
 - [ ] Keep the screen awake during Focus mode (needs a wakelock package).
 - [ ] Bundle Noto Sans Devanagari / Gurmukhi so script text renders identically on
       every device (today it uses the system fallback fonts).
