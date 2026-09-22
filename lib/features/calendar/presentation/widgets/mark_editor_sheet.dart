@@ -130,6 +130,13 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
       homeMode: _home,
       homeMinutes: _homeMinutes,
     ));
+    // The mark is saved either way. But if the system back button (or
+    // anything else) already closed this sheet while we were awaiting above,
+    // there is nothing left of this route to pop — the Navigator's next entry
+    // underneath may not even be a page that expects a pop right now. Only
+    // finish the UI side of Save if the sheet (and its BuildContext) are
+    // still there.
+    if (!mounted) return;
     navigator.pop();
     if (wantsReminder && !allowed) {
       messenger
@@ -167,6 +174,8 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
     if (ok != true || !mounted) return;
     final navigator = Navigator.of(context);
     await ref.read(calendarMarksProvider.notifier).delete(id);
+    // As in _save(): only pop if the sheet (and this route) are still here.
+    if (!mounted) return;
     navigator.pop();
   }
 

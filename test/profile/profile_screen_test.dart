@@ -420,6 +420,38 @@ void main() {
       expect(((boxes['settings'] as Map)['home.plans'] as List).length, 1);
     });
 
+    testWidgets('Export and Restore are two separate buttons calling two '
+        'separate code paths, not the same handler', (tester) async {
+      final files = FakeBackupFiles();
+      final rig = await openProfile(tester, rig: profileRig(files: files));
+      rig.container.read(profileProvider.notifier).save(name: 'Asha', email: '');
+
+      // Export: writes a file (files.save), never reads one (files.pick).
+      await scrollTo(tester, 'backup-export');
+      await tester.tap(key('backup-export'));
+      await tester.pump();
+      await tester.pump();
+      expect(files.savedBytes, isNotNull, reason: 'Export must call save()');
+      expect(files.picks, 0, reason: 'Export must not call pick()');
+      expect(find.text('Restore this backup?'), findsNothing,
+          reason: 'Export never shows the restore-confirmation flow');
+
+      // Restore: reads a file (files.pick) and, once confirmed, replaces the
+      // data — it never writes a file itself.
+      files.toPick = files.savedBytes;
+      final savesBeforeRestore = files.savedName;
+      await tester.tap(key('backup-restore'));
+      await tester.pumpAndSettle();
+      expect(files.picks, 1, reason: 'Restore must call pick()');
+      expect(find.text('Restore this backup?'), findsOneWidget,
+          reason: 'Restore, unlike Export, confirms before doing anything');
+      await tester.tap(key('restore-confirm'));
+      await tester.pumpAndSettle();
+      expect(find.text('Backup restored'), findsOneWidget);
+      // Restoring did not also (re-)export a file.
+      expect(files.savedName, savesBeforeRestore);
+    });
+
     testWidgets('backing out of the save dialog says so, and saves nothing',
         (tester) async {
       final files = FakeBackupFiles()..saveAccepted = false;
