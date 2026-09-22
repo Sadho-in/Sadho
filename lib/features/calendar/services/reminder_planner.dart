@@ -1,3 +1,5 @@
+import '../../../l10n/l10n.dart';
+import '../../../l10n/labels.dart';
 import '../data/calendar_mark.dart';
 
 /// How a planned reminder repeats on its own (handled by the phone's alarm
@@ -52,15 +54,17 @@ String _oneLine(String s, int max) {
   return t.length <= max ? t : '${t.substring(0, max - 1).trimRight()}…';
 }
 
-/// Title and body of a mark's notification.
-({String title, String body}) reminderText(CalendarMark m) {
-  final title = m.emoji == null ? m.title : '${m.emoji} ${m.title}';
+/// Title and body of a mark's notification, in [l10n] (English by default,
+/// which is what every existing caller and test expects).
+({String title, String body}) reminderText(CalendarMark m, [AppLocalizations? l10n]) {
+  final l = l10n ?? englishL10n;
+  final title = m.emoji == null ? m.titleIn(l) : '${m.emoji} ${m.titleIn(l)}';
   final body = m.details.trim().isNotEmpty
       ? _oneLine(m.details, 140)
       : switch (m.type) {
-          MarkType.good => 'A good day.',
-          MarkType.cautious => 'Be careful today.',
-          MarkType.neutral => 'Marked in your calendar.',
+          MarkType.good => l.reminderBodyGood,
+          MarkType.cautious => l.reminderBodyCautious,
+          MarkType.neutral => l.reminderBodyNeutral,
         };
   return (title: title, body: body);
 }
@@ -77,11 +81,12 @@ List<PlannedReminder> planReminders(
   CalendarMark m,
   DateTime now, {
   int maxTotal = 60,
+  AppLocalizations? l10n,
 }) {
   final times = m.effectiveReminderTimes;
   if (times.isEmpty) return const [];
   final today = dateOnly(now);
-  final text = reminderText(m);
+  final text = reminderText(m, l10n);
   final out = <PlannedReminder>[];
 
   DateTime at(DateTime d, int minutes) =>

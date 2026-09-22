@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 import '../../application/calendar_marks_provider.dart';
 import '../../data/calendar_mark.dart';
 import '../../services/reminder_scheduler.dart';
@@ -96,14 +98,15 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
     if (_reminder == ReminderMode.several && _times.isEmpty) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(const SnackBar(
-          content: Text('Add at least one time, or choose "No time".'),
+        ..showSnackBar(SnackBar(
+          content: Text(context.l10n.markEditorNoTimeWarning),
         ));
       return;
     }
     setState(() => _saving = true);
     final messenger = ScaffoldMessenger.of(context);
     final navigator = Navigator.of(context);
+    final l = context.l10n;
     final notifier = ref.read(calendarMarksProvider.notifier);
 
     final wantsReminder = _reminder != ReminderMode.none;
@@ -141,10 +144,9 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
     if (wantsReminder && !allowed) {
       messenger
         ..hideCurrentSnackBar()
-        ..showSnackBar(const SnackBar(
-          content: Text('Notifications are off for Sadho, so this reminder '
-              'will not ring. Turn them on in your phone\'s settings.'),
-          duration: Duration(seconds: 7),
+        ..showSnackBar(SnackBar(
+          content: Text(l.notificationsOffWarning),
+          duration: const Duration(seconds: 7),
         ));
     }
   }
@@ -152,22 +154,25 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
   Future<void> _delete() async {
     final id = _editingId;
     if (id == null) return;
+    final l = context.l10n;
     final repeats = _repeat != RepeatRule.once;
-    final title = _label.text.trim().isEmpty ? 'this mark' : '“${_label.text.trim()}”';
+    final title = _label.text.trim().isEmpty
+        ? l.deleteMarkFallbackTitle
+        : '“${_label.text.trim()}”';
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete this mark?'),
+        title: Text(l.deleteMarkQuestion),
         content: Text(repeats
-            ? 'Delete $title and all of its repeats? Its reminders are removed too.'
-            : 'Delete $title? Its reminders are removed too.'),
+            ? l.deleteMarkRepeatsBody(title)
+            : l.deleteMarkBody(title)),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Cancel')),
+              child: Text(l.actionCancel)),
           FilledButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Delete')),
+              child: Text(l.actionDelete)),
         ],
       ),
     );
@@ -184,6 +189,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final b = theme.brightness;
+    final l = context.l10n;
     final marks = ref.watch(calendarMarksProvider);
     final onDate = [
       for (final m in marks)
@@ -219,7 +225,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(_editingId == null ? 'New mark' : 'Edit mark',
+            Text(_editingId == null ? l.newMark : l.editMark,
                 style: theme.textTheme.titleLarge),
             Text(
               MaterialLocalizations.of(context).formatFullDate(widget.date),
@@ -231,7 +237,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
               Padding(
                 padding: const EdgeInsets.only(top: 4),
                 child: Text(
-                  '${repeatSummary(_repeat)}, from $heading. Changes apply to every repeat.',
+                  l.repeatFromNotice(repeatSummary(context, _repeat), heading),
                   style: theme.textTheme.bodySmall
                       ?.copyWith(color: scheme.onSurfaceVariant),
                 ),
@@ -249,7 +255,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
                       ChoiceChip(
                         key: ValueKey('existing-${m.id}'),
                         label: Text(
-                            '${m.emoji ?? ''} ${m.title}'.trim(),
+                            '${m.emoji ?? ''} ${m.titleIn(l)}'.trim(),
                             overflow: TextOverflow.ellipsis),
                         selected: _editingId == m.id,
                         onSelected: (_) => setState(() => _load(m)),
@@ -257,7 +263,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
                     ChoiceChip(
                       key: const ValueKey('new-mark'),
                       avatar: const Icon(Icons.add, size: 18),
-                      label: const Text('New mark'),
+                      label: Text(l.newMark),
                       selected: _editingId == null,
                       onSelected: (_) => setState(() => _load(null)),
                     ),
@@ -266,7 +272,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
               ),
 
             section(
-              'Mark type',
+              l.markTypeSectionTitle,
               Wrap(
                 spacing: 8,
                 runSpacing: 4,
@@ -284,7 +290,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
                               color: MarkPalette.outline(t, b), width: 1.5),
                         ),
                       ),
-                      label: Text(t.label),
+                      label: Text(t.localized(l)),
                       selected: _type == t,
                       onSelected: (_) => setState(() => _type = t),
                     ),
@@ -293,20 +299,20 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
             ),
 
             section(
-              'Icon',
+              l.iconSectionTitle,
               Wrap(
                 spacing: 6,
                 runSpacing: 4,
                 children: [
                   ChoiceChip(
                     key: const ValueKey('emoji-none'),
-                    label: const Text('None'),
+                    label: Text(l.iconNone),
                     selected: _emoji == null,
                     onSelected: (_) => setState(() => _emoji = null),
                   ),
                   for (final e in markEmojis)
                     Tooltip(
-                      message: markEmojiNames[e] ?? e,
+                      message: emojiName(l, e),
                       child: ChoiceChip(
                         key: ValueKey('emoji-$e'),
                         showCheckmark: false,
@@ -325,7 +331,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
               controller: _label,
               maxLength: maxLabelLength,
               textCapitalization: TextCapitalization.sentences,
-              decoration: const InputDecoration(labelText: 'Label'),
+              decoration: InputDecoration(labelText: l.labelFieldLabel),
             ),
             const SizedBox(height: 8),
             TextField(
@@ -335,14 +341,14 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
               minLines: 2,
               maxLines: 6,
               textCapitalization: TextCapitalization.sentences,
-              decoration: const InputDecoration(
-                labelText: 'Details / notes',
+              decoration: InputDecoration(
+                labelText: l.detailsFieldLabel,
                 alignLabelWithHint: true,
               ),
             ),
 
             section(
-              'Remind me at',
+              l.remindMeAtSectionTitle,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -353,7 +359,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
                       for (final r in ReminderMode.values)
                         ChoiceChip(
                           key: ValueKey('reminder-${r.name}'),
-                          label: Text(r.label),
+                          label: Text(r.localized(l)),
                           selected: _reminder == r,
                           onSelected: (_) => setState(() {
                             _reminder = r;
@@ -397,7 +403,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
                               label: Text(formatMinutes(context, t)),
                               deleteIcon: const Icon(Icons.close, size: 18),
                               deleteButtonTooltipMessage:
-                                  'Remove ${formatMinutes(context, t)}',
+                                  l.removeTimeTooltip(formatMinutes(context, t)),
                               onDeleted: () => setState(
                                   () => _times = [..._times]..remove(t)),
                             ),
@@ -405,7 +411,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
                             ActionChip(
                               key: const ValueKey('add-time'),
                               avatar: const Icon(Icons.add, size: 18),
-                              label: const Text('Add time'),
+                              label: Text(l.addTime),
                               onPressed: () async {
                                 final last = _times.isEmpty
                                     ? defaultReminderMinutes
@@ -426,7 +432,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
             ),
 
             section(
-              'Repeat',
+              l.repeatSectionTitle,
               Wrap(
                 spacing: 8,
                 runSpacing: 4,
@@ -434,7 +440,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
                   for (final r in RepeatRule.values)
                     ChoiceChip(
                       key: ValueKey('repeat-${r.name}'),
-                      label: Text(r.label),
+                      label: Text(r.localized(l)),
                       selected: _repeat == r,
                       onSelected: (_) => setState(() => _repeat = r),
                     ),
@@ -443,7 +449,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
             ),
 
             section(
-              'On your home screen',
+              l.onHomeScreenSectionTitle,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -454,7 +460,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
                       for (final h in HomeMode.values)
                         ChoiceChip(
                           key: ValueKey('home-${h.name}'),
-                          label: Text(h.label),
+                          label: Text(h.localized(l)),
                           selected: _home == h,
                           onSelected: (_) => setState(() => _home = h),
                         ),
@@ -467,7 +473,7 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
                         key: const ValueKey('home-time'),
                         icon: const Icon(Icons.wb_sunny_outlined, size: 18),
                         label: Text(
-                            'Show from ${formatMinutes(context, _homeMinutes)}'),
+                            l.showFromTime(formatMinutes(context, _homeMinutes))),
                         onPressed: () async {
                           final t = await _pickTime(_homeMinutes);
                           if (t != null) setState(() => _homeMinutes = t);
@@ -478,11 +484,9 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
                     padding: const EdgeInsets.only(top: 6),
                     child: Text(
                       switch (_home) {
-                        HomeMode.none => 'The mark stays on the calendar only.',
-                        HomeMode.morning =>
-                          'A card appears on Home at that time. Swipe it away when done: it comes back on the next repeat.',
-                        HomeMode.allDay =>
-                          'A card stays pinned on Home all day (it cannot be swiped away).',
+                        HomeMode.none => l.homeModeNoneExplain,
+                        HomeMode.morning => l.homeModeMorningExplain,
+                        HomeMode.allDay => l.homeModeAllDayExplain,
                       },
                       style: theme.textTheme.bodySmall
                           ?.copyWith(color: scheme.onSurfaceVariant),
@@ -500,19 +504,19 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
                     key: const ValueKey('delete-mark'),
                     onPressed: _delete,
                     icon: Icon(Icons.delete_outline, color: scheme.error),
-                    label: Text('Delete',
+                    label: Text(l.actionDelete,
                         style: TextStyle(color: scheme.error)),
                   ),
                 const Spacer(),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel'),
+                  child: Text(l.actionCancel),
                 ),
                 const SizedBox(width: 8),
                 FilledButton(
                   key: const ValueKey('save-mark'),
                   onPressed: _saving ? null : _save,
-                  child: const Text('Save'),
+                  child: Text(l.actionSave),
                 ),
               ],
             ),

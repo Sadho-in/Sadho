@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 import '../../data/calendar_mark.dart';
 import 'mark_format.dart';
 import 'mark_palette.dart';
@@ -38,10 +40,11 @@ class MarkCard extends StatelessWidget {
     final base = MarkPalette.base(mark.type, b);
     final outline = MarkPalette.outline(mark.type, b);
 
+    final l = context.l10n;
     final tags = <String>[
-      mark.type.label,
+      mark.type.localized(l),
       ?dateLabel,
-      if (mark.repeat != RepeatRule.once) repeatSummary(mark.repeat),
+      if (mark.repeat != RepeatRule.once) repeatSummary(context, mark.repeat),
       ?reminderSummary(context, mark),
       ?homeSummary(context, mark),
     ];
@@ -89,7 +92,7 @@ class MarkCard extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    mark.title,
+                                    mark.titleIn(l),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: theme.textTheme.titleMedium

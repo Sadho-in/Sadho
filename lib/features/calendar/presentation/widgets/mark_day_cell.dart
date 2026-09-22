@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 import '../../application/mark_style_provider.dart';
 import '../../data/calendar_mark.dart';
 import 'mark_glyph.dart';
@@ -31,6 +33,7 @@ class MarkDayCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     final types = <MarkType>[
       for (final m in marks)
         if (!marks.sublist(0, marks.indexOf(m)).any((o) => o.type == m.type)) m.type,
@@ -62,12 +65,12 @@ class MarkDayCell extends StatelessWidget {
       ],
     );
 
-    final kinds = types.map((t) => t.label.toLowerCase()).join(' and ');
+    final kinds =
+        types.map((t) => t.localized(l).toLowerCase()).join(' ${l.dayCellAnd} ');
     return Semantics(
       label: '${day.day}'
-          '${isToday ? ', today' : ''}'
-          '${marks.isEmpty ? '' : ', marked $kinds, ${marks.length} '
-              '${marks.length == 1 ? 'mark' : 'marks'}'}',
+          '${isToday ? l.dayCellToday : ''}'
+          '${marks.isEmpty ? '' : l.dayCellMarkedSuffix(marks.length, kinds)}',
       button: true,
       excludeSemantics: true,
       child: KeyedSubtree(

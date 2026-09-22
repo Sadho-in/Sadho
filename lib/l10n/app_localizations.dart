@@ -1389,6 +1389,528 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clear'**
   String get actionClear;
+
+  /// A button/label meaning today's date
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// Semantic label: calendar header chevron
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get previousMonth;
+
+  /// Semantic label: calendar header chevron
+  ///
+  /// In en, this message translates to:
+  /// **'Next month'**
+  String get nextMonth;
+
+  /// A marked date's kind: a good day
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get markTypeGood;
+
+  /// A marked date's kind: a cautious day
+  ///
+  /// In en, this message translates to:
+  /// **'Cautious'**
+  String get markTypeCautious;
+
+  /// A marked date's kind: a neutral day
+  ///
+  /// In en, this message translates to:
+  /// **'Neutral'**
+  String get markTypeNeutral;
+
+  /// When to be reminded: not at all
+  ///
+  /// In en, this message translates to:
+  /// **'No time'**
+  String get reminderModeNone;
+
+  /// When to be reminded: a single time
+  ///
+  /// In en, this message translates to:
+  /// **'One time'**
+  String get reminderModeOnce;
+
+  /// When to be reminded: several times
+  ///
+  /// In en, this message translates to:
+  /// **'Several times'**
+  String get reminderModeSeveral;
+
+  /// How a mark repeats: not at all
+  ///
+  /// In en, this message translates to:
+  /// **'Once'**
+  String get repeatRuleOnce;
+
+  /// How a mark repeats: every day
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get repeatRuleDaily;
+
+  /// How a mark repeats: every week
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get repeatRuleWeekly;
+
+  /// How a mark repeats: every month
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get repeatRuleMonthly;
+
+  /// How a mark repeats: every 3 months
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly'**
+  String get repeatRuleQuarterly;
+
+  /// How a mark repeats: every 6 months
+  ///
+  /// In en, this message translates to:
+  /// **'Half-yearly'**
+  String get repeatRuleHalfYearly;
+
+  /// How a mark repeats: every year
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get repeatRuleYearly;
+
+  /// Whether a mark appears on Home: it doesn't
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t show'**
+  String get homeModeNone;
+
+  /// Whether a mark appears on Home: once, in the morning
+  ///
+  /// In en, this message translates to:
+  /// **'Once in the morning'**
+  String get homeModeMorning;
+
+  /// Whether a mark appears on Home: pinned all day
+  ///
+  /// In en, this message translates to:
+  /// **'Keep all day'**
+  String get homeModeAllDay;
+
+  /// How marked dates are drawn: a small dot
+  ///
+  /// In en, this message translates to:
+  /// **'Dot'**
+  String get markStyleDot;
+
+  /// How marked dates are drawn: the whole cell filled
+  ///
+  /// In en, this message translates to:
+  /// **'Filled'**
+  String get markStyleFilled;
+
+  /// How marked dates are drawn: a soft highlight
+  ///
+  /// In en, this message translates to:
+  /// **'Highlight'**
+  String get markStyleHighlight;
+
+  /// How marked dates are drawn: an outlined circle
+  ///
+  /// In en, this message translates to:
+  /// **'Circle'**
+  String get markStyleCircle;
+
+  /// How marked dates are drawn: an outlined square
+  ///
+  /// In en, this message translates to:
+  /// **'Square'**
+  String get markStyleSquare;
+
+  /// Name of an icon offered for a mark
+  ///
+  /// In en, this message translates to:
+  /// **'Om'**
+  String get emojiOm;
+
+  /// Name of an icon offered for a mark
+  ///
+  /// In en, this message translates to:
+  /// **'Khanda'**
+  String get emojiKhanda;
+
+  /// Name of an icon offered for a mark
+  ///
+  /// In en, this message translates to:
+  /// **'Mala'**
+  String get emojiMala;
+
+  /// Name of an icon offered for a mark
+  ///
+  /// In en, this message translates to:
+  /// **'Diya'**
+  String get emojiDiya;
+
+  /// Name of an icon offered for a mark
+  ///
+  /// In en, this message translates to:
+  /// **'Bell'**
+  String get emojiBell;
+
+  /// Name of an icon offered for a mark
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise'**
+  String get emojiSunrise;
+
+  /// Name of an icon offered for a mark
+  ///
+  /// In en, this message translates to:
+  /// **'Star'**
+  String get emojiStar;
+
+  /// Name of an icon offered for a mark
+  ///
+  /// In en, this message translates to:
+  /// **'Sparkle'**
+  String get emojiSparkle;
+
+  /// Name of an icon offered for a mark
+  ///
+  /// In en, this message translates to:
+  /// **'Money'**
+  String get emojiMoney;
+
+  /// Name of an icon offered for a mark
+  ///
+  /// In en, this message translates to:
+  /// **'Handshake'**
+  String get emojiHandshake;
+
+  /// Name of an icon offered for a mark
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid'**
+  String get emojiAvoid;
+
+  /// Name of an icon offered for a mark
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get emojiDone;
+
+  /// Default title of an unlabelled good mark
+  ///
+  /// In en, this message translates to:
+  /// **'Good day'**
+  String get markTitleGood;
+
+  /// Default title of an unlabelled cautious mark
+  ///
+  /// In en, this message translates to:
+  /// **'Cautious day'**
+  String get markTitleCautious;
+
+  /// Default title of an unlabelled neutral mark
+  ///
+  /// In en, this message translates to:
+  /// **'Neutral day'**
+  String get markTitleNeutral;
+
+  /// Notification body when a good mark has no details
+  ///
+  /// In en, this message translates to:
+  /// **'A good day.'**
+  String get reminderBodyGood;
+
+  /// Notification body when a cautious mark has no details
+  ///
+  /// In en, this message translates to:
+  /// **'Be careful today.'**
+  String get reminderBodyCautious;
+
+  /// Notification body when a neutral mark has no details
+  ///
+  /// In en, this message translates to:
+  /// **'Marked in your calendar.'**
+  String get reminderBodyNeutral;
+
+  /// Android notification channel name
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar reminders'**
+  String get channelCalendarRemindersName;
+
+  /// Android notification channel description
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders for the dates you marked in Sadho'**
+  String get channelCalendarRemindersDesc;
+
+  /// Android notification channel name
+  ///
+  /// In en, this message translates to:
+  /// **'Alarms and timers'**
+  String get channelAlarmsName;
+
+  /// Android notification channel description
+  ///
+  /// In en, this message translates to:
+  /// **'The sun-based alarm and finished timers'**
+  String get channelAlarmsDesc;
+
+  /// Summary of a mark's repeat, shown on its card
+  ///
+  /// In en, this message translates to:
+  /// **'Once'**
+  String get repeatSummaryOnce;
+
+  /// Summary of a mark's repeat, shown on its card
+  ///
+  /// In en, this message translates to:
+  /// **'Every day'**
+  String get repeatSummaryDaily;
+
+  /// Summary of a mark's repeat, shown on its card
+  ///
+  /// In en, this message translates to:
+  /// **'Every week'**
+  String get repeatSummaryWeekly;
+
+  /// Summary of a mark's repeat, shown on its card
+  ///
+  /// In en, this message translates to:
+  /// **'Every month'**
+  String get repeatSummaryMonthly;
+
+  /// Summary of a mark's repeat, shown on its card
+  ///
+  /// In en, this message translates to:
+  /// **'Every 3 months'**
+  String get repeatSummaryQuarterly;
+
+  /// Summary of a mark's repeat, shown on its card
+  ///
+  /// In en, this message translates to:
+  /// **'Every 6 months'**
+  String get repeatSummaryHalfYearly;
+
+  /// Summary of a mark's repeat, shown on its card
+  ///
+  /// In en, this message translates to:
+  /// **'Every year'**
+  String get repeatSummaryYearly;
+
+  /// Summary tag on a mark's card
+  ///
+  /// In en, this message translates to:
+  /// **'Remind at {times}'**
+  String reminderSummaryAt(String times);
+
+  /// Summary tag on a mark's card
+  ///
+  /// In en, this message translates to:
+  /// **'On Home from {time}'**
+  String homeSummaryFrom(String time);
+
+  /// Summary tag on a mark's card
+  ///
+  /// In en, this message translates to:
+  /// **'On Home all day'**
+  String get homeSummaryAllDay;
+
+  /// Heading above the month's list of marks
+  ///
+  /// In en, this message translates to:
+  /// **'Marks in {month}'**
+  String marksInMonth(String month);
+
+  /// Shown when a month has no marks
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing marked in {month}. Tap a date to add a mark.'**
+  String noMarksInMonth(String month);
+
+  /// Heading of the mark-style picker card
+  ///
+  /// In en, this message translates to:
+  /// **'Mark style'**
+  String get markStyleSectionTitle;
+
+  /// Subtitle of the mark-style picker card
+  ///
+  /// In en, this message translates to:
+  /// **'How marked dates look. Applies to every mark.'**
+  String get markStyleSectionHint;
+
+  /// Screen-reader label for a mark-style choice
+  ///
+  /// In en, this message translates to:
+  /// **'{style} mark style'**
+  String markStyleSemantic(String style);
+
+  /// Appended to a calendar day's screen-reader label when it is today
+  ///
+  /// In en, this message translates to:
+  /// **', today'**
+  String get dayCellToday;
+
+  /// Joins two or more mark kinds in a calendar day's screen-reader label
+  ///
+  /// In en, this message translates to:
+  /// **'and'**
+  String get dayCellAnd;
+
+  /// Appended to a calendar day's screen-reader label listing what it is marked as
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{, marked {kinds}, 1 mark} other{, marked {kinds}, {count} marks}}'**
+  String dayCellMarkedSuffix(int count, String kinds);
+
+  /// Shown when Several times is chosen with no time added
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one time, or choose \"No time\".'**
+  String get markEditorNoTimeWarning;
+
+  /// No description provided for @notificationsOffWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off for Sadho, so this reminder will not ring. Turn them on in your phone\'s settings.'**
+  String get notificationsOffWarning;
+
+  /// Stands in for an unlabelled mark's title in the delete confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'this mark'**
+  String get deleteMarkFallbackTitle;
+
+  /// Title of the delete-mark confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this mark?'**
+  String get deleteMarkQuestion;
+
+  /// Body of the delete-mark confirmation dialog, for a repeating mark
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {title} and all of its repeats? Its reminders are removed too.'**
+  String deleteMarkRepeatsBody(String title);
+
+  /// Body of the delete-mark confirmation dialog, for a one-off mark
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {title}? Its reminders are removed too.'**
+  String deleteMarkBody(String title);
+
+  /// Title of the mark editor when creating, and the chip to start a new one
+  ///
+  /// In en, this message translates to:
+  /// **'New mark'**
+  String get newMark;
+
+  /// Title of the mark editor when editing an existing mark
+  ///
+  /// In en, this message translates to:
+  /// **'Edit mark'**
+  String get editMark;
+
+  /// Notice shown when editing a repeating mark
+  ///
+  /// In en, this message translates to:
+  /// **'{repeatSummary}, from {date}. Changes apply to every repeat.'**
+  String repeatFromNotice(String repeatSummary, String date);
+
+  /// Heading of the mark-type chips in the editor
+  ///
+  /// In en, this message translates to:
+  /// **'Mark type'**
+  String get markTypeSectionTitle;
+
+  /// Heading of the icon chips in the editor
+  ///
+  /// In en, this message translates to:
+  /// **'Icon'**
+  String get iconSectionTitle;
+
+  /// The no-icon choice in the editor
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get iconNone;
+
+  /// Label of the mark's text field
+  ///
+  /// In en, this message translates to:
+  /// **'Label'**
+  String get labelFieldLabel;
+
+  /// Label of the mark's notes field
+  ///
+  /// In en, this message translates to:
+  /// **'Details / notes'**
+  String get detailsFieldLabel;
+
+  /// Heading of the reminder section in the editor
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me at'**
+  String get remindMeAtSectionTitle;
+
+  /// Tooltip on a reminder time's delete button
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {time}'**
+  String removeTimeTooltip(String time);
+
+  /// Button that adds another reminder time
+  ///
+  /// In en, this message translates to:
+  /// **'Add time'**
+  String get addTime;
+
+  /// Heading of the repeat chips in the editor
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat'**
+  String get repeatSectionTitle;
+
+  /// Heading of the Home-card section in the editor
+  ///
+  /// In en, this message translates to:
+  /// **'On your home screen'**
+  String get onHomeScreenSectionTitle;
+
+  /// Button showing when a Home card starts
+  ///
+  /// In en, this message translates to:
+  /// **'Show from {time}'**
+  String showFromTime(String time);
+
+  /// Explains the Don't show Home option
+  ///
+  /// In en, this message translates to:
+  /// **'The mark stays on the calendar only.'**
+  String get homeModeNoneExplain;
+
+  /// Explains the Once in the morning Home option
+  ///
+  /// In en, this message translates to:
+  /// **'A card appears on Home at that time. Swipe it away when done: it comes back on the next repeat.'**
+  String get homeModeMorningExplain;
+
+  /// Explains the Keep all day Home option
+  ///
+  /// In en, this message translates to:
+  /// **'A card stays pinned on Home all day (it cannot be swiped away).'**
+  String get homeModeAllDayExplain;
 }
 
 class _AppLocalizationsDelegate

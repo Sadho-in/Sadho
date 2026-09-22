@@ -656,5 +656,411 @@
       }
     }
   },
-  "actionClear": "Clear"
+  "actionClear": "Clear",
+  "today": "Today",
+  "@today": {
+    "description": "A button/label meaning today's date"
+  },
+  "previousMonth": "Previous month",
+  "@previousMonth": {
+    "description": "Semantic label: calendar header chevron"
+  },
+  "nextMonth": "Next month",
+  "@nextMonth": {
+    "description": "Semantic label: calendar header chevron"
+  },
+  "markTypeGood": "Good",
+  "@markTypeGood": {
+    "description": "A marked date's kind: a good day"
+  },
+  "markTypeCautious": "Cautious",
+  "@markTypeCautious": {
+    "description": "A marked date's kind: a cautious day"
+  },
+  "markTypeNeutral": "Neutral",
+  "@markTypeNeutral": {
+    "description": "A marked date's kind: a neutral day"
+  },
+  "reminderModeNone": "No time",
+  "@reminderModeNone": {
+    "description": "When to be reminded: not at all"
+  },
+  "reminderModeOnce": "One time",
+  "@reminderModeOnce": {
+    "description": "When to be reminded: a single time"
+  },
+  "reminderModeSeveral": "Several times",
+  "@reminderModeSeveral": {
+    "description": "When to be reminded: several times"
+  },
+  "repeatRuleOnce": "Once",
+  "@repeatRuleOnce": {
+    "description": "How a mark repeats: not at all"
+  },
+  "repeatRuleDaily": "Daily",
+  "@repeatRuleDaily": {
+    "description": "How a mark repeats: every day"
+  },
+  "repeatRuleWeekly": "Weekly",
+  "@repeatRuleWeekly": {
+    "description": "How a mark repeats: every week"
+  },
+  "repeatRuleMonthly": "Monthly",
+  "@repeatRuleMonthly": {
+    "description": "How a mark repeats: every month"
+  },
+  "repeatRuleQuarterly": "Quarterly",
+  "@repeatRuleQuarterly": {
+    "description": "How a mark repeats: every 3 months"
+  },
+  "repeatRuleHalfYearly": "Half-yearly",
+  "@repeatRuleHalfYearly": {
+    "description": "How a mark repeats: every 6 months"
+  },
+  "repeatRuleYearly": "Yearly",
+  "@repeatRuleYearly": {
+    "description": "How a mark repeats: every year"
+  },
+  "homeModeNone": "Don't show",
+  "@homeModeNone": {
+    "description": "Whether a mark appears on Home: it doesn't"
+  },
+  "homeModeMorning": "Once in the morning",
+  "@homeModeMorning": {
+    "description": "Whether a mark appears on Home: once, in the morning"
+  },
+  "homeModeAllDay": "Keep all day",
+  "@homeModeAllDay": {
+    "description": "Whether a mark appears on Home: pinned all day"
+  },
+  "markStyleDot": "Dot",
+  "@markStyleDot": {
+    "description": "How marked dates are drawn: a small dot"
+  },
+  "markStyleFilled": "Filled",
+  "@markStyleFilled": {
+    "description": "How marked dates are drawn: the whole cell filled"
+  },
+  "markStyleHighlight": "Highlight",
+  "@markStyleHighlight": {
+    "description": "How marked dates are drawn: a soft highlight"
+  },
+  "markStyleCircle": "Circle",
+  "@markStyleCircle": {
+    "description": "How marked dates are drawn: an outlined circle"
+  },
+  "markStyleSquare": "Square",
+  "@markStyleSquare": {
+    "description": "How marked dates are drawn: an outlined square"
+  },
+  "emojiOm": "Om",
+  "@emojiOm": {
+    "description": "Name of an icon offered for a mark"
+  },
+  "emojiKhanda": "Khanda",
+  "@emojiKhanda": {
+    "description": "Name of an icon offered for a mark"
+  },
+  "emojiMala": "Mala",
+  "@emojiMala": {
+    "description": "Name of an icon offered for a mark"
+  },
+  "emojiDiya": "Diya",
+  "@emojiDiya": {
+    "description": "Name of an icon offered for a mark"
+  },
+  "emojiBell": "Bell",
+  "@emojiBell": {
+    "description": "Name of an icon offered for a mark"
+  },
+  "emojiSunrise": "Sunrise",
+  "@emojiSunrise": {
+    "description": "Name of an icon offered for a mark"
+  },
+  "emojiStar": "Star",
+  "@emojiStar": {
+    "description": "Name of an icon offered for a mark"
+  },
+  "emojiSparkle": "Sparkle",
+  "@emojiSparkle": {
+    "description": "Name of an icon offered for a mark"
+  },
+  "emojiMoney": "Money",
+  "@emojiMoney": {
+    "description": "Name of an icon offered for a mark"
+  },
+  "emojiHandshake": "Handshake",
+  "@emojiHandshake": {
+    "description": "Name of an icon offered for a mark"
+  },
+  "emojiAvoid": "Avoid",
+  "@emojiAvoid": {
+    "description": "Name of an icon offered for a mark"
+  },
+  "emojiDone": "Done",
+  "@emojiDone": {
+    "description": "Name of an icon offered for a mark"
+  },
+  "markTitleGood": "Good day",
+  "@markTitleGood": {
+    "description": "Default title of an unlabelled good mark"
+  },
+  "markTitleCautious": "Cautious day",
+  "@markTitleCautious": {
+    "description": "Default title of an unlabelled cautious mark"
+  },
+  "markTitleNeutral": "Neutral day",
+  "@markTitleNeutral": {
+    "description": "Default title of an unlabelled neutral mark"
+  },
+  "reminderBodyGood": "A good day.",
+  "@reminderBodyGood": {
+    "description": "Notification body when a good mark has no details"
+  },
+  "reminderBodyCautious": "Be careful today.",
+  "@reminderBodyCautious": {
+    "description": "Notification body when a cautious mark has no details"
+  },
+  "reminderBodyNeutral": "Marked in your calendar.",
+  "@reminderBodyNeutral": {
+    "description": "Notification body when a neutral mark has no details"
+  },
+  "channelCalendarRemindersName": "Calendar reminders",
+  "@channelCalendarRemindersName": {
+    "description": "Android notification channel name"
+  },
+  "channelCalendarRemindersDesc": "Reminders for the dates you marked in Sadho",
+  "@channelCalendarRemindersDesc": {
+    "description": "Android notification channel description"
+  },
+  "channelAlarmsName": "Alarms and timers",
+  "@channelAlarmsName": {
+    "description": "Android notification channel name"
+  },
+  "channelAlarmsDesc": "The sun-based alarm and finished timers",
+  "@channelAlarmsDesc": {
+    "description": "Android notification channel description"
+  },
+  "repeatSummaryOnce": "Once",
+  "@repeatSummaryOnce": {
+    "description": "Summary of a mark's repeat, shown on its card"
+  },
+  "repeatSummaryDaily": "Every day",
+  "@repeatSummaryDaily": {
+    "description": "Summary of a mark's repeat, shown on its card"
+  },
+  "repeatSummaryWeekly": "Every week",
+  "@repeatSummaryWeekly": {
+    "description": "Summary of a mark's repeat, shown on its card"
+  },
+  "repeatSummaryMonthly": "Every month",
+  "@repeatSummaryMonthly": {
+    "description": "Summary of a mark's repeat, shown on its card"
+  },
+  "repeatSummaryQuarterly": "Every 3 months",
+  "@repeatSummaryQuarterly": {
+    "description": "Summary of a mark's repeat, shown on its card"
+  },
+  "repeatSummaryHalfYearly": "Every 6 months",
+  "@repeatSummaryHalfYearly": {
+    "description": "Summary of a mark's repeat, shown on its card"
+  },
+  "repeatSummaryYearly": "Every year",
+  "@repeatSummaryYearly": {
+    "description": "Summary of a mark's repeat, shown on its card"
+  },
+  "reminderSummaryAt": "Remind at {times}",
+  "@reminderSummaryAt": {
+    "description": "Summary tag on a mark's card",
+    "placeholders": {
+      "times": {
+        "type": "String"
+      }
+    }
+  },
+  "homeSummaryFrom": "On Home from {time}",
+  "@homeSummaryFrom": {
+    "description": "Summary tag on a mark's card",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "homeSummaryAllDay": "On Home all day",
+  "@homeSummaryAllDay": {
+    "description": "Summary tag on a mark's card"
+  },
+  "marksInMonth": "Marks in {month}",
+  "@marksInMonth": {
+    "description": "Heading above the month's list of marks",
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "noMarksInMonth": "Nothing marked in {month}. Tap a date to add a mark.",
+  "@noMarksInMonth": {
+    "description": "Shown when a month has no marks",
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "markStyleSectionTitle": "Mark style",
+  "@markStyleSectionTitle": {
+    "description": "Heading of the mark-style picker card"
+  },
+  "markStyleSectionHint": "How marked dates look. Applies to every mark.",
+  "@markStyleSectionHint": {
+    "description": "Subtitle of the mark-style picker card"
+  },
+  "markStyleSemantic": "{style} mark style",
+  "@markStyleSemantic": {
+    "description": "Screen-reader label for a mark-style choice",
+    "placeholders": {
+      "style": {
+        "type": "String"
+      }
+    }
+  },
+  "dayCellToday": ", today",
+  "@dayCellToday": {
+    "description": "Appended to a calendar day's screen-reader label when it is today"
+  },
+  "dayCellAnd": "and",
+  "@dayCellAnd": {
+    "description": "Joins two or more mark kinds in a calendar day's screen-reader label"
+  },
+  "dayCellMarkedSuffix": "{count, plural, =1{, marked {kinds}, 1 mark} other{, marked {kinds}, {count} marks}}",
+  "@dayCellMarkedSuffix": {
+    "description": "Appended to a calendar day's screen-reader label listing what it is marked as",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "kinds": {
+        "type": "String"
+      }
+    }
+  },
+  "markEditorNoTimeWarning": "Add at least one time, or choose \"No time\".",
+  "@markEditorNoTimeWarning": {
+    "description": "Shown when Several times is chosen with no time added"
+  },
+  "notificationsOffWarning": "Notifications are off for Sadho, so this reminder will not ring. Turn them on in your phone's settings.",
+  "deleteMarkFallbackTitle": "this mark",
+  "@deleteMarkFallbackTitle": {
+    "description": "Stands in for an unlabelled mark's title in the delete confirmation"
+  },
+  "deleteMarkQuestion": "Delete this mark?",
+  "@deleteMarkQuestion": {
+    "description": "Title of the delete-mark confirmation dialog"
+  },
+  "deleteMarkRepeatsBody": "Delete {title} and all of its repeats? Its reminders are removed too.",
+  "@deleteMarkRepeatsBody": {
+    "description": "Body of the delete-mark confirmation dialog, for a repeating mark",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteMarkBody": "Delete {title}? Its reminders are removed too.",
+  "@deleteMarkBody": {
+    "description": "Body of the delete-mark confirmation dialog, for a one-off mark",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "newMark": "New mark",
+  "@newMark": {
+    "description": "Title of the mark editor when creating, and the chip to start a new one"
+  },
+  "editMark": "Edit mark",
+  "@editMark": {
+    "description": "Title of the mark editor when editing an existing mark"
+  },
+  "repeatFromNotice": "{repeatSummary}, from {date}. Changes apply to every repeat.",
+  "@repeatFromNotice": {
+    "description": "Notice shown when editing a repeating mark",
+    "placeholders": {
+      "repeatSummary": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "markTypeSectionTitle": "Mark type",
+  "@markTypeSectionTitle": {
+    "description": "Heading of the mark-type chips in the editor"
+  },
+  "iconSectionTitle": "Icon",
+  "@iconSectionTitle": {
+    "description": "Heading of the icon chips in the editor"
+  },
+  "iconNone": "None",
+  "@iconNone": {
+    "description": "The no-icon choice in the editor"
+  },
+  "labelFieldLabel": "Label",
+  "@labelFieldLabel": {
+    "description": "Label of the mark's text field"
+  },
+  "detailsFieldLabel": "Details / notes",
+  "@detailsFieldLabel": {
+    "description": "Label of the mark's notes field"
+  },
+  "remindMeAtSectionTitle": "Remind me at",
+  "@remindMeAtSectionTitle": {
+    "description": "Heading of the reminder section in the editor"
+  },
+  "removeTimeTooltip": "Remove {time}",
+  "@removeTimeTooltip": {
+    "description": "Tooltip on a reminder time's delete button",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addTime": "Add time",
+  "@addTime": {
+    "description": "Button that adds another reminder time"
+  },
+  "repeatSectionTitle": "Repeat",
+  "@repeatSectionTitle": {
+    "description": "Heading of the repeat chips in the editor"
+  },
+  "onHomeScreenSectionTitle": "On your home screen",
+  "@onHomeScreenSectionTitle": {
+    "description": "Heading of the Home-card section in the editor"
+  },
+  "showFromTime": "Show from {time}",
+  "@showFromTime": {
+    "description": "Button showing when a Home card starts",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "homeModeNoneExplain": "The mark stays on the calendar only.",
+  "@homeModeNoneExplain": {
+    "description": "Explains the Don't show Home option"
+  },
+  "homeModeMorningExplain": "A card appears on Home at that time. Swipe it away when done: it comes back on the next repeat.",
+  "@homeModeMorningExplain": {
+    "description": "Explains the Once in the morning Home option"
+  },
+  "homeModeAllDayExplain": "A card stays pinned on Home all day (it cannot be swiped away).",
+  "@homeModeAllDayExplain": {
+    "description": "Explains the Keep all day Home option"
+  }
 }

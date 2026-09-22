@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
 
+import '../../../l10n/labels.dart';
 import '../../clock/services/tz_init.dart';
 import '../data/calendar_mark.dart';
 import 'reminder_planner.dart';
@@ -56,35 +57,41 @@ class LocalNotificationsScheduler implements ReminderScheduler {
     );
   }
 
-  NotificationDetails get _details => const NotificationDetails(
-        android: AndroidNotificationDetails(
-          _channelId,
-          'Calendar reminders',
-          channelDescription: 'Reminders for the dates you marked in Sadho',
-          importance: Importance.high,
-          priority: Priority.high,
-        ),
-        iOS: DarwinNotificationDetails(),
-      );
+  NotificationDetails get _details {
+    final l = currentL10n();
+    return NotificationDetails(
+      android: AndroidNotificationDetails(
+        _channelId,
+        l.channelCalendarRemindersName,
+        channelDescription: l.channelCalendarRemindersDesc,
+        importance: Importance.high,
+        priority: Priority.high,
+      ),
+      iOS: const DarwinNotificationDetails(),
+    );
+  }
 
   /// Alarm-style: loud, on the ALARM stream (so a muted media volume does not
   /// silence it), and marked as an alarm/timer for the system.
-  NotificationDetails get _alarmDetails => const NotificationDetails(
-        android: AndroidNotificationDetails(
-          _alarmChannelId,
-          'Alarms and timers',
-          channelDescription: 'The sun-based alarm and finished timers',
-          importance: Importance.max,
-          priority: Priority.max,
-          category: AndroidNotificationCategory.alarm,
-          audioAttributesUsage: AudioAttributesUsage.alarm,
-        ),
-        iOS: DarwinNotificationDetails(
-          presentAlert: true,
-          presentSound: true,
-          interruptionLevel: InterruptionLevel.timeSensitive,
-        ),
-      );
+  NotificationDetails get _alarmDetails {
+    final l = currentL10n();
+    return NotificationDetails(
+      android: AndroidNotificationDetails(
+        _alarmChannelId,
+        l.channelAlarmsName,
+        channelDescription: l.channelAlarmsDesc,
+        importance: Importance.max,
+        priority: Priority.max,
+        category: AndroidNotificationCategory.alarm,
+        audioAttributesUsage: AudioAttributesUsage.alarm,
+      ),
+      iOS: const DarwinNotificationDetails(
+        presentAlert: true,
+        presentSound: true,
+        interruptionLevel: InterruptionLevel.timeSensitive,
+      ),
+    );
+  }
 
   @override
   Future<bool> requestPermission() async {
@@ -155,7 +162,7 @@ class LocalNotificationsScheduler implements ReminderScheduler {
   }
 
   Future<void> _scheduleAll(CalendarMark mark) async {
-    for (final p in planReminders(mark, DateTime.now())) {
+    for (final p in planReminders(mark, DateTime.now(), l10n: currentL10n())) {
       try {
         await _zoned(p);
       } catch (e) {

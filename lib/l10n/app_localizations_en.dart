@@ -796,4 +796,299 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get actionClear => 'Clear';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get previousMonth => 'Previous month';
+
+  @override
+  String get nextMonth => 'Next month';
+
+  @override
+  String get markTypeGood => 'Good';
+
+  @override
+  String get markTypeCautious => 'Cautious';
+
+  @override
+  String get markTypeNeutral => 'Neutral';
+
+  @override
+  String get reminderModeNone => 'No time';
+
+  @override
+  String get reminderModeOnce => 'One time';
+
+  @override
+  String get reminderModeSeveral => 'Several times';
+
+  @override
+  String get repeatRuleOnce => 'Once';
+
+  @override
+  String get repeatRuleDaily => 'Daily';
+
+  @override
+  String get repeatRuleWeekly => 'Weekly';
+
+  @override
+  String get repeatRuleMonthly => 'Monthly';
+
+  @override
+  String get repeatRuleQuarterly => 'Quarterly';
+
+  @override
+  String get repeatRuleHalfYearly => 'Half-yearly';
+
+  @override
+  String get repeatRuleYearly => 'Yearly';
+
+  @override
+  String get homeModeNone => 'Don\'t show';
+
+  @override
+  String get homeModeMorning => 'Once in the morning';
+
+  @override
+  String get homeModeAllDay => 'Keep all day';
+
+  @override
+  String get markStyleDot => 'Dot';
+
+  @override
+  String get markStyleFilled => 'Filled';
+
+  @override
+  String get markStyleHighlight => 'Highlight';
+
+  @override
+  String get markStyleCircle => 'Circle';
+
+  @override
+  String get markStyleSquare => 'Square';
+
+  @override
+  String get emojiOm => 'Om';
+
+  @override
+  String get emojiKhanda => 'Khanda';
+
+  @override
+  String get emojiMala => 'Mala';
+
+  @override
+  String get emojiDiya => 'Diya';
+
+  @override
+  String get emojiBell => 'Bell';
+
+  @override
+  String get emojiSunrise => 'Sunrise';
+
+  @override
+  String get emojiStar => 'Star';
+
+  @override
+  String get emojiSparkle => 'Sparkle';
+
+  @override
+  String get emojiMoney => 'Money';
+
+  @override
+  String get emojiHandshake => 'Handshake';
+
+  @override
+  String get emojiAvoid => 'Avoid';
+
+  @override
+  String get emojiDone => 'Done';
+
+  @override
+  String get markTitleGood => 'Good day';
+
+  @override
+  String get markTitleCautious => 'Cautious day';
+
+  @override
+  String get markTitleNeutral => 'Neutral day';
+
+  @override
+  String get reminderBodyGood => 'A good day.';
+
+  @override
+  String get reminderBodyCautious => 'Be careful today.';
+
+  @override
+  String get reminderBodyNeutral => 'Marked in your calendar.';
+
+  @override
+  String get channelCalendarRemindersName => 'Calendar reminders';
+
+  @override
+  String get channelCalendarRemindersDesc =>
+      'Reminders for the dates you marked in Sadho';
+
+  @override
+  String get channelAlarmsName => 'Alarms and timers';
+
+  @override
+  String get channelAlarmsDesc => 'The sun-based alarm and finished timers';
+
+  @override
+  String get repeatSummaryOnce => 'Once';
+
+  @override
+  String get repeatSummaryDaily => 'Every day';
+
+  @override
+  String get repeatSummaryWeekly => 'Every week';
+
+  @override
+  String get repeatSummaryMonthly => 'Every month';
+
+  @override
+  String get repeatSummaryQuarterly => 'Every 3 months';
+
+  @override
+  String get repeatSummaryHalfYearly => 'Every 6 months';
+
+  @override
+  String get repeatSummaryYearly => 'Every year';
+
+  @override
+  String reminderSummaryAt(String times) {
+    return 'Remind at $times';
+  }
+
+  @override
+  String homeSummaryFrom(String time) {
+    return 'On Home from $time';
+  }
+
+  @override
+  String get homeSummaryAllDay => 'On Home all day';
+
+  @override
+  String marksInMonth(String month) {
+    return 'Marks in $month';
+  }
+
+  @override
+  String noMarksInMonth(String month) {
+    return 'Nothing marked in $month. Tap a date to add a mark.';
+  }
+
+  @override
+  String get markStyleSectionTitle => 'Mark style';
+
+  @override
+  String get markStyleSectionHint =>
+      'How marked dates look. Applies to every mark.';
+
+  @override
+  String markStyleSemantic(String style) {
+    return '$style mark style';
+  }
+
+  @override
+  String get dayCellToday => ', today';
+
+  @override
+  String get dayCellAnd => 'and';
+
+  @override
+  String dayCellMarkedSuffix(int count, String kinds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: ', marked $kinds, $count marks',
+      one: ', marked $kinds, 1 mark',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get markEditorNoTimeWarning =>
+      'Add at least one time, or choose \"No time\".';
+
+  @override
+  String get notificationsOffWarning =>
+      'Notifications are off for Sadho, so this reminder will not ring. Turn them on in your phone\'s settings.';
+
+  @override
+  String get deleteMarkFallbackTitle => 'this mark';
+
+  @override
+  String get deleteMarkQuestion => 'Delete this mark?';
+
+  @override
+  String deleteMarkRepeatsBody(String title) {
+    return 'Delete $title and all of its repeats? Its reminders are removed too.';
+  }
+
+  @override
+  String deleteMarkBody(String title) {
+    return 'Delete $title? Its reminders are removed too.';
+  }
+
+  @override
+  String get newMark => 'New mark';
+
+  @override
+  String get editMark => 'Edit mark';
+
+  @override
+  String repeatFromNotice(String repeatSummary, String date) {
+    return '$repeatSummary, from $date. Changes apply to every repeat.';
+  }
+
+  @override
+  String get markTypeSectionTitle => 'Mark type';
+
+  @override
+  String get iconSectionTitle => 'Icon';
+
+  @override
+  String get iconNone => 'None';
+
+  @override
+  String get labelFieldLabel => 'Label';
+
+  @override
+  String get detailsFieldLabel => 'Details / notes';
+
+  @override
+  String get remindMeAtSectionTitle => 'Remind me at';
+
+  @override
+  String removeTimeTooltip(String time) {
+    return 'Remove $time';
+  }
+
+  @override
+  String get addTime => 'Add time';
+
+  @override
+  String get repeatSectionTitle => 'Repeat';
+
+  @override
+  String get onHomeScreenSectionTitle => 'On your home screen';
+
+  @override
+  String showFromTime(String time) {
+    return 'Show from $time';
+  }
+
+  @override
+  String get homeModeNoneExplain => 'The mark stays on the calendar only.';
+
+  @override
+  String get homeModeMorningExplain =>
+      'A card appears on Home at that time. Swipe it away when done: it comes back on the next repeat.';
+
+  @override
+  String get homeModeAllDayExplain =>
+      'A card stays pinned on Home all day (it cannot be swiped away).';
 }

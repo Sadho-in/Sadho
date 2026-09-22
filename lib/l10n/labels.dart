@@ -1,3 +1,8 @@
+import 'package:flutter/widgets.dart';
+
+import '../core/storage/app_storage.dart';
+import '../features/calendar/application/mark_style_provider.dart' show MarkStyle;
+import '../features/calendar/data/calendar_mark.dart';
 import '../features/sadhana/application/sadhana_session_provider.dart' show CountMode;
 import '../features/sadhana/application/rhythm_pace.dart' show PaceUnit;
 import '../features/sadhana/data/ringtone.dart';
@@ -59,3 +64,94 @@ String sadhanaEngineMessage(AppLocalizations l, String english) => switch (engli
         l.voiceCouldNotRestart,
       _ => english,
     };
+
+// ---- Calendar --------------------------------------------------------------
+
+extension MarkTypeL10n on MarkType {
+  String localized(AppLocalizations l) => switch (this) {
+        MarkType.good => l.markTypeGood,
+        MarkType.cautious => l.markTypeCautious,
+        MarkType.neutral => l.markTypeNeutral,
+      };
+}
+
+extension ReminderModeL10n on ReminderMode {
+  String localized(AppLocalizations l) => switch (this) {
+        ReminderMode.none => l.reminderModeNone,
+        ReminderMode.once => l.reminderModeOnce,
+        ReminderMode.several => l.reminderModeSeveral,
+      };
+}
+
+extension RepeatRuleL10n on RepeatRule {
+  String localized(AppLocalizations l) => switch (this) {
+        RepeatRule.once => l.repeatRuleOnce,
+        RepeatRule.daily => l.repeatRuleDaily,
+        RepeatRule.weekly => l.repeatRuleWeekly,
+        RepeatRule.monthly => l.repeatRuleMonthly,
+        RepeatRule.quarterly => l.repeatRuleQuarterly,
+        RepeatRule.halfYearly => l.repeatRuleHalfYearly,
+        RepeatRule.yearly => l.repeatRuleYearly,
+      };
+}
+
+extension HomeModeL10n on HomeMode {
+  String localized(AppLocalizations l) => switch (this) {
+        HomeMode.none => l.homeModeNone,
+        HomeMode.morning => l.homeModeMorning,
+        HomeMode.allDay => l.homeModeAllDay,
+      };
+}
+
+extension MarkStyleL10n on MarkStyle {
+  String localized(AppLocalizations l) => switch (this) {
+        MarkStyle.dot => l.markStyleDot,
+        MarkStyle.filled => l.markStyleFilled,
+        MarkStyle.highlight => l.markStyleHighlight,
+        MarkStyle.circle => l.markStyleCircle,
+        MarkStyle.square => l.markStyleSquare,
+      };
+}
+
+/// The spoken name of one of [markEmojis] (tooltip, screen reader).
+String emojiName(AppLocalizations l, String emoji) => switch (emoji) {
+      '🕉' => l.emojiOm,
+      '☬' => l.emojiKhanda,
+      '📿' => l.emojiMala,
+      '🪔' => l.emojiDiya,
+      '🔔' => l.emojiBell,
+      '🌅' => l.emojiSunrise,
+      '⭐' => l.emojiStar,
+      '✦' => l.emojiSparkle,
+      '💰' => l.emojiMoney,
+      '🤝' => l.emojiHandshake,
+      '🚫' => l.emojiAvoid,
+      '✅' => l.emojiDone,
+      _ => emoji,
+    };
+
+extension CalendarMarkL10n on CalendarMark {
+  /// [title], but in the chosen language: the label if there is one,
+  /// otherwise "Good day" / "Cautious day" / "Neutral day" for [type].
+  String titleIn(AppLocalizations l) {
+    final trimmed = label.trim();
+    if (trimmed.isNotEmpty) return trimmed;
+    return switch (type) {
+      MarkType.good => l.markTitleGood,
+      MarkType.cautious => l.markTitleCautious,
+      MarkType.neutral => l.markTitleNeutral,
+    };
+  }
+}
+
+/// The app's texts read directly from Hive, for calendar/notification code
+/// with neither a `ref` nor a BuildContext (a reminder planned for the OS
+/// scheduler, ahead of any widget tree). Falls back to English the same way
+/// `LanguageNotifier` falls back to English: nothing saved yet, or a saved
+/// code with no matching language.
+AppLocalizations currentL10n() {
+  final code = AppStorage.settings.get('language') as String? ?? 'en';
+  final locale = AppLocalizations.supportedLocales
+      .firstWhere((l) => l.languageCode == code, orElse: () => const Locale('en'));
+  return lookupAppLocalizations(locale);
+}

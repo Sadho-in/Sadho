@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 import '../../application/mark_style_provider.dart';
 import '../../data/calendar_mark.dart';
 import 'mark_glyph.dart';
@@ -16,16 +18,17 @@ class MarkStylePicker extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selected = ref.watch(markStyleProvider);
     final theme = Theme.of(context);
+    final l = context.l10n;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Mark style', style: theme.textTheme.titleMedium),
+            Text(l.markStyleSectionTitle, style: theme.textTheme.titleMedium),
             const SizedBox(height: 2),
             Text(
-              'How marked dates look. Applies to every mark.',
+              l.markStyleSectionHint,
               style: theme.textTheme.bodySmall
                   ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
             ),
@@ -63,10 +66,11 @@ class _StyleTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     return Semantics(
       button: true,
       selected: selected,
-      label: '${style.label} mark style',
+      label: l.markStyleSemantic(style.localized(l)),
       excludeSemantics: true,
       onTap: onTap,
       child: InkWell(
@@ -105,7 +109,7 @@ class _StyleTile extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                style.label,
+                style.localized(l),
                 style: theme.textTheme.labelSmall?.copyWith(
                   fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
                 ),
@@ -127,6 +131,7 @@ class MarkLegend extends StatelessWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final b = theme.brightness;
+    final l = context.l10n;
     Widget item(Widget swatch, String label) => Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -152,7 +157,7 @@ class MarkLegend extends StatelessWidget {
                 border: Border.all(color: MarkPalette.outline(t, b), width: 1.5),
               ),
             ),
-            t.label,
+            t.localized(l),
           ),
         item(
           Container(
@@ -162,7 +167,7 @@ class MarkLegend extends StatelessWidget {
             decoration:
                 BoxDecoration(color: scheme.secondary, shape: BoxShape.circle),
           ),
-          'Today',
+          l.today,
         ),
       ],
     );

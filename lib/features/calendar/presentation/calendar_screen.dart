@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../l10n/l10n.dart';
 import '../application/calendar_marks_provider.dart';
 import '../application/mark_style_provider.dart';
 import '../application/now_provider.dart';
@@ -29,6 +30,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     final marks = ref.watch(calendarMarksProvider);
     final style = ref.watch(markStyleProvider);
     final now = ref.watch(nowProvider);
@@ -54,7 +56,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                         key: const ValueKey('go-today'),
                         onPressed: () => setState(() => _focused = today),
                         icon: const Icon(Icons.today, size: 18),
-                        label: const Text('Today'),
+                        label: Text(l.today),
                         style: TextButton.styleFrom(
                           visualDensity: VisualDensity.compact,
                         ),
@@ -83,10 +85,10 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                         titleCentered: true,
                         titleTextStyle: theme.textTheme.titleLarge!,
                         leftChevronIcon: Icon(Icons.chevron_left,
-                            semanticLabel: 'Previous month',
+                            semanticLabel: l.previousMonth,
                             color: scheme.onSurface),
                         rightChevronIcon: Icon(Icons.chevron_right,
-                            semanticLabel: 'Next month',
+                            semanticLabel: l.nextMonth,
                             color: scheme.onSurface),
                       ),
                       daysOfWeekStyle: DaysOfWeekStyle(
@@ -118,13 +120,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             const SizedBox(height: 12),
             const MarkStylePicker(),
             const SizedBox(height: 20),
-            Text('Marks in $monthName', style: theme.textTheme.titleMedium),
+            Text(l.marksInMonth(monthName), style: theme.textTheme.titleMedium),
             const SizedBox(height: 8),
             if (inMonth.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Text(
-                  'Nothing marked in $monthName. Tap a date to add a mark.',
+                  l.noMarksInMonth(monthName),
                   key: const ValueKey('no-marks'),
                   style: theme.textTheme.bodyMedium
                       ?.copyWith(color: scheme.onSurfaceVariant),
