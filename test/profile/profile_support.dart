@@ -88,6 +88,7 @@ ProfileRig profileRig({
   FakeLocationService? location,
   Map<String, Object?> saved = const {},
   List<Override> extra = const [],
+  bool resetStorage = true,
 }) {
   final clock = FakeClock(now ?? clockTestNow());
   final sched = scheduler ?? FakeScheduler();
@@ -98,6 +99,7 @@ ProfileRig profileRig({
     scheduler: sched,
     location: phone,
     saved: saved,
+    resetStorage: resetStorage,
     extra: [
       backupFilesProvider.overrideWithValue(f),
       // The Profile page shows a Sadhana setting, which builds the session and

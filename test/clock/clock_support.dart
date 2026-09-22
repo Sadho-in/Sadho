@@ -104,6 +104,10 @@ List<Override> clockOverrides({
 }
 
 /// A container for provider tests (fresh in-memory storage, holding [saved]).
+///
+/// [resetStorage] false reuses whatever is already in [AppStorage] instead of
+/// replacing it with a fresh empty store — for a container that simulates
+/// reopening the app on the same (fake) phone, as a relaunch really would.
 ProviderContainer clockContainer({
   FakeClock? clock,
   FakeScheduler? scheduler,
@@ -113,8 +117,9 @@ ProviderContainer clockContainer({
   FakeSound? sound,
   Map<String, Object?> saved = const {},
   List<Override> extra = const [],
+  bool resetStorage = true,
 }) {
-  AppStorage.useMemoryForTests();
+  if (resetStorage) AppStorage.useMemoryForTests();
   // Whatever an earlier run of the app would have left in the settings box.
   saved.forEach(AppStorage.settings.put);
   final c = ProviderContainer(
