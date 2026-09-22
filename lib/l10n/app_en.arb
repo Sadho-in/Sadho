@@ -2153,5 +2153,13 @@
   "sadhanaTimeNotifBody": "Take a few quiet minutes for your paath or mantra 🙏",
   "@sadhanaTimeNotifBody": {
     "description": "Notification body for the daily reminder"
+  },
+  "comingSoon": "Coming soon",
+  "@comingSoon": {
+    "description": "Placeholder body for a tab that is not built yet"
+  },
+  "trainAction": "Train",
+  "@trainAction": {
+    "description": "Snack bar action: opens voice training for a mantra"
   }
 }

@@ -1851,4 +1851,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get sadhanaTimeNotifBody =>
       'Take a few quiet minutes for your paath or mantra 🙏';
+
+  @override
+  String get comingSoon => 'Coming soon';
+
+  @override
+  String get trainAction => 'Train';
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/l10n.dart';
+
 /// Shared placeholder body for tabs that are not built yet.
 class ComingSoon extends StatelessWidget {
   const ComingSoon({super.key, required this.title, required this.icon});
@@ -19,7 +21,7 @@ class ComingSoon extends StatelessWidget {
           Text(title, style: theme.textTheme.headlineMedium),
           const SizedBox(height: 8),
           Text(
-            'Coming soon',
+            context.l10n.comingSoon,
             style: theme.textTheme.bodyLarge?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),

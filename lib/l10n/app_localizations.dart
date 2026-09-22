@@ -3231,6 +3231,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Take a few quiet minutes for your paath or mantra 🙏'**
   String get sadhanaTimeNotifBody;
+
+  /// Placeholder body for a tab that is not built yet
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get comingSoon;
+
+  /// Snack bar action: opens voice training for a mantra
+  ///
+  /// In en, this message translates to:
+  /// **'Train'**
+  String get trainAction;
 }
 
 class _AppLocalizationsDelegate

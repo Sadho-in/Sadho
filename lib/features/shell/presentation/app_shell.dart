@@ -72,11 +72,11 @@ class AppShell extends ConsumerWidget {
           content: Text(notice.message),
           duration: const Duration(seconds: 7),
           action: notice.openSettings
-              ? SnackBarAction(label: 'Settings', onPressed: openAppSettings)
+              ? SnackBarAction(label: l.settingsAction, onPressed: openAppSettings)
               : (notice.trainMantraId == null
                   ? null
                   : SnackBarAction(
-                      label: 'Train',
+                      label: l.trainAction,
                       onPressed: () {
                         final id = notice.trainMantraId;
                         final library = ref.read(mantraLibraryProvider);
