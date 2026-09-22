@@ -1,0 +1,26 @@
+{
+  "@@locale": "en",
+
+  "navHome": "Home",
+  "@navHome": {"description": "Bottom navigation: the Home tab"},
+  "navSadhana": "Sadhana",
+  "@navSadhana": {"description": "Bottom navigation: the Sadhana tab"},
+  "navCalendar": "Calendar",
+  "@navCalendar": {"description": "Bottom navigation: the Calendar tab"},
+  "navClock": "Clock",
+  "@navClock": {"description": "Bottom navigation: the Clock tab"},
+
+  "tooltipLanguage": "Language",
+  "@tooltipLanguage": {"description": "Top bar icon button: opens the language picker"},
+  "tooltipProfile": "Profile",
+  "@tooltipProfile": {"description": "Top bar avatar: opens the Profile page"},
+  "tooltipSwitchToLight": "Switch to light theme",
+  "@tooltipSwitchToLight": {"description": "Top bar icon button, shown while in dark mode"},
+  "tooltipSwitchToDark": "Switch to dark theme",
+  "@tooltipSwitchToDark": {"description": "Top bar icon button, shown while in light mode"},
+
+  "languageSheetTitle": "Language",
+  "@languageSheetTitle": {"description": "Heading of the language-picker sheet"},
+  "languageSheetSubtitle": "Your choice is saved and applies right away.",
+  "@languageSheetSubtitle": {"description": "Explanation under the language-picker heading"}
+}

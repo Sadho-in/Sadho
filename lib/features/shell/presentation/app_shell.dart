@@ -4,6 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/theme_provider.dart';
+import '../../../l10n/l10n.dart';
 import '../../calendar/presentation/calendar_screen.dart';
 import '../../clock/presentation/clock_screen.dart';
 import '../../home/presentation/home_screen.dart';
@@ -16,6 +17,9 @@ import '../../profile/application/profile_provider.dart';
 import 'language_sheet.dart';
 
 /// The bottom navigation, left to right. Home is first and opens by default.
+///
+/// [label] is the English name — used for logs/tests/debugging; the tab bar
+/// itself shows [ShellTabL10n.localized].
 enum ShellTab {
   home('Home', Icons.home_outlined, Icons.home),
   sadhana('Sadhana', Icons.self_improvement_outlined, Icons.self_improvement),
@@ -26,6 +30,15 @@ enum ShellTab {
   final String label;
   final IconData icon;
   final IconData selectedIcon;
+}
+
+extension ShellTabL10n on ShellTab {
+  String localized(AppLocalizations l) => switch (this) {
+        ShellTab.home => l.navHome,
+        ShellTab.sadhana => l.navSadhana,
+        ShellTab.calendar => l.navCalendar,
+        ShellTab.clock => l.navClock,
+      };
 }
 
 final shellTabProvider =
@@ -47,6 +60,7 @@ class AppShell extends ConsumerWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final profile = ref.watch(profileProvider);
+    final l = context.l10n;
 
     // Session messages (permission denied, unsupported mode...). Listening
     // here, above every route, shows them once and over Focus mode too.
@@ -80,12 +94,12 @@ class AppShell extends ConsumerWidget {
         title: Text(AppConstants.appName),
         actions: [
           IconButton(
-            tooltip: 'Language',
+            tooltip: l.tooltipLanguage,
             icon: const Icon(Icons.translate),
             onPressed: () => showLanguageSheet(context),
           ),
           IconButton(
-            tooltip: isDark ? 'Switch to light theme' : 'Switch to dark theme',
+            tooltip: isDark ? l.tooltipSwitchToLight : l.tooltipSwitchToDark,
             icon: Icon(isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
             onPressed: () =>
                 ref.read(themeModeProvider.notifier).toggle(theme.brightness),
@@ -93,7 +107,7 @@ class AppShell extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(left: 4, right: 12),
             child: Tooltip(
-              message: 'Profile',
+              message: l.tooltipProfile,
               child: InkResponse(
                 radius: 22,
                 onTap: () => Navigator.of(context).push(
@@ -134,7 +148,7 @@ class AppShell extends ConsumerWidget {
             NavigationDestination(
               icon: Icon(t.icon),
               selectedIcon: Icon(t.selectedIcon),
-              label: t.label,
+              label: t.localized(l),
             ),
         ],
       ),

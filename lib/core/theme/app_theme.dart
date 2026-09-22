@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../l10n/fonts.dart';
 import 'palettes.dart';
 
 /// Sadho's warm devotional palette.
@@ -19,9 +20,17 @@ class AppTheme {
   static ThemeData get light => build(defaultPalette, Brightness.light);
   static ThemeData get dark => build(defaultPalette, Brightness.dark);
 
-  /// The theme for [palette] in [brightness].
-  static ThemeData build(SadhoPalette palette, Brightness brightness) =>
-      _build(colorScheme(palette, brightness));
+  /// The theme for [palette] in [brightness]. [languageCode] (e.g. 'hi',
+  /// 'pa') adds that language's bundled Noto font as a fallback throughout
+  /// the UI text, so a translated interface renders its own script instead of
+  /// tofu boxes or an inconsistent system font. Omit it (or pass 'en', or an
+  /// unrecognised code) for the plain Latin theme.
+  static ThemeData build(
+    SadhoPalette palette,
+    Brightness brightness, [
+    String? languageCode,
+  ]) =>
+      _build(colorScheme(palette, brightness), languageCode);
 
   /// Just the colours (no fonts), for palette previews and tests.
   static ColorScheme colorScheme(SadhoPalette palette, Brightness brightness) {
@@ -48,13 +57,13 @@ class AppTheme {
     );
   }
 
-  static ThemeData _build(ColorScheme scheme) {
+  static ThemeData _build(ColorScheme scheme, String? languageCode) {
     final base = ThemeData(
       useMaterial3: true,
       brightness: scheme.brightness,
       colorScheme: scheme,
     );
-    final text = _textTheme(base.textTheme);
+    final text = _textTheme(base.textTheme, languageCode);
 
     return base.copyWith(
       scaffoldBackgroundColor: scheme.surface,
@@ -111,18 +120,49 @@ class AppTheme {
     );
   }
 
-  /// Fraunces for display/headline/large titles, Karla for everything else.
-  static TextTheme _textTheme(TextTheme base) {
+  /// Fraunces for display/headline/large titles, Karla for everything else —
+  /// each with [languageCode]'s bundled Noto font (if any) added as a
+  /// fallback, so every style keeps rendering that language's script.
+  static TextTheme _textTheme(TextTheme base, String? languageCode) {
     final body = GoogleFonts.karlaTextTheme(base);
     final heading = GoogleFonts.frauncesTextTheme(base);
-    return body.copyWith(
-      displayLarge: heading.displayLarge,
-      displayMedium: heading.displayMedium,
-      displaySmall: heading.displaySmall,
-      headlineLarge: heading.headlineLarge,
-      headlineMedium: heading.headlineMedium,
-      headlineSmall: heading.headlineSmall,
-      titleLarge: heading.titleLarge,
+    final noto = languageCode == null ? null : ScriptFonts.forLanguage(languageCode);
+    return _withFallback(
+      body.copyWith(
+        displayLarge: heading.displayLarge,
+        displayMedium: heading.displayMedium,
+        displaySmall: heading.displaySmall,
+        headlineLarge: heading.headlineLarge,
+        headlineMedium: heading.headlineMedium,
+        headlineSmall: heading.headlineSmall,
+        titleLarge: heading.titleLarge,
+      ),
+      noto,
+    );
+  }
+
+  /// Adds [family] to every style's fallback list (after whatever is already
+  /// there), or returns [theme] unchanged if [family] is null.
+  static TextTheme _withFallback(TextTheme theme, String? family) {
+    if (family == null) return theme;
+    TextStyle? add(TextStyle? s) =>
+        s?.copyWith(fontFamilyFallback: [...?s.fontFamilyFallback, family]);
+    return TextTheme(
+      displayLarge: add(theme.displayLarge),
+      displayMedium: add(theme.displayMedium),
+      displaySmall: add(theme.displaySmall),
+      headlineLarge: add(theme.headlineLarge),
+      headlineMedium: add(theme.headlineMedium),
+      headlineSmall: add(theme.headlineSmall),
+      titleLarge: add(theme.titleLarge),
+      titleMedium: add(theme.titleMedium),
+      titleSmall: add(theme.titleSmall),
+      bodyLarge: add(theme.bodyLarge),
+      bodyMedium: add(theme.bodyMedium),
+      bodySmall: add(theme.bodySmall),
+      labelLarge: add(theme.labelLarge),
+      labelMedium: add(theme.labelMedium),
+      labelSmall: add(theme.labelSmall),
     );
   }
 }

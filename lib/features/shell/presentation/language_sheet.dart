@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../l10n/l10n.dart';
 import '../language_provider.dart';
 
 /// The language chooser (a bottom sheet), from the top bar and from Profile.
@@ -19,6 +20,7 @@ class LanguageSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selected = ref.watch(languageProvider);
     final theme = Theme.of(context);
+    final loc = context.l10n;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
@@ -26,10 +28,10 @@ class LanguageSheet extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Language', style: theme.textTheme.titleLarge),
+            Text(loc.languageSheetTitle, style: theme.textTheme.titleLarge),
             const SizedBox(height: 4),
             Text(
-              'Your choice is saved. Translations arrive in a later phase.',
+              loc.languageSheetSubtitle,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -44,11 +46,11 @@ class LanguageSheet extends ConsumerWidget {
               },
               child: Column(
                 children: [
-                  for (final l in appLanguages)
+                  for (final lang in appLanguages)
                     RadioListTile<String>(
-                      value: l.code,
-                      title: Text(l.nativeName),
-                      subtitle: Text(l.name),
+                      value: lang.code,
+                      title: Text(lang.nativeName),
+                      subtitle: Text(lang.name),
                     ),
                 ],
               ),

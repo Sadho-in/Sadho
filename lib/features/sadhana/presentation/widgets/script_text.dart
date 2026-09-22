@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
-/// Text in Devanagari / Gurmukhi etc. Karla and Fraunces do not carry these
-/// glyphs, so the system's Noto fallback fonts render them; a slightly taller
-/// line height keeps matras and vowel signs from clipping.
-///
-/// TODO(later-phase): bundle Noto Sans Devanagari/Gurmukhi so rendering is
-/// identical on every device.
+import '../../../../l10n/fonts.dart';
+
+/// Text in Devanagari / Gurmukhi / Bengali / Gujarati / Tamil / Telugu /
+/// Kannada — a mantra's script or transliteration, in whichever of these it
+/// is written, regardless of the app's own UI language. Karla and Fraunces
+/// (the app's own fonts) do not carry these glyphs, so the bundled Noto Sans
+/// fonts (`assets/fonts/`, declared in pubspec.yaml) are offered as
+/// fallbacks, rendering identically on every device rather than depending on
+/// whatever the system happens to have. A slightly taller line height keeps
+/// matras and vowel signs from clipping.
 class ScriptText extends StatelessWidget {
   const ScriptText(
     this.text, {
@@ -26,7 +30,9 @@ class ScriptText extends StatelessWidget {
         maxLines: maxLines,
         textAlign: textAlign,
         overflow: maxLines == null ? null : TextOverflow.ellipsis,
-        style: (style ?? Theme.of(context).textTheme.titleMedium)
-            ?.copyWith(height: 1.5),
+        style: (style ?? Theme.of(context).textTheme.titleMedium)?.copyWith(
+          height: 1.5,
+          fontFamilyFallback: ScriptFonts.all,
+        ),
       );
 }

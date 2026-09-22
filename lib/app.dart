@@ -7,6 +7,8 @@ import 'core/theme/theme_provider.dart';
 import 'features/clock/application/sun_alarm_provider.dart';
 import 'features/profile/application/daily_reminder_provider.dart';
 import 'features/shell/presentation/app_shell.dart';
+import 'l10n/app_localizations.dart';
+import 'l10n/locale_provider.dart';
 
 class SadhoApp extends ConsumerWidget {
   const SadhoApp({super.key});
@@ -18,12 +20,16 @@ class SadhoApp extends ConsumerWidget {
     ref.watch(sunAlarmProvider);
     ref.watch(dailyReminderProvider);
     final palette = ref.watch(paletteProvider);
+    final locale = ref.watch(localeProvider);
     return MaterialApp(
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.build(palette, Brightness.light),
-      darkTheme: AppTheme.build(palette, Brightness.dark),
+      theme: AppTheme.build(palette, Brightness.light, locale.languageCode),
+      darkTheme: AppTheme.build(palette, Brightness.dark, locale.languageCode),
       themeMode: ref.watch(themeModeProvider),
+      locale: locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: const AppShell(),
     );
   }

@@ -1,0 +1,15 @@
+# Sadho localization config. `flutter gen-l10n` (run automatically before
+# `flutter test`/`analyze`/`run`/`build` because `generate: true` is set in
+# pubspec.yaml) reads lib/l10n/app_<code>.arb and writes AppLocalizations to
+# lib/l10n/app_localizations*.dart.
+#
+# app_en.arb is the template: it is the source of truth for which keys exist
+# and carries the @-metadata (descriptions, placeholders). Every other
+# app_<code>.arb must define the same keys; gen-l10n warns (not errors) if one
+# is missing a key and falls back to English for it at runtime.
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+output-dir: lib/l10n
+output-class: AppLocalizations
+nullable-getter: false
