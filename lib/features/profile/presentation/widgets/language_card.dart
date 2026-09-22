@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/l10n.dart';
 import '../../../shell/language_provider.dart';
 import '../../../shell/presentation/language_sheet.dart';
 
-/// The app language. It is saved; real translations come with the i18n phase.
-///
-/// TODO(later-phase): wire the language into flutter_localizations.
+/// The app language: saved, and applied across the whole app at once.
 class LanguageCard extends ConsumerWidget {
   const LanguageCard({super.key});
 
@@ -20,8 +19,8 @@ class LanguageCard extends ConsumerWidget {
       child: ListTile(
         key: const ValueKey('profile-language'),
         leading: const Icon(Icons.translate),
-        title: const Text('Language'),
-        subtitle: Text('${lang.nativeName} · translations arrive in a later phase',
+        title: Text(context.l10n.tooltipLanguage),
+        subtitle: Text(lang.nativeName,
             style: TextStyle(color: theme.colorScheme.onSurfaceVariant)),
         trailing: const Icon(Icons.chevron_right),
         onTap: () => showLanguageSheet(context),

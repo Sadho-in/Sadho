@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/storage/app_storage.dart';
+import '../../../l10n/l10n.dart';
+import '../../../l10n/locale_provider.dart';
 import '../../home/application/plans_provider.dart';
 import '../../home/application/tradition_provider.dart';
 import 'daily_reminder_provider.dart';
@@ -9,15 +11,16 @@ const maxNameLength = 60;
 
 /// "Enter a valid email address", or null if [v] is fine. An empty email is
 /// allowed (it is optional).
-String? validateEmail(String v) {
+String? validateEmail(String v, [AppLocalizations? l10n]) {
   final s = v.trim();
   if (s.isEmpty) return null;
   final ok = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@.]{2,}$').hasMatch(s);
-  return ok ? null : 'Enter a valid email address';
+  return ok ? null : (l10n ?? englishL10n).validEmailError;
 }
 
-String? validateName(String v) =>
-    v.trim().length > maxNameLength ? 'Keep it under $maxNameLength characters' : null;
+String? validateName(String v, [AppLocalizations? l10n]) => v.trim().length > maxNameLength
+    ? (l10n ?? englishL10n).nameTooLong(maxNameLength)
+    : null;
 
 class UserProfile {
   const UserProfile({this.name = '', this.email = ''});
@@ -95,11 +98,12 @@ final profileCompletionProvider = Provider<ProfileCompletion>((ref) {
   final tradition = ref.watch(traditionProvider);
   final reminder = ref.watch(dailyReminderProvider);
   final plans = ref.watch(plansProvider);
+  final l = ref.watch(l10nProvider);
   return ProfileCompletion([
-    CompletionStep('name', 'Add your name', profile.hasName),
-    CompletionStep('email', 'Add your email', profile.hasEmail),
-    CompletionStep('tradition', 'Pick your tradition on Home', tradition != null),
-    CompletionStep('reminder', 'Turn on the daily reminder', reminder.enabled),
-    CompletionStep('plan', 'Start a paath or mantra plan', plans.isNotEmpty),
+    CompletionStep('name', l.stepAddName, profile.hasName),
+    CompletionStep('email', l.stepAddEmail, profile.hasEmail),
+    CompletionStep('tradition', l.stepPickTradition, tradition != null),
+    CompletionStep('reminder', l.stepTurnOnReminder, reminder.enabled),
+    CompletionStep('plan', l.stepStartPlan, plans.isNotEmpty),
   ]);
 });

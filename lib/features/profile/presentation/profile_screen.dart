@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/l10n.dart';
 import '../../sadhana/presentation/widgets/count_scope_control.dart';
 import '../../sadhana/presentation/widgets/section_card.dart';
 import 'widgets/about_card.dart';
@@ -18,7 +19,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('Profile')),
+        appBar: AppBar(title: Text(context.l10n.profileTitle)),
         body: const ProfileScreen(),
       );
 }
@@ -37,29 +38,29 @@ class ProfileScreen extends StatelessWidget {
         constraints: const BoxConstraints(maxWidth: 640),
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-          children: const [
-            CompletionCard(),
+          children: [
+            const CompletionCard(),
             gap,
-            DetailsCard(),
+            const DetailsCard(),
             gap,
-            ThemeCard(),
+            const ThemeCard(),
             gap,
-            LanguageCard(),
+            const LanguageCard(),
             gap,
-            ReminderCard(),
+            const ReminderCard(),
             gap,
             SectionCard(
-              title: 'Sadhana settings',
-              child: CountScopeControl(),
+              title: context.l10n.sadhanaSettingsTitle,
+              child: const CountScopeControl(),
             ),
             gap,
-            BackupCard(),
+            const BackupCard(),
             gap,
-            AccountCard(),
+            const AccountCard(),
             gap,
-            AboutCard(),
-            SizedBox(height: 28),
-            DangerZone(),
+            const AboutCard(),
+            const SizedBox(height: 28),
+            const DangerZone(),
           ],
         ),
       ),

@@ -2697,6 +2697,540 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mantra'**
   String get planKindMantra;
+
+  /// The Profile page's app bar title
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// Section heading on Profile
+  ///
+  /// In en, this message translates to:
+  /// **'Sadhana settings'**
+  String get sadhanaSettingsTitle;
+
+  /// Validation error for the email field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get validEmailError;
+
+  /// Validation error for the name field
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it under {max} characters'**
+  String nameTooLong(int max);
+
+  /// Validation error: current password is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password'**
+  String get enterCurrentPassword;
+
+  /// Validation error: new password is too short
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least {min} characters'**
+  String passwordTooShort(int min);
+
+  /// Validation error: new password equals the current one
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a password you have not used'**
+  String get passwordAlreadyUsed;
+
+  /// Validation error: confirm password mismatch
+  ///
+  /// In en, this message translates to:
+  /// **'The two passwords do not match'**
+  String get passwordsDontMatch;
+
+  /// Title of the change-password sheet, and the Account card's menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get changePasswordTitle;
+
+  /// Explains that the password form does not really change anything yet
+  ///
+  /// In en, this message translates to:
+  /// **'Accounts arrive in a later phase; until then this only checks your entries and changes nothing.'**
+  String get accountsLaterNote;
+
+  /// Label of the current-password field
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get currentPasswordLabel;
+
+  /// Label of the new-password field
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get newPasswordLabel;
+
+  /// Label of the confirm-password field
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm new password'**
+  String get confirmNewPasswordLabel;
+
+  /// Checkbox that reveals the password fields
+  ///
+  /// In en, this message translates to:
+  /// **'Show passwords'**
+  String get showPasswords;
+
+  /// Button that submits the change-password form
+  ///
+  /// In en, this message translates to:
+  /// **'Update password'**
+  String get updatePasswordButton;
+
+  /// A profile-completion step
+  ///
+  /// In en, this message translates to:
+  /// **'Add your name'**
+  String get stepAddName;
+
+  /// A profile-completion step
+  ///
+  /// In en, this message translates to:
+  /// **'Add your email'**
+  String get stepAddEmail;
+
+  /// A profile-completion step
+  ///
+  /// In en, this message translates to:
+  /// **'Pick your tradition on Home'**
+  String get stepPickTradition;
+
+  /// A profile-completion step
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on the daily reminder'**
+  String get stepTurnOnReminder;
+
+  /// A profile-completion step
+  ///
+  /// In en, this message translates to:
+  /// **'Start a paath or mantra plan'**
+  String get stepStartPlan;
+
+  /// Heading of the profile-completion card
+  ///
+  /// In en, this message translates to:
+  /// **'Profile completion'**
+  String get profileCompletionTitle;
+
+  /// Shown once every profile-completion step is done
+  ///
+  /// In en, this message translates to:
+  /// **'Profile complete! Your free premium reward will be waiting when premium launches.'**
+  String get profileCompleteReward;
+
+  /// Shown while the profile is not yet fully complete
+  ///
+  /// In en, this message translates to:
+  /// **'Reach 100% to earn free premium when it launches.'**
+  String get reachRewardNote;
+
+  /// Section heading: app info
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get aboutTitle;
+
+  /// Row label: the app's name
+  ///
+  /// In en, this message translates to:
+  /// **'App'**
+  String get appLabel;
+
+  /// Row label: the app's website
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get websiteLabel;
+
+  /// Row label: the app's version number
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get versionLabel;
+
+  /// Shown after closing the change-password sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Password change will work once accounts are added.'**
+  String get passwordWillWorkLater;
+
+  /// Shown after signing out of a real account
+  ///
+  /// In en, this message translates to:
+  /// **'Signed out'**
+  String get signedOut;
+
+  /// Shown after tapping Sign out with no account
+  ///
+  /// In en, this message translates to:
+  /// **'You are not signed in yet: accounts arrive in a later phase. Your data stays on this phone.'**
+  String get notSignedInYet;
+
+  /// Section heading: sign-in and password
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountTitle;
+
+  /// Button that signs out
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOutButton;
+
+  /// Shown after a successful export
+  ///
+  /// In en, this message translates to:
+  /// **'Backup saved'**
+  String get backupSaved;
+
+  /// Shown when the user backs out of saving
+  ///
+  /// In en, this message translates to:
+  /// **'Backup cancelled'**
+  String get backupCancelled;
+
+  /// Shown when export fails
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the backup. Try again.'**
+  String get couldNotSaveBackup;
+
+  /// Shown when the chosen file is not valid JSON or not a Sadho backup
+  ///
+  /// In en, this message translates to:
+  /// **'That file is not a Sadho backup.'**
+  String get backupNotSadho;
+
+  /// Shown when restore fails for an unexpected reason
+  ///
+  /// In en, this message translates to:
+  /// **'Could not read that file.'**
+  String get couldNotReadFile;
+
+  /// Shown when a backup's structure is unusable
+  ///
+  /// In en, this message translates to:
+  /// **'The backup file is damaged.'**
+  String get backupDamaged;
+
+  /// Shown when a backup's version is newer than this app understands
+  ///
+  /// In en, this message translates to:
+  /// **'This backup was made by a newer version of Sadho. Update the app first.'**
+  String get backupTooNew;
+
+  /// Shown when a backup has no boxes this app knows
+  ///
+  /// In en, this message translates to:
+  /// **'That backup has no Sadho data in it.'**
+  String get backupNoData;
+
+  /// Shown when the chosen file exceeds the size limit
+  ///
+  /// In en, this message translates to:
+  /// **'That file is too big to be a Sadho backup.'**
+  String get backupTooBig;
+
+  /// Appended to the restore prompt when the backup's date is known
+  ///
+  /// In en, this message translates to:
+  /// **' made on {date}'**
+  String madeOnSuffix(String date);
+
+  /// Body of the restore confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'A backup{made} with {count} saved items. It will replace what is on this phone now: marks, plans, mantras, voice training and settings.'**
+  String restoreBackupBody(String made, int count);
+
+  /// Title of the restore confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Restore this backup?'**
+  String get restoreThisBackup;
+
+  /// Title of the dialog shown after a successful restore
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restored'**
+  String get backupRestoredTitle;
+
+  /// Body of the dialog shown after a successful restore
+  ///
+  /// In en, this message translates to:
+  /// **'Sadho will reload with your restored data.'**
+  String get backupRestoredBody;
+
+  /// Section heading: export/import
+  ///
+  /// In en, this message translates to:
+  /// **'Backup & restore'**
+  String get backupRestoreTitle;
+
+  /// Explains what Export/Restore do
+  ///
+  /// In en, this message translates to:
+  /// **'Save your marks, plans, mantras, voice training and settings to a file you choose (Drive, Files, email it to yourself). Restore it on this or another phone.'**
+  String get backupExplain;
+
+  /// Button that saves a backup file
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get exportButton;
+
+  /// Button that opens a backup file
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get restoreButton;
+
+  /// A disabled row: automatic backup, not built yet
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud sync'**
+  String get cloudSyncTitle;
+
+  /// Subtitle of the disabled Cloud sync row
+  ///
+  /// In en, this message translates to:
+  /// **'Coming later'**
+  String get comingLater;
+
+  /// Native file-picker dialog title when exporting
+  ///
+  /// In en, this message translates to:
+  /// **'Save your Sadho backup'**
+  String get saveBackupDialogTitle;
+
+  /// Native file-picker dialog title when restoring
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a Sadho backup'**
+  String get chooseBackupDialogTitle;
+
+  /// Title of the delete-account confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure?'**
+  String get areYouSure;
+
+  /// Body of the delete-account confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'This deletes your account and everything saved on this phone: your profile, marks, plans, mantras, voice training and settings. It cannot be undone.'**
+  String get deleteAccountWarning;
+
+  /// Confirms a destructive action
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yesAction;
+
+  /// Declines a destructive action
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get noAction;
+
+  /// Heading of the account-deletion section
+  ///
+  /// In en, this message translates to:
+  /// **'Danger zone'**
+  String get dangerZoneTitle;
+
+  /// Explains account deletion, above the Delete account button
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting your account erases your profile and everything saved on this phone. Export a backup first if you might want it back.'**
+  String get deleteAccountExplain;
+
+  /// Button that starts account deletion
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get deleteAccountButton;
+
+  /// Shown after saving name/email
+  ///
+  /// In en, this message translates to:
+  /// **'Profile saved'**
+  String get profileSaved;
+
+  /// Section heading: name and email
+  ///
+  /// In en, this message translates to:
+  /// **'Your details'**
+  String get yourDetailsTitle;
+
+  /// Label of the name field
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get nameLabel;
+
+  /// Label of the email field
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailLabel;
+
+  /// Section heading: the daily sadhana reminder
+  ///
+  /// In en, this message translates to:
+  /// **'Daily reminder'**
+  String get dailyReminderTitle;
+
+  /// The daily reminder switch's title, and the time picker's heading
+  ///
+  /// In en, this message translates to:
+  /// **'Daily sadhana reminder'**
+  String get dailySadhanaReminder;
+
+  /// Shown when the daily reminder is off
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get reminderOff;
+
+  /// Shown when the daily reminder is on
+  ///
+  /// In en, this message translates to:
+  /// **'Every day at {time}'**
+  String everyDayAt(String time);
+
+  /// Shown when notification permission was refused for the daily reminder
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications in Settings so the reminder can ring.'**
+  String get allowNotificationsForReminder;
+
+  /// Row label: the daily reminder's time
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get timeLabel;
+
+  /// Section heading: appearance
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get themeTitle;
+
+  /// Theme mode choice
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get lightMode;
+
+  /// Theme mode choice
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get darkMode;
+
+  /// Theme mode choice
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get systemMode;
+
+  /// Heading above the palette picker
+  ///
+  /// In en, this message translates to:
+  /// **'Colours'**
+  String get coloursTitle;
+
+  /// Screen-reader label for a palette choice
+  ///
+  /// In en, this message translates to:
+  /// **'{name} colours'**
+  String paletteSemantic(String name);
+
+  /// A colour palette's name
+  ///
+  /// In en, this message translates to:
+  /// **'Marigold'**
+  String get paletteMarigoldName;
+
+  /// A colour palette's description
+  ///
+  /// In en, this message translates to:
+  /// **'Warm saffron and deep indigo'**
+  String get paletteMarigoldBlurb;
+
+  /// A colour palette's name
+  ///
+  /// In en, this message translates to:
+  /// **'Sandalwood'**
+  String get paletteSandalwoodName;
+
+  /// A colour palette's description
+  ///
+  /// In en, this message translates to:
+  /// **'Soft sandal brown and clay'**
+  String get paletteSandalwoodBlurb;
+
+  /// A colour palette's name
+  ///
+  /// In en, this message translates to:
+  /// **'Tulsi green'**
+  String get paletteTulsiName;
+
+  /// A colour palette's description
+  ///
+  /// In en, this message translates to:
+  /// **'Calm holy-basil green'**
+  String get paletteTulsiBlurb;
+
+  /// A colour palette's name
+  ///
+  /// In en, this message translates to:
+  /// **'Twilight indigo'**
+  String get paletteTwilightName;
+
+  /// A colour palette's description
+  ///
+  /// In en, this message translates to:
+  /// **'Dusk indigo with a lamp-glow gold'**
+  String get paletteTwilightBlurb;
+
+  /// A colour palette's name
+  ///
+  /// In en, this message translates to:
+  /// **'Lotus rose'**
+  String get paletteLotusName;
+
+  /// A colour palette's description
+  ///
+  /// In en, this message translates to:
+  /// **'Gentle lotus pink and leaf green'**
+  String get paletteLotusBlurb;
+
+  /// Notification title for the daily reminder
+  ///
+  /// In en, this message translates to:
+  /// **'🪔 Time for your sadhana'**
+  String get sadhanaTimeNotifTitle;
+
+  /// Notification body for the daily reminder
+  ///
+  /// In en, this message translates to:
+  /// **'Take a few quiet minutes for your paath or mantra 🙏'**
+  String get sadhanaTimeNotifBody;
 }
 
 class _AppLocalizationsDelegate

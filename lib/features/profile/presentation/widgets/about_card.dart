@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../sadhana/presentation/widgets/section_card.dart';
 
 class AboutCard extends StatelessWidget {
@@ -9,6 +10,7 @@ class AboutCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = context.l10n;
     final muted = theme.colorScheme.onSurfaceVariant;
     Widget row(IconData icon, String label, String value, String key) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
@@ -29,12 +31,12 @@ class AboutCard extends StatelessWidget {
           ),
         );
     return SectionCard(
-      title: 'About',
+      title: l.aboutTitle,
       child: Column(
         children: [
-          row(Icons.self_improvement, 'App', AppConstants.appName, 'about-app'),
-          row(Icons.language, 'Website', AppConstants.website, 'about-website'),
-          row(Icons.info_outline, 'Version', AppConstants.version, 'about-version'),
+          row(Icons.self_improvement, l.appLabel, AppConstants.appName, 'about-app'),
+          row(Icons.language, l.websiteLabel, AppConstants.website, 'about-website'),
+          row(Icons.info_outline, l.versionLabel, AppConstants.version, 'about-version'),
         ],
       ),
     );

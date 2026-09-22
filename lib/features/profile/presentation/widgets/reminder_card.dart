@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/l10n.dart';
 import '../../../sadhana/presentation/widgets/section_card.dart';
 import '../../application/daily_reminder_provider.dart';
 
@@ -9,12 +10,13 @@ class ReminderCard extends ConsumerWidget {
   const ReminderCard({super.key});
 
   Future<void> _toggle(BuildContext context, WidgetRef ref, bool on) async {
+    final l = context.l10n;
     final allowed = await ref.read(dailyReminderProvider.notifier).setEnabled(on);
     if (!context.mounted || !on || allowed) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(const SnackBar(
-        content: Text('Allow notifications in Settings so the reminder can ring.'),
+      ..showSnackBar(SnackBar(
+        content: Text(l.allowNotificationsForReminder),
       ));
   }
 
@@ -23,7 +25,7 @@ class ReminderCard extends ConsumerWidget {
     final picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(hour: r.hour, minute: r.minute),
-      helpText: 'Daily sadhana reminder',
+      helpText: context.l10n.dailySadhanaReminder,
     );
     if (picked == null) return;
     ref.read(dailyReminderProvider.notifier).setTime(picked.hour * 60 + picked.minute);
@@ -32,17 +34,18 @@ class ReminderCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final r = ref.watch(dailyReminderProvider);
+    final l = context.l10n;
     final time = TimeOfDay(hour: r.hour, minute: r.minute).format(context);
     return SectionCard(
-      title: 'Daily reminder',
+      title: l.dailyReminderTitle,
       child: Column(
         children: [
           SwitchListTile(
             key: const ValueKey('reminder-switch'),
             contentPadding: EdgeInsets.zero,
-            title: const Text('Daily sadhana reminder'),
+            title: Text(l.dailySadhanaReminder),
             subtitle: Text(
-              r.enabled ? 'Every day at $time' : 'Off',
+              r.enabled ? l.everyDayAt(time) : l.reminderOff,
               key: const ValueKey('reminder-status'),
             ),
             value: r.enabled,
@@ -52,7 +55,7 @@ class ReminderCard extends ConsumerWidget {
             key: const ValueKey('reminder-time'),
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.schedule),
-            title: const Text('Time'),
+            title: Text(l.timeLabel),
             trailing: Text(time, key: const ValueKey('reminder-time-text')),
             onTap: () => _pickTime(context, ref),
           ),

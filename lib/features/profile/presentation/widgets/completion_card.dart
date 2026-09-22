@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/l10n.dart';
 import '../../application/profile_provider.dart';
 
 /// "60% complete", with what is missing and a note about the premium reward.
@@ -11,6 +12,7 @@ class CompletionCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     final c = ref.watch(profileCompletionProvider);
 
     return Card(
@@ -24,7 +26,7 @@ class CompletionCard extends ConsumerWidget {
             Row(
               children: [
                 Expanded(
-                  child: Text('Profile completion',
+                  child: Text(l.profileCompletionTitle,
                       style: theme.textTheme.titleLarge),
                 ),
                 Text(
@@ -79,10 +81,7 @@ class CompletionCard extends ConsumerWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    c.complete
-                        ? 'Profile complete! Your free premium reward will be '
-                            'waiting when premium launches.'
-                        : 'Reach 100% to earn free premium when it launches.',
+                    c.complete ? l.profileCompleteReward : l.reachRewardNote,
                     key: const ValueKey('profile-reward'),
                     style: theme.textTheme.bodyMedium,
                   ),

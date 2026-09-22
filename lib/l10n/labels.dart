@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 import '../core/storage/app_storage.dart';
+import '../core/theme/palettes.dart' show SadhoPalette;
 import '../features/calendar/application/mark_style_provider.dart' show MarkStyle;
 import '../features/calendar/data/calendar_mark.dart';
 import '../features/clock/application/location_provider.dart'
@@ -305,4 +306,28 @@ String greetingForIn(AppLocalizations l, int hour) {
   if (hour >= 12 && hour < 17) return l.greetingAfternoon;
   if (hour >= 17 && hour < 21) return l.greetingEvening;
   return l.greetingNight;
+}
+
+// ---- Profile ------------------------------------------------------------------
+
+/// A colour palette's name and blurb, in the chosen language, by [SadhoPalette.id]
+/// (falling back to the stored English text for anything unrecognised).
+extension SadhoPaletteL10n on SadhoPalette {
+  String localizedName(AppLocalizations l) => switch (id) {
+        'marigold' => l.paletteMarigoldName,
+        'sandalwood' => l.paletteSandalwoodName,
+        'tulsi' => l.paletteTulsiName,
+        'twilight' => l.paletteTwilightName,
+        'lotus' => l.paletteLotusName,
+        _ => name,
+      };
+
+  String localizedBlurb(AppLocalizations l) => switch (id) {
+        'marigold' => l.paletteMarigoldBlurb,
+        'sandalwood' => l.paletteSandalwoodBlurb,
+        'tulsi' => l.paletteTulsiBlurb,
+        'twilight' => l.paletteTwilightBlurb,
+        'lotus' => l.paletteLotusBlurb,
+        _ => blurb,
+      };
 }

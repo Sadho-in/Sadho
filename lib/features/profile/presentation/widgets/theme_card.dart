@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/palettes.dart';
 import '../../../../core/theme/theme_provider.dart';
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 import '../../../sadhana/presentation/widgets/section_card.dart';
 
 /// Colour palette (five soothing choices) and Light / Dark / System. Both are
@@ -13,37 +15,38 @@ class ThemeCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l = context.l10n;
     final mode = ref.watch(themeModeProvider);
     final selected = ref.watch(paletteProvider);
 
     return SectionCard(
-      title: 'Theme',
+      title: l.themeTitle,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SegmentedButton<ThemeMode>(
             key: const ValueKey('theme-mode'),
             showSelectedIcon: false,
-            segments: const [
+            segments: [
               ButtonSegment(
                   value: ThemeMode.light,
-                  icon: Icon(Icons.light_mode_outlined),
-                  label: Text('Light')),
+                  icon: const Icon(Icons.light_mode_outlined),
+                  label: Text(l.lightMode)),
               ButtonSegment(
                   value: ThemeMode.dark,
-                  icon: Icon(Icons.dark_mode_outlined),
-                  label: Text('Dark')),
+                  icon: const Icon(Icons.dark_mode_outlined),
+                  label: Text(l.darkMode)),
               ButtonSegment(
                   value: ThemeMode.system,
-                  icon: Icon(Icons.brightness_auto_outlined),
-                  label: Text('System')),
+                  icon: const Icon(Icons.brightness_auto_outlined),
+                  label: Text(l.systemMode)),
             ],
             selected: {mode},
             onSelectionChanged: (v) =>
                 ref.read(themeModeProvider.notifier).set(v.first),
           ),
           const SizedBox(height: 16),
-          Text('Colours', style: theme.textTheme.titleMedium),
+          Text(l.coloursTitle, style: theme.textTheme.titleMedium),
           const SizedBox(height: 10),
           Wrap(
             spacing: 10,
@@ -59,7 +62,7 @@ class ThemeCard extends ConsumerWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            selected.blurb,
+            selected.localizedBlurb(l),
             key: const ValueKey('palette-blurb'),
             style: theme.textTheme.bodyMedium
                 ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
@@ -85,11 +88,12 @@ class _PaletteTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     final c = palette.colors(theme.brightness);
     return Semantics(
       button: true,
       selected: selected,
-      label: '${palette.name} colours',
+      label: l.paletteSemantic(palette.localizedName(l)),
       child: InkWell(
         key: ValueKey('palette-${palette.id}'),
         borderRadius: BorderRadius.circular(16),
@@ -129,7 +133,7 @@ class _PaletteTile extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                palette.name,
+                palette.localizedName(l),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 style: theme.textTheme.labelMedium,

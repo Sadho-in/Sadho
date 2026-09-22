@@ -1764,5 +1764,394 @@
   "planKindMantra": "Mantra",
   "@planKindMantra": {
     "description": "A plan's kind: a mantra"
+  },
+  "profileTitle": "Profile",
+  "@profileTitle": {
+    "description": "The Profile page's app bar title"
+  },
+  "sadhanaSettingsTitle": "Sadhana settings",
+  "@sadhanaSettingsTitle": {
+    "description": "Section heading on Profile"
+  },
+  "validEmailError": "Enter a valid email address",
+  "@validEmailError": {
+    "description": "Validation error for the email field"
+  },
+  "nameTooLong": "Keep it under {max} characters",
+  "@nameTooLong": {
+    "description": "Validation error for the name field",
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "enterCurrentPassword": "Enter your current password",
+  "@enterCurrentPassword": {
+    "description": "Validation error: current password is empty"
+  },
+  "passwordTooShort": "Use at least {min} characters",
+  "@passwordTooShort": {
+    "description": "Validation error: new password is too short",
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "passwordAlreadyUsed": "Choose a password you have not used",
+  "@passwordAlreadyUsed": {
+    "description": "Validation error: new password equals the current one"
+  },
+  "passwordsDontMatch": "The two passwords do not match",
+  "@passwordsDontMatch": {
+    "description": "Validation error: confirm password mismatch"
+  },
+  "changePasswordTitle": "Change password",
+  "@changePasswordTitle": {
+    "description": "Title of the change-password sheet, and the Account card's menu item"
+  },
+  "accountsLaterNote": "Accounts arrive in a later phase; until then this only checks your entries and changes nothing.",
+  "@accountsLaterNote": {
+    "description": "Explains that the password form does not really change anything yet"
+  },
+  "currentPasswordLabel": "Current password",
+  "@currentPasswordLabel": {
+    "description": "Label of the current-password field"
+  },
+  "newPasswordLabel": "New password",
+  "@newPasswordLabel": {
+    "description": "Label of the new-password field"
+  },
+  "confirmNewPasswordLabel": "Confirm new password",
+  "@confirmNewPasswordLabel": {
+    "description": "Label of the confirm-password field"
+  },
+  "showPasswords": "Show passwords",
+  "@showPasswords": {
+    "description": "Checkbox that reveals the password fields"
+  },
+  "updatePasswordButton": "Update password",
+  "@updatePasswordButton": {
+    "description": "Button that submits the change-password form"
+  },
+  "stepAddName": "Add your name",
+  "@stepAddName": {
+    "description": "A profile-completion step"
+  },
+  "stepAddEmail": "Add your email",
+  "@stepAddEmail": {
+    "description": "A profile-completion step"
+  },
+  "stepPickTradition": "Pick your tradition on Home",
+  "@stepPickTradition": {
+    "description": "A profile-completion step"
+  },
+  "stepTurnOnReminder": "Turn on the daily reminder",
+  "@stepTurnOnReminder": {
+    "description": "A profile-completion step"
+  },
+  "stepStartPlan": "Start a paath or mantra plan",
+  "@stepStartPlan": {
+    "description": "A profile-completion step"
+  },
+  "profileCompletionTitle": "Profile completion",
+  "@profileCompletionTitle": {
+    "description": "Heading of the profile-completion card"
+  },
+  "profileCompleteReward": "Profile complete! Your free premium reward will be waiting when premium launches.",
+  "@profileCompleteReward": {
+    "description": "Shown once every profile-completion step is done"
+  },
+  "reachRewardNote": "Reach 100% to earn free premium when it launches.",
+  "@reachRewardNote": {
+    "description": "Shown while the profile is not yet fully complete"
+  },
+  "aboutTitle": "About",
+  "@aboutTitle": {
+    "description": "Section heading: app info"
+  },
+  "appLabel": "App",
+  "@appLabel": {
+    "description": "Row label: the app's name"
+  },
+  "websiteLabel": "Website",
+  "@websiteLabel": {
+    "description": "Row label: the app's website"
+  },
+  "versionLabel": "Version",
+  "@versionLabel": {
+    "description": "Row label: the app's version number"
+  },
+  "passwordWillWorkLater": "Password change will work once accounts are added.",
+  "@passwordWillWorkLater": {
+    "description": "Shown after closing the change-password sheet"
+  },
+  "signedOut": "Signed out",
+  "@signedOut": {
+    "description": "Shown after signing out of a real account"
+  },
+  "notSignedInYet": "You are not signed in yet: accounts arrive in a later phase. Your data stays on this phone.",
+  "@notSignedInYet": {
+    "description": "Shown after tapping Sign out with no account"
+  },
+  "accountTitle": "Account",
+  "@accountTitle": {
+    "description": "Section heading: sign-in and password"
+  },
+  "signOutButton": "Sign out",
+  "@signOutButton": {
+    "description": "Button that signs out"
+  },
+  "backupSaved": "Backup saved",
+  "@backupSaved": {
+    "description": "Shown after a successful export"
+  },
+  "backupCancelled": "Backup cancelled",
+  "@backupCancelled": {
+    "description": "Shown when the user backs out of saving"
+  },
+  "couldNotSaveBackup": "Could not save the backup. Try again.",
+  "@couldNotSaveBackup": {
+    "description": "Shown when export fails"
+  },
+  "backupNotSadho": "That file is not a Sadho backup.",
+  "@backupNotSadho": {
+    "description": "Shown when the chosen file is not valid JSON or not a Sadho backup"
+  },
+  "couldNotReadFile": "Could not read that file.",
+  "@couldNotReadFile": {
+    "description": "Shown when restore fails for an unexpected reason"
+  },
+  "backupDamaged": "The backup file is damaged.",
+  "@backupDamaged": {
+    "description": "Shown when a backup's structure is unusable"
+  },
+  "backupTooNew": "This backup was made by a newer version of Sadho. Update the app first.",
+  "@backupTooNew": {
+    "description": "Shown when a backup's version is newer than this app understands"
+  },
+  "backupNoData": "That backup has no Sadho data in it.",
+  "@backupNoData": {
+    "description": "Shown when a backup has no boxes this app knows"
+  },
+  "backupTooBig": "That file is too big to be a Sadho backup.",
+  "@backupTooBig": {
+    "description": "Shown when the chosen file exceeds the size limit"
+  },
+  "madeOnSuffix": " made on {date}",
+  "@madeOnSuffix": {
+    "description": "Appended to the restore prompt when the backup's date is known",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "restoreBackupBody": "A backup{made} with {count} saved items. It will replace what is on this phone now: marks, plans, mantras, voice training and settings.",
+  "@restoreBackupBody": {
+    "description": "Body of the restore confirmation dialog",
+    "placeholders": {
+      "made": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "restoreThisBackup": "Restore this backup?",
+  "@restoreThisBackup": {
+    "description": "Title of the restore confirmation dialog"
+  },
+  "backupRestoredTitle": "Backup restored",
+  "@backupRestoredTitle": {
+    "description": "Title of the dialog shown after a successful restore"
+  },
+  "backupRestoredBody": "Sadho will reload with your restored data.",
+  "@backupRestoredBody": {
+    "description": "Body of the dialog shown after a successful restore"
+  },
+  "backupRestoreTitle": "Backup & restore",
+  "@backupRestoreTitle": {
+    "description": "Section heading: export/import"
+  },
+  "backupExplain": "Save your marks, plans, mantras, voice training and settings to a file you choose (Drive, Files, email it to yourself). Restore it on this or another phone.",
+  "@backupExplain": {
+    "description": "Explains what Export/Restore do"
+  },
+  "exportButton": "Export",
+  "@exportButton": {
+    "description": "Button that saves a backup file"
+  },
+  "restoreButton": "Restore",
+  "@restoreButton": {
+    "description": "Button that opens a backup file"
+  },
+  "cloudSyncTitle": "Cloud sync",
+  "@cloudSyncTitle": {
+    "description": "A disabled row: automatic backup, not built yet"
+  },
+  "comingLater": "Coming later",
+  "@comingLater": {
+    "description": "Subtitle of the disabled Cloud sync row"
+  },
+  "saveBackupDialogTitle": "Save your Sadho backup",
+  "@saveBackupDialogTitle": {
+    "description": "Native file-picker dialog title when exporting"
+  },
+  "chooseBackupDialogTitle": "Choose a Sadho backup",
+  "@chooseBackupDialogTitle": {
+    "description": "Native file-picker dialog title when restoring"
+  },
+  "areYouSure": "Are you sure?",
+  "@areYouSure": {
+    "description": "Title of the delete-account confirmation dialog"
+  },
+  "deleteAccountWarning": "This deletes your account and everything saved on this phone: your profile, marks, plans, mantras, voice training and settings. It cannot be undone.",
+  "@deleteAccountWarning": {
+    "description": "Body of the delete-account confirmation dialog"
+  },
+  "yesAction": "Yes",
+  "@yesAction": {
+    "description": "Confirms a destructive action"
+  },
+  "noAction": "No",
+  "@noAction": {
+    "description": "Declines a destructive action"
+  },
+  "dangerZoneTitle": "Danger zone",
+  "@dangerZoneTitle": {
+    "description": "Heading of the account-deletion section"
+  },
+  "deleteAccountExplain": "Deleting your account erases your profile and everything saved on this phone. Export a backup first if you might want it back.",
+  "@deleteAccountExplain": {
+    "description": "Explains account deletion, above the Delete account button"
+  },
+  "deleteAccountButton": "Delete account",
+  "@deleteAccountButton": {
+    "description": "Button that starts account deletion"
+  },
+  "profileSaved": "Profile saved",
+  "@profileSaved": {
+    "description": "Shown after saving name/email"
+  },
+  "yourDetailsTitle": "Your details",
+  "@yourDetailsTitle": {
+    "description": "Section heading: name and email"
+  },
+  "nameLabel": "Name",
+  "@nameLabel": {
+    "description": "Label of the name field"
+  },
+  "emailLabel": "Email",
+  "@emailLabel": {
+    "description": "Label of the email field"
+  },
+  "dailyReminderTitle": "Daily reminder",
+  "@dailyReminderTitle": {
+    "description": "Section heading: the daily sadhana reminder"
+  },
+  "dailySadhanaReminder": "Daily sadhana reminder",
+  "@dailySadhanaReminder": {
+    "description": "The daily reminder switch's title, and the time picker's heading"
+  },
+  "reminderOff": "Off",
+  "@reminderOff": {
+    "description": "Shown when the daily reminder is off"
+  },
+  "everyDayAt": "Every day at {time}",
+  "@everyDayAt": {
+    "description": "Shown when the daily reminder is on",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "allowNotificationsForReminder": "Allow notifications in Settings so the reminder can ring.",
+  "@allowNotificationsForReminder": {
+    "description": "Shown when notification permission was refused for the daily reminder"
+  },
+  "timeLabel": "Time",
+  "@timeLabel": {
+    "description": "Row label: the daily reminder's time"
+  },
+  "themeTitle": "Theme",
+  "@themeTitle": {
+    "description": "Section heading: appearance"
+  },
+  "lightMode": "Light",
+  "@lightMode": {
+    "description": "Theme mode choice"
+  },
+  "darkMode": "Dark",
+  "@darkMode": {
+    "description": "Theme mode choice"
+  },
+  "systemMode": "System",
+  "@systemMode": {
+    "description": "Theme mode choice"
+  },
+  "coloursTitle": "Colours",
+  "@coloursTitle": {
+    "description": "Heading above the palette picker"
+  },
+  "paletteSemantic": "{name} colours",
+  "@paletteSemantic": {
+    "description": "Screen-reader label for a palette choice",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "paletteMarigoldName": "Marigold",
+  "@paletteMarigoldName": {
+    "description": "A colour palette's name"
+  },
+  "paletteMarigoldBlurb": "Warm saffron and deep indigo",
+  "@paletteMarigoldBlurb": {
+    "description": "A colour palette's description"
+  },
+  "paletteSandalwoodName": "Sandalwood",
+  "@paletteSandalwoodName": {
+    "description": "A colour palette's name"
+  },
+  "paletteSandalwoodBlurb": "Soft sandal brown and clay",
+  "@paletteSandalwoodBlurb": {
+    "description": "A colour palette's description"
+  },
+  "paletteTulsiName": "Tulsi green",
+  "@paletteTulsiName": {
+    "description": "A colour palette's name"
+  },
+  "paletteTulsiBlurb": "Calm holy-basil green",
+  "@paletteTulsiBlurb": {
+    "description": "A colour palette's description"
+  },
+  "paletteTwilightName": "Twilight indigo",
+  "@paletteTwilightName": {
+    "description": "A colour palette's name"
+  },
+  "paletteTwilightBlurb": "Dusk indigo with a lamp-glow gold",
+  "@paletteTwilightBlurb": {
+    "description": "A colour palette's description"
+  },
+  "paletteLotusName": "Lotus rose",
+  "@paletteLotusName": {
+    "description": "A colour palette's name"
+  },
+  "paletteLotusBlurb": "Gentle lotus pink and leaf green",
+  "@paletteLotusBlurb": {
+    "description": "A colour palette's description"
+  },
+  "sadhanaTimeNotifTitle": "🪔 Time for your sadhana",
+  "@sadhanaTimeNotifTitle": {
+    "description": "Notification title for the daily reminder"
+  },
+  "sadhanaTimeNotifBody": "Take a few quiet minutes for your paath or mantra 🙏",
+  "@sadhanaTimeNotifBody": {
+    "description": "Notification body for the daily reminder"
   }
 }

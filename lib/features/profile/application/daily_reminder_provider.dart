@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/storage/app_storage.dart';
+import '../../../l10n/locale_provider.dart';
 import '../../calendar/application/now_provider.dart';
 import '../../calendar/services/reminder_planner.dart' show reminderId;
 import '../../calendar/services/reminder_scheduler.dart';
@@ -82,12 +83,13 @@ class DailyReminderNotifier extends Notifier<DailyReminder> {
         await scheduler.replaceAlerts(dailyReminderGroup, const []);
         return;
       }
+      final l = ref.read(l10nProvider);
       await scheduler.replaceAlerts(dailyReminderGroup, [
         ScheduledAlert(
           id: reminderId(dailyReminderGroup, 0, 0),
           when: nextOccurrence(ref.read(nowProvider), state.minutes),
-          title: '🪔 Time for your sadhana',
-          body: 'Take a few quiet minutes for your paath or mantra 🙏',
+          title: l.sadhanaTimeNotifTitle,
+          body: l.sadhanaTimeNotifBody,
           repeatsDaily: true,
           gentle: true,
         ),

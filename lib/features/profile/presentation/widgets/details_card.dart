@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/l10n.dart';
 import '../../../sadhana/presentation/widgets/section_card.dart';
 import '../../application/profile_provider.dart';
 
@@ -48,7 +49,7 @@ class _DetailsCardState extends ConsumerState<DetailsCard> {
     FocusScope.of(context).unfocus();
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(const SnackBar(content: Text('Profile saved')));
+      ..showSnackBar(SnackBar(content: Text(context.l10n.profileSaved)));
     setState(() {});
   }
 
@@ -56,8 +57,9 @@ class _DetailsCardState extends ConsumerState<DetailsCard> {
   Widget build(BuildContext context) {
     // Rebuilt when the saved profile changes, so "Save" follows what is saved.
     ref.watch(profileProvider);
+    final l = context.l10n;
     return SectionCard(
-      title: 'Your details',
+      title: l.yourDetailsTitle,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -68,9 +70,9 @@ class _DetailsCardState extends ConsumerState<DetailsCard> {
             textInputAction: TextInputAction.next,
             autofillHints: const [AutofillHints.name],
             decoration: InputDecoration(
-              labelText: 'Name',
+              labelText: l.nameLabel,
               prefixIcon: const Icon(Icons.person_outline),
-              errorText: validateName(_name.text),
+              errorText: validateName(_name.text, l),
             ),
             onChanged: (_) => setState(() {}),
           ),
@@ -81,9 +83,9 @@ class _DetailsCardState extends ConsumerState<DetailsCard> {
             keyboardType: TextInputType.emailAddress,
             autofillHints: const [AutofillHints.email],
             decoration: InputDecoration(
-              labelText: 'Email',
+              labelText: l.emailLabel,
               prefixIcon: const Icon(Icons.mail_outline),
-              errorText: validateEmail(_email.text),
+              errorText: validateEmail(_email.text, l),
             ),
             onChanged: (_) => setState(() {}),
             onSubmitted: (_) {
@@ -96,7 +98,7 @@ class _DetailsCardState extends ConsumerState<DetailsCard> {
             child: FilledButton(
               key: const ValueKey('profile-save'),
               onPressed: _dirty && _valid ? _save : null,
-              child: const Text('Save'),
+              child: Text(l.actionSave),
             ),
           ),
         ],

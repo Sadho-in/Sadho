@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/app_restart.dart';
+import '../../../../l10n/l10n.dart';
 import '../../application/account_service.dart';
 
 /// A clearly separate, red section: delete the account (and everything on this
@@ -11,27 +12,25 @@ class DangerZone extends ConsumerWidget {
 
   Future<void> _delete(BuildContext context, WidgetRef ref) async {
     final scheme = Theme.of(context).colorScheme;
+    final l = context.l10n;
     final yes = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         key: const ValueKey('delete-dialog'),
         icon: Icon(Icons.warning_amber_rounded, color: scheme.error, size: 32),
-        title: const Text('Are you sure?'),
-        content: const Text(
-            'This deletes your account and everything saved on this phone: '
-            'your profile, marks, plans, mantras, voice training and settings. '
-            'It cannot be undone.'),
+        title: Text(l.areYouSure),
+        content: Text(l.deleteAccountWarning),
         actions: [
           TextButton(
             key: const ValueKey('delete-no'),
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('No'),
+            child: Text(l.noAction),
           ),
           TextButton(
             key: const ValueKey('delete-yes'),
             style: TextButton.styleFrom(foregroundColor: scheme.error),
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Yes'),
+            child: Text(l.yesAction),
           ),
         ],
       ),
@@ -45,6 +44,7 @@ class DangerZone extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     return Container(
       key: const ValueKey('danger-zone'),
       padding: const EdgeInsets.all(16),
@@ -61,7 +61,7 @@ class DangerZone extends ConsumerWidget {
               Icon(Icons.warning_amber_rounded, color: scheme.error),
               const SizedBox(width: 8),
               Expanded(
-                child: Text('Danger zone',
+                child: Text(l.dangerZoneTitle,
                     style: theme.textTheme.titleLarge
                         ?.copyWith(color: scheme.error)),
               ),
@@ -69,8 +69,7 @@ class DangerZone extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Deleting your account erases your profile and everything saved on '
-            'this phone. Export a backup first if you might want it back.',
+            l.deleteAccountExplain,
             style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: 12),
@@ -84,7 +83,7 @@ class DangerZone extends ConsumerWidget {
               ),
               onPressed: () => _delete(context, ref),
               icon: const Icon(Icons.delete_forever_outlined),
-              label: const Text('Delete account'),
+              label: Text(l.deleteAccountButton),
             ),
           ),
         ],

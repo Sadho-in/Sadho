@@ -1561,4 +1561,294 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get planKindMantra => 'Mantra';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get sadhanaSettingsTitle => 'Sadhana settings';
+
+  @override
+  String get validEmailError => 'Enter a valid email address';
+
+  @override
+  String nameTooLong(int max) {
+    return 'Keep it under $max characters';
+  }
+
+  @override
+  String get enterCurrentPassword => 'Enter your current password';
+
+  @override
+  String passwordTooShort(int min) {
+    return 'Use at least $min characters';
+  }
+
+  @override
+  String get passwordAlreadyUsed => 'Choose a password you have not used';
+
+  @override
+  String get passwordsDontMatch => 'The two passwords do not match';
+
+  @override
+  String get changePasswordTitle => 'Change password';
+
+  @override
+  String get accountsLaterNote =>
+      'Accounts arrive in a later phase; until then this only checks your entries and changes nothing.';
+
+  @override
+  String get currentPasswordLabel => 'Current password';
+
+  @override
+  String get newPasswordLabel => 'New password';
+
+  @override
+  String get confirmNewPasswordLabel => 'Confirm new password';
+
+  @override
+  String get showPasswords => 'Show passwords';
+
+  @override
+  String get updatePasswordButton => 'Update password';
+
+  @override
+  String get stepAddName => 'Add your name';
+
+  @override
+  String get stepAddEmail => 'Add your email';
+
+  @override
+  String get stepPickTradition => 'Pick your tradition on Home';
+
+  @override
+  String get stepTurnOnReminder => 'Turn on the daily reminder';
+
+  @override
+  String get stepStartPlan => 'Start a paath or mantra plan';
+
+  @override
+  String get profileCompletionTitle => 'Profile completion';
+
+  @override
+  String get profileCompleteReward =>
+      'Profile complete! Your free premium reward will be waiting when premium launches.';
+
+  @override
+  String get reachRewardNote =>
+      'Reach 100% to earn free premium when it launches.';
+
+  @override
+  String get aboutTitle => 'About';
+
+  @override
+  String get appLabel => 'App';
+
+  @override
+  String get websiteLabel => 'Website';
+
+  @override
+  String get versionLabel => 'Version';
+
+  @override
+  String get passwordWillWorkLater =>
+      'Password change will work once accounts are added.';
+
+  @override
+  String get signedOut => 'Signed out';
+
+  @override
+  String get notSignedInYet =>
+      'You are not signed in yet: accounts arrive in a later phase. Your data stays on this phone.';
+
+  @override
+  String get accountTitle => 'Account';
+
+  @override
+  String get signOutButton => 'Sign out';
+
+  @override
+  String get backupSaved => 'Backup saved';
+
+  @override
+  String get backupCancelled => 'Backup cancelled';
+
+  @override
+  String get couldNotSaveBackup => 'Could not save the backup. Try again.';
+
+  @override
+  String get backupNotSadho => 'That file is not a Sadho backup.';
+
+  @override
+  String get couldNotReadFile => 'Could not read that file.';
+
+  @override
+  String get backupDamaged => 'The backup file is damaged.';
+
+  @override
+  String get backupTooNew =>
+      'This backup was made by a newer version of Sadho. Update the app first.';
+
+  @override
+  String get backupNoData => 'That backup has no Sadho data in it.';
+
+  @override
+  String get backupTooBig => 'That file is too big to be a Sadho backup.';
+
+  @override
+  String madeOnSuffix(String date) {
+    return ' made on $date';
+  }
+
+  @override
+  String restoreBackupBody(String made, int count) {
+    return 'A backup$made with $count saved items. It will replace what is on this phone now: marks, plans, mantras, voice training and settings.';
+  }
+
+  @override
+  String get restoreThisBackup => 'Restore this backup?';
+
+  @override
+  String get backupRestoredTitle => 'Backup restored';
+
+  @override
+  String get backupRestoredBody => 'Sadho will reload with your restored data.';
+
+  @override
+  String get backupRestoreTitle => 'Backup & restore';
+
+  @override
+  String get backupExplain =>
+      'Save your marks, plans, mantras, voice training and settings to a file you choose (Drive, Files, email it to yourself). Restore it on this or another phone.';
+
+  @override
+  String get exportButton => 'Export';
+
+  @override
+  String get restoreButton => 'Restore';
+
+  @override
+  String get cloudSyncTitle => 'Cloud sync';
+
+  @override
+  String get comingLater => 'Coming later';
+
+  @override
+  String get saveBackupDialogTitle => 'Save your Sadho backup';
+
+  @override
+  String get chooseBackupDialogTitle => 'Choose a Sadho backup';
+
+  @override
+  String get areYouSure => 'Are you sure?';
+
+  @override
+  String get deleteAccountWarning =>
+      'This deletes your account and everything saved on this phone: your profile, marks, plans, mantras, voice training and settings. It cannot be undone.';
+
+  @override
+  String get yesAction => 'Yes';
+
+  @override
+  String get noAction => 'No';
+
+  @override
+  String get dangerZoneTitle => 'Danger zone';
+
+  @override
+  String get deleteAccountExplain =>
+      'Deleting your account erases your profile and everything saved on this phone. Export a backup first if you might want it back.';
+
+  @override
+  String get deleteAccountButton => 'Delete account';
+
+  @override
+  String get profileSaved => 'Profile saved';
+
+  @override
+  String get yourDetailsTitle => 'Your details';
+
+  @override
+  String get nameLabel => 'Name';
+
+  @override
+  String get emailLabel => 'Email';
+
+  @override
+  String get dailyReminderTitle => 'Daily reminder';
+
+  @override
+  String get dailySadhanaReminder => 'Daily sadhana reminder';
+
+  @override
+  String get reminderOff => 'Off';
+
+  @override
+  String everyDayAt(String time) {
+    return 'Every day at $time';
+  }
+
+  @override
+  String get allowNotificationsForReminder =>
+      'Allow notifications in Settings so the reminder can ring.';
+
+  @override
+  String get timeLabel => 'Time';
+
+  @override
+  String get themeTitle => 'Theme';
+
+  @override
+  String get lightMode => 'Light';
+
+  @override
+  String get darkMode => 'Dark';
+
+  @override
+  String get systemMode => 'System';
+
+  @override
+  String get coloursTitle => 'Colours';
+
+  @override
+  String paletteSemantic(String name) {
+    return '$name colours';
+  }
+
+  @override
+  String get paletteMarigoldName => 'Marigold';
+
+  @override
+  String get paletteMarigoldBlurb => 'Warm saffron and deep indigo';
+
+  @override
+  String get paletteSandalwoodName => 'Sandalwood';
+
+  @override
+  String get paletteSandalwoodBlurb => 'Soft sandal brown and clay';
+
+  @override
+  String get paletteTulsiName => 'Tulsi green';
+
+  @override
+  String get paletteTulsiBlurb => 'Calm holy-basil green';
+
+  @override
+  String get paletteTwilightName => 'Twilight indigo';
+
+  @override
+  String get paletteTwilightBlurb => 'Dusk indigo with a lamp-glow gold';
+
+  @override
+  String get paletteLotusName => 'Lotus rose';
+
+  @override
+  String get paletteLotusBlurb => 'Gentle lotus pink and leaf green';
+
+  @override
+  String get sadhanaTimeNotifTitle => '🪔 Time for your sadhana';
+
+  @override
+  String get sadhanaTimeNotifBody =>
+      'Take a few quiet minutes for your paath or mantra 🙏';
 }

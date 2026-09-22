@@ -14,12 +14,16 @@ const appLanguages = [
   AppLanguage('en', 'English', 'English'),
   AppLanguage('hi', 'Hindi', 'हिन्दी'),
   AppLanguage('pa', 'Punjabi', 'ਪੰਜਾਬੀ'),
+  AppLanguage('mr', 'Marathi', 'मराठी'),
+  AppLanguage('bn', 'Bengali', 'বাংলা'),
+  AppLanguage('gu', 'Gujarati', 'ગુજરાતી'),
+  AppLanguage('ta', 'Tamil', 'தமிழ்'),
+  AppLanguage('te', 'Telugu', 'తెలుగు'),
+  AppLanguage('kn', 'Kannada', 'ಕನ್ನಡ'),
 ];
 
-/// Stores the user's preferred UI language.
-///
-/// TODO(later-phase): wire this into real localisation (flutter_localizations
-/// + ARB files). In Phase 1 the choice is only remembered.
+/// Stores the user's preferred UI language, wired into real localisation
+/// (flutter_localizations + ARB files) via `localeProvider`/`l10nProvider`.
 class LanguageNotifier extends Notifier<String> {
   @override
   String build() => (AppStorage.settings.get('language') as String?) ?? 'en';

@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/storage/app_storage.dart';
 import '../../../core/storage/kv_store.dart';
+import '../../../l10n/l10n.dart';
+import '../../../l10n/labels.dart' show currentL10n;
 
 const backupFormat = 'sadho-backup';
 const backupVersion = 1;
@@ -48,17 +50,17 @@ Object? _encode(Object? v) {
   throw BackupException('Cannot save a value of type ${v.runtimeType}');
 }
 
-Object? _decode(Object? v) {
-  if (v is List) return [for (final e in v) _decode(e)];
+Object? _decode(Object? v, AppLocalizations l) {
+  if (v is List) return [for (final e in v) _decode(e, l)];
   if (v is Map) {
     if (v.length == 1 && v[_bytesTag] is String) {
       try {
         return base64Decode(v[_bytesTag] as String);
       } on FormatException {
-        throw BackupException('The backup file is damaged.');
+        throw BackupException(l.backupDamaged);
       }
     }
-    return {for (final e in v.entries) '${e.key}': _decode(e.value)};
+    return {for (final e in v.entries) '${e.key}': _decode(e.value, l)};
   }
   return v;
 }
@@ -96,39 +98,40 @@ String backupFileName(DateTime now) {
 }
 
 /// Reads and checks a backup without changing anything. Throws a
-/// [BackupException] with a plain message if it is not a usable Sadho backup.
-BackupContents parseBackup(String text) {
+/// [BackupException] with a plain message (in [l10n], English by default) if
+/// it is not a usable Sadho backup.
+BackupContents parseBackup(String text, [AppLocalizations? l10n]) {
+  final l = l10n ?? englishL10n;
   final Object? doc;
   try {
     doc = jsonDecode(text);
   } on FormatException {
-    throw BackupException('That file is not a Sadho backup.');
+    throw BackupException(l.backupNotSadho);
   }
   if (doc is! Map || doc['format'] != backupFormat) {
-    throw BackupException('That file is not a Sadho backup.');
+    throw BackupException(l.backupNotSadho);
   }
   final version = doc['version'];
   if (version is! int || version < 1) {
-    throw BackupException('The backup file is damaged.');
+    throw BackupException(l.backupDamaged);
   }
   if (version > backupVersion) {
-    throw BackupException(
-        'This backup was made by a newer version of Sadho. Update the app first.');
+    throw BackupException(l.backupTooNew);
   }
   final boxes = doc['boxes'];
-  if (boxes is! Map) throw BackupException('The backup file is damaged.');
+  if (boxes is! Map) throw BackupException(l.backupDamaged);
 
   final out = <String, Map<String, dynamic>>{};
   final known = AppStorage.all.keys.toSet();
   for (final e in boxes.entries) {
     if (!known.contains(e.key)) continue; // a box this version does not have
     final values = e.value;
-    if (values is! Map) throw BackupException('The backup file is damaged.');
+    if (values is! Map) throw BackupException(l.backupDamaged);
     out['${e.key}'] = {
-      for (final kv in values.entries) '${kv.key}': _decode(kv.value),
+      for (final kv in values.entries) '${kv.key}': _decode(kv.value, l),
     };
   }
-  if (out.isEmpty) throw BackupException('That backup has no Sadho data in it.');
+  if (out.isEmpty) throw BackupException(l.backupNoData);
   return BackupContents._(out, DateTime.tryParse('${doc['exportedAt']}'));
 }
 
@@ -164,7 +167,7 @@ class FilePickerBackupFiles implements BackupFiles {
   @override
   Future<bool> save(String fileName, Uint8List bytes) async {
     final uri = await FilePicker.saveFile(
-      dialogTitle: 'Save your Sadho backup',
+      dialogTitle: currentL10n().saveBackupDialogTitle,
       fileName: fileName,
       bytes: bytes,
       mimeType: 'application/json',
@@ -174,11 +177,12 @@ class FilePickerBackupFiles implements BackupFiles {
 
   @override
   Future<Uint8List?> pick() async {
-    final files = await FilePicker.pickFiles(dialogTitle: 'Choose a Sadho backup');
+    final files =
+        await FilePicker.pickFiles(dialogTitle: currentL10n().chooseBackupDialogTitle);
     if (files.isEmpty) return null;
     final size = files.first.lengthSync() ?? await files.first.length();
     if (size != null && size > maxBytes) {
-      throw BackupException('That file is too big to be a Sadho backup.');
+      throw BackupException(currentL10n().backupTooBig);
     }
     return files.first.readAsBytes();
   }

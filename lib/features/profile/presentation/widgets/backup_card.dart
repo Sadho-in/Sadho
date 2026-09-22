@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/app_restart.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../sadhana/presentation/widgets/section_card.dart';
 import '../../application/backup_service.dart';
 
@@ -20,6 +21,7 @@ class BackupCard extends ConsumerWidget {
     ..showSnackBar(SnackBar(content: Text(text)));
 
   Future<void> _export(BuildContext context, WidgetRef ref) async {
+    final l = context.l10n;
     try {
       final now = DateTime.now();
       final bytes = Uint8List.fromList(utf8.encode(exportBackup(now: now)));
@@ -27,51 +29,50 @@ class BackupCard extends ConsumerWidget {
           .read(backupFilesProvider)
           .save(backupFileName(now), bytes);
       if (context.mounted) {
-        _say(context, saved ? 'Backup saved' : 'Backup cancelled');
+        _say(context, saved ? l.backupSaved : l.backupCancelled);
       }
     } catch (e) {
-      if (context.mounted) _say(context, 'Could not save the backup. Try again.');
+      if (context.mounted) _say(context, l.couldNotSaveBackup);
     }
   }
 
   Future<void> _restore(BuildContext context, WidgetRef ref) async {
+    final l = context.l10n;
     final BackupContents contents;
     try {
       final bytes = await ref.read(backupFilesProvider).pick();
       if (bytes == null) return; // backed out
-      contents = parseBackup(utf8.decode(bytes, allowMalformed: false));
+      contents = parseBackup(utf8.decode(bytes, allowMalformed: false), l);
     } on BackupException catch (e) {
       if (context.mounted) _say(context, e.message);
       return;
     } on FormatException {
-      if (context.mounted) _say(context, 'That file is not a Sadho backup.');
+      if (context.mounted) _say(context, l.backupNotSadho);
       return;
     } catch (e) {
-      if (context.mounted) _say(context, 'Could not read that file.');
+      if (context.mounted) _say(context, l.couldNotReadFile);
       return;
     }
     if (!context.mounted) return;
 
     final made = contents.exportedAt == null
         ? ''
-        : ' made on ${DateFormat.yMMMd().format(contents.exportedAt!)}';
+        : l.madeOnSuffix(DateFormat.yMMMd().format(contents.exportedAt!));
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Restore this backup?'),
-        content: Text('A backup$made with ${contents.itemCount} saved items. '
-            'It will replace what is on this phone now: marks, plans, '
-            'mantras, voice training and settings.'),
+        title: Text(l.restoreThisBackup),
+        content: Text(l.restoreBackupBody(made, contents.itemCount)),
         actions: [
           TextButton(
             key: const ValueKey('restore-cancel'),
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: Text(l.actionCancel),
           ),
           FilledButton(
             key: const ValueKey('restore-confirm'),
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Restore'),
+            child: Text(l.restoreButton),
           ),
         ],
       ),
@@ -84,13 +85,13 @@ class BackupCard extends ConsumerWidget {
       context: context,
       barrierDismissible: false,
       builder: (ctx) => AlertDialog(
-        title: const Text('Backup restored'),
-        content: const Text('Sadho will reload with your restored data.'),
+        title: Text(l.backupRestoredTitle),
+        content: Text(l.backupRestoredBody),
         actions: [
           FilledButton(
             key: const ValueKey('restore-done'),
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('OK'),
+            child: Text(l.actionOk),
           ),
         ],
       ),
@@ -101,15 +102,14 @@ class BackupCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l = context.l10n;
     return SectionCard(
-      title: 'Backup & restore',
+      title: l.backupRestoreTitle,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Save your marks, plans, mantras, voice training and settings to a '
-            'file you choose (Drive, Files, email it to yourself). Restore it '
-            'on this or another phone.',
+            l.backupExplain,
             style: theme.textTheme.bodyMedium
                 ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
           ),
@@ -121,7 +121,7 @@ class BackupCard extends ConsumerWidget {
                   key: const ValueKey('backup-export'),
                   onPressed: () => _export(context, ref),
                   icon: const Icon(Icons.upload_file),
-                  label: const Text('Export'),
+                  label: Text(l.exportButton),
                 ),
               ),
               const SizedBox(width: 12),
@@ -130,7 +130,7 @@ class BackupCard extends ConsumerWidget {
                   key: const ValueKey('backup-restore'),
                   onPressed: () => _restore(context, ref),
                   icon: const Icon(Icons.download),
-                  label: const Text('Restore'),
+                  label: Text(l.restoreButton),
                 ),
               ),
             ],
@@ -141,8 +141,8 @@ class BackupCard extends ConsumerWidget {
             contentPadding: EdgeInsets.zero,
             enabled: false,
             leading: const Icon(Icons.cloud_outlined),
-            title: const Text('Cloud sync'),
-            subtitle: const Text('Coming later'),
+            title: Text(l.cloudSyncTitle),
+            subtitle: Text(l.comingLater),
           ),
         ],
       ),
