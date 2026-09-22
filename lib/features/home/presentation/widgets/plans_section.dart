@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 import '../../../calendar/application/now_provider.dart';
 import '../../application/plans_provider.dart';
 import '../../data/plan.dart';
@@ -24,6 +26,7 @@ class PlansSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     final plans = ref.watch(plansProvider);
     final streak = ref.watch(streakProvider);
     final active = ref.watch(activePlanCountProvider);
@@ -35,7 +38,7 @@ class PlansSection extends ConsumerWidget {
           children: [
             Expanded(
               child: Text(
-                'Paath & mantra plans',
+                l.plansTitle,
                 style: theme.textTheme.titleLarge,
               ),
             ),
@@ -43,7 +46,7 @@ class PlansSection extends ConsumerWidget {
               key: const ValueKey('plan-add'),
               onPressed: () => _add(context),
               icon: const Icon(Icons.add),
-              label: const Text('Add plan'),
+              label: Text(l.addPlan),
             ),
           ],
         ),
@@ -55,7 +58,7 @@ class PlansSection extends ConsumerWidget {
                 valueKey: 'stat-streak',
                 icon: Icons.local_fire_department,
                 value: '$streak',
-                label: 'day streak',
+                label: l.dayStreak,
                 color: scheme.primary,
               ),
             ),
@@ -65,7 +68,7 @@ class PlansSection extends ConsumerWidget {
                 valueKey: 'stat-active',
                 icon: Icons.flag_outlined,
                 value: '$active',
-                label: active == 1 ? 'active plan' : 'active plans',
+                label: l.activePlanCount(active),
                 color: scheme.secondary,
               ),
             ),
@@ -150,6 +153,7 @@ class _Suggestions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = context.l10n;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -157,14 +161,13 @@ class _Suggestions extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'No plans yet',
+              l.noPlansYet,
               key: const ValueKey('plans-empty'),
               style: theme.textTheme.titleMedium,
             ),
             const SizedBox(height: 4),
             Text(
-              'Commit to a paath or mantra for a number of days and tick each '
-              'day off. Start with one of these, or add your own.',
+              l.plansEmptyBody,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -183,9 +186,8 @@ class _Suggestions extends StatelessWidget {
                           : Icons.self_improvement,
                       size: 18,
                     ),
-                    label: Text(
-                      '${planSuggestions[i].title} · ${planSuggestions[i].days} days',
-                    ),
+                    label: Text(l.titledDaysTag(
+                        planSuggestions[i].title, planSuggestions[i].days)),
                     onPressed: () => onAdd(planSuggestions[i]),
                   ),
               ],
@@ -202,21 +204,22 @@ class _PlanCard extends ConsumerWidget {
   final Plan plan;
 
   Future<void> _confirmDelete(BuildContext context, WidgetRef ref) async {
+    final l = context.l10n;
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete plan?'),
-        content: Text('“${plan.title}” and its progress will be removed.'),
+        title: Text(l.deletePlanQuestion),
+        content: Text(l.deletePlanBody(plan.title)),
         actions: [
           TextButton(
             key: const ValueKey('plan-delete-cancel'),
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: Text(l.actionCancel),
           ),
           FilledButton(
             key: const ValueKey('plan-delete-confirm'),
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Delete'),
+            child: Text(l.actionDelete),
           ),
         ],
       ),
@@ -228,6 +231,7 @@ class _PlanCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     // Today's mark is what the button toggles.
     final doneToday = plan.doneOn(ref.watch(nowProvider));
     final finished = plan.isComplete;
@@ -250,12 +254,13 @@ class _PlanCard extends ConsumerWidget {
                 ),
                 PopupMenuButton<String>(
                   key: ValueKey('plan-menu-${plan.id}'),
-                  tooltip: 'Plan options',
+                  tooltip: l.planOptionsTooltip,
                   onSelected: (v) {
                     if (v == 'delete') _confirmDelete(context, ref);
                   },
-                  itemBuilder: (_) => const [
-                    PopupMenuItem(value: 'delete', child: Text('Delete plan')),
+                  itemBuilder: (_) => [
+                    PopupMenuItem(
+                        value: 'delete', child: Text(l.deletePlanMenuItem)),
                   ],
                 ),
               ],
@@ -271,7 +276,7 @@ class _PlanCard extends ConsumerWidget {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  '${plan.kind.label} · ${plan.totalDays} days',
+                  l.titledDaysTag(plan.kind.localized(l), plan.totalDays),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: scheme.onSurfaceVariant,
                   ),
@@ -301,8 +306,8 @@ class _PlanCard extends ConsumerWidget {
                   padding: const EdgeInsets.only(right: 12),
                   child: Text(
                     finished
-                        ? 'Completed · ${plan.completed} of ${plan.totalDays} days'
-                        : '${plan.completed} of ${plan.totalDays} days',
+                        ? l.completedOfDays(plan.completed, plan.totalDays)
+                        : l.ofDays(plan.completed, plan.totalDays),
                     key: ValueKey('plan-progress-${plan.id}'),
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: finished ? scheme.primary : null,
@@ -319,7 +324,7 @@ class _PlanCard extends ConsumerWidget {
                               .read(plansProvider.notifier)
                               .toggleToday(plan.id),
                           icon: const Icon(Icons.check_circle, size: 18),
-                          label: const Text('Done today'),
+                          label: Text(l.doneTodayButton),
                         )
                       : FilledButton(
                           key: ValueKey('plan-toggle-${plan.id}'),
@@ -328,7 +333,7 @@ class _PlanCard extends ConsumerWidget {
                               : () => ref
                                     .read(plansProvider.notifier)
                                     .toggleToday(plan.id),
-                          child: const Text('Mark today done'),
+                          child: Text(l.markTodayDone),
                         ),
                 ),
               ],

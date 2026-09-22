@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 import '../../../clock/application/location_provider.dart';
 import '../../application/tradition_provider.dart';
 import '../../data/tradition.dart';
@@ -19,9 +21,10 @@ class TodayCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     final tradition = ref.watch(effectiveTraditionProvider);
     final details = ref.watch(todayDetailsProvider);
-    final where = ref.watch(locationProvider.select((l) => l.summary));
+    final where = ref.watch(locationProvider).summaryIn(l);
     final hasExample = details.any((d) => d.example);
     final hasLive = details.any((d) => !d.example);
 
@@ -32,7 +35,7 @@ class TodayCard extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Today', style: theme.textTheme.titleLarge),
+            Text(l.today, style: theme.textTheme.titleLarge),
             const SizedBox(height: 12),
             SizedBox(
               width: double.infinity,
@@ -41,7 +44,7 @@ class TodayCard extends ConsumerWidget {
                 showSelectedIcon: false,
                 segments: [
                   for (final t in Tradition.values)
-                    ButtonSegment(value: t, label: Text(t.label)),
+                    ButtonSegment(value: t, label: Text(t.localized(l))),
                 ],
                 selected: {tradition},
                 onSelectionChanged: (v) =>
@@ -67,7 +70,7 @@ class TodayCard extends ConsumerWidget {
                             spacing: 8,
                             children: [
                               Text(
-                                d.label,
+                                todayDetailLabel(l, d.key, d.label),
                                 style: theme.textTheme.labelLarge?.copyWith(
                                   color: scheme.onSurfaceVariant,
                                 ),
@@ -84,7 +87,7 @@ class TodayCard extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(6),
                                   ),
                                   child: Text(
-                                    'EXAMPLE',
+                                    l.exampleTag,
                                     style: theme.textTheme.labelSmall?.copyWith(
                                       color: scheme.onTertiaryContainer,
                                       letterSpacing: 0.6,
@@ -107,8 +110,7 @@ class TodayCard extends ConsumerWidget {
             if (hasExample || hasLive) const Divider(height: 20),
             if (hasExample)
               Text(
-                'Values marked EXAMPLE are placeholders: real panchang data '
-                'comes in a later phase.',
+                l.exampleNote,
                 key: const ValueKey('example-note'),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: scheme.onSurfaceVariant,
@@ -118,7 +120,7 @@ class TodayCard extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 4),
                 child: Text(
-                  'Sunrise and sunset are worked out for your place. $where.',
+                  l.liveNote(where),
                   key: const ValueKey('live-note'),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: scheme.onSurfaceVariant,

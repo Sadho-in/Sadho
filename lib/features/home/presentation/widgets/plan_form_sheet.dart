@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 import '../../application/plans_provider.dart';
 import '../../data/plan.dart';
 
@@ -28,12 +30,12 @@ class _PlanFormSheetState extends ConsumerState<PlanFormSheet> {
   int? get _n => int.tryParse(_days.text.trim());
 
   String? get _titleError =>
-      _title.text.trim().isEmpty ? 'Give the plan a name' : null;
+      _title.text.trim().isEmpty ? context.l10n.giveThePlanAName : null;
 
   String? get _daysError {
     final n = _n;
     return n == null || n < minPlanDays || n > maxPlanDays
-        ? 'Choose $minPlanDays to $maxPlanDays days'
+        ? context.l10n.chooseDaysRange(minPlanDays, maxPlanDays)
         : null;
   }
 
@@ -49,6 +51,7 @@ class _PlanFormSheetState extends ConsumerState<PlanFormSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = context.l10n;
     return Padding(
       padding: EdgeInsets.fromLTRB(
         20,
@@ -61,10 +64,10 @@ class _PlanFormSheetState extends ConsumerState<PlanFormSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('New plan', style: theme.textTheme.titleLarge),
+            Text(l.newPlanTitle, style: theme.textTheme.titleLarge),
             const SizedBox(height: 4),
             Text(
-              'Pick a paath or mantra and how many days you will keep it up.',
+              l.newPlanSubtitle,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -94,7 +97,7 @@ class _PlanFormSheetState extends ConsumerState<PlanFormSheet> {
               textCapitalization: TextCapitalization.words,
               maxLength: 60,
               decoration: InputDecoration(
-                labelText: 'Paath or mantra',
+                labelText: l.paathOrMantraLabel,
                 errorText: _tried ? _titleError : null,
                 counterText: '',
               ),
@@ -108,14 +111,14 @@ class _PlanFormSheetState extends ConsumerState<PlanFormSheet> {
                 showSelectedIcon: false,
                 segments: [
                   for (final k in PlanKind.values)
-                    ButtonSegment(value: k, label: Text(k.label)),
+                    ButtonSegment(value: k, label: Text(k.localized(l))),
                 ],
                 selected: {_kind},
                 onSelectionChanged: (v) => setState(() => _kind = v.first),
               ),
             ),
             const SizedBox(height: 14),
-            Text('For how many days?', style: theme.textTheme.titleSmall),
+            Text(l.forHowManyDays, style: theme.textTheme.titleSmall),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -138,7 +141,7 @@ class _PlanFormSheetState extends ConsumerState<PlanFormSheet> {
                 controller: _days,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: 'Days',
+                  labelText: l.daysFieldLabel,
                   errorText: _tried || _days.text.isNotEmpty
                       ? _daysError
                       : null,
@@ -152,7 +155,7 @@ class _PlanFormSheetState extends ConsumerState<PlanFormSheet> {
               child: FilledButton(
                 key: const ValueKey('plan-save'),
                 onPressed: _save,
-                child: const Text('Start plan'),
+                child: Text(l.startPlanButton),
               ),
             ),
           ],

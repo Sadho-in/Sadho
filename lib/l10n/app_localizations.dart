@@ -2391,6 +2391,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{amount} behind you'**
   String cityBehindYou(String amount);
+
+  /// The Today card's tradition switch
+  ///
+  /// In en, this message translates to:
+  /// **'Hindu'**
+  String get traditionHindu;
+
+  /// The Today card's tradition switch
+  ///
+  /// In en, this message translates to:
+  /// **'Sikh'**
+  String get traditionSikh;
+
+  /// The Today card's tradition switch
+  ///
+  /// In en, this message translates to:
+  /// **'By place'**
+  String get traditionPlace;
+
+  /// A line on the Today card (Hindu)
+  ///
+  /// In en, this message translates to:
+  /// **'Tithi'**
+  String get todayLabelTithi;
+
+  /// A line on the Today card (Hindu)
+  ///
+  /// In en, this message translates to:
+  /// **'Nakshatra'**
+  String get todayLabelNakshatra;
+
+  /// A line on the Today card (Hindu)
+  ///
+  /// In en, this message translates to:
+  /// **'Rahu Kaal'**
+  String get todayLabelRahu;
+
+  /// A line on the Today card (Hindu)
+  ///
+  /// In en, this message translates to:
+  /// **'Abhijit muhurat'**
+  String get todayLabelAbhijit;
+
+  /// A line on the Today card (Sikh)
+  ///
+  /// In en, this message translates to:
+  /// **'Hukamnama'**
+  String get todayLabelHukamnama;
+
+  /// A line on the Today card (Sikh)
+  ///
+  /// In en, this message translates to:
+  /// **'Nitnem due'**
+  String get todayLabelNitnem;
+
+  /// A line on the Today card (Sikh)
+  ///
+  /// In en, this message translates to:
+  /// **'Next Gurpurab'**
+  String get todayLabelGurpurab;
+
+  /// A line on the Today card (By place)
+  ///
+  /// In en, this message translates to:
+  /// **'Local festival'**
+  String get todayLabelFestival;
+
+  /// A line on the Today card (By place)
+  ///
+  /// In en, this message translates to:
+  /// **'Auspicious window'**
+  String get todayLabelWindow;
+
+  /// Tag on a placeholder panchang value
+  ///
+  /// In en, this message translates to:
+  /// **'EXAMPLE'**
+  String get exampleTag;
+
+  /// Explains the EXAMPLE tags on the Today card
+  ///
+  /// In en, this message translates to:
+  /// **'Values marked EXAMPLE are placeholders: real panchang data comes in a later phase.'**
+  String get exampleNote;
+
+  /// Explains that sunrise/sunset are real, unlike the EXAMPLE values
+  ///
+  /// In en, this message translates to:
+  /// **'Sunrise and sunset are worked out for your place. {where}.'**
+  String liveNote(String where);
+
+  /// Home screen greeting, by time of day
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get greetingMorning;
+
+  /// Home screen greeting, by time of day
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get greetingAfternoon;
+
+  /// Home screen greeting, by time of day
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get greetingEvening;
+
+  /// Home screen greeting, by time of day
+  ///
+  /// In en, this message translates to:
+  /// **'Good night'**
+  String get greetingNight;
+
+  /// Shown when no calendar mark is flagged for Home
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing on your home screen today'**
+  String get homeEmptyTitle;
+
+  /// Explains how to get a card onto Home
+  ///
+  /// In en, this message translates to:
+  /// **'Mark a date in the Calendar and choose \"On your home screen\" to see it here.'**
+  String get homeEmptyBody;
+
+  /// Hint on a Home card that cannot be swiped away
+  ///
+  /// In en, this message translates to:
+  /// **'Pinned all day'**
+  String get pinnedAllDay;
+
+  /// Hint on a Home card that can be swiped away
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe to dismiss for today'**
+  String get swipeToDismiss;
+
+  /// Snack bar shown after swiping away a Home card
+  ///
+  /// In en, this message translates to:
+  /// **'Done for today: {title}'**
+  String doneForToday(String title);
+
+  /// Snack bar action that restores a dismissed Home card
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undoAction;
+
+  /// Revealed behind a Home card while swiping it away
+  ///
+  /// In en, this message translates to:
+  /// **'Done for today'**
+  String get doneForTodayLabel;
+
+  /// Heading of the plans section
+  ///
+  /// In en, this message translates to:
+  /// **'Paath & mantra plans'**
+  String get plansTitle;
+
+  /// Button that opens the new-plan sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Add plan'**
+  String get addPlan;
+
+  /// Stat label: consecutive days with a plan marked done
+  ///
+  /// In en, this message translates to:
+  /// **'day streak'**
+  String get dayStreak;
+
+  /// Stat label: how many plans are still in progress
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{active plan} other{active plans}}'**
+  String activePlanCount(int count);
+
+  /// Empty state before any plan is started
+  ///
+  /// In en, this message translates to:
+  /// **'No plans yet'**
+  String get noPlansYet;
+
+  /// Explains plans, shown with the suggestions
+  ///
+  /// In en, this message translates to:
+  /// **'Commit to a paath or mantra for a number of days and tick each day off. Start with one of these, or add your own.'**
+  String get plansEmptyBody;
+
+  /// Tooltip on a plan card's menu button
+  ///
+  /// In en, this message translates to:
+  /// **'Plan options'**
+  String get planOptionsTooltip;
+
+  /// Menu item that deletes a plan
+  ///
+  /// In en, this message translates to:
+  /// **'Delete plan'**
+  String get deletePlanMenuItem;
+
+  /// Title of the delete-plan confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Delete plan?'**
+  String get deletePlanQuestion;
+
+  /// Body of the delete-plan confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'“{title}” and its progress will be removed.'**
+  String deletePlanBody(String title);
+
+  /// e.g. Paath · 40 days, or a suggestion's name and length
+  ///
+  /// In en, this message translates to:
+  /// **'{title} · {days} days'**
+  String titledDaysTag(String title, int days);
+
+  /// A finished plan's progress line
+  ///
+  /// In en, this message translates to:
+  /// **'Completed · {completed} of {total} days'**
+  String completedOfDays(int completed, int total);
+
+  /// An in-progress plan's progress line
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} of {total} days'**
+  String ofDays(int completed, int total);
+
+  /// Button shown once today is marked done on a plan
+  ///
+  /// In en, this message translates to:
+  /// **'Done today'**
+  String get doneTodayButton;
+
+  /// Button that marks today done on a plan
+  ///
+  /// In en, this message translates to:
+  /// **'Mark today done'**
+  String get markTodayDone;
+
+  /// Title of the new-plan sheet
+  ///
+  /// In en, this message translates to:
+  /// **'New plan'**
+  String get newPlanTitle;
+
+  /// Subtitle of the new-plan sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a paath or mantra and how many days you will keep it up.'**
+  String get newPlanSubtitle;
+
+  /// Label of the plan title field
+  ///
+  /// In en, this message translates to:
+  /// **'Paath or mantra'**
+  String get paathOrMantraLabel;
+
+  /// Validation error: the plan title field is empty
+  ///
+  /// In en, this message translates to:
+  /// **'Give the plan a name'**
+  String get giveThePlanAName;
+
+  /// Validation error: the days field is out of range
+  ///
+  /// In en, this message translates to:
+  /// **'Choose {min} to {max} days'**
+  String chooseDaysRange(int min, int max);
+
+  /// Heading above the day-count choices
+  ///
+  /// In en, this message translates to:
+  /// **'For how many days?'**
+  String get forHowManyDays;
+
+  /// Label of the plan length field
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get daysFieldLabel;
+
+  /// Button that creates the new plan
+  ///
+  /// In en, this message translates to:
+  /// **'Start plan'**
+  String get startPlanButton;
+
+  /// A plan's kind: a paath
+  ///
+  /// In en, this message translates to:
+  /// **'Paath'**
+  String get planKindPaath;
+
+  /// A plan's kind: a mantra
+  ///
+  /// In en, this message translates to:
+  /// **'Mantra'**
+  String get planKindMantra;
 }
 
 class _AppLocalizationsDelegate

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../l10n/l10n.dart';
+import '../../../l10n/labels.dart';
 import '../../calendar/application/now_provider.dart';
 import '../../profile/application/profile_provider.dart';
-import '../data/tradition.dart';
 import 'widgets/home_cards_section.dart';
 import 'widgets/plans_section.dart';
 import 'widgets/today_card.dart';
@@ -20,7 +21,7 @@ class HomeScreen extends ConsumerWidget {
     final scheme = theme.colorScheme;
     final now = ref.watch(nowProvider);
     final name = ref.watch(profileProvider.select((p) => p.firstName));
-    final greeting = greetingFor(now.hour);
+    final greeting = greetingForIn(context.l10n, now.hour);
 
     return Align(
       alignment: Alignment.topCenter,

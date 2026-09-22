@@ -1382,4 +1382,183 @@ class AppLocalizationsEn extends AppLocalizations {
   String cityBehindYou(String amount) {
     return '$amount behind you';
   }
+
+  @override
+  String get traditionHindu => 'Hindu';
+
+  @override
+  String get traditionSikh => 'Sikh';
+
+  @override
+  String get traditionPlace => 'By place';
+
+  @override
+  String get todayLabelTithi => 'Tithi';
+
+  @override
+  String get todayLabelNakshatra => 'Nakshatra';
+
+  @override
+  String get todayLabelRahu => 'Rahu Kaal';
+
+  @override
+  String get todayLabelAbhijit => 'Abhijit muhurat';
+
+  @override
+  String get todayLabelHukamnama => 'Hukamnama';
+
+  @override
+  String get todayLabelNitnem => 'Nitnem due';
+
+  @override
+  String get todayLabelGurpurab => 'Next Gurpurab';
+
+  @override
+  String get todayLabelFestival => 'Local festival';
+
+  @override
+  String get todayLabelWindow => 'Auspicious window';
+
+  @override
+  String get exampleTag => 'EXAMPLE';
+
+  @override
+  String get exampleNote =>
+      'Values marked EXAMPLE are placeholders: real panchang data comes in a later phase.';
+
+  @override
+  String liveNote(String where) {
+    return 'Sunrise and sunset are worked out for your place. $where.';
+  }
+
+  @override
+  String get greetingMorning => 'Good morning';
+
+  @override
+  String get greetingAfternoon => 'Good afternoon';
+
+  @override
+  String get greetingEvening => 'Good evening';
+
+  @override
+  String get greetingNight => 'Good night';
+
+  @override
+  String get homeEmptyTitle => 'Nothing on your home screen today';
+
+  @override
+  String get homeEmptyBody =>
+      'Mark a date in the Calendar and choose \"On your home screen\" to see it here.';
+
+  @override
+  String get pinnedAllDay => 'Pinned all day';
+
+  @override
+  String get swipeToDismiss => 'Swipe to dismiss for today';
+
+  @override
+  String doneForToday(String title) {
+    return 'Done for today: $title';
+  }
+
+  @override
+  String get undoAction => 'Undo';
+
+  @override
+  String get doneForTodayLabel => 'Done for today';
+
+  @override
+  String get plansTitle => 'Paath & mantra plans';
+
+  @override
+  String get addPlan => 'Add plan';
+
+  @override
+  String get dayStreak => 'day streak';
+
+  @override
+  String activePlanCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'active plans',
+      one: 'active plan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get noPlansYet => 'No plans yet';
+
+  @override
+  String get plansEmptyBody =>
+      'Commit to a paath or mantra for a number of days and tick each day off. Start with one of these, or add your own.';
+
+  @override
+  String get planOptionsTooltip => 'Plan options';
+
+  @override
+  String get deletePlanMenuItem => 'Delete plan';
+
+  @override
+  String get deletePlanQuestion => 'Delete plan?';
+
+  @override
+  String deletePlanBody(String title) {
+    return '“$title” and its progress will be removed.';
+  }
+
+  @override
+  String titledDaysTag(String title, int days) {
+    return '$title · $days days';
+  }
+
+  @override
+  String completedOfDays(int completed, int total) {
+    return 'Completed · $completed of $total days';
+  }
+
+  @override
+  String ofDays(int completed, int total) {
+    return '$completed of $total days';
+  }
+
+  @override
+  String get doneTodayButton => 'Done today';
+
+  @override
+  String get markTodayDone => 'Mark today done';
+
+  @override
+  String get newPlanTitle => 'New plan';
+
+  @override
+  String get newPlanSubtitle =>
+      'Pick a paath or mantra and how many days you will keep it up.';
+
+  @override
+  String get paathOrMantraLabel => 'Paath or mantra';
+
+  @override
+  String get giveThePlanAName => 'Give the plan a name';
+
+  @override
+  String chooseDaysRange(int min, int max) {
+    return 'Choose $min to $max days';
+  }
+
+  @override
+  String get forHowManyDays => 'For how many days?';
+
+  @override
+  String get daysFieldLabel => 'Days';
+
+  @override
+  String get startPlanButton => 'Start plan';
+
+  @override
+  String get planKindPaath => 'Paath';
+
+  @override
+  String get planKindMantra => 'Mantra';
 }

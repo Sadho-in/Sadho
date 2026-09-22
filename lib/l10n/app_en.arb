@@ -1508,5 +1508,261 @@
         "type": "String"
       }
     }
+  },
+  "traditionHindu": "Hindu",
+  "@traditionHindu": {
+    "description": "The Today card's tradition switch"
+  },
+  "traditionSikh": "Sikh",
+  "@traditionSikh": {
+    "description": "The Today card's tradition switch"
+  },
+  "traditionPlace": "By place",
+  "@traditionPlace": {
+    "description": "The Today card's tradition switch"
+  },
+  "todayLabelTithi": "Tithi",
+  "@todayLabelTithi": {
+    "description": "A line on the Today card (Hindu)"
+  },
+  "todayLabelNakshatra": "Nakshatra",
+  "@todayLabelNakshatra": {
+    "description": "A line on the Today card (Hindu)"
+  },
+  "todayLabelRahu": "Rahu Kaal",
+  "@todayLabelRahu": {
+    "description": "A line on the Today card (Hindu)"
+  },
+  "todayLabelAbhijit": "Abhijit muhurat",
+  "@todayLabelAbhijit": {
+    "description": "A line on the Today card (Hindu)"
+  },
+  "todayLabelHukamnama": "Hukamnama",
+  "@todayLabelHukamnama": {
+    "description": "A line on the Today card (Sikh)"
+  },
+  "todayLabelNitnem": "Nitnem due",
+  "@todayLabelNitnem": {
+    "description": "A line on the Today card (Sikh)"
+  },
+  "todayLabelGurpurab": "Next Gurpurab",
+  "@todayLabelGurpurab": {
+    "description": "A line on the Today card (Sikh)"
+  },
+  "todayLabelFestival": "Local festival",
+  "@todayLabelFestival": {
+    "description": "A line on the Today card (By place)"
+  },
+  "todayLabelWindow": "Auspicious window",
+  "@todayLabelWindow": {
+    "description": "A line on the Today card (By place)"
+  },
+  "exampleTag": "EXAMPLE",
+  "@exampleTag": {
+    "description": "Tag on a placeholder panchang value"
+  },
+  "exampleNote": "Values marked EXAMPLE are placeholders: real panchang data comes in a later phase.",
+  "@exampleNote": {
+    "description": "Explains the EXAMPLE tags on the Today card"
+  },
+  "liveNote": "Sunrise and sunset are worked out for your place. {where}.",
+  "@liveNote": {
+    "description": "Explains that sunrise/sunset are real, unlike the EXAMPLE values",
+    "placeholders": {
+      "where": {
+        "type": "String"
+      }
+    }
+  },
+  "greetingMorning": "Good morning",
+  "@greetingMorning": {
+    "description": "Home screen greeting, by time of day"
+  },
+  "greetingAfternoon": "Good afternoon",
+  "@greetingAfternoon": {
+    "description": "Home screen greeting, by time of day"
+  },
+  "greetingEvening": "Good evening",
+  "@greetingEvening": {
+    "description": "Home screen greeting, by time of day"
+  },
+  "greetingNight": "Good night",
+  "@greetingNight": {
+    "description": "Home screen greeting, by time of day"
+  },
+  "homeEmptyTitle": "Nothing on your home screen today",
+  "@homeEmptyTitle": {
+    "description": "Shown when no calendar mark is flagged for Home"
+  },
+  "homeEmptyBody": "Mark a date in the Calendar and choose \"On your home screen\" to see it here.",
+  "@homeEmptyBody": {
+    "description": "Explains how to get a card onto Home"
+  },
+  "pinnedAllDay": "Pinned all day",
+  "@pinnedAllDay": {
+    "description": "Hint on a Home card that cannot be swiped away"
+  },
+  "swipeToDismiss": "Swipe to dismiss for today",
+  "@swipeToDismiss": {
+    "description": "Hint on a Home card that can be swiped away"
+  },
+  "doneForToday": "Done for today: {title}",
+  "@doneForToday": {
+    "description": "Snack bar shown after swiping away a Home card",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "undoAction": "Undo",
+  "@undoAction": {
+    "description": "Snack bar action that restores a dismissed Home card"
+  },
+  "doneForTodayLabel": "Done for today",
+  "@doneForTodayLabel": {
+    "description": "Revealed behind a Home card while swiping it away"
+  },
+  "plansTitle": "Paath & mantra plans",
+  "@plansTitle": {
+    "description": "Heading of the plans section"
+  },
+  "addPlan": "Add plan",
+  "@addPlan": {
+    "description": "Button that opens the new-plan sheet"
+  },
+  "dayStreak": "day streak",
+  "@dayStreak": {
+    "description": "Stat label: consecutive days with a plan marked done"
+  },
+  "activePlanCount": "{count, plural, =1{active plan} other{active plans}}",
+  "@activePlanCount": {
+    "description": "Stat label: how many plans are still in progress",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noPlansYet": "No plans yet",
+  "@noPlansYet": {
+    "description": "Empty state before any plan is started"
+  },
+  "plansEmptyBody": "Commit to a paath or mantra for a number of days and tick each day off. Start with one of these, or add your own.",
+  "@plansEmptyBody": {
+    "description": "Explains plans, shown with the suggestions"
+  },
+  "planOptionsTooltip": "Plan options",
+  "@planOptionsTooltip": {
+    "description": "Tooltip on a plan card's menu button"
+  },
+  "deletePlanMenuItem": "Delete plan",
+  "@deletePlanMenuItem": {
+    "description": "Menu item that deletes a plan"
+  },
+  "deletePlanQuestion": "Delete plan?",
+  "@deletePlanQuestion": {
+    "description": "Title of the delete-plan confirmation dialog"
+  },
+  "deletePlanBody": "“{title}” and its progress will be removed.",
+  "@deletePlanBody": {
+    "description": "Body of the delete-plan confirmation dialog",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "titledDaysTag": "{title} · {days} days",
+  "@titledDaysTag": {
+    "description": "e.g. Paath · 40 days, or a suggestion's name and length",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "completedOfDays": "Completed · {completed} of {total} days",
+  "@completedOfDays": {
+    "description": "A finished plan's progress line",
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "ofDays": "{completed} of {total} days",
+  "@ofDays": {
+    "description": "An in-progress plan's progress line",
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "doneTodayButton": "Done today",
+  "@doneTodayButton": {
+    "description": "Button shown once today is marked done on a plan"
+  },
+  "markTodayDone": "Mark today done",
+  "@markTodayDone": {
+    "description": "Button that marks today done on a plan"
+  },
+  "newPlanTitle": "New plan",
+  "@newPlanTitle": {
+    "description": "Title of the new-plan sheet"
+  },
+  "newPlanSubtitle": "Pick a paath or mantra and how many days you will keep it up.",
+  "@newPlanSubtitle": {
+    "description": "Subtitle of the new-plan sheet"
+  },
+  "paathOrMantraLabel": "Paath or mantra",
+  "@paathOrMantraLabel": {
+    "description": "Label of the plan title field"
+  },
+  "giveThePlanAName": "Give the plan a name",
+  "@giveThePlanAName": {
+    "description": "Validation error: the plan title field is empty"
+  },
+  "chooseDaysRange": "Choose {min} to {max} days",
+  "@chooseDaysRange": {
+    "description": "Validation error: the days field is out of range",
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "forHowManyDays": "For how many days?",
+  "@forHowManyDays": {
+    "description": "Heading above the day-count choices"
+  },
+  "daysFieldLabel": "Days",
+  "@daysFieldLabel": {
+    "description": "Label of the plan length field"
+  },
+  "startPlanButton": "Start plan",
+  "@startPlanButton": {
+    "description": "Button that creates the new plan"
+  },
+  "planKindPaath": "Paath",
+  "@planKindPaath": {
+    "description": "A plan's kind: a paath"
+  },
+  "planKindMantra": "Mantra",
+  "@planKindMantra": {
+    "description": "A plan's kind: a mantra"
   }
 }

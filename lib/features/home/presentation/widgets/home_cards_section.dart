@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 import '../../../calendar/application/home_cards_provider.dart';
 import '../../../calendar/application/now_provider.dart';
 import '../../../calendar/presentation/widgets/mark_card.dart';
@@ -19,6 +21,7 @@ class HomeCardsSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     final now = ref.watch(nowProvider);
     final cards = ref.watch(homeCardsProvider);
     final today = DateTime(now.year, now.month, now.day);
@@ -39,15 +42,14 @@ class HomeCardsSection extends ConsumerWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Nothing on your home screen today',
+                    l.homeEmptyTitle,
                     key: const ValueKey('home-empty'),
                     textAlign: TextAlign.center,
                     style: theme.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Mark a date in the Calendar and choose "On your home '
-                    'screen" to see it here.',
+                    l.homeEmptyBody,
                     textAlign: TextAlign.center,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: scheme.onSurfaceVariant,
@@ -66,7 +68,7 @@ class HomeCardsSection extends ConsumerWidget {
                     key: ValueKey('home-card-${c.mark.id}'),
                     mark: c.mark,
                     pinned: true,
-                    hint: 'Pinned all day',
+                    hint: l.pinnedAllDay,
                     onTap: () =>
                         showMarkEditor(context, date: today, markId: c.mark.id),
                   )
@@ -87,9 +89,9 @@ class HomeCardsSection extends ConsumerWidget {
                         ..hideCurrentSnackBar()
                         ..showSnackBar(
                           SnackBar(
-                            content: Text('Done for today: ${c.mark.title}'),
+                            content: Text(l.doneForToday(c.mark.titleIn(l))),
                             action: SnackBarAction(
-                              label: 'Undo',
+                              label: l.undoAction,
                               onPressed: () => ref
                                   .read(homeDismissalsProvider.notifier)
                                   .restore(c.mark.id, today),
@@ -100,7 +102,7 @@ class HomeCardsSection extends ConsumerWidget {
                     child: MarkCard(
                       key: ValueKey('home-card-${c.mark.id}'),
                       mark: c.mark,
-                      hint: 'Swipe to dismiss for today',
+                      hint: l.swipeToDismiss,
                       onTap: () => showMarkEditor(
                         context,
                         date: today,
@@ -135,7 +137,7 @@ class _SwipeBackground extends StatelessWidget {
           Icon(Icons.check, color: scheme.onSecondaryContainer),
           const SizedBox(width: 8),
           Text(
-            'Done for today',
+            context.l10n.doneForTodayLabel,
             style: TextStyle(color: scheme.onSecondaryContainer),
           ),
         ],

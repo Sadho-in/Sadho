@@ -9,6 +9,8 @@ import '../features/clock/data/clock_tool.dart';
 import '../features/clock/data/sun_alarm.dart' show SunEventKind;
 import '../features/clock/data/world_cities.dart' show CityTime;
 import '../features/clock/services/location_service.dart' show LocationAccess;
+import '../features/home/data/plan.dart' show PlanKind;
+import '../features/home/data/tradition.dart' show Tradition;
 import '../features/sadhana/application/sadhana_session_provider.dart' show CountMode;
 import '../features/sadhana/application/rhythm_pace.dart' show PaceUnit;
 import '../features/sadhana/data/ringtone.dart';
@@ -259,4 +261,48 @@ String relativeToViewerIn(AppLocalizations l, Duration d) {
       ? l.cityAmountMinutes(m)
       : (m == 0 ? l.cityAmountHours(h) : l.cityAmountHoursMinutes(h, m));
   return d.isNegative ? l.cityBehindYou(amount) : l.cityAheadOfYou(amount);
+}
+
+// ---- Home -------------------------------------------------------------------
+
+extension TraditionL10n on Tradition {
+  String localized(AppLocalizations l) => switch (this) {
+        Tradition.hindu => l.traditionHindu,
+        Tradition.sikh => l.traditionSikh,
+        Tradition.place => l.traditionPlace,
+      };
+}
+
+extension PlanKindL10n on PlanKind {
+  String localized(AppLocalizations l) => switch (this) {
+        PlanKind.paath => l.planKindPaath,
+        PlanKind.mantra => l.planKindMantra,
+      };
+}
+
+/// The localized label for a [TodayDetail] by its [key] ('sunrise', 'tithi',
+/// 'hukamnama'...), or [fallback] (the stored English label) for anything
+/// unrecognised.
+String todayDetailLabel(AppLocalizations l, String key, String fallback) =>
+    switch (key) {
+      'sunrise' => l.sunEventSunrise,
+      'sunset' => l.sunEventSunset,
+      'tithi' => l.todayLabelTithi,
+      'nakshatra' => l.todayLabelNakshatra,
+      'rahu' => l.todayLabelRahu,
+      'abhijit' => l.todayLabelAbhijit,
+      'hukamnama' => l.todayLabelHukamnama,
+      'nitnem' => l.todayLabelNitnem,
+      'gurpurab' => l.todayLabelGurpurab,
+      'festival' => l.todayLabelFestival,
+      'window' => l.todayLabelWindow,
+      _ => fallback,
+    };
+
+/// [greetingFor], but in the chosen language.
+String greetingForIn(AppLocalizations l, int hour) {
+  if (hour >= 5 && hour < 12) return l.greetingMorning;
+  if (hour >= 12 && hour < 17) return l.greetingAfternoon;
+  if (hour >= 17 && hour < 21) return l.greetingEvening;
+  return l.greetingNight;
 }
