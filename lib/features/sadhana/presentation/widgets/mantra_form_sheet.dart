@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/mantra_library_provider.dart';
 import '../../data/mantra.dart';
+import '../../../../l10n/l10n.dart';
 
 enum MantraFormAction { added, saved, restored }
 
@@ -97,16 +98,15 @@ class _MantraFormSheetState extends ConsumerState<MantraFormSheet> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Reset to default?'),
-        content: Text('Your edits to “${m.title}” will be discarded and the '
-            'built-in text restored.'),
+        title: Text(context.l10n.resetToDefaultTitle),
+        content: Text(context.l10n.resetToDefaultBody(m.title)),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Cancel')),
+              child: Text(context.l10n.actionCancel)),
           FilledButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Reset')),
+              child: Text(context.l10n.actionReset)),
         ],
       ),
     );
@@ -135,23 +135,26 @@ class _MantraFormSheetState extends ConsumerState<MantraFormSheet> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(_isEdit ? 'Edit mantra' : 'Add a mantra',
+                Text(_isEdit ? context.l10n.editMantra : context.l10n.addAMantra,
                     style: theme.textTheme.titleLarge),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _title,
                   textCapitalization: TextCapitalization.words,
-                  decoration: const InputDecoration(labelText: 'Title *'),
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? 'Enter a title' : null,
+                  decoration: InputDecoration(labelText: context.l10n.titleLabel),
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? context.l10n.titleRequired
+                      : null,
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: _script,
                   minLines: 1,
                   maxLines: 4,
-                  decoration: const InputDecoration(
-                    labelText: 'Script text',
+                  decoration: InputDecoration(
+                    labelText: context.l10n.scriptTextLabel,
+                    // The example script stays in its own language on purpose:
+                    // it shows what belongs in this field, not a translation.
                     hintText: 'e.g. ॐ नमः शिवाय or ਵਾਹਿਗੁਰੂ',
                   ),
                 ),
@@ -161,14 +164,16 @@ class _MantraFormSheetState extends ConsumerState<MantraFormSheet> {
                   minLines: 1,
                   maxLines: 3,
                   decoration:
-                      const InputDecoration(labelText: 'Transliteration'),
+                      InputDecoration(labelText: context.l10n.transliterationLabel),
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: _tradition,
-                  decoration: const InputDecoration(
-                    labelText: 'Tradition / language',
-                    hintText: 'e.g. Sanskrit · Hindu',
+                  decoration: InputDecoration(
+                    labelText: context.l10n.traditionLabel,
+                    // Not translated: this names a specific tradition, like the
+                    // suggestion chips below (mantra content, not UI chrome).
+                    hintText: context.l10n.traditionHint,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -188,11 +193,11 @@ class _MantraFormSheetState extends ConsumerState<MantraFormSheet> {
                   controller: _count,
                   keyboardType: TextInputType.number,
                   decoration:
-                      const InputDecoration(labelText: 'Default count *'),
+                      InputDecoration(labelText: context.l10n.defaultCountLabel),
                   validator: (v) {
                     final n = int.tryParse((v ?? '').trim());
-                    if (n == null || n < 1) return 'Enter a number, 1 or more';
-                    if (n > maxMantraCount) return 'That is too large';
+                    if (n == null || n < 1) return context.l10n.enterNumberOneOrMore;
+                    if (n > maxMantraCount) return context.l10n.tooLarge;
                     return null;
                   },
                 ),
@@ -201,7 +206,7 @@ class _MantraFormSheetState extends ConsumerState<MantraFormSheet> {
                   width: double.infinity,
                   child: FilledButton(
                     onPressed: _saving ? null : _save,
-                    child: Text(_isEdit ? 'Save changes' : 'Save to library'),
+                    child: Text(_isEdit ? context.l10n.saveChanges : context.l10n.saveToLibrary),
                   ),
                 ),
                 if (widget.editing?.isEdited ?? false)
@@ -210,7 +215,7 @@ class _MantraFormSheetState extends ConsumerState<MantraFormSheet> {
                     child: TextButton.icon(
                       onPressed: _saving ? null : _reset,
                       icon: const Icon(Icons.restore, size: 18),
-                      label: const Text('Reset to default'),
+                      label: Text(context.l10n.resetToDefaultButton),
                     ),
                   ),
               ],

@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/rhythm_pace.dart';
 import '../../application/sadhana_session_provider.dart';
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 
 /// Number field + Seconds/Minutes/Hours selector. Interval = value × unit.
 ///
@@ -35,7 +37,7 @@ class _RhythmPaceEditorState extends ConsumerState<RhythmPaceEditor> {
   }
 
   void _push() {
-    final result = checkPace(_value.text, _unit);
+    final result = checkPace(_value.text, _unit, context.l10n);
     if (result.seconds != null) {
       ref.read(sadhanaSessionProvider.notifier).setRhythmSeconds(result.seconds!);
     }
@@ -46,7 +48,8 @@ class _RhythmPaceEditorState extends ConsumerState<RhythmPaceEditor> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final current = ref.watch(sadhanaSessionProvider.select((s) => s.rhythmSeconds));
-    final error = checkPace(_value.text, _unit).error;
+    final l = context.l10n;
+    final error = checkPace(_value.text, _unit, l).error;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +66,7 @@ class _RhythmPaceEditorState extends ConsumerState<RhythmPaceEditor> {
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
                   LengthLimitingTextInputFormatter(8),
                 ],
-                decoration: const InputDecoration(labelText: 'Pace'),
+                decoration: InputDecoration(labelText: l.paceFieldLabel),
                 onChanged: (_) => _push(),
               ),
             ),
@@ -74,7 +77,7 @@ class _RhythmPaceEditorState extends ConsumerState<RhythmPaceEditor> {
                   for (final u in PaceUnit.values)
                     ButtonSegment(
                       value: u,
-                      label: Text(u.label, style: const TextStyle(fontSize: 12)),
+                      label: Text(u.localized(l), style: const TextStyle(fontSize: 12)),
                     ),
                 ],
                 selected: {_unit},
@@ -90,8 +93,8 @@ class _RhythmPaceEditorState extends ConsumerState<RhythmPaceEditor> {
         const SizedBox(height: 8),
         Text(
           error == null
-              ? 'Counts ${formatPaceEvery(current)}.  (Allowed: $paceRangeText)'
-              : '$error Still counting ${formatPaceEvery(current)}.',
+              ? l.paceHelpOk(formatPaceEvery(current), paceRangeText)
+              : l.paceHelpError(error, formatPaceEvery(current)),
           style: theme.textTheme.bodySmall?.copyWith(
             color: error == null
                 ? theme.colorScheme.onSurfaceVariant

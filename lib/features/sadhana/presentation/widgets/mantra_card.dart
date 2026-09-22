@@ -8,6 +8,7 @@ import '../../data/mantra.dart';
 import '../mantra_library_screen.dart';
 import 'script_text.dart';
 import 'voice_widgets.dart';
+import '../../../../l10n/l10n.dart';
 
 /// Opens the library and applies the choice, confirming first if it would
 /// discard a count in progress.
@@ -24,16 +25,16 @@ Future<void> pickMantra(BuildContext context, WidgetRef ref) async {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('Switch to ${picked.title}?'),
-        content: const Text('Your current count will be reset.'),
+        title: Text(context.l10n.switchToMantra(picked.title)),
+        content: Text(context.l10n.switchMantraBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Keep current'),
+            child: Text(context.l10n.keepCurrent),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Switch'),
+            child: Text(context.l10n.switchAction),
           ),
         ],
       ),
@@ -149,7 +150,7 @@ class MantraCard extends ConsumerWidget {
                           _SizeButton(
                             label: 'A−',
                             fontSize: 13,
-                            tooltip: 'Smaller mantra text',
+                            tooltip: context.l10n.smallerMantraText,
                             onPressed: scale > minMantraTextScale
                                 ? sizer.smaller
                                 : null,
@@ -157,7 +158,7 @@ class MantraCard extends ConsumerWidget {
                           _SizeButton(
                             label: 'A+',
                             fontSize: 19,
-                            tooltip: 'Larger mantra text',
+                            tooltip: context.l10n.largerMantraText,
                             onPressed: scale < maxMantraTextScale
                                 ? sizer.larger
                                 : null,
@@ -173,7 +174,7 @@ class MantraCard extends ConsumerWidget {
                           Icons.library_music_outlined,
                           size: 16,
                         ),
-                        label: const Text('Library'),
+                        label: Text(context.l10n.libraryButton),
                         style: TextButton.styleFrom(
                           visualDensity: VisualDensity.compact,
                           padding: const EdgeInsets.symmetric(horizontal: 8),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/voice_training_provider.dart';
 import '../../data/mantra.dart';
+import '../../../../l10n/l10n.dart';
 
 /// Small "BETA" label: Voice counting is an experimental, trained-on-you
 /// feature, and says so wherever it appears.
@@ -19,7 +20,7 @@ class BetaBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
-        'BETA',
+        context.l10n.betaLabel,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: scheme.onTertiaryContainer,
               fontWeight: FontWeight.w800,
@@ -50,7 +51,7 @@ class VoiceTrainedTag extends ConsumerWidget {
         // Flexible: in a narrow card the label shrinks instead of overflowing.
         Flexible(
           child: Text(
-            trained ? 'Voice trained' : 'Voice not trained',
+            trained ? context.l10n.voiceTrained : context.l10n.voiceNotTrained,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context)
@@ -76,18 +77,19 @@ class VoiceSensitivitySlider extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Sensitivity', style: theme.textTheme.titleSmall),
+        Text(context.l10n.sensitivityLabel, style: theme.textTheme.titleSmall),
         Slider(
           value: value,
           onChanged: ref.read(voiceSensitivityProvider.notifier).set,
-          semanticFormatterCallback: (v) =>
-              v < 0.34 ? 'Strict' : (v > 0.66 ? 'Lenient' : 'Medium'),
+          semanticFormatterCallback: (v) => v < 0.34
+              ? context.l10n.sensitivityStrict
+              : (v > 0.66 ? context.l10n.sensitivityLenient : context.l10n.sensitivityMedium),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Strict', style: theme.textTheme.bodySmall),
-            Text('Lenient', style: theme.textTheme.bodySmall),
+            Text(context.l10n.sensitivityStrict, style: theme.textTheme.bodySmall),
+            Text(context.l10n.sensitivityLenient, style: theme.textTheme.bodySmall),
           ],
         ),
       ],
@@ -101,16 +103,15 @@ Future<bool> confirmClearTraining(
   final ok = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text('Clear voice training?'),
-      content: Text('Voice will stop counting “${mantra.title}” until you '
-          'train it again.'),
+      title: Text(context.l10n.clearVoiceTrainingTitle),
+      content: Text(context.l10n.clearVoiceTrainingBody(mantra.title)),
       actions: [
         TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel')),
+            child: Text(context.l10n.actionCancel)),
         FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Clear training')),
+            child: Text(context.l10n.clearTraining)),
       ],
     ),
   );

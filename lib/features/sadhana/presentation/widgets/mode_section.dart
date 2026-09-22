@@ -12,20 +12,15 @@ import 'rhythm_pace_editor.dart';
 import 'section_card.dart';
 import 'voice_panel.dart';
 import 'voice_widgets.dart';
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 
-const _modeHelp = {
-  CountMode.tap: 'Tap the ring, or anywhere in Focus mode. Only Tap mode counts '
-      'screen taps.',
-  CountMode.rhythm:
-      'Press Start and the count advances by itself at the pace below.',
-  CountMode.voice:
-      'Press Start, then chant your trained mantra. Each time it is '
-          'recognised it adds one count, straight away; other sounds are '
-          'ignored. Needs the microphone; works best in a quiet room.',
-  CountMode.mala:
-      'Press Start, then press either volume button to count. Handy with '
-          'eyes closed or the phone in a pocket. The screen must stay on.',
-};
+Map<CountMode, String> _modeHelp(AppLocalizations l) => {
+      CountMode.tap: l.modeHelpTap,
+      CountMode.rhythm: l.modeHelpRhythm,
+      CountMode.voice: l.modeHelpVoice,
+      CountMode.mala: l.modeHelpMala,
+    };
 
 /// Left-to-right order of the mode buttons.
 const _modeOrder = [
@@ -47,16 +42,17 @@ class ModeSection extends ConsumerWidget {
     final mode = ref.watch(sadhanaSessionProvider.select((s) => s.mode));
     final pace = ref.watch(sadhanaSessionProvider.select((s) => s.rhythmSeconds));
     final theme = Theme.of(context);
+    final l = context.l10n;
     // Modes this device can never run, said up front rather than after a tap.
     final unusable = [
       if (!ref.read(voiceCounterServiceProvider).isSupported)
-        voiceUnsupportedText,
+        l.msgVoiceUnsupported,
       if (!ref.read(volumeButtonServiceProvider).isSupported)
-        malaUnsupportedText,
+        l.msgMalaUnsupported,
     ];
 
     return SectionCard(
-      title: 'Counting mode',
+      title: l.countingModeLabel,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -66,6 +62,7 @@ class ModeSection extends ConsumerWidget {
               for (final m in _modeOrder)
                 _ModeButton(
                   mode: m,
+                  l10n: l,
                   selected: mode == m,
                   // Unsupported platforms / denied permissions are handled by
                   // the session: it falls back to Tap and shows a message.
@@ -75,7 +72,7 @@ class ModeSection extends ConsumerWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            _modeHelp[mode]!,
+            _modeHelp(l)[mode]!,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -103,7 +100,7 @@ class ModeSection extends ConsumerWidget {
           if (mode == CountMode.rhythm) ...[
             const SizedBox(height: 16),
             Text(
-              'Pace: count ${formatPaceEvery(pace)}',
+              l.pacePrefix(formatPaceEvery(pace)),
               style: theme.textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
@@ -120,11 +117,13 @@ class ModeSection extends ConsumerWidget {
 class _ModeButton extends StatelessWidget {
   const _ModeButton({
     required this.mode,
+    required this.l10n,
     required this.selected,
     required this.onTap,
   });
 
   final CountMode mode;
+  final AppLocalizations l10n;
   final bool selected;
   final VoidCallback onTap;
 
@@ -135,7 +134,7 @@ class _ModeButton extends StatelessWidget {
     return Semantics(
       button: true,
       selected: selected,
-      label: '${mode.label} mode',
+      label: l10n.modeSemanticLabel(mode.localized(l10n)),
       excludeSemantics: true,
       onTap: onTap,
       child: InkResponse(
@@ -177,7 +176,7 @@ class _ModeButton extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              mode.label,
+              mode.localized(l10n),
               style: theme.textTheme.labelMedium?.copyWith(
                 fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                 color: selected ? scheme.primary : scheme.onSurfaceVariant,

@@ -1,6 +1,8 @@
 // Rhythm-mode pace: how long between automatic counts.
 // Pure Dart (no Flutter) so the parsing/formatting is easy to unit test.
 
+import '../../../l10n/l10n.dart';
+
 /// Shortest allowed interval, in seconds.
 const minRhythmSeconds = 0.2;
 
@@ -26,19 +28,20 @@ String get paceRangeText =>
 
 /// Interval = value × unit. Returns the interval in seconds, or an [error]
 /// message when [text] is empty, not a number, or outside the allowed range.
-({double? seconds, String? error}) checkPace(String text, PaceUnit unit) {
+({double? seconds, String? error}) checkPace(String text, PaceUnit unit, [AppLocalizations? l10n]) {
+  final l = l10n ?? englishL10n;
   final raw = text.trim().replaceAll(',', '.');
-  if (raw.isEmpty) return (seconds: null, error: 'Enter a pace.');
+  if (raw.isEmpty) return (seconds: null, error: l.paceErrorEmpty);
   final value = double.tryParse(raw);
   if (value == null || !value.isFinite) {
-    return (seconds: null, error: 'That is not a number.');
+    return (seconds: null, error: l.paceErrorNotNumber);
   }
   final seconds = value * unit.inSeconds;
   if (seconds < minRhythmSeconds - 1e-9) {
-    return (seconds: null, error: 'Too fast. The minimum is ${formatPace(minRhythmSeconds)}.');
+    return (seconds: null, error: l.paceErrorTooFast(formatPace(minRhythmSeconds)));
   }
   if (seconds > maxRhythmSeconds + 1e-9) {
-    return (seconds: null, error: 'Too slow. The maximum is ${formatPace(maxRhythmSeconds)}.');
+    return (seconds: null, error: l.paceErrorTooSlow(formatPace(maxRhythmSeconds)));
   }
   return (seconds: seconds, error: null);
 }

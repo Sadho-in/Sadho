@@ -5,17 +5,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/sadhana_session_provider.dart';
 import '../format.dart';
 import 'section_card.dart';
+import '../../../../l10n/l10n.dart';
 
 const _presets = [27, 108, 1008];
 
 enum _TimeUnit {
-  seconds('Seconds', 1),
-  minutes('Minutes', 60),
-  hours('Hours', 3600);
+  seconds(1),
+  minutes(60),
+  hours(3600);
 
-  const _TimeUnit(this.label, this.inSeconds);
-  final String label;
+  const _TimeUnit(this.inSeconds);
   final int inSeconds;
+
+  String localized(AppLocalizations l) => switch (this) {
+        _TimeUnit.seconds => l.unitSeconds,
+        _TimeUnit.minutes => l.unitMinutes,
+        _TimeUnit.hours => l.unitHours,
+      };
 }
 
 /// Target by COUNT (27 / 108 / 1008 / custom) or by TIME (s / min / h).
@@ -27,24 +33,25 @@ class TargetSection extends ConsumerWidget {
     final s = ref.watch(sadhanaSessionProvider);
     final notifier = ref.read(sadhanaSessionProvider.notifier);
 
+    final l = context.l10n;
     return SectionCard(
-      title: 'Target',
+      title: l.targetSectionTitle,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             width: double.infinity,
             child: SegmentedButton<TargetType>(
-              segments: const [
+              segments: [
                 ButtonSegment(
                   value: TargetType.count,
-                  icon: Icon(Icons.tag),
-                  label: Text('By count'),
+                  icon: const Icon(Icons.tag),
+                  label: Text(l.byCount),
                 ),
                 ButtonSegment(
                   value: TargetType.time,
-                  icon: Icon(Icons.timer_outlined),
-                  label: Text('By time'),
+                  icon: const Icon(Icons.timer_outlined),
+                  label: Text(l.byTime),
                 ),
               ],
               selected: {s.targetType},
@@ -90,7 +97,9 @@ class _CountTargetEditor extends StatelessWidget {
           ),
         ChoiceChip(
           avatar: const Icon(Icons.edit_outlined, size: 18),
-          label: Text(isCustom ? 'Custom · $current' : 'Custom'),
+          label: Text(isCustom
+              ? context.l10n.customWithValue('$current')
+              : context.l10n.custom),
           selected: isCustom,
           onSelected: (_) async {
             final v = await _askCount(context, current);
@@ -112,21 +121,21 @@ class _CountTargetEditor extends StatelessWidget {
             void submit() {
               final n = int.tryParse(controller.text.trim());
               if (n == null || n < 1 || n > 9999999) {
-                setState(() => error = 'Enter a number from 1 to 9,999,999');
+                setState(() => error = context.l10n.enterNumberRange);
                 return;
               }
               Navigator.pop(ctx, n);
             }
 
             return AlertDialog(
-              title: const Text('Custom count'),
+              title: Text(context.l10n.customCountTitle),
               content: TextField(
                 controller: controller,
                 autofocus: true,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: InputDecoration(
-                  labelText: 'Target count',
+                  labelText: context.l10n.targetCountLabel,
                   errorText: error,
                 ),
                 onSubmitted: (_) => submit(),
@@ -134,8 +143,8 @@ class _CountTargetEditor extends StatelessWidget {
               actions: [
                 TextButton(
                     onPressed: () => Navigator.pop(ctx),
-                    child: const Text('Cancel')),
-                FilledButton(onPressed: submit, child: const Text('Set')),
+                    child: Text(context.l10n.actionCancel)),
+                FilledButton(onPressed: submit, child: Text(context.l10n.setAction)),
               ],
             );
           },
@@ -211,7 +220,7 @@ class _TimeTargetEditorState extends State<_TimeTargetEditor> {
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(5),
                 ],
-                decoration: const InputDecoration(labelText: 'Duration'),
+                decoration: InputDecoration(labelText: context.l10n.durationLabel),
                 onChanged: (_) {
                   setState(() {});
                   _push();
@@ -225,7 +234,7 @@ class _TimeTargetEditorState extends State<_TimeTargetEditor> {
                   for (final u in _TimeUnit.values)
                     ButtonSegment(
                       value: u,
-                      label: Text(u.label, style: const TextStyle(fontSize: 12)),
+                      label: Text(u.localized(context.l10n), style: const TextStyle(fontSize: 12)),
                     ),
                 ],
                 selected: {_unit},
@@ -241,10 +250,10 @@ class _TimeTargetEditorState extends State<_TimeTargetEditor> {
         const SizedBox(height: 8),
         Text(
           seconds == null
-              ? 'Enter a duration of 1 or more.'
+              ? context.l10n.enterDuration
               : seconds > 359999
-                  ? 'Maximum is 99 h 59 min 59 s — it will be capped.'
-                  : 'Session lasts ${formatDurationWords(seconds)}.',
+                  ? context.l10n.maxDurationCapped
+                  : context.l10n.sessionLasts(formatDurationWords(seconds)),
           style: theme.textTheme.bodySmall?.copyWith(
             color: seconds == null
                 ? theme.colorScheme.error

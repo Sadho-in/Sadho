@@ -10,6 +10,8 @@ import '../voice/match_model.dart';
 import '../voice/voice_trainer.dart';
 import 'widgets/script_text.dart';
 import 'widgets/voice_widgets.dart';
+import '../../../l10n/l10n.dart';
+import '../../../l10n/labels.dart';
 
 /// Opens the training screen. Pauses a running session first: the microphone
 /// can only serve one listener. With [addMore] it goes straight into recording
@@ -121,10 +123,8 @@ class _VoiceTrainingScreenState extends ConsumerState<VoiceTrainingScreen>
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(
         content: Text(appended
-            ? 'Added $added ${added == 1 ? 'recording' : 'recordings'} to '
-                '“${widget.mantra.title}” (${samples.length} in total)'
-            : 'Voice trained for “${widget.mantra.title}” '
-                '(${samples.length} recordings)'),
+            ? context.l10n.addedRecordingsTo(added, widget.mantra.title, samples.length)
+            : context.l10n.voiceTrainedFor(widget.mantra.title, samples.length)),
       ));
     Navigator.of(context).pop();
   }
@@ -144,9 +144,9 @@ class _VoiceTrainingScreenState extends ConsumerState<VoiceTrainingScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           mainAxisSize: MainAxisSize.min,
-          children: [Text('Train voice'), SizedBox(width: 8), BetaBadge()],
+          children: [Text(context.l10n.trainVoice), const SizedBox(width: 8), const BetaBadge()],
         ),
       ),
       body: Align(
@@ -167,6 +167,7 @@ class _VoiceTrainingScreenState extends ConsumerState<VoiceTrainingScreen>
                   const SizedBox(height: 16),
                   if (showSaved)
                     _TrainedCard(
+                      l10n: context.l10n,
                       training: training,
                       onAddMore: () => _begin(append: true),
                       onRetrain: () => _begin(append: false),
@@ -174,6 +175,7 @@ class _VoiceTrainingScreenState extends ConsumerState<VoiceTrainingScreen>
                     )
                   else
                     _Stage(
+                      l10n: context.l10n,
                       trainer: t,
                       appending: _append,
                       savedCount: training?.sampleCount ?? 0,
@@ -198,12 +200,7 @@ class _VoiceTrainingScreenState extends ConsumerState<VoiceTrainingScreen>
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Beta. Everything happens on this device, offline: only '
-                    'numbers describing the sound are saved, never the audio. '
-                    'More recordings make counting more accurate (up to '
-                    '$maxTrainingSamples); a noisy room makes it less accurate. '
-                    'Say the mantra once, then pause briefly before the next '
-                    'repeat.',
+                    context.l10n.voiceBetaNoteTraining(maxTrainingSamples),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -250,12 +247,14 @@ class _MantraHeader extends StatelessWidget {
 /// A trained mantra at rest: what is saved, and the three things to do with it.
 class _TrainedCard extends StatelessWidget {
   const _TrainedCard({
+    required this.l10n,
     required this.training,
     required this.onAddMore,
     required this.onRetrain,
     required this.onClear,
   });
 
+  final AppLocalizations l10n;
   final VoiceTraining training;
   final VoidCallback onAddMore;
   final VoidCallback onRetrain;
@@ -271,17 +270,15 @@ class _TrainedCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Trained · ${training.sampleCount} recordings',
+            Text(l10n.trainedRecordingsCount(training.sampleCount),
                 style: theme.textTheme.titleMedium),
             const SizedBox(height: 4),
             Text(
               !training.isUsable
-                  ? 'Too few recordings to count with. Add more, or re-train.'
+                  ? l10n.tooFewRecordings
                   : (room > 0
-                      ? 'Voice can count this mantra. Add up to $room more '
-                          'recordings to improve accuracy without starting over.'
-                      : 'Voice can count this mantra. You have the maximum of '
-                          '$maxTrainingSamples recordings; re-train to replace them.'),
+                      ? l10n.canCountAddMore(room)
+                      : l10n.canCountAtMax(maxTrainingSamples)),
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -290,20 +287,20 @@ class _TrainedCard extends StatelessWidget {
             FilledButton.icon(
               onPressed: room > 0 ? onAddMore : null,
               icon: const Icon(Icons.add, size: 18),
-              label: const Text('Add more samples'),
+              label: Text(l10n.addMoreSamples),
             ),
             const SizedBox(height: 8),
             OutlinedButton.icon(
               onPressed: onRetrain,
               icon: const Icon(Icons.mic, size: 18),
-              label: const Text('Re-train'),
+              label: Text(l10n.retrain),
             ),
             Align(
               alignment: Alignment.centerLeft,
               child: TextButton.icon(
                 onPressed: onClear,
                 icon: const Icon(Icons.delete_outline, size: 18),
-                label: const Text('Clear training'),
+                label: Text(l10n.clearTraining),
               ),
             ),
           ],
@@ -316,6 +313,7 @@ class _TrainedCard extends StatelessWidget {
 /// The interactive part: instructions, level meter, progress dots, buttons.
 class _Stage extends StatelessWidget {
   const _Stage({
+    required this.l10n,
     required this.trainer,
     required this.appending,
     required this.savedCount,
@@ -328,6 +326,7 @@ class _Stage extends StatelessWidget {
     required this.showSettings,
   });
 
+  final AppLocalizations l10n;
   final VoiceTrainer trainer;
   final bool appending;
   final int savedCount;
@@ -348,29 +347,28 @@ class _Stage extends StatelessWidget {
 
     final (String headline, String? sub) = switch (t.phase) {
       TrainerPhase.idle when paused => (
-          'Paused',
-          '${t.recorded} recorded. Continue, or save what you have.',
+          l10n.pausedHeadline,
+          l10n.pausedSub(t.recorded),
         ),
       TrainerPhase.idle => (
-          'Train your own mantra',
-          'Record it $minTrainingSamples to $maxTrainingSamples times at your '
-              'normal chanting speed ($recommendedTrainingSamples is a good '
-              'number). Voice will then count only your mantra.',
+          l10n.trainYourOwnMantra,
+          l10n.recordInstructions(
+              minTrainingSamples, maxTrainingSamples, recommendedTrainingSamples),
         ),
-      TrainerPhase.starting => ('Opening the microphone…', null),
-      TrainerPhase.calibrating => (
-          'Stay quiet for a moment…',
-          'Listening to the room so background noise is not counted.',
-        ),
+      TrainerPhase.starting => (l10n.openingMicrophone, null),
+      TrainerPhase.calibrating => (l10n.stayQuiet, l10n.listeningToRoom),
       TrainerPhase.waiting => (
-          'Say your mantra…',
-          'Recording ${t.currentIndex} of up to ${t.maximum}',
+          l10n.sayYourMantra,
+          l10n.recordingXofY(t.currentIndex, t.maximum),
         ),
       TrainerPhase.complete => (
-          'All ${t.recorded} recordings captured',
-          'Save them to start counting with Voice.',
+          l10n.allRecordingsCaptured(t.recorded),
+          l10n.saveToStartCounting,
         ),
-      TrainerPhase.error => ('Cannot use the microphone', t.message),
+      TrainerPhase.error => (
+          l10n.cannotUseMicrophone,
+          t.message == null ? null : sadhanaEngineMessage(l10n, t.message!),
+        ),
     };
 
     return Card(
@@ -399,10 +397,11 @@ class _Stage extends StatelessWidget {
                   if (t.phase == TrainerPhase.waiting) ...[
                     const SizedBox(height: 6),
                     Text(
-                      t.message ??
-                          (t.canSave
-                              ? 'You can save now, or keep going for more accuracy.'
-                              : '$minTrainingSamples are enough to start.'),
+                      t.message != null
+                          ? sadhanaEngineMessage(l10n, t.message!)
+                          : (t.canSave
+                              ? l10n.canSaveNowHint
+                              : l10n.minAreEnough(minTrainingSamples)),
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: t.message != null
@@ -414,7 +413,7 @@ class _Stage extends StatelessWidget {
                   if (appending && t.phase != TrainerPhase.error) ...[
                     const SizedBox(height: 6),
                     Text(
-                      'Adding to your $savedCount saved recordings.',
+                      l10n.addingToSaved(savedCount),
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodySmall
                           ?.copyWith(color: scheme.onSurfaceVariant),
@@ -447,22 +446,22 @@ class _Stage extends StatelessWidget {
                 onPressed: onBegin,
                 icon: const Icon(Icons.mic),
                 label: Text(
-                    t.phase == TrainerPhase.error ? 'Try again' : 'Start recording'),
+                    t.phase == TrainerPhase.error ? l10n.tryAgain : l10n.startRecording),
               ),
             if (t.phase == TrainerPhase.error && showSettings)
               TextButton(
                   onPressed: openAppSettings,
-                  child: const Text('Open Settings')),
+                  child: Text(l10n.openSettingsAction)),
             if (t.listening || t.phase == TrainerPhase.complete || paused) ...[
               FilledButton.icon(
                 onPressed: t.canSave ? onSave : null,
                 icon: const Icon(Icons.check),
                 label: Text(t.canSave
-                    ? 'Save ${t.recorded} recordings'
+                    ? l10n.saveNRecordings(t.recorded)
                     : (t.recorded < t.minimum
-                        ? 'Record ${t.minimum - t.recorded} more to save'
+                        ? l10n.recordMoreToSave(t.minimum - t.recorded)
                         // Enough already saved; only something new is missing.
-                        : 'Record a sample to save')),
+                        : l10n.recordSampleToSave)),
               ),
               const SizedBox(height: 8),
               Wrap(
@@ -472,17 +471,17 @@ class _Stage extends StatelessWidget {
                     TextButton.icon(
                       onPressed: onUndo,
                       icon: const Icon(Icons.undo, size: 18),
-                      label: const Text('Undo last'),
+                      label: Text(l10n.undoLast),
                     ),
                   if (t.listening)
-                    TextButton(onPressed: onStop, child: const Text('Stop')),
+                    TextButton(onPressed: onStop, child: Text(l10n.stop)),
                   if (paused && t.remaining > 0)
                     TextButton(
                         onPressed: onResume,
-                        child: const Text('Continue recording')),
+                        child: Text(l10n.continueRecording)),
                   if (t.phase == TrainerPhase.complete || paused)
                     TextButton(
-                        onPressed: onStartOver, child: const Text('Start over')),
+                        onPressed: onStartOver, child: Text(l10n.startOver)),
                 ],
               ),
             ],
@@ -512,7 +511,7 @@ class _Dots extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Semantics(
-      label: '$recorded of up to $maximum recordings',
+      label: context.l10n.recordedOfMax(recorded, maximum),
       child: Wrap(
         alignment: WrapAlignment.center,
         children: [

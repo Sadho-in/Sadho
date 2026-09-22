@@ -7,6 +7,7 @@ import '../../data/mantra.dart';
 import '../../voice/match_model.dart';
 import '../voice_training_screen.dart';
 import 'voice_widgets.dart';
+import '../../../../l10n/l10n.dart';
 
 /// Shown in the Counting card while Voice is the active mode: whether the
 /// selected mantra is trained, Train / Re-train / Clear, the sensitivity
@@ -38,7 +39,7 @@ class VoicePanel extends ConsumerWidget {
             children: [
               Flexible(
                 child: Text(
-                  'Train your own mantra',
+                  context.l10n.trainYourOwnMantra,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.titleSmall,
@@ -53,11 +54,9 @@ class VoicePanel extends ConsumerWidget {
           const SizedBox(height: 4),
           Text(
             trained
-                ? 'Counting “${mantra.title}” from your $count recordings. '
-                    'Other sounds and words are ignored.'
-                : 'Voice counts only a mantra you have trained. Record '
-                    '“${mantra.title}” $minTrainingSamples to '
-                    '$maxTrainingSamples times to begin.',
+                ? context.l10n.voiceCountingFrom(mantra.title, count)
+                : context.l10n.voiceCountsOnlyTrained(
+                    mantra.title, minTrainingSamples, maxTrainingSamples),
             style: theme.textTheme.bodySmall
                 ?.copyWith(color: scheme.onSurfaceVariant),
           ),
@@ -71,35 +70,32 @@ class VoicePanel extends ConsumerWidget {
                   onPressed: () =>
                       openVoiceTraining(context, mantra, addMore: true),
                   icon: const Icon(Icons.add, size: 18),
-                  label: const Text('Add more samples'),
+                  label: Text(context.l10n.addMoreSamples),
                 ),
               if (trained)
                 OutlinedButton.icon(
                   onPressed: () => openVoiceTraining(context, mantra),
                   icon: const Icon(Icons.mic, size: 18),
-                  label: const Text('Re-train'),
+                  label: Text(context.l10n.retrain),
                 )
               else
                 FilledButton.tonalIcon(
                   onPressed: () => openVoiceTraining(context, mantra),
                   icon: const Icon(Icons.mic, size: 18),
-                  label: const Text('Train voice'),
+                  label: Text(context.l10n.trainVoice),
                 ),
               if (trained)
                 TextButton.icon(
                   onPressed: () => confirmClearTraining(context, ref, mantra),
                   icon: const Icon(Icons.delete_outline, size: 18),
-                  label: const Text('Clear training'),
+                  label: Text(context.l10n.clearTraining),
                 ),
             ],
           ),
           const SizedBox(height: 8),
           const VoiceSensitivitySlider(),
           Text(
-            'Beta: works on-device and offline. Accuracy improves with more '
-            'recordings and drops in a noisy room. Pause briefly between '
-            'repeats. Only your voice counts here; the + and − buttons '
-            'correct the count.',
+            context.l10n.voiceBetaNote,
             style: theme.textTheme.bodySmall
                 ?.copyWith(color: scheme.onSurfaceVariant),
           ),
@@ -114,17 +110,16 @@ Future<void> showTrainPrompt(BuildContext context, Mantra mantra) async {
   final train = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text('Train your voice first'),
-      content: Text('Voice counts only your own trained mantra. Record '
-          '“${mantra.title}” $minTrainingSamples to $maxTrainingSamples times '
-          '(about a minute). It stays on this device and works offline.'),
+      title: Text(context.l10n.trainVoiceFirstTitle),
+      content: Text(context.l10n.trainVoiceFirstBody(
+          mantra.title, minTrainingSamples, maxTrainingSamples)),
       actions: [
         TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Later')),
+            child: Text(context.l10n.later)),
         FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Train now')),
+            child: Text(context.l10n.trainNow)),
       ],
     ),
   );

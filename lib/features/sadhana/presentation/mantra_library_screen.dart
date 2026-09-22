@@ -9,6 +9,7 @@ import 'widgets/mantra_form_sheet.dart';
 import 'voice_training_screen.dart';
 import 'widgets/script_text.dart';
 import 'widgets/voice_widgets.dart';
+import '../../../l10n/l10n.dart';
 
 /// Searchable mantra / paath library. Pops with the chosen [Mantra].
 class MantraLibraryScreen extends ConsumerStatefulWidget {
@@ -37,11 +38,11 @@ class _MantraLibraryScreenState extends ConsumerState<MantraLibraryScreen> {
     final results = library.where((m) => m.matches(_query)).toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Mantra library')),
+      appBar: AppBar(title: Text(context.l10n.mantraLibraryTitle)),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _add,
         icon: const Icon(Icons.add),
-        label: const Text('Add mantra'),
+        label: Text(context.l10n.addMantra),
       ),
       body: Column(
         children: [
@@ -49,7 +50,7 @@ class _MantraLibraryScreenState extends ConsumerState<MantraLibraryScreen> {
             padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
             child: SearchBar(
               controller: _search,
-              hintText: 'Search title, script or tradition',
+              hintText: context.l10n.searchHint,
               leading: const Icon(Icons.search),
               elevation: const WidgetStatePropertyAll(0),
               backgroundColor: WidgetStatePropertyAll(
@@ -58,7 +59,7 @@ class _MantraLibraryScreenState extends ConsumerState<MantraLibraryScreen> {
               trailing: [
                 if (_query.isNotEmpty)
                   IconButton(
-                    tooltip: 'Clear',
+                    tooltip: context.l10n.actionClear,
                     icon: const Icon(Icons.close),
                     onPressed: () {
                       _search.clear();
@@ -75,7 +76,7 @@ class _MantraLibraryScreenState extends ConsumerState<MantraLibraryScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(32),
                       child: Text(
-                        'No mantras match “$_query”.\nTap “Add mantra” to create your own.',
+                        context.l10n.noMantrasMatch(_query),
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyLarge?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
@@ -122,9 +123,9 @@ class _MantraLibraryScreenState extends ConsumerState<MantraLibraryScreen> {
       ..showSnackBar(
         SnackBar(
           content: Text(switch (result.action) {
-            MantraFormAction.added => 'Added “$title”',
-            MantraFormAction.saved => 'Saved “$title”',
-            MantraFormAction.restored => 'Restored “$title” to its default',
+            MantraFormAction.added => context.l10n.mantraAdded(title),
+            MantraFormAction.saved => context.l10n.mantraSaved(title),
+            MantraFormAction.restored => context.l10n.mantraRestored(title),
           }),
         ),
       );
@@ -134,16 +135,16 @@ class _MantraLibraryScreenState extends ConsumerState<MantraLibraryScreen> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete mantra?'),
-        content: Text('“${m.title}” will be removed from your library.'),
+        title: Text(context.l10n.deleteMantraTitle),
+        content: Text(context.l10n.deleteMantraBody(m.title)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.actionCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Delete'),
+            child: Text(context.l10n.actionDelete),
           ),
         ],
       ),
@@ -220,13 +221,13 @@ class _MantraTile extends ConsumerWidget {
                           scheme.onSecondaryContainer,
                         ),
                         _Tag(
-                          '${mantra.defaultCount} counts',
+                          context.l10n.mantraCountTag(mantra.defaultCount),
                           scheme.surfaceContainerHigh,
                           scheme.onSurface,
                         ),
                         if (mantra.isEdited)
                           _Tag(
-                            'Edited',
+                            context.l10n.editedTag,
                             scheme.tertiaryContainer,
                             scheme.onTertiaryContainer,
                           ),
@@ -244,18 +245,20 @@ class _MantraTile extends ConsumerWidget {
                       child: Icon(Icons.check_circle, color: scheme.primary),
                     ),
                   IconButton(
-                    tooltip: 'Edit',
+                    tooltip: context.l10n.actionEdit,
                     icon: const Icon(Icons.edit_outlined),
                     onPressed: onEdit,
                   ),
                   IconButton(
-                    tooltip: trained ? 'Re-train voice' : 'Train voice',
+                    tooltip: trained
+                        ? context.l10n.retrainVoiceTooltip
+                        : context.l10n.trainVoice,
                     icon: Icon(trained ? Icons.mic : Icons.mic_none),
                     onPressed: () => openVoiceTraining(context, mantra),
                   ),
                   if (onDelete != null)
                     IconButton(
-                      tooltip: 'Delete',
+                      tooltip: context.l10n.actionDelete,
                       icon: const Icon(Icons.delete_outline),
                       onPressed: onDelete,
                     ),

@@ -6,6 +6,8 @@ import '../../application/sadhana_session_provider.dart';
 import '../../application/voice_training_provider.dart';
 import 'mode_meta.dart';
 import 'voice_widgets.dart';
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 
 /// The ACTIVE counting mode and what it is doing right now, in two lines:
 /// the mode name, then a status ("Tap anywhere to count", the Rhythm pace,
@@ -27,55 +29,56 @@ class ModeStatusLine extends ConsumerWidget {
     final trained = ref.watch(mantraTrainedProvider(s.mantraId));
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
 
     final pace = formatPaceEvery(s.rhythmSeconds);
     final (IconData icon, String text, bool live) = switch (s.mode) {
-      CountMode.tap => (s.mode.icon, 'Tap anywhere to count', false),
+      CountMode.tap => (s.mode.icon, l.tapAnywhereToCount, false),
       CountMode.rhythm => (
           s.mode.icon,
-          s.running ? 'Counting $pace' : 'Paused · $pace',
+          s.running ? l.countingPace(pace) : l.pausedPace(pace),
           s.running,
         ),
       CountMode.voice when s.running && s.inputActive => (
           Icons.mic,
-          'Listening…',
+          l.listening,
           true,
         ),
       CountMode.voice when s.running => (
           s.mode.icon,
-          'Starting microphone… allow access if asked',
+          l.startingMicrophone,
           false,
         ),
       CountMode.voice when !trained => (
           Icons.mic_off_outlined,
-          'Not trained yet · train your mantra to use Voice',
+          l.notTrainedYet,
           false,
         ),
       CountMode.voice => (
           Icons.mic_off_outlined,
-          'Paused · press Start to listen',
+          l.pausedPressStartListen,
           false,
         ),
       CountMode.mala when s.running && s.inputActive => (
           s.mode.icon,
-          'Press the volume keys to count',
+          l.pressVolumeKeys,
           true,
         ),
       CountMode.mala when s.running => (
           s.mode.icon,
-          'Capturing the volume keys…',
+          l.capturingVolumeKeys,
           false,
         ),
       CountMode.mala => (
           s.mode.icon,
-          'Paused · press Start to use the volume keys',
+          l.pausedPressStartVolume,
           false,
         ),
     };
 
     final color = live ? scheme.primary : scheme.onSurfaceVariant;
     final align = center ? CrossAxisAlignment.center : CrossAxisAlignment.start;
-    final title = '${s.mode.label} mode${s.isSeparate ? ' · own count' : ''}';
+    final title = l.modeTitleLine(s.mode.localized(l), s.isSeparate ? 'yes' : 'no');
 
     final icon0 = _Pulse(
       active: live,
@@ -91,9 +94,8 @@ class ModeStatusLine extends ConsumerWidget {
     );
     final caption = s.mode == CountMode.voice && s.running && s.lastVoice != null
         ? (s.lastVoice!.counted
-            ? 'Counted · ${(s.lastVoice!.closeness * 100).round()}% match'
-            : 'Ignored · ${(s.lastVoice!.closeness * 100).round()}% match '
-                '(not your mantra)')
+            ? l.voiceCountedMatch((s.lastVoice!.closeness * 100).round())
+            : l.voiceIgnoredMatch((s.lastVoice!.closeness * 100).round()))
         : null;
 
     if (compact) {
@@ -109,7 +111,7 @@ class ModeStatusLine extends ConsumerWidget {
                 icon0,
                 const SizedBox(width: 6),
                 Text(
-                  '${s.mode.label} mode',
+                  l.modeSemanticLabel(s.mode.localized(l)),
                   style: theme.textTheme.labelLarge?.copyWith(
                     color: scheme.onSurface,
                     fontWeight: FontWeight.w700,
@@ -196,9 +198,8 @@ class ModeStatusLine extends ConsumerWidget {
               padding: const EdgeInsets.only(top: 2),
               child: Text(
                 s.lastVoice!.counted
-                    ? 'Counted · ${(s.lastVoice!.closeness * 100).round()}% match'
-                    : 'Ignored · ${(s.lastVoice!.closeness * 100).round()}% match '
-                        '(not your mantra)',
+                    ? l.voiceCountedMatch((s.lastVoice!.closeness * 100).round())
+                    : l.voiceIgnoredMatch((s.lastVoice!.closeness * 100).round()),
                 textAlign: center ? TextAlign.center : TextAlign.start,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: s.lastVoice!.counted

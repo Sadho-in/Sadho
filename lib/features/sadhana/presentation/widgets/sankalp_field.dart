@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/sadhana_session_provider.dart';
 import 'section_card.dart';
+import '../../../../l10n/l10n.dart';
 
 /// Editable sankalp (intention) for the session; saved as you type.
 class SankalpField extends ConsumerStatefulWidget {
@@ -32,14 +33,14 @@ class _SankalpFieldState extends ConsumerState<SankalpField> {
   @override
   Widget build(BuildContext context) {
     return SectionCard(
-      title: 'Sankalp',
+      title: context.l10n.sankalpLabel,
       child: TextField(
         controller: _controller,
         minLines: 2,
         maxLines: 4,
         textCapitalization: TextCapitalization.sentences,
-        decoration: const InputDecoration(
-          hintText: 'State your intention for this practice…',
+        decoration: InputDecoration(
+          hintText: context.l10n.sankalpHint,
         ),
         onChanged: ref.read(sadhanaSessionProvider.notifier).setSankalp,
       ),

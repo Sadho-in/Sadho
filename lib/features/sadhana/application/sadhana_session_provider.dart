@@ -14,6 +14,8 @@ import '../voice/match_model.dart';
 import 'rhythm_pace.dart';
 import 'session_notice_provider.dart';
 import 'voice_training_provider.dart';
+import '../../../l10n/labels.dart';
+import '../../../l10n/locale_provider.dart';
 
 enum TargetType { count, time }
 
@@ -425,7 +427,7 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
     if (!state.running && state.mode == CountMode.voice && !_voiceTrained()) {
       // Voice only counts a mantra it has been trained on.
       ref.read(sessionNoticeProvider.notifier).show(
-            'Train your voice for this mantra first: record it $minTrainingSamples to $maxTrainingSamples times.',
+            ref.read(l10nProvider).trainFirstPrompt(minTrainingSamples, maxTrainingSamples),
             trainMantraId: state.mantraId,
           );
       return;
@@ -462,11 +464,10 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
 
   void setMode(CountMode mode) {
     if (mode == state.mode) return;
+    final fallbackL10n = ref.read(l10nProvider);
     final unsupported = switch (mode) {
-      CountMode.voice when !_voice.isSupported =>
-        '$voiceUnsupportedText. Using Tap mode.',
-      CountMode.mala when !_volume.isSupported =>
-        '$malaUnsupportedText. Using Tap mode.',
+      CountMode.voice when !_voice.isSupported => fallbackL10n.fallbackVoiceUnsupported,
+      CountMode.mala when !_volume.isSupported => fallbackL10n.fallbackMalaUnsupported,
       _ => null,
     };
     if (unsupported != null) {
@@ -596,12 +597,13 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
         if (!await _scheduler.requestPermission()) return;
       }
       if (gen != _alarmGen || _disposed) return; // paused or changed meanwhile
+      final l = ref.read(l10nProvider);
       await _scheduler.replaceAlerts(sadhanaTimerGroup, [
         ScheduledAlert(
           id: reminderId(sadhanaTimerGroup, 0, 0),
           when: at,
-          title: '🔔 Sadhana time complete',
-          body: 'Your session time is up 🙏',
+          title: l.sadhanaRingTitle,
+          body: l.sadhanaRingBody,
         ),
       ]);
       _alarmScheduled = gen == _alarmGen;
@@ -642,7 +644,7 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
       _voiceActive = false;
       _emit(state.copyWith(running: false));
       ref.read(sessionNoticeProvider.notifier).show(
-            'Train your voice for this mantra first: record it $minTrainingSamples to $maxTrainingSamples times.',
+            ref.read(l10nProvider).trainFirstPrompt(minTrainingSamples, maxTrainingSamples),
             trainMantraId: state.mantraId,
           );
       return;
@@ -669,7 +671,11 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
         _voiceActive = false;
         _emit(state.copyWith(
             running: false, inputActive: false, clearLastVoice: true));
-        ref.read(sessionNoticeProvider.notifier).show(message);
+        // `message` comes from the pure-Dart mic engine (always in English);
+        // translate it for display here, where it turns into a user-facing
+        // notice.
+        ref.read(sessionNoticeProvider.notifier).show(
+            sadhanaEngineMessage(ref.read(l10nProvider), message));
       },
     );
     if (_disposed) return;
@@ -683,14 +689,13 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
       return;
     }
     _voiceActive = false;
+    final startL10n = ref.read(l10nProvider);
     _fallbackToTap(
       switch (result) {
-        VoiceStartResult.denied =>
-          'Microphone permission was denied, so Voice counting cannot listen. Using Tap mode.',
-        VoiceStartResult.permanentlyDenied =>
-          'Microphone access is blocked. Allow it in Settings to use Voice counting. Using Tap mode.',
-        VoiceStartResult.unsupported => '$voiceUnsupportedText. Using Tap mode.',
-        _ => '$voiceNoMicText. Using Tap mode.',
+        VoiceStartResult.denied => startL10n.fallbackVoiceDenied,
+        VoiceStartResult.permanentlyDenied => startL10n.fallbackVoiceBlocked,
+        VoiceStartResult.unsupported => startL10n.fallbackVoiceUnsupported,
+        _ => startL10n.fallbackVoiceNoMic,
       },
       openSettings: result == VoiceStartResult.permanentlyDenied,
     );
@@ -721,9 +726,7 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
       return;
     }
     _malaActive = false;
-    _fallbackToTap(
-      '$malaUnsupportedText. Using Tap mode.',
-    );
+    _fallbackToTap(ref.read(l10nProvider).fallbackMalaUnsupported);
   }
 
   void _stopMala() {

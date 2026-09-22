@@ -6,6 +6,8 @@ import '../../application/sadhana_session_provider.dart';
 import '../../data/ringtone.dart';
 import '../../services/feedback_service.dart';
 import 'section_card.dart';
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 
 /// Completion settings. Vibration and ringtone are two separate settings,
 /// each with its own on/off switch.
@@ -20,7 +22,7 @@ class CompletionSettingsCard extends ConsumerWidget {
     final theme = Theme.of(context);
 
     return SectionCard(
-      title: 'Completion',
+      title: context.l10n.completionTitle,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -28,10 +30,8 @@ class CompletionSettingsCard extends ConsumerWidget {
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
             secondary: const Icon(Icons.vibration),
-            title: const Text('Vibration'),
-            subtitle: Text(
-              'A buzz every $milestoneEvery counts, and a stronger one at the target.',
-            ),
+            title: Text(context.l10n.vibrationLabel),
+            subtitle: Text(context.l10n.vibrationSubtitle(milestoneEvery)),
             value: settings.vibrationEnabled,
             onChanged: notifier.setVibrationEnabled,
           ),
@@ -39,7 +39,7 @@ class CompletionSettingsCard extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 4),
               child: Text(
-                'Intensity: level ${settings.vibrationLevel} of 5',
+                context.l10n.intensityLevel(settings.vibrationLevel),
                 style: theme.textTheme.titleSmall,
               ),
             ),
@@ -59,12 +59,12 @@ class CompletionSettingsCard extends ConsumerWidget {
                 OutlinedButton.icon(
                   onPressed: () => feedback.previewVibration(strong: false),
                   icon: const Icon(Icons.vibration, size: 18),
-                  label: const Text('Test milestone'),
+                  label: Text(context.l10n.testMilestone),
                 ),
                 OutlinedButton.icon(
                   onPressed: () => feedback.previewVibration(strong: true),
                   icon: const Icon(Icons.vibration, size: 18),
-                  label: const Text('Test target'),
+                  label: Text(context.l10n.testTarget),
                 ),
               ],
             ),
@@ -74,8 +74,8 @@ class CompletionSettingsCard extends ConsumerWidget {
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
             secondary: const Icon(Icons.notifications_active_outlined),
-            title: const Text('Ringtone'),
-            subtitle: const Text('A sound plays when the target is reached.'),
+            title: Text(context.l10n.ringtoneLabel),
+            subtitle: Text(context.l10n.ringtoneSubtitle),
             value: settings.ringtoneEnabled,
             onChanged: notifier.setRingtoneEnabled,
           ),
@@ -87,7 +87,7 @@ class CompletionSettingsCard extends ConsumerWidget {
               children: [
                 for (final r in Ringtone.values)
                   ChoiceChip(
-                    label: Text(r.label),
+                    label: Text(r.localized(context.l10n)),
                     selected: settings.ringtone == r,
                     onSelected: (_) {
                       notifier.setRingtone(r);
@@ -100,7 +100,7 @@ class CompletionSettingsCard extends ConsumerWidget {
             OutlinedButton.icon(
               onPressed: () => feedback.previewRingtone(settings.ringtone),
               icon: const Icon(Icons.play_arrow, size: 18),
-              label: const Text('Play sound'),
+              label: Text(context.l10n.playSound),
             ),
           ],
         ],

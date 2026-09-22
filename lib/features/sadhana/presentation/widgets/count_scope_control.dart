@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/sadhana_session_provider.dart';
+import '../../../../l10n/l10n.dart';
 
 /// "Combined | Separate": just the two options, no label.
 ///
@@ -28,14 +29,14 @@ class CountScopeControl extends ConsumerWidget {
       ButtonSegment(
         value: CountScope.combined,
         icon: compact ? null : const Icon(Icons.merge_type),
-        label: const Text('Combined'),
-        tooltip: 'All four modes add to one shared count',
+        label: Text(context.l10n.combined),
+        tooltip: context.l10n.combinedTooltip,
       ),
       ButtonSegment(
         value: CountScope.separate,
         icon: compact ? null : const Icon(Icons.call_split),
-        label: const Text('Separate'),
-        tooltip: 'Each mode keeps its own count',
+        label: Text(context.l10n.separate),
+        tooltip: context.l10n.separateTooltip,
       ),
     ];
 
@@ -56,7 +57,8 @@ class CountScopeControl extends ConsumerWidget {
     );
 
     // No visible label, but screen readers still hear what this is.
-    final labelled = Semantics(container: true, label: 'Count mode', child: control);
+    final labelled =
+        Semantics(container: true, label: context.l10n.countModeSemantic, child: control);
     if (compact) return labelled;
 
     return Column(
@@ -66,11 +68,8 @@ class CountScopeControl extends ConsumerWidget {
         const SizedBox(height: 8),
         Text(
           scope == CountScope.combined
-              ? 'Tap, Voice, Rhythm and Mala all add to one shared count '
-                  'toward one target.'
-              : 'Each mode keeps its own count and its own progress toward '
-                  'the target. Reset and completion apply only to the mode '
-                  'you are in.',
+              ? context.l10n.combinedExplain
+              : context.l10n.separateExplain,
           style: theme.textTheme.bodySmall?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
           ),

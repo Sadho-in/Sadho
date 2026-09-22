@@ -9,10 +9,11 @@ import '../application/mantra_text_scale_provider.dart';
 import '../application/selected_mantra_provider.dart';
 import 'format.dart';
 import 'widgets/counter_section.dart' show ringLabels;
-import 'widgets/mode_meta.dart';
 import 'widgets/mode_status.dart';
 import 'widgets/progress_ring.dart';
 import 'widgets/script_text.dart';
+import '../../../l10n/l10n.dart';
+import '../../../l10n/labels.dart';
 
 /// How long the exit gesture must be held.
 const focusExitHold = Duration(seconds: 4);
@@ -148,7 +149,8 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
     final s = ref.watch(sadhanaSessionProvider);
     final mantra = ref.watch(selectedMantraProvider);
     final textScale = ref.watch(mantraTextScaleProvider);
-    final labels = ringLabels(s);
+    final l = context.l10n;
+    final labels = ringLabels(s, l);
 
     ref.listen(sadhanaSessionProvider.select((v) => v.count), (prev, next) {
       if (prev != null && next > prev) _pulse.forward(from: 0);
@@ -250,7 +252,7 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
                         // count"; in the other modes taps are inert.
                         if (s.completed)
                           Text(
-                            'Target reached 🙏',
+                            l.targetReachedFocus,
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: scheme.secondary,
                               fontWeight: FontWeight.w600,
@@ -258,8 +260,7 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
                           )
                         else if (s.mode != CountMode.tap)
                           Text(
-                            'Screen taps do not count in ${s.mode.label} mode. '
-                            'Use + or − to correct.',
+                            l.screenTapsDoNotCount(s.mode.localized(l)),
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: scheme.onSurfaceVariant,
@@ -267,7 +268,7 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
                           ),
                         const SizedBox(height: 4),
                         Text(
-                          'Hold $_exitFingers fingers for ${focusExitHold.inSeconds} seconds to exit',
+                          l.holdFingersToExit(_exitFingers, focusExitHold.inSeconds),
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: scheme.onSurfaceVariant,
                           ),
@@ -289,7 +290,7 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
                                           .toggleRunning,
                                   icon: Icon(
                                       s.running ? Icons.pause : Icons.play_arrow),
-                                  label: Text(s.running ? 'Pause' : 'Start'),
+                                  label: Text(s.running ? l.pause : l.start),
                                 ),
                               ),
                             // Manual corrections (any mode), e.g. a rep Voice
@@ -297,7 +298,7 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
                             // touching them is never a tap.
                             _control(
                               IconButton.outlined(
-                                tooltip: 'Remove one',
+                                tooltip: l.removeOneTooltip,
                                 onPressed: s.count == 0
                                     ? null
                                     : ref
@@ -308,7 +309,7 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
                             ),
                             _control(
                               IconButton.filled(
-                                tooltip: 'Add one',
+                                tooltip: l.addOneTooltip,
                                 onPressed: s.completed
                                     ? null
                                     : ref
@@ -359,9 +360,10 @@ class _HoldToExitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l = context.l10n;
     return Semantics(
       button: true,
-      label: 'Hold to exit focus mode',
+      label: l.holdToExitFocusMode,
       child: Listener(
         onPointerDown: (e) => onPointerDown(e.pointer),
         child: ClipRRect(
@@ -396,7 +398,7 @@ class _HoldToExitButton extends StatelessWidget {
                   children: [
                     Icon(Icons.logout, size: 18, color: scheme.onSurface),
                     const SizedBox(width: 8),
-                    Text('Hold to exit',
+                    Text(l.holdToExit,
                         style: Theme.of(context).textTheme.labelLarge),
                   ],
                 ),
@@ -419,6 +421,7 @@ class _HoldOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    final l = context.l10n;
     return IgnorePointer(
       child: AnimatedBuilder(
         animation: progress,
@@ -459,7 +462,7 @@ class _HoldOverlay extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Keep holding to exit…',
+                  l.keepHoldingToExit,
                   style: theme.textTheme.titleMedium
                       ?.copyWith(color: Colors.white),
                 ),

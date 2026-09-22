@@ -4,18 +4,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/sadhana_session_provider.dart';
 import '../focus_mode_screen.dart';
 import '../format.dart';
-import 'mode_meta.dart';
 import 'mode_status.dart';
 import 'progress_ring.dart';
+import '../../../../l10n/l10n.dart';
+import '../../../../l10n/labels.dart';
 
 /// Ring text for the current session: count/target, or remaining time for a
 /// time target.
-({String primary, String secondary}) ringLabels(SadhanaState s) => s.isTimeTarget
-    ? (
-        primary: formatClock(s.remainingSeconds),
-        secondary: '${s.count} counted',
-      )
-    : (primary: '${s.count}', secondary: 'of ${s.targetCount}');
+({String primary, String secondary}) ringLabels(SadhanaState s, AppLocalizations l) =>
+    s.isTimeTarget
+        ? (
+            primary: formatClock(s.remainingSeconds),
+            secondary: l.countedLabel(s.count),
+          )
+        : (primary: '${s.count}', secondary: l.ofTarget(s.targetCount));
 
 /// Progress ring, then ONE row with the four controls (Reset, − undo, + count,
 /// Focus), the primary Start / Pause / Resume button, and a one-line status.
@@ -31,7 +33,8 @@ class CounterSection extends ConsumerWidget {
     final s = ref.watch(sadhanaSessionProvider);
     final notifier = ref.read(sadhanaSessionProvider.notifier);
     final theme = Theme.of(context);
-    final labels = ringLabels(s);
+    final l = context.l10n;
+    final labels = ringLabels(s, l);
     final own = s.activeProgress;
     final started = own.count > 0 || own.elapsedSeconds > 0;
 
@@ -56,27 +59,27 @@ class CounterSection extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _Control(
-              label: 'Reset',
+              label: l.actionReset,
               child: IconButton.outlined(
-                tooltip: 'Reset',
+                tooltip: l.actionReset,
                 iconSize: 24,
                 onPressed: () => _confirmReset(context, s, notifier),
                 icon: const Icon(Icons.restart_alt),
               ),
             ),
             _Control(
-              label: 'Undo',
+              label: l.undoLabel,
               child: IconButton.outlined(
-                tooltip: 'Remove one',
+                tooltip: l.removeOneTooltip,
                 iconSize: 24,
                 onPressed: s.count == 0 ? null : notifier.decrement,
                 icon: const Icon(Icons.remove),
               ),
             ),
             _Control(
-              label: 'Count',
+              label: l.countLabel,
               child: IconButton.filled(
-                tooltip: 'Add one',
+                tooltip: l.addOneTooltip,
                 iconSize: 34,
                 padding: const EdgeInsets.all(10),
                 onPressed: s.completed ? null : notifier.increment,
@@ -84,9 +87,9 @@ class CounterSection extends ConsumerWidget {
               ),
             ),
             _Control(
-              label: 'Focus',
+              label: l.focusLabel,
               child: IconButton.outlined(
-                tooltip: 'Focus mode',
+                tooltip: l.focusModeTooltip,
                 iconSize: 24,
                 onPressed: () => openFocusMode(context),
                 icon: const Icon(Icons.center_focus_strong_outlined),
@@ -101,7 +104,7 @@ class CounterSection extends ConsumerWidget {
             child: FilledButton.icon(
               onPressed: s.completed ? null : notifier.toggleRunning,
               icon: Icon(s.running ? Icons.pause : Icons.play_arrow),
-              label: Text(s.running ? 'Pause' : (started ? 'Resume' : 'Start')),
+              label: Text(s.running ? l.pause : (started ? l.resume : l.start)),
             ),
           ),
         ],
@@ -116,9 +119,8 @@ class CounterSection extends ConsumerWidget {
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(
                     s.isSeparate
-                        ? 'Target reached in ${s.mode.label} 🙏  Reset this mode, '
-                            'switch mode, or raise the target.'
-                        : 'Target reached 🙏  Reset, or raise the target.',
+                        ? l.targetReachedSeparate(s.mode.localized(l))
+                        : l.targetReachedCombined,
                     textAlign: TextAlign.center,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: theme.colorScheme.secondary,
@@ -138,23 +140,23 @@ class CounterSection extends ConsumerWidget {
     SadhanaSessionNotifier notifier,
   ) async {
     if (s.count == 0 && s.elapsedSeconds == 0) return;
+    final l = context.l10n;
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(s.isSeparate
-            ? 'Reset ${s.mode.label} count?'
-            : 'Reset this session?'),
+            ? l.resetModeCountTitle(s.mode.localized(l))
+            : l.resetSessionTitle),
         content: Text(s.isSeparate
-            ? 'Your ${s.mode.label} count of ${s.count} will return to zero. '
-                'The other modes keep their counts.'
-            : 'Your count of ${s.count} will return to zero.'),
+            ? l.resetModeCountBody(s.mode.localized(l), s.count)
+            : l.resetSessionBody(s.count)),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Cancel')),
+              child: Text(l.actionCancel)),
           FilledButton(
               onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Reset')),
+              child: Text(l.actionReset)),
         ],
       ),
     );

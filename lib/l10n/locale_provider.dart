@@ -18,3 +18,8 @@ final localeProvider = Provider<Locale>((ref) {
     orElse: () => const Locale('en'),
   );
 });
+
+/// The app's texts for provider/service code that has a `ref` but no
+/// `BuildContext` (a Notifier building a notification, a background message).
+final l10nProvider = Provider<AppLocalizations>(
+    (ref) => lookupAppLocalizations(ref.watch(localeProvider)));

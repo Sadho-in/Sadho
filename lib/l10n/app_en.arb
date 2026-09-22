@@ -1,26 +1,660 @@
 {
   "@@locale": "en",
-
   "navHome": "Home",
-  "@navHome": {"description": "Bottom navigation: the Home tab"},
+  "@navHome": {
+    "description": "Bottom navigation: the Home tab"
+  },
   "navSadhana": "Sadhana",
-  "@navSadhana": {"description": "Bottom navigation: the Sadhana tab"},
+  "@navSadhana": {
+    "description": "Bottom navigation: the Sadhana tab"
+  },
   "navCalendar": "Calendar",
-  "@navCalendar": {"description": "Bottom navigation: the Calendar tab"},
+  "@navCalendar": {
+    "description": "Bottom navigation: the Calendar tab"
+  },
   "navClock": "Clock",
-  "@navClock": {"description": "Bottom navigation: the Clock tab"},
-
+  "@navClock": {
+    "description": "Bottom navigation: the Clock tab"
+  },
   "tooltipLanguage": "Language",
-  "@tooltipLanguage": {"description": "Top bar icon button: opens the language picker"},
+  "@tooltipLanguage": {
+    "description": "Top bar icon button: opens the language picker"
+  },
   "tooltipProfile": "Profile",
-  "@tooltipProfile": {"description": "Top bar avatar: opens the Profile page"},
+  "@tooltipProfile": {
+    "description": "Top bar avatar: opens the Profile page"
+  },
   "tooltipSwitchToLight": "Switch to light theme",
-  "@tooltipSwitchToLight": {"description": "Top bar icon button, shown while in dark mode"},
+  "@tooltipSwitchToLight": {
+    "description": "Top bar icon button, shown while in dark mode"
+  },
   "tooltipSwitchToDark": "Switch to dark theme",
-  "@tooltipSwitchToDark": {"description": "Top bar icon button, shown while in light mode"},
-
+  "@tooltipSwitchToDark": {
+    "description": "Top bar icon button, shown while in light mode"
+  },
   "languageSheetTitle": "Language",
-  "@languageSheetTitle": {"description": "Heading of the language-picker sheet"},
+  "@languageSheetTitle": {
+    "description": "Heading of the language-picker sheet"
+  },
   "languageSheetSubtitle": "Your choice is saved and applies right away.",
-  "@languageSheetSubtitle": {"description": "Explanation under the language-picker heading"}
+  "@languageSheetSubtitle": {
+    "description": "Explanation under the language-picker heading"
+  },
+  "actionCancel": "Cancel",
+  "actionDelete": "Delete",
+  "actionSave": "Save",
+  "actionReset": "Reset",
+  "actionEdit": "Edit",
+  "actionOk": "OK",
+  "unitSeconds": "Seconds",
+  "unitMinutes": "Minutes",
+  "unitHours": "Hours",
+  "paceErrorEmpty": "Enter a pace.",
+  "paceErrorNotNumber": "That is not a number.",
+  "paceErrorTooFast": "Too fast. The minimum is {min}.",
+  "@paceErrorTooFast": {
+    "placeholders": {
+      "min": {
+        "type": "String"
+      }
+    }
+  },
+  "paceErrorTooSlow": "Too slow. The maximum is {max}.",
+  "@paceErrorTooSlow": {
+    "placeholders": {
+      "max": {
+        "type": "String"
+      }
+    }
+  },
+  "modeTap": "Tap",
+  "modeRhythm": "Rhythm",
+  "modeVoice": "Voice",
+  "modeMala": "Mala",
+  "ringtoneTempleBell": "Temple bell",
+  "ringtoneSingingBowl": "Singing bowl",
+  "ringtoneSoftChime": "Soft chime",
+  "ringtoneDeepGong": "Deep gong",
+  "msgVoiceUnsupported": "Voice counting works on Android and iOS only",
+  "msgVoiceNoMic": "No microphone available on this device",
+  "msgMalaUnsupported": "Volume-key counting needs a physical device",
+  "trainFirstPrompt": "Train your voice for this mantra first: record it {min} to {max} times.",
+  "@trainFirstPrompt": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "fallbackVoiceDenied": "Microphone permission was denied, so Voice counting cannot listen. Using Tap mode.",
+  "fallbackVoiceBlocked": "Microphone access is blocked. Allow it in Settings to use Voice counting. Using Tap mode.",
+  "fallbackVoiceUnsupported": "Voice counting works on Android and iOS only. Using Tap mode.",
+  "fallbackVoiceNoMic": "No microphone available on this device. Using Tap mode.",
+  "fallbackMalaUnsupported": "Volume-key counting needs a physical device. Using Tap mode.",
+  "sadhanaRingTitle": "🔔 Sadhana time complete",
+  "sadhanaRingBody": "Your session time is up 🙏",
+  "voiceTooShort": "That was too short. Say the whole mantra.",
+  "voiceRanTooLong": "That ran too long. Say the mantra once, then stop.",
+  "voiceSoundedDifferent": "That sounded different from the others. Say it the same way again.",
+  "voiceGotIt": "Got it. Say it again.",
+  "voiceDeniedShort": "Microphone permission was denied, so Voice counting cannot listen.",
+  "voiceBlockedShort": "Microphone access is blocked. Allow it in Settings to use Voice counting.",
+  "voiceAccessLost": "Microphone access was lost, so voice counting stopped.",
+  "voiceCouldNotRestart": "The microphone could not restart, so voice counting stopped.",
+  "mantraLibraryTitle": "Mantra library",
+  "addMantra": "Add mantra",
+  "searchHint": "Search title, script or tradition",
+  "noMantrasMatch": "No mantras match “{query}”.\nTap “Add mantra” to create your own.",
+  "@noMantrasMatch": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "mantraAdded": "Added “{title}”",
+  "@mantraAdded": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "mantraSaved": "Saved “{title}”",
+  "@mantraSaved": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "mantraRestored": "Restored “{title}” to its default",
+  "@mantraRestored": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteMantraTitle": "Delete mantra?",
+  "deleteMantraBody": "“{title}” will be removed from your library.",
+  "@deleteMantraBody": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "retrainVoiceTooltip": "Re-train voice",
+  "trainVoice": "Train voice",
+  "mantraCountTag": "{count} counts",
+  "@mantraCountTag": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "editedTag": "Edited",
+  "editMantra": "Edit mantra",
+  "addAMantra": "Add a mantra",
+  "titleLabel": "Title *",
+  "titleRequired": "Enter a title",
+  "scriptTextLabel": "Script text",
+  "transliterationLabel": "Transliteration",
+  "traditionLabel": "Tradition / language",
+  "traditionHint": "e.g. Sanskrit · Hindu",
+  "defaultCountLabel": "Default count *",
+  "enterNumberOneOrMore": "Enter a number, 1 or more",
+  "tooLarge": "That is too large",
+  "saveChanges": "Save changes",
+  "saveToLibrary": "Save to library",
+  "resetToDefaultButton": "Reset to default",
+  "resetToDefaultTitle": "Reset to default?",
+  "resetToDefaultBody": "Your edits to “{title}” will be discarded and the built-in text restored.",
+  "@resetToDefaultBody": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "switchToMantra": "Switch to {title}?",
+  "@switchToMantra": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "switchMantraBody": "Your current count will be reset.",
+  "keepCurrent": "Keep current",
+  "switchAction": "Switch",
+  "smallerMantraText": "Smaller mantra text",
+  "largerMantraText": "Larger mantra text",
+  "libraryButton": "Library",
+  "trainYourOwnMantra": "Train your own mantra",
+  "voiceCountingFrom": "Counting “{title}” from your {count} recordings. Other sounds and words are ignored.",
+  "@voiceCountingFrom": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceCountsOnlyTrained": "Voice counts only a mantra you have trained. Record “{title}” {min} to {max} times to begin.",
+  "@voiceCountsOnlyTrained": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "addMoreSamples": "Add more samples",
+  "retrain": "Re-train",
+  "clearTraining": "Clear training",
+  "voiceBetaNote": "Beta: works on-device and offline. Accuracy improves with more recordings and drops in a noisy room. Pause briefly between repeats. Only your voice counts here; the + and − buttons correct the count.",
+  "trainVoiceFirstTitle": "Train your voice first",
+  "trainVoiceFirstBody": "Voice counts only your own trained mantra. Record “{title}” {min} to {max} times (about a minute). It stays on this device and works offline.",
+  "@trainVoiceFirstBody": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "later": "Later",
+  "trainNow": "Train now",
+  "betaLabel": "BETA",
+  "voiceTrained": "Voice trained",
+  "voiceNotTrained": "Voice not trained",
+  "sensitivityLabel": "Sensitivity",
+  "sensitivityStrict": "Strict",
+  "sensitivityLenient": "Lenient",
+  "sensitivityMedium": "Medium",
+  "clearVoiceTrainingTitle": "Clear voice training?",
+  "clearVoiceTrainingBody": "Voice will stop counting “{title}” until you train it again.",
+  "@clearVoiceTrainingBody": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "completionTitle": "Completion",
+  "vibrationLabel": "Vibration",
+  "vibrationSubtitle": "A buzz every {n} counts, and a stronger one at the target.",
+  "@vibrationSubtitle": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "intensityLevel": "Intensity: level {level} of 5",
+  "@intensityLevel": {
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "testMilestone": "Test milestone",
+  "testTarget": "Test target",
+  "ringtoneLabel": "Ringtone",
+  "ringtoneSubtitle": "A sound plays when the target is reached.",
+  "playSound": "Play sound",
+  "combined": "Combined",
+  "combinedTooltip": "All four modes add to one shared count",
+  "separate": "Separate",
+  "separateTooltip": "Each mode keeps its own count",
+  "countModeSemantic": "Count mode",
+  "combinedExplain": "Tap, Voice, Rhythm and Mala all add to one shared count toward one target.",
+  "separateExplain": "Each mode keeps its own count and its own progress toward the target. Reset and completion apply only to the mode you are in.",
+  "countedLabel": "{count} counted",
+  "@countedLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ofTarget": "of {count}",
+  "@ofTarget": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "removeOneTooltip": "Remove one",
+  "undoLabel": "Undo",
+  "countLabel": "Count",
+  "addOneTooltip": "Add one",
+  "focusLabel": "Focus",
+  "focusModeTooltip": "Focus mode",
+  "pause": "Pause",
+  "resume": "Resume",
+  "start": "Start",
+  "targetReachedSeparate": "Target reached in {mode} 🙏  Reset this mode, switch mode, or raise the target.",
+  "@targetReachedSeparate": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "targetReachedCombined": "Target reached 🙏  Reset, or raise the target.",
+  "resetModeCountTitle": "Reset {mode} count?",
+  "@resetModeCountTitle": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "resetSessionTitle": "Reset this session?",
+  "resetModeCountBody": "Your {mode} count of {count} will return to zero. The other modes keep their counts.",
+  "@resetModeCountBody": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "resetSessionBody": "Your count of {count} will return to zero.",
+  "@resetSessionBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "modeHelpTap": "Tap the ring, or anywhere in Focus mode. Only Tap mode counts screen taps.",
+  "modeHelpRhythm": "Press Start and the count advances by itself at the pace below.",
+  "modeHelpVoice": "Press Start, then chant your trained mantra. Each time it is recognised it adds one count, straight away; other sounds are ignored. Needs the microphone; works best in a quiet room.",
+  "modeHelpMala": "Press Start, then press either volume button to count. Handy with eyes closed or the phone in a pocket. The screen must stay on.",
+  "countingModeLabel": "Counting mode",
+  "pacePrefix": "Pace: count {pace}",
+  "@pacePrefix": {
+    "placeholders": {
+      "pace": {
+        "type": "String"
+      }
+    }
+  },
+  "modeSemanticLabel": "{mode} mode",
+  "@modeSemanticLabel": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "tapAnywhereToCount": "Tap anywhere to count",
+  "countingPace": "Counting {pace}",
+  "@countingPace": {
+    "placeholders": {
+      "pace": {
+        "type": "String"
+      }
+    }
+  },
+  "pausedPace": "Paused · {pace}",
+  "@pausedPace": {
+    "placeholders": {
+      "pace": {
+        "type": "String"
+      }
+    }
+  },
+  "listening": "Listening…",
+  "startingMicrophone": "Starting microphone… allow access if asked",
+  "notTrainedYet": "Not trained yet · train your mantra to use Voice",
+  "pausedPressStartListen": "Paused · press Start to listen",
+  "pressVolumeKeys": "Press the volume keys to count",
+  "capturingVolumeKeys": "Capturing the volume keys…",
+  "pausedPressStartVolume": "Paused · press Start to use the volume keys",
+  "modeTitleLine": "{mode} mode{own, select, yes{ · own count} other{}}",
+  "@modeTitleLine": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      },
+      "own": {
+        "type": "String"
+      }
+    }
+  },
+  "voiceCountedMatch": "Counted · {percent}% match",
+  "@voiceCountedMatch": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceIgnoredMatch": "Ignored · {percent}% match (not your mantra)",
+  "@voiceIgnoredMatch": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "paceFieldLabel": "Pace",
+  "paceHelpOk": "Counts {pace}.  (Allowed: {range})",
+  "@paceHelpOk": {
+    "placeholders": {
+      "pace": {
+        "type": "String"
+      },
+      "range": {
+        "type": "String"
+      }
+    }
+  },
+  "paceHelpError": "{error} Still counting {pace}.",
+  "@paceHelpError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      },
+      "pace": {
+        "type": "String"
+      }
+    }
+  },
+  "sankalpLabel": "Sankalp",
+  "sankalpHint": "State your intention for this practice…",
+  "targetSectionTitle": "Target",
+  "byCount": "By count",
+  "byTime": "By time",
+  "customWithValue": "Custom · {value}",
+  "@customWithValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "custom": "Custom",
+  "enterNumberRange": "Enter a number from 1 to 9,999,999",
+  "customCountTitle": "Custom count",
+  "targetCountLabel": "Target count",
+  "setAction": "Set",
+  "durationLabel": "Duration",
+  "enterDuration": "Enter a duration of 1 or more.",
+  "maxDurationCapped": "Maximum is 99 h 59 min 59 s — it will be capped.",
+  "sessionLasts": "Session lasts {duration}.",
+  "@sessionLasts": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "targetReachedFocus": "Target reached 🙏",
+  "screenTapsDoNotCount": "Screen taps do not count in {mode} mode. Use + or − to correct.",
+  "@screenTapsDoNotCount": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "holdFingersToExit": "Hold {fingers} fingers for {seconds} seconds to exit",
+  "@holdFingersToExit": {
+    "placeholders": {
+      "fingers": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "holdToExitFocusMode": "Hold to exit focus mode",
+  "holdToExit": "Hold to exit",
+  "keepHoldingToExit": "Keep holding to exit…",
+  "addedRecordingsTo": "Added {added} {added, plural, one{recording} other{recordings}} to “{title}” ({total} in total)",
+  "@addedRecordingsTo": {
+    "placeholders": {
+      "added": {
+        "type": "int"
+      },
+      "title": {
+        "type": "String"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceTrainedFor": "Voice trained for “{title}” ({count} recordings)",
+  "@voiceTrainedFor": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "trainedRecordingsCount": "Trained · {count} recordings",
+  "@trainedRecordingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tooFewRecordings": "Too few recordings to count with. Add more, or re-train.",
+  "canCountAddMore": "Voice can count this mantra. Add up to {room} more recordings to improve accuracy without starting over.",
+  "@canCountAddMore": {
+    "placeholders": {
+      "room": {
+        "type": "int"
+      }
+    }
+  },
+  "canCountAtMax": "Voice can count this mantra. You have the maximum of {max} recordings; re-train to replace them.",
+  "@canCountAtMax": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "pausedHeadline": "Paused",
+  "pausedSub": "{recorded} recorded. Continue, or save what you have.",
+  "@pausedSub": {
+    "placeholders": {
+      "recorded": {
+        "type": "int"
+      }
+    }
+  },
+  "recordInstructions": "Record it {min} to {max} times at your normal chanting speed ({recommended} is a good number). Voice will then count only your mantra.",
+  "@recordInstructions": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      },
+      "recommended": {
+        "type": "int"
+      }
+    }
+  },
+  "openingMicrophone": "Opening the microphone…",
+  "stayQuiet": "Stay quiet for a moment…",
+  "listeningToRoom": "Listening to the room so background noise is not counted.",
+  "sayYourMantra": "Say your mantra…",
+  "recordingXofY": "Recording {current} of up to {max}",
+  "@recordingXofY": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "allRecordingsCaptured": "All {count} recordings captured",
+  "@allRecordingsCaptured": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "saveToStartCounting": "Save them to start counting with Voice.",
+  "cannotUseMicrophone": "Cannot use the microphone",
+  "canSaveNowHint": "You can save now, or keep going for more accuracy.",
+  "minAreEnough": "{min} are enough to start.",
+  "@minAreEnough": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "addingToSaved": "Adding to your {count} saved recordings.",
+  "@addingToSaved": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tryAgain": "Try again",
+  "startRecording": "Start recording",
+  "openSettingsAction": "Open Settings",
+  "saveNRecordings": "Save {count} recordings",
+  "@saveNRecordings": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recordMoreToSave": "Record {n} more to save",
+  "@recordMoreToSave": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "recordSampleToSave": "Record a sample to save",
+  "undoLast": "Undo last",
+  "stop": "Stop",
+  "continueRecording": "Continue recording",
+  "startOver": "Start over",
+  "recordedOfMax": "{recorded} of up to {max} recordings",
+  "@recordedOfMax": {
+    "placeholders": {
+      "recorded": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceBetaNoteTraining": "Beta. Everything happens on this device, offline: only numbers describing the sound are saved, never the audio. More recordings make counting more accurate (up to {max}); a noisy room makes it less accurate. Say the mantra once, then pause briefly before the next repeat.",
+  "@voiceBetaNoteTraining": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "actionClear": "Clear"
 }
