@@ -27,6 +27,9 @@ Legend: **IT** = integration test (real app, real device/emulator).
 
 - [ ] Onboarding screen: title, subtitle, language list (all nine), tradition
       list (Hindu / Sikh / By place), Continue button — **G**
+- [x] Language list is reachable by scrolling on a small screen (360×640)
+      with a large system font, all nine languages — widget test
+      `test/shell/language_scroll_test.dart` (P4.2 fix)
 - [x] Language preselected from the phone's own locale (supported code) —
       **IT** `test/onboarding/onboarding_screen_test.dart` (widget-level; the
       real-device preselect path is the same `initialLanguageCode` code)
@@ -225,6 +228,9 @@ Legend: **IT** = integration test (real app, real device/emulator).
 - [ ] Switch back to English — **IT**
 - [ ] Gurmukhi/Tamil script actually renders (covered already in
       `test/l10n/localization_test.dart`, referenced not duplicated) — **IT**
+- [x] Profile language sheet is reachable by scrolling on a small screen
+      (360×640) with a large system font, all nine languages — widget test
+      `test/shell/language_scroll_test.dart` (P4.2 fix)
 
 ## 8. System back button (every surface — must never crash)
 
