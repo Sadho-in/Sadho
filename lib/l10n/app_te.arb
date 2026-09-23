@@ -529,5 +529,11 @@
   "onboardingTitle": "Sadhoకు స్వాగతం",
   "onboardingSubtitle": "ప్రారంభించడానికి మీ భాష మరియు సంప్రదాయాన్ని ఎంచుకోండి. మీరు రెండింటినీ తర్వాత ప్రొఫైల్‌లో మార్చుకోవచ్చు.",
   "traditionHeading": "సంప్రదాయం",
-  "continueAction": "కొనసాగించు"
+  "continueAction": "కొనసాగించు",
+  "stopAlert": "ఆపు",
+  "repeatLabel": "పునరావృతం",
+  "repeatOnce": "ఒకసారి",
+  "soundRepeatTimes": "{times} సార్లు",
+  "repeatUntilStopped": "ఆపే వరకు",
+  "vibrationRepeatUntilStopped": "ప్రతి {seconds} సెకన్లకు, ఆపే వరకు"
 }

@@ -1874,4 +1874,26 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get continueAction => 'ಮುಂದುವರಿಸಿ';
+
+  @override
+  String get stopAlert => 'ನಿಲ್ಲಿಸಿ';
+
+  @override
+  String get repeatLabel => 'ಪುನರಾವರ್ತನೆ';
+
+  @override
+  String get repeatOnce => 'ಒಮ್ಮೆ';
+
+  @override
+  String soundRepeatTimes(int times) {
+    return '$times ಬಾರಿ';
+  }
+
+  @override
+  String get repeatUntilStopped => 'ನಿಲ್ಲಿಸುವವರೆಗೆ';
+
+  @override
+  String vibrationRepeatUntilStopped(int seconds) {
+    return 'ಪ್ರತಿ $seconds ಸೆಕೆಂಡಿಗೆ, ನಿಲ್ಲಿಸುವವರೆಗೆ';
+  }
 }

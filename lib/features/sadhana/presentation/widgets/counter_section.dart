@@ -6,6 +6,7 @@ import '../focus_mode_screen.dart';
 import '../format.dart';
 import 'mode_status.dart';
 import 'progress_ring.dart';
+import 'stop_alert_button.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../l10n/labels.dart';
 
@@ -130,6 +131,7 @@ class CounterSection extends ConsumerWidget {
                 )
               : const SizedBox(width: double.infinity),
         ),
+        const StopAlertButton(),
       ],
     );
   }

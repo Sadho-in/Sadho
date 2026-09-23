@@ -286,6 +286,11 @@ class SadhanaState {
 
 /// The in-progress japa/paath session. Owns the rhythm + clock timers and
 /// fires milestone/completion feedback.
+///
+/// ALL completion feedback starts here ([_targetReached]), whichever way the
+/// target was reached (a tap, the rhythm, a voice match, a volume key, the +
+/// button or the clock) and whichever screen is showing (the Sadhana tab or
+/// Focus mode): the screens only display the session, they never ring.
 class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   static const _storageKey = 'sadhana.session';
 
@@ -395,13 +400,20 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
     if (reachedTarget) next = next.copyWith(running: false);
     _emit(next);
 
-    final feedback = ref.read(feedbackServiceProvider);
     if (reachedTarget) {
-      feedback.complete();
+      _targetReached();
     } else if (next.count % milestoneEvery == 0) {
-      feedback.milestone();
+      ref.read(feedbackServiceProvider).milestone();
     }
   }
+
+  /// The session just reached its target: vibration and ringtone, each per
+  /// its own switch and repeat setting.
+  void _targetReached() => ref.read(feedbackServiceProvider).completionAlert();
+
+  /// Silences a completion alert that is still sounding or repeating (the
+  /// Stop control, and leaving the Sadhana screen).
+  void stopAlert() => ref.read(feedbackServiceProvider).stopAlert();
 
   /// Manual correction: takes one off the shown count (never below zero).
   /// Available in every mode, e.g. when Voice counted a rep that was not one.
@@ -417,8 +429,11 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   }
 
   /// Zeroes the shown count: every mode's (Combined) or only the active
-  /// mode's own (Separate).
-  void reset() => _emit(state.cleared().copyWith(running: false));
+  /// mode's own (Separate). Also silences a completion alert.
+  void reset() {
+    stopAlert();
+    _emit(state.cleared().copyWith(running: false));
+  }
 
   /// Starts/pauses whatever the mode runs: the rhythm pace, the microphone
   /// (Voice), volume-key capture (Mala) and/or the session clock.
@@ -571,7 +586,7 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
     // longer needed, or has already rung, which `rangByPhone` remembers.)
     final late = endedAt == null ? Duration.zero : now.difference(endedAt);
     if (late <= ringGrace || (!rangByPhone && late <= const Duration(minutes: 10))) {
-      ref.read(feedbackServiceProvider).complete();
+      _targetReached();
     }
   }
 

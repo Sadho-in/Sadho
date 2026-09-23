@@ -1889,4 +1889,26 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get continueAction => 'தொடரவும்';
+
+  @override
+  String get stopAlert => 'நிறுத்து';
+
+  @override
+  String get repeatLabel => 'மீண்டும்';
+
+  @override
+  String get repeatOnce => 'ஒருமுறை';
+
+  @override
+  String soundRepeatTimes(int times) {
+    return '$times முறை';
+  }
+
+  @override
+  String get repeatUntilStopped => 'நிறுத்தும் வரை';
+
+  @override
+  String vibrationRepeatUntilStopped(int seconds) {
+    return 'ஒவ்வொரு $seconds வினாடிக்கும், நிறுத்தும் வரை';
+  }
 }

@@ -1871,4 +1871,26 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get continueAction => 'ચાલુ રાખો';
+
+  @override
+  String get stopAlert => 'બંધ કરો';
+
+  @override
+  String get repeatLabel => 'પુનરાવર્તન';
+
+  @override
+  String get repeatOnce => 'એક વાર';
+
+  @override
+  String soundRepeatTimes(int times) {
+    return '$times વાર';
+  }
+
+  @override
+  String get repeatUntilStopped => 'બંધ કરો ત્યાં સુધી';
+
+  @override
+  String vibrationRepeatUntilStopped(int seconds) {
+    return 'દર $seconds સેકન્ડે, બંધ કરો ત્યાં સુધી';
+  }
 }

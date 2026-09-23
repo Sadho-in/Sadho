@@ -529,5 +529,11 @@
   "onboardingTitle": "Sadho ਵਿੱਚ ਤੁਹਾਡਾ ਸਵਾਗਤ ਹੈ",
   "onboardingSubtitle": "ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਆਪਣੀ ਭਾਸ਼ਾ ਅਤੇ ਪਰੰਪਰਾ ਚੁਣੋ। ਤੁਸੀਂ ਦੋਵਾਂ ਨੂੰ ਬਾਅਦ ਵਿੱਚ ਪ੍ਰੋਫਾਈਲ ਵਿੱਚ ਬਦਲ ਸਕਦੇ ਹੋ।",
   "traditionHeading": "ਪਰੰਪਰਾ",
-  "continueAction": "ਜਾਰੀ ਰੱਖੋ"
+  "continueAction": "ਜਾਰੀ ਰੱਖੋ",
+  "stopAlert": "ਰੋਕੋ",
+  "repeatLabel": "ਦੁਹਰਾਓ",
+  "repeatOnce": "ਇੱਕ ਵਾਰ",
+  "soundRepeatTimes": "{times} ਵਾਰ",
+  "repeatUntilStopped": "ਰੋਕਣ ਤੱਕ",
+  "vibrationRepeatUntilStopped": "ਹਰ {seconds} ਸਕਿੰਟ, ਰੋਕਣ ਤੱਕ"
 }

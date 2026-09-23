@@ -3285,6 +3285,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue'**
   String get continueAction;
+
+  /// Button that silences the completion ringtone and vibration
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get stopAlert;
+
+  /// No description provided for @repeatLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat'**
+  String get repeatLabel;
+
+  /// No description provided for @repeatOnce.
+  ///
+  /// In en, this message translates to:
+  /// **'Once'**
+  String get repeatOnce;
+
+  /// No description provided for @soundRepeatTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'{times} times'**
+  String soundRepeatTimes(int times);
+
+  /// No description provided for @repeatUntilStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Until stopped'**
+  String get repeatUntilStopped;
+
+  /// No description provided for @vibrationRepeatUntilStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {seconds} s until stopped'**
+  String vibrationRepeatUntilStopped(int seconds);
 }
 
 class _AppLocalizationsDelegate

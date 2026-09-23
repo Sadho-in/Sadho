@@ -1874,4 +1874,26 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get continueAction => 'जारी रखें';
+
+  @override
+  String get stopAlert => 'रोकें';
+
+  @override
+  String get repeatLabel => 'दोहराएं';
+
+  @override
+  String get repeatOnce => 'एक बार';
+
+  @override
+  String soundRepeatTimes(int times) {
+    return '$times बार';
+  }
+
+  @override
+  String get repeatUntilStopped => 'रोकने तक';
+
+  @override
+  String vibrationRepeatUntilStopped(int seconds) {
+    return 'हर $seconds सेकंड, रोकने तक';
+  }
 }

@@ -1870,4 +1870,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get continueAction => 'Continue';
+
+  @override
+  String get stopAlert => 'Stop';
+
+  @override
+  String get repeatLabel => 'Repeat';
+
+  @override
+  String get repeatOnce => 'Once';
+
+  @override
+  String soundRepeatTimes(int times) {
+    return '$times times';
+  }
+
+  @override
+  String get repeatUntilStopped => 'Until stopped';
+
+  @override
+  String vibrationRepeatUntilStopped(int seconds) {
+    return 'Every $seconds s until stopped';
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,8 +16,22 @@ abstract class FeedbackService {
   /// Every 108 counts. Vibration only.
   Future<void> milestone();
 
-  /// Target reached. Stronger buzz (if enabled) and ringtone (if enabled).
+  /// Target reached. Stronger buzz (if enabled) and ringtone (if enabled),
+  /// each played once. Used by the Clock timer.
   Future<void> complete();
+
+  /// A Sadhana session reached its target: the same buzz and ringtone as
+  /// [complete], but repeated as the completion settings ask
+  /// ([SoundRepeat], [VibrationRepeat]) until done or [stopAlert].
+  /// Returns at once; the alert runs on its own.
+  void completionAlert();
+
+  /// Halts a completion alert at once: sound, vibration and any repeats.
+  void stopAlert();
+
+  /// True while a completion alert is still sounding or repeating, i.e. while
+  /// a Stop control makes sense.
+  ValueListenable<bool> get alerting;
 
   /// A tap that counted for nothing because the target is already reached:
   /// a very short tick (if vibration is on), on EVERY such tap, so the phone
@@ -44,6 +60,9 @@ abstract class HapticsDriver {
     List<int> pattern = const [],
     List<int> intensities = const [],
   });
+
+  /// Stops a buzz that is still going.
+  Future<void> cancel();
 }
 
 class PluginHaptics implements HapticsDriver {
@@ -63,10 +82,15 @@ class PluginHaptics implements HapticsDriver {
       pattern.isNotEmpty
           ? Vibration.vibrate(pattern: pattern, intensities: intensities)
           : Vibration.vibrate(duration: duration, amplitude: amplitude);
+
+  @override
+  Future<void> cancel() => Vibration.cancel();
 }
 
 /// Plays a bundled sound asset. A seam, like [HapticsDriver].
 abstract class SoundDriver {
+  /// Plays [asset] once. The future completes when the sound has finished
+  /// (or was stopped), so callers can repeat it.
   Future<void> play(String asset);
   Future<void> stop();
 }
@@ -94,21 +118,54 @@ class PluginSound implements SoundDriver {
     ),
   );
 
+  /// Completed when the current sound finishes or is stopped.
+  Completer<void>? _playing;
+
+  /// Longest a single ringtone is waited for, in case the player never
+  /// reports the end.
+  static const _maxSoundLength = Duration(seconds: 30);
+
   @override
   Future<void> play(String asset) async {
     if (!_configured) {
       await _player.setAudioContext(completionContext);
+      _player.onPlayerComplete.listen((_) => _finish());
       _configured = true;
     }
+    _finish();
+    final done = _playing = Completer<void>();
     await _player.play(AssetSource(asset));
+    await done.future.timeout(_maxSoundLength, onTimeout: () {});
   }
 
   @override
-  Future<void> stop() => _player.stop();
+  Future<void> stop() async {
+    _finish();
+    await _player.stop();
+  }
+
+  void _finish() {
+    final p = _playing;
+    _playing = null;
+    if (p != null && !p.isCompleted) p.complete();
+  }
 }
 
 final hapticsDriverProvider = Provider<HapticsDriver>((ref) => PluginHaptics());
 final soundDriverProvider = Provider<SoundDriver>((ref) => PluginSound());
+
+/// "Repeat" plays the ringtone this many times in all.
+const soundRepeatTimes = 3;
+
+/// Silence between two plays of a repeating ringtone.
+const soundRepeatGap = Duration(milliseconds: 800);
+
+/// A repeating completion buzz comes back this often.
+const vibrationRepeatEvery = Duration(seconds: 4);
+
+/// An "until stopped" alert that nobody stops gives up after this long, like
+/// an alarm clock does, so a forgotten phone does not ring for hours.
+const alertMaxDuration = Duration(minutes: 10);
 
 class DeviceFeedbackService implements FeedbackService {
   DeviceFeedbackService(
@@ -123,6 +180,14 @@ class DeviceFeedbackService implements FeedbackService {
   final SoundDriver _sound;
   bool? _hasVibrator;
   bool? _hasAmplitude;
+
+  final _alerting = ValueNotifier<bool>(false);
+
+  /// Invalidates the loops of an alert that was stopped or replaced.
+  int _alertGen = 0;
+  bool _soundLooping = false;
+  Timer? _vibrationRepeat;
+  Timer? _alertCap;
 
   /// Android amplitude (1..255) for each of the five levels.
   static const _amplitudes = [40, 90, 150, 210, 255];
@@ -156,15 +221,108 @@ class DeviceFeedbackService implements FeedbackService {
   Future<void> complete() async {
     final s = _settings();
     // Independent switches: neither call depends on the other (and a failing
-    // vibrator never stops the sound).
-    if (s.vibrationEnabled) await _buzz(s.vibrationLevel, strong: true);
-    if (s.ringtoneEnabled) await _play(s.ringtone);
+    // or slow vibrator never delays or stops the sound).
+    await Future.wait([
+      if (s.vibrationEnabled) _buzz(s.vibrationLevel, strong: true),
+      if (s.ringtoneEnabled) _play(s.ringtone),
+    ]);
   }
+
+  @override
+  ValueListenable<bool> get alerting => _alerting;
+
+  @override
+  void completionAlert() {
+    _halt();
+    final s = _settings();
+    final gen = _alertGen;
+    if (s.vibrationEnabled) {
+      unawaited(_buzz(s.vibrationLevel, strong: true));
+      if (s.vibrationRepeat == VibrationRepeat.untilStopped) {
+        _vibrationRepeat = Timer.periodic(vibrationRepeatEvery, (_) {
+          if (gen != _alertGen) return;
+          // The level may have changed meanwhile; the switch may be off now.
+          final now = _settings();
+          if (now.vibrationEnabled) {
+            unawaited(_buzz(now.vibrationLevel, strong: true));
+          }
+        });
+      }
+    }
+    if (s.ringtoneEnabled) {
+      _soundLooping = true;
+      unawaited(_ringLoop(s.ringtone, s.soundRepeat, gen));
+    }
+    if (_vibrationRepeat != null || s.soundRepeat == SoundRepeat.untilStopped) {
+      _alertCap = Timer(alertMaxDuration, stopAlert);
+    }
+    _refreshAlerting();
+  }
+
+  /// Plays [ringtone] as often as [repeat] says, each play after the last one
+  /// ended, until done or the alert with [gen] is stopped.
+  Future<void> _ringLoop(Ringtone ringtone, SoundRepeat repeat, int gen) async {
+    final times = switch (repeat) {
+      SoundRepeat.once => 1,
+      SoundRepeat.repeat => soundRepeatTimes,
+      SoundRepeat.untilStopped => null,
+    };
+    for (var i = 0; times == null || i < times; i++) {
+      if (gen != _alertGen) return;
+      if (i > 0) {
+        await Future<void>.delayed(soundRepeatGap);
+        if (gen != _alertGen) return;
+      }
+      await _play(ringtone);
+    }
+    if (gen != _alertGen) return;
+    _soundLooping = false;
+    _alertCap?.cancel();
+    _alertCap = null;
+    _refreshAlerting();
+  }
+
+  @override
+  void stopAlert() {
+    final wasAlerting = _alerting.value;
+    _halt();
+    _refreshAlerting();
+    if (!wasAlerting) return;
+    unawaited(_quiet());
+  }
+
+  /// Ends the current alert's loops and timers (not what is already sounding).
+  void _halt() {
+    _alertGen++;
+    _soundLooping = false;
+    _vibrationRepeat?.cancel();
+    _alertCap?.cancel();
+    _vibrationRepeat = _alertCap = null;
+  }
+
+  Future<void> _quiet() async {
+    try {
+      await _sound.stop();
+    } catch (e) {
+      debugPrint('Could not stop the ringtone: $e');
+    }
+    try {
+      await _haptics.cancel();
+    } catch (e) {
+      debugPrint('Could not stop the vibration: $e');
+    }
+  }
+
+  void _refreshAlerting() =>
+      _alerting.value = _soundLooping || _vibrationRepeat != null;
 
   @override
   Future<void> acknowledge() async {
     final s = _settings();
     if (!s.vibrationEnabled) return;
+    // A tick would cut the completion buzz short (a new buzz replaces the one
+    // still going), so there is none while the completion alert sounds.
+    if (_alerting.value) return;
     try {
       _hasVibrator ??= await _haptics.hasVibrator();
       if (_hasVibrator != true) return;
@@ -231,9 +389,11 @@ class DeviceFeedbackService implements FeedbackService {
 }
 
 final feedbackServiceProvider = Provider<FeedbackService>((ref) {
-  return DeviceFeedbackService(
+  final service = DeviceFeedbackService(
     () => ref.read(completionSettingsProvider),
     haptics: ref.read(hapticsDriverProvider),
     sound: ref.read(soundDriverProvider),
   );
+  ref.onDispose(service.stopAlert);
+  return service;
 });

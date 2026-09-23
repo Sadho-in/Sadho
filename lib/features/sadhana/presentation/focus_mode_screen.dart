@@ -12,6 +12,7 @@ import 'widgets/counter_section.dart' show ringLabels;
 import 'widgets/mode_status.dart';
 import 'widgets/progress_ring.dart';
 import 'widgets/script_text.dart';
+import 'widgets/stop_alert_button.dart';
 import '../../../l10n/l10n.dart';
 import '../../../l10n/labels.dart';
 
@@ -99,6 +100,8 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
   void _exit() {
     if (_exiting || !mounted) return;
     _exiting = true;
+    // Leaving the screen silences a completion alert that is still going.
+    ref.read(sadhanaSessionProvider.notifier).stopAlert();
     Navigator.of(context).pop();
   }
 
@@ -266,6 +269,8 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
                               color: scheme.onSurfaceVariant,
                             ),
                           ),
+                        // A control, so pressing it is never a counted tap.
+                        _control(const StopAlertButton()),
                         const SizedBox(height: 4),
                         Text(
                           l.holdFingersToExit(_exitFingers, focusExitHold.inSeconds),

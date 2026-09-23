@@ -529,5 +529,11 @@
   "onboardingTitle": "Sadho ಗೆ ಸ್ವಾಗತ",
   "onboardingSubtitle": "ಪ್ರಾರಂಭಿಸಲು ನಿಮ್ಮ ಭಾಷೆ ಮತ್ತು ಸಂಪ್ರದಾಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ. ನೀವು ಎರಡನ್ನೂ ನಂತರ ಪ್ರೊಫೈಲ್‌ನಲ್ಲಿ ಬದಲಾಯಿಸಬಹುದು.",
   "traditionHeading": "ಸಂಪ್ರದಾಯ",
-  "continueAction": "ಮುಂದುವರಿಸಿ"
+  "continueAction": "ಮುಂದುವರಿಸಿ",
+  "stopAlert": "ನಿಲ್ಲಿಸಿ",
+  "repeatLabel": "ಪುನರಾವರ್ತನೆ",
+  "repeatOnce": "ಒಮ್ಮೆ",
+  "soundRepeatTimes": "{times} ಬಾರಿ",
+  "repeatUntilStopped": "ನಿಲ್ಲಿಸುವವರೆಗೆ",
+  "vibrationRepeatUntilStopped": "ಪ್ರತಿ {seconds} ಸೆಕೆಂಡಿಗೆ, ನಿಲ್ಲಿಸುವವರೆಗೆ"
 }

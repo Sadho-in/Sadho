@@ -1874,4 +1874,26 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get continueAction => 'চালিয়ে যান';
+
+  @override
+  String get stopAlert => 'থামান';
+
+  @override
+  String get repeatLabel => 'পুনরাবৃত্তি';
+
+  @override
+  String get repeatOnce => 'একবার';
+
+  @override
+  String soundRepeatTimes(int times) {
+    return '$times বার';
+  }
+
+  @override
+  String get repeatUntilStopped => 'থামানো পর্যন্ত';
+
+  @override
+  String vibrationRepeatUntilStopped(int seconds) {
+    return 'প্রতি $seconds সেকেন্ডে, থামানো পর্যন্ত';
+  }
 }

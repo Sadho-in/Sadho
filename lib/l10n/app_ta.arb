@@ -529,5 +529,11 @@
   "onboardingTitle": "Sadho-க்கு வரவேற்கிறோம்",
   "onboardingSubtitle": "தொடங்க உங்கள் மொழி மற்றும் பாரம்பரியத்தைத் தேர்ந்தெடுக்கவும். இரண்டையும் பின்னர் சுயவிவரத்தில் மாற்றலாம்.",
   "traditionHeading": "பாரம்பரியம்",
-  "continueAction": "தொடரவும்"
+  "continueAction": "தொடரவும்",
+  "stopAlert": "நிறுத்து",
+  "repeatLabel": "மீண்டும்",
+  "repeatOnce": "ஒருமுறை",
+  "soundRepeatTimes": "{times} முறை",
+  "repeatUntilStopped": "நிறுத்தும் வரை",
+  "vibrationRepeatUntilStopped": "ஒவ்வொரு {seconds} வினாடிக்கும், நிறுத்தும் வரை"
 }

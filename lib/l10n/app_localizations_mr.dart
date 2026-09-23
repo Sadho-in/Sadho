@@ -1870,4 +1870,26 @@ class AppLocalizationsMr extends AppLocalizations {
 
   @override
   String get continueAction => 'सुरू ठेवा';
+
+  @override
+  String get stopAlert => 'थांबवा';
+
+  @override
+  String get repeatLabel => 'पुनरावृत्ती';
+
+  @override
+  String get repeatOnce => 'एकदा';
+
+  @override
+  String soundRepeatTimes(int times) {
+    return '$times वेळा';
+  }
+
+  @override
+  String get repeatUntilStopped => 'थांबवेपर्यंत';
+
+  @override
+  String vibrationRepeatUntilStopped(int seconds) {
+    return 'दर $seconds सेकंदांनी, थांबवेपर्यंत';
+  }
 }

@@ -529,5 +529,11 @@
   "onboardingTitle": "Sadho में आपका स्वागत है",
   "onboardingSubtitle": "शुरू करने के लिए अपनी भाषा और परंपरा चुनें। आप दोनों को बाद में प्रोफ़ाइल में बदल सकते हैं।",
   "traditionHeading": "परंपरा",
-  "continueAction": "जारी रखें"
+  "continueAction": "जारी रखें",
+  "stopAlert": "रोकें",
+  "repeatLabel": "दोहराएं",
+  "repeatOnce": "एक बार",
+  "soundRepeatTimes": "{times} बार",
+  "repeatUntilStopped": "रोकने तक",
+  "vibrationRepeatUntilStopped": "हर {seconds} सेकंड, रोकने तक"
 }

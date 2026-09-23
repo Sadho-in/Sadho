@@ -1884,4 +1884,26 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get continueAction => 'కొనసాగించు';
+
+  @override
+  String get stopAlert => 'ఆపు';
+
+  @override
+  String get repeatLabel => 'పునరావృతం';
+
+  @override
+  String get repeatOnce => 'ఒకసారి';
+
+  @override
+  String soundRepeatTimes(int times) {
+    return '$times సార్లు';
+  }
+
+  @override
+  String get repeatUntilStopped => 'ఆపే వరకు';
+
+  @override
+  String vibrationRepeatUntilStopped(int seconds) {
+    return 'ప్రతి $seconds సెకన్లకు, ఆపే వరకు';
+  }
 }

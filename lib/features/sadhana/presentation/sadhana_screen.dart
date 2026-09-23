@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../application/sadhana_session_provider.dart';
 
 import 'widgets/completion_settings_card.dart';
 import 'widgets/count_scope_control.dart';
@@ -32,21 +35,32 @@ const _maxRing = 240.0;
 ///
 /// TODO(later-phase): OCR scan-to-add mantras, session history / streaks, and
 /// Supabase sync.
-class SadhanaScreen extends StatefulWidget {
+class SadhanaScreen extends ConsumerStatefulWidget {
   const SadhanaScreen({super.key});
 
   @override
-  State<SadhanaScreen> createState() => _SadhanaScreenState();
+  ConsumerState<SadhanaScreen> createState() => _SadhanaScreenState();
 }
 
-class _SadhanaScreenState extends State<SadhanaScreen> {
+class _SadhanaScreenState extends ConsumerState<SadhanaScreen> {
   final _cardKey = GlobalKey();
   double _cardHeight = _assumedCardHeight;
+
+  /// Read up front: `ref` cannot be used in [dispose].
+  late final SadhanaSessionNotifier _session;
 
   @override
   void initState() {
     super.initState();
+    _session = ref.read(sadhanaSessionProvider.notifier);
     WidgetsBinding.instance.addPostFrameCallback((_) => _measureCard());
+  }
+
+  @override
+  void dispose() {
+    // Leaving the screen silences a completion alert that is still going.
+    _session.stopAlert();
+    super.dispose();
   }
 
   /// Reads the card's real height (it changes with the text size, the mantra

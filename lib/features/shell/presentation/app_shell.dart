@@ -10,6 +10,7 @@ import '../../clock/presentation/clock_screen.dart';
 import '../../home/presentation/home_screen.dart';
 import '../../profile/presentation/profile_screen.dart';
 import '../../sadhana/application/mantra_library_provider.dart';
+import '../../sadhana/application/sadhana_session_provider.dart';
 import '../../sadhana/application/session_notice_provider.dart';
 import '../../sadhana/presentation/sadhana_screen.dart';
 import '../../sadhana/presentation/voice_training_screen.dart';
@@ -61,6 +62,14 @@ class AppShell extends ConsumerWidget {
     final isDark = theme.brightness == Brightness.dark;
     final profile = ref.watch(profileProvider);
     final l = context.l10n;
+
+    // Leaving the Sadhana tab silences a completion alert that is still
+    // ringing or repeating (its Stop control is no longer on screen).
+    ref.listen<ShellTab>(shellTabProvider, (prev, next) {
+      if (prev == ShellTab.sadhana && next != ShellTab.sadhana) {
+        ref.read(sadhanaSessionProvider.notifier).stopAlert();
+      }
+    });
 
     // Session messages (permission denied, unsupported mode...). Listening
     // here, above every route, shows them once and over Focus mode too.

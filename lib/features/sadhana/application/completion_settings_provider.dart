@@ -3,6 +3,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/storage/app_storage.dart';
 import '../data/ringtone.dart';
 
+/// How often the completion ringtone plays.
+enum SoundRepeat {
+  once,
+
+  /// A few times ([soundRepeatTimes]), or until stopped.
+  repeat,
+
+  /// Over and over until Stop, Reset or leaving the screen.
+  untilStopped,
+}
+
+/// How often the completion buzz comes.
+enum VibrationRepeat {
+  once,
+
+  /// Every few seconds ([vibrationRepeatEvery]) until stopped.
+  untilStopped,
+}
+
 /// Vibration and ringtone are deliberately independent: each has its own
 /// on/off switch and its own options.
 class CompletionSettings {
@@ -11,6 +30,8 @@ class CompletionSettings {
     this.vibrationLevel = 3,
     this.ringtoneEnabled = true,
     this.ringtone = Ringtone.templeBell,
+    this.soundRepeat = SoundRepeat.once,
+    this.vibrationRepeat = VibrationRepeat.once,
   });
 
   final bool vibrationEnabled;
@@ -19,18 +40,24 @@ class CompletionSettings {
   final int vibrationLevel;
   final bool ringtoneEnabled;
   final Ringtone ringtone;
+  final SoundRepeat soundRepeat;
+  final VibrationRepeat vibrationRepeat;
 
   CompletionSettings copyWith({
     bool? vibrationEnabled,
     int? vibrationLevel,
     bool? ringtoneEnabled,
     Ringtone? ringtone,
+    SoundRepeat? soundRepeat,
+    VibrationRepeat? vibrationRepeat,
   }) =>
       CompletionSettings(
         vibrationEnabled: vibrationEnabled ?? this.vibrationEnabled,
         vibrationLevel: vibrationLevel ?? this.vibrationLevel,
         ringtoneEnabled: ringtoneEnabled ?? this.ringtoneEnabled,
         ringtone: ringtone ?? this.ringtone,
+        soundRepeat: soundRepeat ?? this.soundRepeat,
+        vibrationRepeat: vibrationRepeat ?? this.vibrationRepeat,
       );
 }
 
@@ -41,6 +68,11 @@ class CompletionSettingsNotifier extends Notifier<CompletionSettings> {
   CompletionSettings build() {
     final box = AppStorage.settings;
     final ringtoneName = box.get('${_prefix}ringtone') as String?;
+    T pick<T extends Enum>(List<T> values, String key, T fallback) {
+      final name = box.get('$_prefix$key');
+      return values.firstWhere((v) => v.name == name, orElse: () => fallback);
+    }
+
     return CompletionSettings(
       vibrationEnabled: box.get('${_prefix}vibrationEnabled', defaultValue: true) as bool,
       vibrationLevel:
@@ -50,6 +82,9 @@ class CompletionSettingsNotifier extends Notifier<CompletionSettings> {
         (r) => r.name == ringtoneName,
         orElse: () => Ringtone.templeBell,
       ),
+      soundRepeat: pick(SoundRepeat.values, 'soundRepeat', SoundRepeat.once),
+      vibrationRepeat:
+          pick(VibrationRepeat.values, 'vibrationRepeat', VibrationRepeat.once),
     );
   }
 
@@ -71,6 +106,16 @@ class CompletionSettingsNotifier extends Notifier<CompletionSettings> {
   void setRingtone(Ringtone r) {
     state = state.copyWith(ringtone: r);
     AppStorage.settings.put('${_prefix}ringtone', r.name);
+  }
+
+  void setSoundRepeat(SoundRepeat r) {
+    state = state.copyWith(soundRepeat: r);
+    AppStorage.settings.put('${_prefix}soundRepeat', r.name);
+  }
+
+  void setVibrationRepeat(VibrationRepeat r) {
+    state = state.copyWith(vibrationRepeat: r);
+    AppStorage.settings.put('${_prefix}vibrationRepeat', r.name);
   }
 }
 

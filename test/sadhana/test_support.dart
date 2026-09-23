@@ -21,12 +21,26 @@ class FakeFeedback implements FeedbackService {
   int milestones = 0;
   int completions = 0;
   int acknowledgements = 0;
+  int alertStops = 0;
+
+  @override
+  final ValueNotifier<bool> alerting = ValueNotifier<bool>(false);
 
   @override
   Future<void> milestone() async => milestones++;
 
   @override
   Future<void> complete() async => completions++;
+
+  /// Counted as a completion too: it is the Sadhana session's completion.
+  @override
+  void completionAlert() => completions++;
+
+  @override
+  void stopAlert() {
+    alertStops++;
+    alerting.value = false;
+  }
 
   @override
   Future<void> acknowledge() async => acknowledgements++;
@@ -90,24 +104,54 @@ class FakeHaptics implements HapticsDriver {
         pattern: pattern,
         intensities: intensities));
   }
+
+  int cancels = 0;
+
+  @override
+  Future<void> cancel() async => cancels++;
 }
 
 /// Scriptable stand-in for the sound player.
+///
+/// By default a sound ends as soon as it starts; with [length] it lasts that
+/// long (on the test's clock), or until [stop].
 class FakeSound implements SoundDriver {
-  FakeSound({this.failing = false});
+  FakeSound({this.failing = false, this.length});
 
   bool failing;
+  final Duration? length;
   final plays = <String>[];
   int stops = 0;
+  Completer<void>? _playing;
+  Timer? _end;
+
+  /// A sound is playing right now.
+  bool get isPlaying => _playing != null;
 
   @override
   Future<void> play(String asset) async {
     if (failing) throw StateError('player failed');
     plays.add(asset);
+    if (length == null) return;
+    _finish();
+    final done = _playing = Completer<void>();
+    _end = Timer(length!, _finish);
+    await done.future;
   }
 
   @override
-  Future<void> stop() async => stops++;
+  Future<void> stop() async {
+    stops++;
+    _finish();
+  }
+
+  void _finish() {
+    _end?.cancel();
+    _end = null;
+    final p = _playing;
+    _playing = null;
+    if (p != null && !p.isCompleted) p.complete();
+  }
 }
 
 /// Fresh in-memory storage; call from setUp.

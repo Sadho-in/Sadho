@@ -2177,5 +2177,28 @@
   "continueAction": "Continue",
   "@continueAction": {
     "description": "Button that finishes the first-launch screen"
+  },
+  "stopAlert": "Stop",
+  "repeatLabel": "Repeat",
+  "repeatOnce": "Once",
+  "soundRepeatTimes": "{times} times",
+  "repeatUntilStopped": "Until stopped",
+  "vibrationRepeatUntilStopped": "Every {seconds} s until stopped",
+  "@stopAlert": {
+    "description": "Button that silences the completion ringtone and vibration"
+  },
+  "@soundRepeatTimes": {
+    "placeholders": {
+      "times": {
+        "type": "int"
+      }
+    }
+  },
+  "@vibrationRepeatUntilStopped": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
   }
 }

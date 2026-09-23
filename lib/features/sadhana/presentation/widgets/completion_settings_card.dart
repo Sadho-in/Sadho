@@ -68,6 +68,17 @@ class CompletionSettingsCard extends ConsumerWidget {
                 ),
               ],
             ),
+            _RepeatChoice<VibrationRepeat>(
+              keyPrefix: 'vibration-repeat',
+              values: VibrationRepeat.values,
+              selected: settings.vibrationRepeat,
+              label: (r) => switch (r) {
+                VibrationRepeat.once => context.l10n.repeatOnce,
+                VibrationRepeat.untilStopped => context.l10n
+                    .vibrationRepeatUntilStopped(vibrationRepeatEvery.inSeconds),
+              },
+              onSelected: notifier.setVibrationRepeat,
+            ),
           ],
           const Divider(height: 32),
           // ---- Ringtone ---------------------------------------------------
@@ -102,9 +113,64 @@ class CompletionSettingsCard extends ConsumerWidget {
               icon: const Icon(Icons.play_arrow, size: 18),
               label: Text(context.l10n.playSound),
             ),
+            _RepeatChoice<SoundRepeat>(
+              keyPrefix: 'sound-repeat',
+              values: SoundRepeat.values,
+              selected: settings.soundRepeat,
+              label: (r) => switch (r) {
+                SoundRepeat.once => context.l10n.repeatOnce,
+                SoundRepeat.repeat => context.l10n.soundRepeatTimes(soundRepeatTimes),
+                SoundRepeat.untilStopped => context.l10n.repeatUntilStopped,
+              },
+              onSelected: notifier.setSoundRepeat,
+            ),
           ],
         ],
       ),
     );
   }
+}
+
+/// "Repeat" and one chip per option. Chips wrap, so long translations never
+/// overflow a narrow phone.
+class _RepeatChoice<T extends Enum> extends StatelessWidget {
+  const _RepeatChoice({
+    required this.keyPrefix,
+    required this.values,
+    required this.selected,
+    required this.label,
+    required this.onSelected,
+  });
+
+  final String keyPrefix;
+  final List<T> values;
+  final T selected;
+  final String Function(T) label;
+  final ValueChanged<T> onSelected;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(context.l10n.repeatLabel,
+                style: Theme.of(context).textTheme.titleSmall),
+            const SizedBox(height: 4),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final v in values)
+                  ChoiceChip(
+                    key: ValueKey('$keyPrefix-${v.name}'),
+                    label: Text(label(v)),
+                    selected: v == selected,
+                    onSelected: (_) => onSelected(v),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      );
 }
