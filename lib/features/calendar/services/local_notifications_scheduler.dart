@@ -12,6 +12,19 @@ import '../data/calendar_mark.dart';
 import 'reminder_planner.dart';
 import 'reminder_scheduler.dart';
 
+/// How Android is asked to ring a notification.
+///
+/// A real alarm (the Sadhana finish, the Clock timer, the sun alarm) is set as
+/// an ALARM CLOCK: Android then treats it as an alarm the user set (it shows
+/// the alarm icon, and Doze and battery savers such as Samsung's let it ring
+/// on time). Calendar reminders and other gentle notifications are exact but
+/// ordinary. Without exact-alarm permission both fall back to a slightly
+/// flexible time.
+AndroidScheduleMode scheduleModeFor({required bool alarm, required bool exact}) {
+  if (!exact) return AndroidScheduleMode.inexactAllowWhileIdle;
+  return alarm ? AndroidScheduleMode.alarmClock : AndroidScheduleMode.exactAllowWhileIdle;
+}
+
 /// Real reminders through `flutter_local_notifications` + `timezone`.
 ///
 /// Reminders are local to the phone: they need no account or network, and are
@@ -288,6 +301,7 @@ class LocalNotificationsScheduler implements ReminderScheduler {
           body: a.body,
           payload: group,
           repeat: a.repeatsDaily ? DateTimeComponents.time : null,
+          alarm: !a.gentle,
         );
       } catch (e) {
         debugPrint('Could not schedule alert ${a.id}: $e');
@@ -328,6 +342,7 @@ class LocalNotificationsScheduler implements ReminderScheduler {
     required String body,
     required String payload,
     DateTimeComponents? repeat,
+    bool alarm = false,
   }) async {
     final at = tz.TZDateTime(
         tz.local, when.year, when.month, when.day, when.hour, when.minute, when.second);
@@ -345,13 +360,11 @@ class LocalNotificationsScheduler implements ReminderScheduler {
 
     _exactAllowed ??= await _canScheduleExact();
     try {
-      await go(_exactAllowed!
-          ? AndroidScheduleMode.exactAllowWhileIdle
-          : AndroidScheduleMode.inexactAllowWhileIdle);
+      await go(scheduleModeFor(alarm: alarm, exact: _exactAllowed!));
     } on PlatformException catch (e) {
       if (e.code != 'exact_alarms_not_permitted') rethrow;
       _exactAllowed = false;
-      await go(AndroidScheduleMode.inexactAllowWhileIdle);
+      await go(scheduleModeFor(alarm: alarm, exact: false));
     }
   }
 

@@ -4,13 +4,20 @@
          never uploaded. INTERNET is only for downloading Google Fonts. -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- Calendar reminders (flutter_local_notifications): show notifications
-         (Android 13+), keep them across a reboot, and ring at the exact minute
-         when the user has allowed exact alarms (otherwise the app falls back to
-         a slightly flexible time). -->
+    <!-- Alarms and reminders (flutter_local_notifications): show notifications
+         (Android 13+), keep them across a reboot, and ring at the exact second.
+         Sadho is an alarm-clock app (the sun-based alarm, the Clock timer, the
+         Sadhana finish alarm) and sends calendar event reminders, which is what
+         Google Play allows USE_EXACT_ALARM for: it is granted automatically on
+         Android 13+. Android 12 uses SCHEDULE_EXACT_ALARM instead. If exact
+         alarms are ever not allowed, the app falls back to a slightly flexible
+         time and says so. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
+    <uses-permission
+        android:name="android.permission.SCHEDULE_EXACT_ALARM"
+        android:maxSdkVersion="32"/>
     <!-- Sadhana completion alarm: shows full screen over the lock screen,
          like an alarm clock (Android 14+ lets the user refuse it; the alarm
          is then a normal heads-up notification). -->
