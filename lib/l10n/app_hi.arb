@@ -1,6 +1,6 @@
 {
   "@@locale": "hi",
-  "@@x-machine-translation": "First-pass machine translation into Hindi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Hindi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review.",
   "navHome": "होम",
   "navSadhana": "साधना",
   "navCalendar": "कैलेंडर",
@@ -550,5 +550,24 @@
   "alarmScreenTimerTitle": "टाइमर पूरा हुआ",
   "alarmScreenSunTitle": "सूर्य अलार्म",
   "alarmScreenUnlock": "Sadho खोलने के लिए अनलॉक करें",
-  "alarmScreenUnlockHint": "ऐप के बाकी हिस्से के लिए फ़ोन अनलॉक होना चाहिए।"
+  "alarmScreenUnlockHint": "ऐप के बाकी हिस्से के लिए फ़ोन अनलॉक होना चाहिए।",
+  "alarmsReliabilityTitle": "अलार्म और विश्वसनीयता",
+  "alarmsReliabilityIntro": "स्क्रीन बंद होने पर भी अलार्म समय पर बजें, इसके लिए फ़ोन को ये अनुमतियाँ देनी होंगी। ठीक करें सही सेटिंग पेज खोलता है।",
+  "alarmsReliabilityAllOk": "अलार्म समय पर बजने के लिए सब तैयार है",
+  "alarmsReliabilityAttention": "कुछ ध्यान देने योग्य है",
+  "healthOk": "ठीक है",
+  "healthNeedsAttention": "ध्यान दें",
+  "healthFix": "ठीक करें",
+  "healthNotificationsTitle": "सूचनाओं की अनुमति",
+  "healthNotificationsBody": "अलार्म और रिमाइंडर सूचना के रूप में आते हैं।",
+  "healthExactTitle": "सटीक अलार्म की अनुमति",
+  "healthExactBody": "ठीक उसी सेकंड बजता है, थोड़ी देर से नहीं।",
+  "healthFullScreenTitle": "लॉक स्क्रीन पर अलार्म दिखाएँ",
+  "healthFullScreenBody": "फ़ोन लॉक होने पर भी पूरा हुआ अलार्म दिखता है।",
+  "healthBatteryTitle": "बैटरी: ऐप प्रतिबंधित नहीं",
+  "healthBatteryBody": "बैटरी में अप्रतिबंधित चुनें (या कम से कम प्रतिबंधित नहीं), ताकि फ़ोन अलार्म न रोके।",
+  "healthBatterySamsungHint": "Samsung: सेटिंग्स › बैटरी › बैकग्राउंड उपयोग सीमाएँ में, Sadho को “स्लीपिंग ऐप्स” और “डीप स्लीपिंग ऐप्स” से हटाएँ, और बैटरी उपयोग “अप्रतिबंधित” करें।",
+  "alarmExplainerOk": "यह सत्र पूरा होने पर अलार्म की तरह बजेगा, स्क्रीन बंद हो या ऐप बंद हो तब भी।",
+  "alarmExplainerAttention": "यह सत्र पूरा होने पर अलार्म की तरह बजेगा, पर समय पर बजने के लिए फ़ोन की एक सेटिंग बदलनी होगी।",
+  "alarmExplainerCheck": "जाँचें"
 }

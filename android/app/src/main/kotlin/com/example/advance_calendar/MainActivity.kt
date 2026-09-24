@@ -1,11 +1,15 @@
 package com.example.advance_calendar
 
+import android.app.ActivityManager
 import android.app.KeyguardManager
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.view.WindowManager
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -110,6 +114,33 @@ class MainActivity : FlutterActivity() {
                     } else {
                         result.success(false)
                     }
+                }
+                // Battery: "Restricted" (background use blocked) holds alarms
+                // back; "Unrestricted" = exempt from battery optimisation. Only
+                // READ here; the app never asks to be exempted (Play restricts
+                // that), it only opens the settings.
+                "batteryStatus" -> {
+                    val power = getSystemService(Context.POWER_SERVICE) as PowerManager
+                    val restricted = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
+                        (getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager)
+                            .isBackgroundRestricted
+                    result.success(
+                        mapOf(
+                            "restricted" to restricted,
+                            "unrestricted" to power.isIgnoringBatteryOptimizations(packageName),
+                            "samsung" to Build.MANUFACTURER.equals("samsung", ignoreCase = true),
+                        ),
+                    )
+                }
+                // The app's own info page, where Battery is one tap away.
+                "openBatterySettings" -> {
+                    startActivity(
+                        Intent(
+                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.parse("package:$packageName"),
+                        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                    )
+                    result.success(null)
                 }
                 else -> result.notImplemented()
             }

@@ -1,6 +1,6 @@
 {
   "@@locale": "kn",
-  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review.",
   "navHome": "ಮುಖಪುಟ",
   "navSadhana": "ಸಾಧನೆ",
   "navCalendar": "ಕ್ಯಾಲೆಂಡರ್",
@@ -550,5 +550,24 @@
   "alarmScreenTimerTitle": "ಟೈಮರ್ ಮುಗಿಯಿತು",
   "alarmScreenSunTitle": "ಸೂರ್ಯ ಅಲಾರಂ",
   "alarmScreenUnlock": "Sadho ತೆರೆಯಲು ಅನ್‌ಲಾಕ್ ಮಾಡಿ",
-  "alarmScreenUnlockHint": "ಆ್ಯಪ್‌ನ ಉಳಿದ ಭಾಗಕ್ಕೆ ಫೋನ್ ಅನ್‌ಲಾಕ್ ಆಗಿರಬೇಕು."
+  "alarmScreenUnlockHint": "ಆ್ಯಪ್‌ನ ಉಳಿದ ಭಾಗಕ್ಕೆ ಫೋನ್ ಅನ್‌ಲಾಕ್ ಆಗಿರಬೇಕು.",
+  "alarmsReliabilityTitle": "ಅಲಾರಂಗಳು & ವಿಶ್ವಾಸಾರ್ಹತೆ",
+  "alarmsReliabilityIntro": "ಪರದೆ ಆಫ್ ಆಗಿದ್ದರೂ ಅಲಾರಂಗಳು ಸಮಯಕ್ಕೆ ಮೊಳಗಲು, ಫೋನ್ ಇವುಗಳನ್ನು ಅನುಮತಿಸಬೇಕು. ಸರಿಪಡಿಸಿ ಸರಿಯಾದ ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಪುಟ ತೆರೆಯುತ್ತದೆ.",
+  "alarmsReliabilityAllOk": "ಅಲಾರಂಗಳು ಸಮಯಕ್ಕೆ ಮೊಳಗಲು ಎಲ್ಲವೂ ಸಿದ್ಧ",
+  "alarmsReliabilityAttention": "ಏನೋ ಗಮನ ಬೇಕಾಗಿದೆ",
+  "healthOk": "ಸರಿ",
+  "healthNeedsAttention": "ಗಮನ ಬೇಕು",
+  "healthFix": "ಸರಿಪಡಿಸಿ",
+  "healthNotificationsTitle": "ಅಧಿಸೂಚನೆಗಳಿಗೆ ಅನುಮತಿ",
+  "healthNotificationsBody": "ಅಲಾರಂಗಳು ಮತ್ತು ಜ್ಞಾಪನೆಗಳು ಅಧಿಸೂಚನೆಗಳಾಗಿ ಬರುತ್ತವೆ.",
+  "healthExactTitle": "ನಿಖರ ಅಲಾರಂಗಳಿಗೆ ಅನುಮತಿ",
+  "healthExactBody": "ಅದೇ ಸೆಕೆಂಡಿನಲ್ಲಿ ಮೊಳಗುತ್ತದೆ, ತಡವಾಗಿ ಅಲ್ಲ.",
+  "healthFullScreenTitle": "ಲಾಕ್ ಪರದೆಯ ಮೇಲೆ ಅಲಾರಂಗಳನ್ನು ತೋರಿಸಿ",
+  "healthFullScreenBody": "ಫೋನ್ ಲಾಕ್ ಆಗಿದ್ದರೂ ಮುಗಿದ ಅಲಾರಂ ಕಾಣಿಸುತ್ತದೆ.",
+  "healthBatteryTitle": "ಬ್ಯಾಟರಿ: ಆ್ಯಪ್ ನಿರ್ಬಂಧಿತವಲ್ಲ",
+  "healthBatteryBody": "ಬ್ಯಾಟರಿಯಲ್ಲಿ ಅನಿರ್ಬಂಧಿತ ಆಯ್ಕೆಮಾಡಿ (ಕನಿಷ್ಠ ನಿರ್ಬಂಧಿತವಲ್ಲ), ಆಗ ಫೋನ್ ಅಲಾರಂಗಳನ್ನು ತಡೆಯುವುದಿಲ್ಲ.",
+  "healthBatterySamsungHint": "Samsung: ಸೆಟ್ಟಿಂಗ್‌ಗಳು › ಬ್ಯಾಟರಿ › ಹಿನ್ನೆಲೆ ಬಳಕೆ ಮಿತಿಗಳಲ್ಲಿ, Sadho ಅನ್ನು “ಸ್ಲೀಪಿಂಗ್ ಆ್ಯಪ್‌ಗಳು” ಮತ್ತು “ಡೀಪ್ ಸ್ಲೀಪಿಂಗ್ ಆ್ಯಪ್‌ಗಳು” ನಿಂದ ತೆಗೆದುಹಾಕಿ, ಬ್ಯಾಟರಿ ಬಳಕೆಯನ್ನು “ಅನಿರ್ಬಂಧಿತ” ಮಾಡಿ.",
+  "alarmExplainerOk": "ಈ ಸೆಷನ್ ಮುಗಿದಾಗ ಅಲಾರಂನಂತೆ ಮೊಳಗುತ್ತದೆ, ಪರದೆ ಅಥವಾ ಆ್ಯಪ್ ಮುಚ್ಚಿದ್ದರೂ.",
+  "alarmExplainerAttention": "ಈ ಸೆಷನ್ ಮುಗಿದಾಗ ಅಲಾರಂನಂತೆ ಮೊಳಗುತ್ತದೆ, ಆದರೆ ಸಮಯಕ್ಕೆ ಮೊಳಗಲು ಫೋನ್‌ನ ಒಂದು ಸೆಟ್ಟಿಂಗ್ ಬದಲಿಸಬೇಕು.",
+  "alarmExplainerCheck": "ಪರಿಶೀಲಿಸಿ"
 }

@@ -3411,6 +3411,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The rest of the app needs the phone unlocked.'**
   String get alarmScreenUnlockHint;
+
+  /// No description provided for @alarmsReliabilityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarms & reliability'**
+  String get alarmsReliabilityTitle;
+
+  /// No description provided for @alarmsReliabilityIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'For alarms to ring on time with the screen off, your phone must allow these. Fix opens the right settings page.'**
+  String get alarmsReliabilityIntro;
+
+  /// No description provided for @alarmsReliabilityAllOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything is set for alarms to ring on time'**
+  String get alarmsReliabilityAllOk;
+
+  /// No description provided for @alarmsReliabilityAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Something needs attention'**
+  String get alarmsReliabilityAttention;
+
+  /// No description provided for @healthOk.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get healthOk;
+
+  /// No description provided for @healthNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs attention'**
+  String get healthNeedsAttention;
+
+  /// No description provided for @healthFix.
+  ///
+  /// In en, this message translates to:
+  /// **'Fix'**
+  String get healthFix;
+
+  /// No description provided for @healthNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications allowed'**
+  String get healthNotificationsTitle;
+
+  /// No description provided for @healthNotificationsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarms and reminders arrive as notifications.'**
+  String get healthNotificationsBody;
+
+  /// No description provided for @healthExactTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact alarms allowed'**
+  String get healthExactTitle;
+
+  /// No description provided for @healthExactBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Rings at the exact second, not a little late.'**
+  String get healthExactBody;
+
+  /// No description provided for @healthFullScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show alarms over the lock screen'**
+  String get healthFullScreenTitle;
+
+  /// No description provided for @healthFullScreenBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A finished alarm appears even while the phone is locked.'**
+  String get healthFullScreenBody;
+
+  /// No description provided for @healthBatteryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery: app not restricted'**
+  String get healthBatteryTitle;
+
+  /// No description provided for @healthBatteryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'In Battery, choose Unrestricted (or at least not Restricted), so the phone does not hold alarms back.'**
+  String get healthBatteryBody;
+
+  /// No description provided for @healthBatterySamsungHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Samsung: in Settings › Battery › Background usage limits, remove Sadho from “Sleeping apps” and “Deep sleeping apps”, and set its battery use to “Unrestricted”.'**
+  String get healthBatterySamsungHint;
+
+  /// No description provided for @alarmExplainerOk.
+  ///
+  /// In en, this message translates to:
+  /// **'This session will ring like an alarm when it finishes, even with the screen off or the app closed.'**
+  String get alarmExplainerOk;
+
+  /// No description provided for @alarmExplainerAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'This session will ring like an alarm when it finishes, but your phone needs a setting changed to ring on time.'**
+  String get alarmExplainerAttention;
+
+  /// No description provided for @alarmExplainerCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Check'**
+  String get alarmExplainerCheck;
 }
 
 class _AppLocalizationsDelegate

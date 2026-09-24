@@ -1948,4 +1948,68 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get alarmScreenUnlockHint =>
       'ಆ್ಯಪ್‌ನ ಉಳಿದ ಭಾಗಕ್ಕೆ ಫೋನ್ ಅನ್‌ಲಾಕ್ ಆಗಿರಬೇಕು.';
+
+  @override
+  String get alarmsReliabilityTitle => 'ಅಲಾರಂಗಳು & ವಿಶ್ವಾಸಾರ್ಹತೆ';
+
+  @override
+  String get alarmsReliabilityIntro =>
+      'ಪರದೆ ಆಫ್ ಆಗಿದ್ದರೂ ಅಲಾರಂಗಳು ಸಮಯಕ್ಕೆ ಮೊಳಗಲು, ಫೋನ್ ಇವುಗಳನ್ನು ಅನುಮತಿಸಬೇಕು. ಸರಿಪಡಿಸಿ ಸರಿಯಾದ ಸೆಟ್ಟಿಂಗ್‌ಗಳ ಪುಟ ತೆರೆಯುತ್ತದೆ.';
+
+  @override
+  String get alarmsReliabilityAllOk => 'ಅಲಾರಂಗಳು ಸಮಯಕ್ಕೆ ಮೊಳಗಲು ಎಲ್ಲವೂ ಸಿದ್ಧ';
+
+  @override
+  String get alarmsReliabilityAttention => 'ಏನೋ ಗಮನ ಬೇಕಾಗಿದೆ';
+
+  @override
+  String get healthOk => 'ಸರಿ';
+
+  @override
+  String get healthNeedsAttention => 'ಗಮನ ಬೇಕು';
+
+  @override
+  String get healthFix => 'ಸರಿಪಡಿಸಿ';
+
+  @override
+  String get healthNotificationsTitle => 'ಅಧಿಸೂಚನೆಗಳಿಗೆ ಅನುಮತಿ';
+
+  @override
+  String get healthNotificationsBody =>
+      'ಅಲಾರಂಗಳು ಮತ್ತು ಜ್ಞಾಪನೆಗಳು ಅಧಿಸೂಚನೆಗಳಾಗಿ ಬರುತ್ತವೆ.';
+
+  @override
+  String get healthExactTitle => 'ನಿಖರ ಅಲಾರಂಗಳಿಗೆ ಅನುಮತಿ';
+
+  @override
+  String get healthExactBody => 'ಅದೇ ಸೆಕೆಂಡಿನಲ್ಲಿ ಮೊಳಗುತ್ತದೆ, ತಡವಾಗಿ ಅಲ್ಲ.';
+
+  @override
+  String get healthFullScreenTitle => 'ಲಾಕ್ ಪರದೆಯ ಮೇಲೆ ಅಲಾರಂಗಳನ್ನು ತೋರಿಸಿ';
+
+  @override
+  String get healthFullScreenBody =>
+      'ಫೋನ್ ಲಾಕ್ ಆಗಿದ್ದರೂ ಮುಗಿದ ಅಲಾರಂ ಕಾಣಿಸುತ್ತದೆ.';
+
+  @override
+  String get healthBatteryTitle => 'ಬ್ಯಾಟರಿ: ಆ್ಯಪ್ ನಿರ್ಬಂಧಿತವಲ್ಲ';
+
+  @override
+  String get healthBatteryBody =>
+      'ಬ್ಯಾಟರಿಯಲ್ಲಿ ಅನಿರ್ಬಂಧಿತ ಆಯ್ಕೆಮಾಡಿ (ಕನಿಷ್ಠ ನಿರ್ಬಂಧಿತವಲ್ಲ), ಆಗ ಫೋನ್ ಅಲಾರಂಗಳನ್ನು ತಡೆಯುವುದಿಲ್ಲ.';
+
+  @override
+  String get healthBatterySamsungHint =>
+      'Samsung: ಸೆಟ್ಟಿಂಗ್‌ಗಳು › ಬ್ಯಾಟರಿ › ಹಿನ್ನೆಲೆ ಬಳಕೆ ಮಿತಿಗಳಲ್ಲಿ, Sadho ಅನ್ನು “ಸ್ಲೀಪಿಂಗ್ ಆ್ಯಪ್‌ಗಳು” ಮತ್ತು “ಡೀಪ್ ಸ್ಲೀಪಿಂಗ್ ಆ್ಯಪ್‌ಗಳು” ನಿಂದ ತೆಗೆದುಹಾಕಿ, ಬ್ಯಾಟರಿ ಬಳಕೆಯನ್ನು “ಅನಿರ್ಬಂಧಿತ” ಮಾಡಿ.';
+
+  @override
+  String get alarmExplainerOk =>
+      'ಈ ಸೆಷನ್ ಮುಗಿದಾಗ ಅಲಾರಂನಂತೆ ಮೊಳಗುತ್ತದೆ, ಪರದೆ ಅಥವಾ ಆ್ಯಪ್ ಮುಚ್ಚಿದ್ದರೂ.';
+
+  @override
+  String get alarmExplainerAttention =>
+      'ಈ ಸೆಷನ್ ಮುಗಿದಾಗ ಅಲಾರಂನಂತೆ ಮೊಳಗುತ್ತದೆ, ಆದರೆ ಸಮಯಕ್ಕೆ ಮೊಳಗಲು ಫೋನ್‌ನ ಒಂದು ಸೆಟ್ಟಿಂಗ್ ಬದಲಿಸಬೇಕು.';
+
+  @override
+  String get alarmExplainerCheck => 'ಪರಿಶೀಲಿಸಿ';
 }

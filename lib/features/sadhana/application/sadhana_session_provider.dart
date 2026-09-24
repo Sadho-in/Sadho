@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/storage/app_storage.dart';
+import '../../alarms/services/alarm_health.dart';
 import '../../calendar/services/reminder_planner.dart' show reminderId;
 import '../../calendar/services/reminder_scheduler.dart';
 import '../../clock/application/clock_source.dart';
@@ -312,6 +313,9 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   /// Hive keys: each alarm permission is explained (and offered) only once.
   static const askedExactKey = 'sadhana.askedExactAlarms';
   static const askedFullScreenKey = 'sadhana.askedFullScreen';
+
+  /// Hive key: the one-time "this will ring like an alarm" explainer was shown.
+  static const alarmExplainedKey = 'sadhana.alarmExplained';
 
   /// The phone's alarm is set this much AFTER the predicted end, so when the
   /// app is open its own clock finishes first, rings in the app and cancels
@@ -894,7 +898,10 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
     try {
       if (!_askedNotifications) {
         _askedNotifications = true;
-        if (!await _scheduler.requestPermission()) return;
+        if (!await _scheduler.requestPermission()) {
+          unawaited(_explainOnce());
+          return;
+        }
       }
       if (gen != _alarmGen || _disposed) return; // paused or changed meanwhile
       final l = ref.read(l10nProvider);
@@ -925,6 +932,8 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
     if (state.alarmMayBeLate == exact) {
       state = state.copyWith(alarmMayBeLate: !exact);
     }
+    if (await _explainOnce()) return;
+    if (gen != _alarmGen || _disposed) return;
     final l = ref.read(l10nProvider);
     if (!exact) {
       _offerOnce(askedExactKey, l.exactAlarmNotice, () async {
@@ -942,6 +951,33 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
       _offerOnce(askedFullScreenKey, l.fullScreenNotice,
           () => unawaited(_scheduler.requestFullScreen()));
     }
+  }
+
+  /// The first time a session with a predictable end starts: a short note
+  /// that it will ring like an alarm, and, if the phone is not set up for
+  /// that, a button to "Alarms & reliability" (which also covers the separate
+  /// exact-alarm and full-screen offers). True if it was shown now.
+  Future<bool> _explainOnce() async {
+    if (AppStorage.settings.get(alarmExplainedKey) == true) return false;
+    AppStorage.settings.put(alarmExplainedKey, true);
+    AlarmHealthStatus health;
+    try {
+      health = await ref.read(alarmHealthProvider).check();
+    } catch (_) {
+      health = AlarmHealthStatus.unknownOk;
+    }
+    if (_disposed) return true;
+    final l = ref.read(l10nProvider);
+    final notices = ref.read(sessionNoticeProvider.notifier);
+    if (health.allOk) {
+      notices.show(l.alarmExplainerOk);
+    } else {
+      AppStorage.settings.put(askedExactKey, true);
+      AppStorage.settings.put(askedFullScreenKey, true);
+      notices.show(l.alarmExplainerAttention,
+          actionLabel: l.alarmExplainerCheck, openAlarmsPage: true);
+    }
+    return true;
   }
 
   void _offerOnce(String key, String message, void Function() allow) {

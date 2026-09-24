@@ -8,7 +8,8 @@ class SessionNotice {
       {this.openSettings = false,
       this.trainMantraId,
       this.actionLabel,
-      this.onAction});
+      this.onAction,
+      this.openAlarmsPage = false});
 
   final String message;
 
@@ -21,6 +22,9 @@ class SessionNotice {
   /// Any other action (e.g. "Allow" for an alarm permission).
   final String? actionLabel;
   final void Function()? onAction;
+
+  /// Offer a button (labelled [actionLabel]) to "Alarms & reliability".
+  final bool openAlarmsPage;
 }
 
 class SessionNoticeNotifier extends Notifier<SessionNotice?> {
@@ -31,12 +35,14 @@ class SessionNoticeNotifier extends Notifier<SessionNotice?> {
           {bool openSettings = false,
           String? trainMantraId,
           String? actionLabel,
-          void Function()? onAction}) =>
+          void Function()? onAction,
+          bool openAlarmsPage = false}) =>
       state = SessionNotice(message,
           openSettings: openSettings,
           trainMantraId: trainMantraId,
           actionLabel: actionLabel,
-          onAction: onAction);
+          onAction: onAction,
+          openAlarmsPage: openAlarmsPage);
 }
 
 final sessionNoticeProvider =

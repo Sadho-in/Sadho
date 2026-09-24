@@ -1945,4 +1945,69 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get alarmScreenUnlockHint =>
       'The rest of the app needs the phone unlocked.';
+
+  @override
+  String get alarmsReliabilityTitle => 'Alarms & reliability';
+
+  @override
+  String get alarmsReliabilityIntro =>
+      'For alarms to ring on time with the screen off, your phone must allow these. Fix opens the right settings page.';
+
+  @override
+  String get alarmsReliabilityAllOk =>
+      'Everything is set for alarms to ring on time';
+
+  @override
+  String get alarmsReliabilityAttention => 'Something needs attention';
+
+  @override
+  String get healthOk => 'OK';
+
+  @override
+  String get healthNeedsAttention => 'Needs attention';
+
+  @override
+  String get healthFix => 'Fix';
+
+  @override
+  String get healthNotificationsTitle => 'Notifications allowed';
+
+  @override
+  String get healthNotificationsBody =>
+      'Alarms and reminders arrive as notifications.';
+
+  @override
+  String get healthExactTitle => 'Exact alarms allowed';
+
+  @override
+  String get healthExactBody => 'Rings at the exact second, not a little late.';
+
+  @override
+  String get healthFullScreenTitle => 'Show alarms over the lock screen';
+
+  @override
+  String get healthFullScreenBody =>
+      'A finished alarm appears even while the phone is locked.';
+
+  @override
+  String get healthBatteryTitle => 'Battery: app not restricted';
+
+  @override
+  String get healthBatteryBody =>
+      'In Battery, choose Unrestricted (or at least not Restricted), so the phone does not hold alarms back.';
+
+  @override
+  String get healthBatterySamsungHint =>
+      'Samsung: in Settings › Battery › Background usage limits, remove Sadho from “Sleeping apps” and “Deep sleeping apps”, and set its battery use to “Unrestricted”.';
+
+  @override
+  String get alarmExplainerOk =>
+      'This session will ring like an alarm when it finishes, even with the screen off or the app closed.';
+
+  @override
+  String get alarmExplainerAttention =>
+      'This session will ring like an alarm when it finishes, but your phone needs a setting changed to ring on time.';
+
+  @override
+  String get alarmExplainerCheck => 'Check';
 }

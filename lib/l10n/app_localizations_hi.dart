@@ -1949,4 +1949,68 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get alarmScreenUnlockHint =>
       'ऐप के बाकी हिस्से के लिए फ़ोन अनलॉक होना चाहिए।';
+
+  @override
+  String get alarmsReliabilityTitle => 'अलार्म और विश्वसनीयता';
+
+  @override
+  String get alarmsReliabilityIntro =>
+      'स्क्रीन बंद होने पर भी अलार्म समय पर बजें, इसके लिए फ़ोन को ये अनुमतियाँ देनी होंगी। ठीक करें सही सेटिंग पेज खोलता है।';
+
+  @override
+  String get alarmsReliabilityAllOk => 'अलार्म समय पर बजने के लिए सब तैयार है';
+
+  @override
+  String get alarmsReliabilityAttention => 'कुछ ध्यान देने योग्य है';
+
+  @override
+  String get healthOk => 'ठीक है';
+
+  @override
+  String get healthNeedsAttention => 'ध्यान दें';
+
+  @override
+  String get healthFix => 'ठीक करें';
+
+  @override
+  String get healthNotificationsTitle => 'सूचनाओं की अनुमति';
+
+  @override
+  String get healthNotificationsBody =>
+      'अलार्म और रिमाइंडर सूचना के रूप में आते हैं।';
+
+  @override
+  String get healthExactTitle => 'सटीक अलार्म की अनुमति';
+
+  @override
+  String get healthExactBody => 'ठीक उसी सेकंड बजता है, थोड़ी देर से नहीं।';
+
+  @override
+  String get healthFullScreenTitle => 'लॉक स्क्रीन पर अलार्म दिखाएँ';
+
+  @override
+  String get healthFullScreenBody =>
+      'फ़ोन लॉक होने पर भी पूरा हुआ अलार्म दिखता है।';
+
+  @override
+  String get healthBatteryTitle => 'बैटरी: ऐप प्रतिबंधित नहीं';
+
+  @override
+  String get healthBatteryBody =>
+      'बैटरी में अप्रतिबंधित चुनें (या कम से कम प्रतिबंधित नहीं), ताकि फ़ोन अलार्म न रोके।';
+
+  @override
+  String get healthBatterySamsungHint =>
+      'Samsung: सेटिंग्स › बैटरी › बैकग्राउंड उपयोग सीमाएँ में, Sadho को “स्लीपिंग ऐप्स” और “डीप स्लीपिंग ऐप्स” से हटाएँ, और बैटरी उपयोग “अप्रतिबंधित” करें।';
+
+  @override
+  String get alarmExplainerOk =>
+      'यह सत्र पूरा होने पर अलार्म की तरह बजेगा, स्क्रीन बंद हो या ऐप बंद हो तब भी।';
+
+  @override
+  String get alarmExplainerAttention =>
+      'यह सत्र पूरा होने पर अलार्म की तरह बजेगा, पर समय पर बजने के लिए फ़ोन की एक सेटिंग बदलनी होगी।';
+
+  @override
+  String get alarmExplainerCheck => 'जाँचें';
 }

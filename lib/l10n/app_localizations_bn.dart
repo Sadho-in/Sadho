@@ -1948,4 +1948,69 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get alarmScreenUnlockHint =>
       'অ্যাপের বাকি অংশের জন্য ফোন আনলক থাকতে হবে।';
+
+  @override
+  String get alarmsReliabilityTitle => 'অ্যালার্ম ও নির্ভরযোগ্যতা';
+
+  @override
+  String get alarmsReliabilityIntro =>
+      'স্ক্রিন বন্ধ থাকলেও অ্যালার্ম ঠিক সময়ে বাজাতে ফোনকে এগুলো অনুমতি দিতে হবে। ঠিক করুন সঠিক সেটিংস পাতা খোলে।';
+
+  @override
+  String get alarmsReliabilityAllOk =>
+      'অ্যালার্ম ঠিক সময়ে বাজার জন্য সব প্রস্তুত';
+
+  @override
+  String get alarmsReliabilityAttention => 'কিছু মনোযোগ দরকার';
+
+  @override
+  String get healthOk => 'ঠিক আছে';
+
+  @override
+  String get healthNeedsAttention => 'মনোযোগ দিন';
+
+  @override
+  String get healthFix => 'ঠিক করুন';
+
+  @override
+  String get healthNotificationsTitle => 'বিজ্ঞপ্তির অনুমতি';
+
+  @override
+  String get healthNotificationsBody =>
+      'অ্যালার্ম ও রিমাইন্ডার বিজ্ঞপ্তি হিসেবে আসে।';
+
+  @override
+  String get healthExactTitle => 'সঠিক অ্যালার্মের অনুমতি';
+
+  @override
+  String get healthExactBody => 'ঠিক সেই সেকেন্ডে বাজে, একটু দেরিতে নয়।';
+
+  @override
+  String get healthFullScreenTitle => 'লক স্ক্রিনে অ্যালার্ম দেখান';
+
+  @override
+  String get healthFullScreenBody =>
+      'ফোন লক থাকলেও শেষ হওয়া অ্যালার্ম দেখা যায়।';
+
+  @override
+  String get healthBatteryTitle => 'ব্যাটারি: অ্যাপ সীমাবদ্ধ নয়';
+
+  @override
+  String get healthBatteryBody =>
+      'ব্যাটারিতে অসীমাবদ্ধ বেছে নিন (অন্তত সীমাবদ্ধ নয়), যাতে ফোন অ্যালার্ম আটকে না রাখে।';
+
+  @override
+  String get healthBatterySamsungHint =>
+      'Samsung: সেটিংস › ব্যাটারি › ব্যাকগ্রাউন্ড ব্যবহারের সীমায়, Sadho-কে “স্লিপিং অ্যাপস” ও “ডিপ স্লিপিং অ্যাপস” থেকে সরান, এবং ব্যাটারি ব্যবহার “অসীমাবদ্ধ” করুন।';
+
+  @override
+  String get alarmExplainerOk =>
+      'এই সেশন শেষ হলে অ্যালার্মের মতো বাজবে, স্ক্রিন বা অ্যাপ বন্ধ থাকলেও।';
+
+  @override
+  String get alarmExplainerAttention =>
+      'এই সেশন শেষ হলে অ্যালার্মের মতো বাজবে, তবে ঠিক সময়ে বাজাতে ফোনের একটি সেটিং বদলাতে হবে।';
+
+  @override
+  String get alarmExplainerCheck => 'দেখুন';
 }

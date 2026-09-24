@@ -449,6 +449,7 @@ void main() {
       scheduler
         ..exact = false
         ..grantExact = false;
+      AppStorage.settings.put(SadhanaSessionNotifier.alarmExplainedKey, true); // seen
       final c = make();
       await startTime(tester, c, CountMode.rhythm, 60);
       await tester.pump();
@@ -470,6 +471,7 @@ void main() {
 
     tw('exact alarms allowed from the offer: the note goes away', (tester) async {
       scheduler.exact = false;
+      AppStorage.settings.put(SadhanaSessionNotifier.alarmExplainedKey, true); // seen
       final c = make();
       await startTime(tester, c, CountMode.rhythm, 60);
       await tester.pump();
@@ -485,6 +487,7 @@ void main() {
       scheduler
         ..fullScreen = false
         ..grantFullScreen = false;
+      AppStorage.settings.put(SadhanaSessionNotifier.alarmExplainedKey, true); // seen
       final c = make();
       await startTime(tester, c, CountMode.tap, 60);
       await tester.pump();

@@ -1959,4 +1959,69 @@ class AppLocalizationsTe extends AppLocalizations {
   @override
   String get alarmScreenUnlockHint =>
       'యాప్‌లోని మిగతా భాగానికి ఫోన్ అన్‌లాక్ అయి ఉండాలి.';
+
+  @override
+  String get alarmsReliabilityTitle => 'అలారాలు & విశ్వసనీయత';
+
+  @override
+  String get alarmsReliabilityIntro =>
+      'స్క్రీన్ ఆఫ్‌లో ఉన్నా అలారాలు సమయానికి మోగాలంటే, ఫోన్ వీటిని అనుమతించాలి. సరిచేయి సరైన సెట్టింగ్‌ల పేజీని తెరుస్తుంది.';
+
+  @override
+  String get alarmsReliabilityAllOk =>
+      'అలారాలు సమయానికి మోగడానికి అంతా సిద్ధంగా ఉంది';
+
+  @override
+  String get alarmsReliabilityAttention => 'ఏదో శ్రద్ధ అవసరం';
+
+  @override
+  String get healthOk => 'సరే';
+
+  @override
+  String get healthNeedsAttention => 'శ్రద్ధ అవసరం';
+
+  @override
+  String get healthFix => 'సరిచేయి';
+
+  @override
+  String get healthNotificationsTitle => 'నోటిఫికేషన్‌లు అనుమతించబడ్డాయి';
+
+  @override
+  String get healthNotificationsBody =>
+      'అలారాలు, రిమైండర్‌లు నోటిఫికేషన్‌లుగా వస్తాయి.';
+
+  @override
+  String get healthExactTitle => 'ఖచ్చితమైన అలారాలు అనుమతించబడ్డాయి';
+
+  @override
+  String get healthExactBody => 'సరిగ్గా అదే సెకనులో మోగుతుంది, ఆలస్యంగా కాదు.';
+
+  @override
+  String get healthFullScreenTitle => 'లాక్ స్క్రీన్‌పై అలారాలు చూపు';
+
+  @override
+  String get healthFullScreenBody =>
+      'ఫోన్ లాక్ అయి ఉన్నా ముగిసిన అలారం కనిపిస్తుంది.';
+
+  @override
+  String get healthBatteryTitle => 'బ్యాటరీ: యాప్ పరిమితం కాలేదు';
+
+  @override
+  String get healthBatteryBody =>
+      'బ్యాటరీలో అపరిమితం ఎంచుకోండి (కనీసం పరిమితం కాదు), అప్పుడు ఫోన్ అలారాలను ఆపదు.';
+
+  @override
+  String get healthBatterySamsungHint =>
+      'Samsung: సెట్టింగ్‌లు › బ్యాటరీ › బ్యాక్‌గ్రౌండ్ వినియోగ పరిమితులులో, Sadhoను “స్లీపింగ్ యాప్‌లు”, “డీప్ స్లీపింగ్ యాప్‌లు” నుండి తీసివేసి, బ్యాటరీ వినియోగాన్ని “అపరిమితం”గా సెట్ చేయండి.';
+
+  @override
+  String get alarmExplainerOk =>
+      'ఈ సెషన్ ముగిసినప్పుడు అలారం లాగా మోగుతుంది, స్క్రీన్ లేదా యాప్ మూసి ఉన్నా.';
+
+  @override
+  String get alarmExplainerAttention =>
+      'ఈ సెషన్ ముగిసినప్పుడు అలారం లాగా మోగుతుంది, కానీ సమయానికి మోగడానికి ఫోన్‌లో ఒక సెట్టింగ్ మార్చాలి.';
+
+  @override
+  String get alarmExplainerCheck => 'తనిఖీ చేయి';
 }

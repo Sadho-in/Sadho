@@ -1,6 +1,6 @@
 {
   "@@locale": "pa",
-  "@@x-machine-translation": "First-pass machine translation into Punjabi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Punjabi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review.",
   "navHome": "ਹੋਮ",
   "navSadhana": "ਸਾਧਨਾ",
   "navCalendar": "ਕੈਲੰਡਰ",
@@ -550,5 +550,24 @@
   "alarmScreenTimerTitle": "ਟਾਈਮਰ ਪੂਰਾ ਹੋਇਆ",
   "alarmScreenSunTitle": "ਸੂਰਜ ਅਲਾਰਮ",
   "alarmScreenUnlock": "Sadho ਖੋਲ੍ਹਣ ਲਈ ਅਨਲੌਕ ਕਰੋ",
-  "alarmScreenUnlockHint": "ਐਪ ਦੇ ਬਾਕੀ ਹਿੱਸੇ ਲਈ ਫ਼ੋਨ ਅਨਲੌਕ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।"
+  "alarmScreenUnlockHint": "ਐਪ ਦੇ ਬਾਕੀ ਹਿੱਸੇ ਲਈ ਫ਼ੋਨ ਅਨਲੌਕ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।",
+  "alarmsReliabilityTitle": "ਅਲਾਰਮ ਅਤੇ ਭਰੋਸੇਯੋਗਤਾ",
+  "alarmsReliabilityIntro": "ਸਕ੍ਰੀਨ ਬੰਦ ਹੋਣ 'ਤੇ ਵੀ ਅਲਾਰਮ ਸਮੇਂ ਸਿਰ ਵੱਜਣ ਲਈ ਫ਼ੋਨ ਨੂੰ ਇਹ ਇਜਾਜ਼ਤਾਂ ਦੇਣੀਆਂ ਪੈਣਗੀਆਂ। ਠੀਕ ਕਰੋ ਸਹੀ ਸੈਟਿੰਗ ਪੰਨਾ ਖੋਲ੍ਹਦਾ ਹੈ।",
+  "alarmsReliabilityAllOk": "ਅਲਾਰਮ ਸਮੇਂ ਸਿਰ ਵੱਜਣ ਲਈ ਸਭ ਤਿਆਰ ਹੈ",
+  "alarmsReliabilityAttention": "ਕੁਝ ਧਿਆਨ ਮੰਗਦਾ ਹੈ",
+  "healthOk": "ਠੀਕ ਹੈ",
+  "healthNeedsAttention": "ਧਿਆਨ ਦਿਓ",
+  "healthFix": "ਠੀਕ ਕਰੋ",
+  "healthNotificationsTitle": "ਸੂਚਨਾਵਾਂ ਦੀ ਇਜਾਜ਼ਤ",
+  "healthNotificationsBody": "ਅਲਾਰਮ ਅਤੇ ਰੀਮਾਈਂਡਰ ਸੂਚਨਾ ਵਜੋਂ ਆਉਂਦੇ ਹਨ।",
+  "healthExactTitle": "ਸਹੀ ਅਲਾਰਮ ਦੀ ਇਜਾਜ਼ਤ",
+  "healthExactBody": "ਠੀਕ ਉਸੇ ਸਕਿੰਟ ਵੱਜਦਾ ਹੈ, ਦੇਰ ਨਾਲ ਨਹੀਂ।",
+  "healthFullScreenTitle": "ਲੌਕ ਸਕ੍ਰੀਨ 'ਤੇ ਅਲਾਰਮ ਦਿਖਾਓ",
+  "healthFullScreenBody": "ਫ਼ੋਨ ਲੌਕ ਹੋਣ 'ਤੇ ਵੀ ਪੂਰਾ ਹੋਇਆ ਅਲਾਰਮ ਦਿਖਦਾ ਹੈ।",
+  "healthBatteryTitle": "ਬੈਟਰੀ: ਐਪ ਪਾਬੰਦ ਨਹੀਂ",
+  "healthBatteryBody": "ਬੈਟਰੀ ਵਿੱਚ ਬਿਨਾਂ ਪਾਬੰਦੀ ਚੁਣੋ (ਜਾਂ ਘੱਟੋ-ਘੱਟ ਪਾਬੰਦ ਨਹੀਂ), ਤਾਂ ਜੋ ਫ਼ੋਨ ਅਲਾਰਮ ਨਾ ਰੋਕੇ।",
+  "healthBatterySamsungHint": "Samsung: ਸੈਟਿੰਗਾਂ › ਬੈਟਰੀ › ਬੈਕਗ੍ਰਾਊਂਡ ਵਰਤੋਂ ਸੀਮਾਵਾਂ ਵਿੱਚ, Sadho ਨੂੰ “ਸਲੀਪਿੰਗ ਐਪਸ” ਅਤੇ “ਡੀਪ ਸਲੀਪਿੰਗ ਐਪਸ” ਤੋਂ ਹਟਾਓ, ਅਤੇ ਬੈਟਰੀ ਵਰਤੋਂ “ਬਿਨਾਂ ਪਾਬੰਦੀ” ਕਰੋ।",
+  "alarmExplainerOk": "ਇਹ ਸੈਸ਼ਨ ਪੂਰਾ ਹੋਣ 'ਤੇ ਅਲਾਰਮ ਵਾਂਗ ਵੱਜੇਗਾ, ਸਕ੍ਰੀਨ ਜਾਂ ਐਪ ਬੰਦ ਹੋਵੇ ਤਾਂ ਵੀ।",
+  "alarmExplainerAttention": "ਇਹ ਸੈਸ਼ਨ ਪੂਰਾ ਹੋਣ 'ਤੇ ਅਲਾਰਮ ਵਾਂਗ ਵੱਜੇਗਾ, ਪਰ ਸਮੇਂ ਸਿਰ ਵੱਜਣ ਲਈ ਫ਼ੋਨ ਦੀ ਇੱਕ ਸੈਟਿੰਗ ਬਦਲਣੀ ਪਵੇਗੀ।",
+  "alarmExplainerCheck": "ਜਾਂਚੋ"
 }

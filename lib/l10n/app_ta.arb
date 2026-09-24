@@ -1,6 +1,6 @@
 {
   "@@locale": "ta",
-  "@@x-machine-translation": "First-pass machine translation into Tamil, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Tamil, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review.",
   "navHome": "முகப்பு",
   "navSadhana": "சாதனை",
   "navCalendar": "காலண்டர்",
@@ -550,5 +550,24 @@
   "alarmScreenTimerTitle": "டைமர் முடிந்தது",
   "alarmScreenSunTitle": "சூரிய அலாரம்",
   "alarmScreenUnlock": "Sadho-வைத் திறக்கத் திறவுங்கள்",
-  "alarmScreenUnlockHint": "செயலியின் மற்ற பகுதிகளுக்கு தொலைபேசி திறக்கப்பட்டிருக்க வேண்டும்."
+  "alarmScreenUnlockHint": "செயலியின் மற்ற பகுதிகளுக்கு தொலைபேசி திறக்கப்பட்டிருக்க வேண்டும்.",
+  "alarmsReliabilityTitle": "அலாரங்கள் & நம்பகத்தன்மை",
+  "alarmsReliabilityIntro": "திரை அணைந்திருந்தாலும் அலாரங்கள் சரியான நேரத்தில் ஒலிக்க, தொலைபேசி இவற்றை அனுமதிக்க வேண்டும். சரிசெய் சரியான அமைப்புப் பக்கத்தைத் திறக்கும்.",
+  "alarmsReliabilityAllOk": "அலாரங்கள் சரியான நேரத்தில் ஒலிக்க எல்லாம் தயார்",
+  "alarmsReliabilityAttention": "ஏதோ கவனம் தேவை",
+  "healthOk": "சரி",
+  "healthNeedsAttention": "கவனம் தேவை",
+  "healthFix": "சரிசெய்",
+  "healthNotificationsTitle": "அறிவிப்புகள் அனுமதிக்கப்பட்டன",
+  "healthNotificationsBody": "அலாரங்களும் நினைவூட்டல்களும் அறிவிப்புகளாக வரும்.",
+  "healthExactTitle": "துல்லிய அலாரங்கள் அனுமதிக்கப்பட்டன",
+  "healthExactBody": "சரியான வினாடியில் ஒலிக்கும், தாமதமாக அல்ல.",
+  "healthFullScreenTitle": "பூட்டுத் திரையில் அலாரங்களைக் காட்டு",
+  "healthFullScreenBody": "தொலைபேசி பூட்டியிருந்தாலும் முடிந்த அலாரம் தெரியும்.",
+  "healthBatteryTitle": "பேட்டரி: செயலி கட்டுப்படுத்தப்படவில்லை",
+  "healthBatteryBody": "பேட்டரியில் கட்டுப்பாடற்றது என்பதைத் தேர்வுசெய்யவும் (குறைந்தது கட்டுப்படுத்தப்பட்டது அல்ல), அப்போது தொலைபேசி அலாரங்களைத் தடுக்காது.",
+  "healthBatterySamsungHint": "Samsung: அமைப்புகள் › பேட்டரி › பின்னணி பயன்பாட்டு வரம்புகளில், Sadho-வை “உறங்கும் செயலிகள்” மற்றும் “ஆழ்ந்து உறங்கும் செயலிகள்” இலிருந்து நீக்கி, பேட்டரி பயன்பாட்டை “கட்டுப்பாடற்றது” என அமைக்கவும்.",
+  "alarmExplainerOk": "இந்த அமர்வு முடிந்ததும் அலாரம் போல ஒலிக்கும், திரை அல்லது செயலி மூடியிருந்தாலும்.",
+  "alarmExplainerAttention": "இந்த அமர்வு முடிந்ததும் அலாரம் போல ஒலிக்கும், ஆனால் சரியான நேரத்தில் ஒலிக்க தொலைபேசியில் ஒரு அமைப்பை மாற்ற வேண்டும்.",
+  "alarmExplainerCheck": "சரிபார்"
 }

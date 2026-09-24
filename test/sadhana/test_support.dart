@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:advance_calendar/core/storage/app_storage.dart';
+import 'package:advance_calendar/features/alarms/services/alarm_health.dart';
 import 'package:advance_calendar/features/calendar/application/now_provider.dart';
 import 'package:advance_calendar/features/sadhana/application/voice_training_provider.dart';
 import 'package:advance_calendar/features/sadhana/data/ringtone.dart';
@@ -173,6 +174,49 @@ class FakeWakelock implements WakelockDriver {
     disables++;
     on = false;
   }
+}
+
+/// Stand-in for the phone's alarm settings ("Alarms & reliability").
+class FakeAlarmHealth implements AlarmHealth {
+  FakeAlarmHealth({
+    this.android = true,
+    this.notifications = true,
+    this.exactAlarms = true,
+    this.fullScreen = true,
+    this.battery = true,
+    this.samsung = false,
+  });
+
+  bool android, notifications, exactAlarms, fullScreen, battery, samsung;
+  int checks = 0;
+
+  /// Which Fix buttons opened a settings page, in order.
+  final fixes = <String>[];
+
+  @override
+  Future<AlarmHealthStatus> check() async {
+    checks++;
+    return AlarmHealthStatus(
+      android: android,
+      notifications: notifications,
+      exactAlarms: exactAlarms,
+      fullScreen: fullScreen,
+      battery: battery,
+      samsung: samsung,
+    );
+  }
+
+  @override
+  Future<void> fixNotifications() async => fixes.add('notifications');
+
+  @override
+  Future<void> fixExactAlarms() async => fixes.add('exact');
+
+  @override
+  Future<void> fixFullScreen() async => fixes.add('fullscreen');
+
+  @override
+  Future<void> fixBattery() async => fixes.add('battery');
 }
 
 /// Stand-in for the phone's lock screen (see MainActivity).
@@ -421,8 +465,10 @@ List<Override> testOverrides({
   FakeSound? sound,
   FakeWakelock? wakelock,
   FakeLockScreen? lockScreen,
+  FakeAlarmHealth? alarmHealth,
 }) =>
     [
+      alarmHealthProvider.overrideWithValue(alarmHealth ?? FakeAlarmHealth()),
       lockScreenProvider.overrideWithValue(lockScreen ?? FakeLockScreen()),
       wakelockDriverProvider.overrideWithValue(wakelock ?? FakeWakelock()),
       pcmInputProvider.overrideWithValue(pcm ?? FakePcmInput()),

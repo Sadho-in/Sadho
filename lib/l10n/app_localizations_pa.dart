@@ -1949,4 +1949,68 @@ class AppLocalizationsPa extends AppLocalizations {
   @override
   String get alarmScreenUnlockHint =>
       'ਐਪ ਦੇ ਬਾਕੀ ਹਿੱਸੇ ਲਈ ਫ਼ੋਨ ਅਨਲੌਕ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।';
+
+  @override
+  String get alarmsReliabilityTitle => 'ਅਲਾਰਮ ਅਤੇ ਭਰੋਸੇਯੋਗਤਾ';
+
+  @override
+  String get alarmsReliabilityIntro =>
+      'ਸਕ੍ਰੀਨ ਬੰਦ ਹੋਣ \'ਤੇ ਵੀ ਅਲਾਰਮ ਸਮੇਂ ਸਿਰ ਵੱਜਣ ਲਈ ਫ਼ੋਨ ਨੂੰ ਇਹ ਇਜਾਜ਼ਤਾਂ ਦੇਣੀਆਂ ਪੈਣਗੀਆਂ। ਠੀਕ ਕਰੋ ਸਹੀ ਸੈਟਿੰਗ ਪੰਨਾ ਖੋਲ੍ਹਦਾ ਹੈ।';
+
+  @override
+  String get alarmsReliabilityAllOk => 'ਅਲਾਰਮ ਸਮੇਂ ਸਿਰ ਵੱਜਣ ਲਈ ਸਭ ਤਿਆਰ ਹੈ';
+
+  @override
+  String get alarmsReliabilityAttention => 'ਕੁਝ ਧਿਆਨ ਮੰਗਦਾ ਹੈ';
+
+  @override
+  String get healthOk => 'ਠੀਕ ਹੈ';
+
+  @override
+  String get healthNeedsAttention => 'ਧਿਆਨ ਦਿਓ';
+
+  @override
+  String get healthFix => 'ਠੀਕ ਕਰੋ';
+
+  @override
+  String get healthNotificationsTitle => 'ਸੂਚਨਾਵਾਂ ਦੀ ਇਜਾਜ਼ਤ';
+
+  @override
+  String get healthNotificationsBody =>
+      'ਅਲਾਰਮ ਅਤੇ ਰੀਮਾਈਂਡਰ ਸੂਚਨਾ ਵਜੋਂ ਆਉਂਦੇ ਹਨ।';
+
+  @override
+  String get healthExactTitle => 'ਸਹੀ ਅਲਾਰਮ ਦੀ ਇਜਾਜ਼ਤ';
+
+  @override
+  String get healthExactBody => 'ਠੀਕ ਉਸੇ ਸਕਿੰਟ ਵੱਜਦਾ ਹੈ, ਦੇਰ ਨਾਲ ਨਹੀਂ।';
+
+  @override
+  String get healthFullScreenTitle => 'ਲੌਕ ਸਕ੍ਰੀਨ \'ਤੇ ਅਲਾਰਮ ਦਿਖਾਓ';
+
+  @override
+  String get healthFullScreenBody =>
+      'ਫ਼ੋਨ ਲੌਕ ਹੋਣ \'ਤੇ ਵੀ ਪੂਰਾ ਹੋਇਆ ਅਲਾਰਮ ਦਿਖਦਾ ਹੈ।';
+
+  @override
+  String get healthBatteryTitle => 'ਬੈਟਰੀ: ਐਪ ਪਾਬੰਦ ਨਹੀਂ';
+
+  @override
+  String get healthBatteryBody =>
+      'ਬੈਟਰੀ ਵਿੱਚ ਬਿਨਾਂ ਪਾਬੰਦੀ ਚੁਣੋ (ਜਾਂ ਘੱਟੋ-ਘੱਟ ਪਾਬੰਦ ਨਹੀਂ), ਤਾਂ ਜੋ ਫ਼ੋਨ ਅਲਾਰਮ ਨਾ ਰੋਕੇ।';
+
+  @override
+  String get healthBatterySamsungHint =>
+      'Samsung: ਸੈਟਿੰਗਾਂ › ਬੈਟਰੀ › ਬੈਕਗ੍ਰਾਊਂਡ ਵਰਤੋਂ ਸੀਮਾਵਾਂ ਵਿੱਚ, Sadho ਨੂੰ “ਸਲੀਪਿੰਗ ਐਪਸ” ਅਤੇ “ਡੀਪ ਸਲੀਪਿੰਗ ਐਪਸ” ਤੋਂ ਹਟਾਓ, ਅਤੇ ਬੈਟਰੀ ਵਰਤੋਂ “ਬਿਨਾਂ ਪਾਬੰਦੀ” ਕਰੋ।';
+
+  @override
+  String get alarmExplainerOk =>
+      'ਇਹ ਸੈਸ਼ਨ ਪੂਰਾ ਹੋਣ \'ਤੇ ਅਲਾਰਮ ਵਾਂਗ ਵੱਜੇਗਾ, ਸਕ੍ਰੀਨ ਜਾਂ ਐਪ ਬੰਦ ਹੋਵੇ ਤਾਂ ਵੀ।';
+
+  @override
+  String get alarmExplainerAttention =>
+      'ਇਹ ਸੈਸ਼ਨ ਪੂਰਾ ਹੋਣ \'ਤੇ ਅਲਾਰਮ ਵਾਂਗ ਵੱਜੇਗਾ, ਪਰ ਸਮੇਂ ਸਿਰ ਵੱਜਣ ਲਈ ਫ਼ੋਨ ਦੀ ਇੱਕ ਸੈਟਿੰਗ ਬਦਲਣੀ ਪਵੇਗੀ।';
+
+  @override
+  String get alarmExplainerCheck => 'ਜਾਂਚੋ';
 }

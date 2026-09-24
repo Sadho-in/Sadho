@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/constants/app_constants.dart';
+import '../../alarms/presentation/alarms_reliability_page.dart';
 import '../../calendar/services/reminder_scheduler.dart';
 import '../../../core/theme/theme_provider.dart';
 import '../../../l10n/l10n.dart';
@@ -98,6 +99,10 @@ class AppShell extends ConsumerWidget {
           duration: const Duration(seconds: 7),
           action: notice.openSettings
               ? SnackBarAction(label: l.settingsAction, onPressed: openAppSettings)
+              : notice.openAlarmsPage
+              ? SnackBarAction(
+                  label: notice.actionLabel ?? l.alarmExplainerCheck,
+                  onPressed: () => openAlarmsReliability(context))
               : notice.onAction != null
               ? SnackBarAction(
                   label: notice.actionLabel ?? l.settingsAction,

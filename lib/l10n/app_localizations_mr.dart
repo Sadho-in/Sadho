@@ -1945,4 +1945,69 @@ class AppLocalizationsMr extends AppLocalizations {
   @override
   String get alarmScreenUnlockHint =>
       'अ‍ॅपच्या उर्वरित भागासाठी फोन अनलॉक असावा लागतो.';
+
+  @override
+  String get alarmsReliabilityTitle => 'अलार्म आणि विश्वसनीयता';
+
+  @override
+  String get alarmsReliabilityIntro =>
+      'स्क्रीन बंद असतानाही अलार्म वेळेवर वाजण्यासाठी फोनने या परवानग्या द्याव्या लागतील. दुरुस्त करा योग्य सेटिंग पान उघडते.';
+
+  @override
+  String get alarmsReliabilityAllOk =>
+      'अलार्म वेळेवर वाजण्यासाठी सर्व तयार आहे';
+
+  @override
+  String get alarmsReliabilityAttention => 'काहीतरी लक्ष देण्याजोगे आहे';
+
+  @override
+  String get healthOk => 'ठीक';
+
+  @override
+  String get healthNeedsAttention => 'लक्ष द्या';
+
+  @override
+  String get healthFix => 'दुरुस्त करा';
+
+  @override
+  String get healthNotificationsTitle => 'सूचनांना परवानगी';
+
+  @override
+  String get healthNotificationsBody =>
+      'अलार्म आणि स्मरणपत्रे सूचना म्हणून येतात.';
+
+  @override
+  String get healthExactTitle => 'अचूक अलार्मना परवानगी';
+
+  @override
+  String get healthExactBody => 'अगदी त्याच सेकंदाला वाजतो, उशिरा नाही.';
+
+  @override
+  String get healthFullScreenTitle => 'लॉक स्क्रीनवर अलार्म दाखवा';
+
+  @override
+  String get healthFullScreenBody =>
+      'फोन लॉक असतानाही पूर्ण झालेला अलार्म दिसतो.';
+
+  @override
+  String get healthBatteryTitle => 'बॅटरी: अ‍ॅप प्रतिबंधित नाही';
+
+  @override
+  String get healthBatteryBody =>
+      'बॅटरीमध्ये अप्रतिबंधित निवडा (किमान प्रतिबंधित नको), म्हणजे फोन अलार्म रोखणार नाही.';
+
+  @override
+  String get healthBatterySamsungHint =>
+      'Samsung: सेटिंग्ज › बॅटरी › बॅकग्राउंड वापर मर्यादा मध्ये, Sadho ला “स्लीपिंग अ‍ॅप्स” आणि “डीप स्लीपिंग अ‍ॅप्स” मधून काढा, आणि बॅटरी वापर “अप्रतिबंधित” करा.';
+
+  @override
+  String get alarmExplainerOk =>
+      'हे सत्र पूर्ण झाल्यावर अलार्मसारखे वाजेल, स्क्रीन किंवा अ‍ॅप बंद असले तरी.';
+
+  @override
+  String get alarmExplainerAttention =>
+      'हे सत्र पूर्ण झाल्यावर अलार्मसारखे वाजेल, पण वेळेवर वाजण्यासाठी फोनचे एक सेटिंग बदलावे लागेल.';
+
+  @override
+  String get alarmExplainerCheck => 'तपासा';
 }

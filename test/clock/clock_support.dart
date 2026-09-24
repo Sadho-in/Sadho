@@ -10,7 +10,8 @@ import 'package:flutter_test/flutter_test.dart' show addTearDown;
 
 import '../calendar/calendar_support.dart';
 import '../sadhana/test_support.dart'
-    show FakeFeedback, FakeHaptics, FakeSound, FakeWakelock, FakeLockScreen;
+    show FakeAlarmHealth, FakeFeedback, FakeHaptics, FakeSound, FakeWakelock, FakeLockScreen;
+import 'package:advance_calendar/features/alarms/services/alarm_health.dart';
 import 'package:advance_calendar/features/shell/services/lock_screen.dart';
 import 'package:advance_calendar/features/sadhana/services/screen_awake.dart';
 
@@ -98,6 +99,7 @@ List<Override> clockOverrides({
     reminderSchedulerProvider.overrideWithValue(scheduler ?? FakeScheduler()),
     wakelockDriverProvider.overrideWithValue(FakeWakelock()),
     lockScreenProvider.overrideWithValue(lockScreen ?? FakeLockScreen()),
+    alarmHealthProvider.overrideWithValue(FakeAlarmHealth()),
     locationServiceProvider.overrideWithValue(
       location ?? FakeLocationService(state: LocationAccess.denied),
     ),

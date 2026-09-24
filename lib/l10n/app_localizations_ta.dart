@@ -1964,4 +1964,69 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get alarmScreenUnlockHint =>
       'செயலியின் மற்ற பகுதிகளுக்கு தொலைபேசி திறக்கப்பட்டிருக்க வேண்டும்.';
+
+  @override
+  String get alarmsReliabilityTitle => 'அலாரங்கள் & நம்பகத்தன்மை';
+
+  @override
+  String get alarmsReliabilityIntro =>
+      'திரை அணைந்திருந்தாலும் அலாரங்கள் சரியான நேரத்தில் ஒலிக்க, தொலைபேசி இவற்றை அனுமதிக்க வேண்டும். சரிசெய் சரியான அமைப்புப் பக்கத்தைத் திறக்கும்.';
+
+  @override
+  String get alarmsReliabilityAllOk =>
+      'அலாரங்கள் சரியான நேரத்தில் ஒலிக்க எல்லாம் தயார்';
+
+  @override
+  String get alarmsReliabilityAttention => 'ஏதோ கவனம் தேவை';
+
+  @override
+  String get healthOk => 'சரி';
+
+  @override
+  String get healthNeedsAttention => 'கவனம் தேவை';
+
+  @override
+  String get healthFix => 'சரிசெய்';
+
+  @override
+  String get healthNotificationsTitle => 'அறிவிப்புகள் அனுமதிக்கப்பட்டன';
+
+  @override
+  String get healthNotificationsBody =>
+      'அலாரங்களும் நினைவூட்டல்களும் அறிவிப்புகளாக வரும்.';
+
+  @override
+  String get healthExactTitle => 'துல்லிய அலாரங்கள் அனுமதிக்கப்பட்டன';
+
+  @override
+  String get healthExactBody => 'சரியான வினாடியில் ஒலிக்கும், தாமதமாக அல்ல.';
+
+  @override
+  String get healthFullScreenTitle => 'பூட்டுத் திரையில் அலாரங்களைக் காட்டு';
+
+  @override
+  String get healthFullScreenBody =>
+      'தொலைபேசி பூட்டியிருந்தாலும் முடிந்த அலாரம் தெரியும்.';
+
+  @override
+  String get healthBatteryTitle => 'பேட்டரி: செயலி கட்டுப்படுத்தப்படவில்லை';
+
+  @override
+  String get healthBatteryBody =>
+      'பேட்டரியில் கட்டுப்பாடற்றது என்பதைத் தேர்வுசெய்யவும் (குறைந்தது கட்டுப்படுத்தப்பட்டது அல்ல), அப்போது தொலைபேசி அலாரங்களைத் தடுக்காது.';
+
+  @override
+  String get healthBatterySamsungHint =>
+      'Samsung: அமைப்புகள் › பேட்டரி › பின்னணி பயன்பாட்டு வரம்புகளில், Sadho-வை “உறங்கும் செயலிகள்” மற்றும் “ஆழ்ந்து உறங்கும் செயலிகள்” இலிருந்து நீக்கி, பேட்டரி பயன்பாட்டை “கட்டுப்பாடற்றது” என அமைக்கவும்.';
+
+  @override
+  String get alarmExplainerOk =>
+      'இந்த அமர்வு முடிந்ததும் அலாரம் போல ஒலிக்கும், திரை அல்லது செயலி மூடியிருந்தாலும்.';
+
+  @override
+  String get alarmExplainerAttention =>
+      'இந்த அமர்வு முடிந்ததும் அலாரம் போல ஒலிக்கும், ஆனால் சரியான நேரத்தில் ஒலிக்க தொலைபேசியில் ஒரு அமைப்பை மாற்ற வேண்டும்.';
+
+  @override
+  String get alarmExplainerCheck => 'சரிபார்';
 }

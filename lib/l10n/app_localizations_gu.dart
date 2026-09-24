@@ -1946,4 +1946,69 @@ class AppLocalizationsGu extends AppLocalizations {
   @override
   String get alarmScreenUnlockHint =>
       'ઍપના બાકીના ભાગ માટે ફોન અનલૉક હોવો જોઈએ.';
+
+  @override
+  String get alarmsReliabilityTitle => 'એલાર્મ અને વિશ્વસનીયતા';
+
+  @override
+  String get alarmsReliabilityIntro =>
+      'સ્ક્રીન બંધ હોય ત્યારે પણ એલાર્મ સમયસર વાગે તે માટે ફોને આ મંજૂરીઓ આપવી પડશે. સુધારો સાચું સેટિંગ પેજ ખોલે છે.';
+
+  @override
+  String get alarmsReliabilityAllOk =>
+      'એલાર્મ સમયસર વાગે તે માટે બધું તૈયાર છે';
+
+  @override
+  String get alarmsReliabilityAttention => 'કંઈક ધ્યાન માગે છે';
+
+  @override
+  String get healthOk => 'બરાબર';
+
+  @override
+  String get healthNeedsAttention => 'ધ્યાન આપો';
+
+  @override
+  String get healthFix => 'સુધારો';
+
+  @override
+  String get healthNotificationsTitle => 'સૂચનાઓની મંજૂરી';
+
+  @override
+  String get healthNotificationsBody =>
+      'એલાર્મ અને રિમાઇન્ડર સૂચના તરીકે આવે છે.';
+
+  @override
+  String get healthExactTitle => 'ચોક્કસ એલાર્મની મંજૂરી';
+
+  @override
+  String get healthExactBody => 'બરાબર એ જ સેકન્ડે વાગે છે, મોડું નહીં.';
+
+  @override
+  String get healthFullScreenTitle => 'લૉક સ્ક્રીન પર એલાર્મ બતાવો';
+
+  @override
+  String get healthFullScreenBody =>
+      'ફોન લૉક હોય ત્યારે પણ પૂરું થયેલું એલાર્મ દેખાય છે.';
+
+  @override
+  String get healthBatteryTitle => 'બૅટરી: ઍપ પ્રતિબંધિત નથી';
+
+  @override
+  String get healthBatteryBody =>
+      'બૅટરીમાં અપ્રતિબંધિત પસંદ કરો (અથવા ઓછામાં ઓછું પ્રતિબંધિત નહીં), જેથી ફોન એલાર્મ રોકે નહીં.';
+
+  @override
+  String get healthBatterySamsungHint =>
+      'Samsung: સેટિંગ્સ › બૅટરી › બૅકગ્રાઉન્ડ વપરાશ મર્યાદામાં, Sadho ને “સ્લીપિંગ ઍપ્સ” અને “ડીપ સ્લીપિંગ ઍપ્સ” માંથી દૂર કરો, અને બૅટરી વપરાશ “અપ્રતિબંધિત” કરો.';
+
+  @override
+  String get alarmExplainerOk =>
+      'આ સત્ર પૂરું થતાં એલાર્મની જેમ વાગશે, સ્ક્રીન કે ઍપ બંધ હોય તોય.';
+
+  @override
+  String get alarmExplainerAttention =>
+      'આ સત્ર પૂરું થતાં એલાર્મની જેમ વાગશે, પણ સમયસર વાગવા માટે ફોનનું એક સેટિંગ બદલવું પડશે.';
+
+  @override
+  String get alarmExplainerCheck => 'તપાસો';
 }

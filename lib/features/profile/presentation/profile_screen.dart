@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../l10n/l10n.dart';
+import '../../alarms/presentation/alarms_reliability_page.dart';
 import '../../sadhana/presentation/widgets/count_scope_control.dart';
 import '../../sadhana/presentation/widgets/section_card.dart';
 import 'widgets/about_card.dart';
@@ -48,6 +49,8 @@ class ProfileScreen extends StatelessWidget {
             const LanguageCard(),
             gap,
             const ReminderCard(),
+            gap,
+            const AlarmsReliabilityCard(),
             gap,
             SectionCard(
               title: context.l10n.sadhanaSettingsTitle,
