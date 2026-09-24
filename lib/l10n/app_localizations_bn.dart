@@ -1896,4 +1896,40 @@ class AppLocalizationsBn extends AppLocalizations {
   String vibrationRepeatUntilStopped(int seconds) {
     return 'প্রতি $seconds সেকেন্ডে, থামানো পর্যন্ত';
   }
+
+  @override
+  String get keepScreenOnLabel => 'গণনার সময় স্ক্রিন চালু রাখুন';
+
+  @override
+  String get keepScreenOnSubtitle =>
+      'সেশন চলার সময় স্ক্রিন ঘুমিয়ে পড়ে না। পাওয়ার বোতামে ফোন তবুও লক হয়; তখন সময় বা ছন্দের সেশন শেষ হলে অ্যালার্মের মতো বাজে।';
+
+  @override
+  String get alarmMayBeLate =>
+      'অ্যালার্ম একটু দেরিতে বাজতে পারে (সঠিক অ্যালার্ম বন্ধ)।';
+
+  @override
+  String get exactAlarmNotice =>
+      'স্ক্রিন বন্ধ থাকলেও ঠিক সময়ে বাজাতে, Sadho-কে সঠিক অ্যালার্মের অনুমতি দিন।';
+
+  @override
+  String get fullScreenNotice =>
+      'শেষ হওয়া সেশন লক স্ক্রিনে দেখাতে, ফুল-স্ক্রিন সতর্কতার অনুমতি দিন।';
+
+  @override
+  String get allowAction => 'অনুমতি দিন';
+
+  @override
+  String channelSadhanaAlarmName(String sound) {
+    return 'সাধনা অ্যালার্ম · $sound';
+  }
+
+  @override
+  String get channelSadhanaAlarmSilentName => 'সাধনা অ্যালার্ম · নীরব';
+
+  @override
+  String get channelNoVibration => 'কম্পন নেই';
+
+  @override
+  String get channelSadhanaAlarmDesc => 'সময় বা ছন্দের সেশন শেষ হলে বাজে';
 }

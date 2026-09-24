@@ -5,7 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// shell, so it appears over Focus mode too.
 class SessionNotice {
   const SessionNotice(this.message,
-      {this.openSettings = false, this.trainMantraId});
+      {this.openSettings = false,
+      this.trainMantraId,
+      this.actionLabel,
+      this.onAction});
 
   final String message;
 
@@ -14,6 +17,10 @@ class SessionNotice {
 
   /// Offer a "Train" action that opens Voice training for this mantra.
   final String? trainMantraId;
+
+  /// Any other action (e.g. "Allow" for an alarm permission).
+  final String? actionLabel;
+  final void Function()? onAction;
 }
 
 class SessionNoticeNotifier extends Notifier<SessionNotice?> {
@@ -21,9 +28,15 @@ class SessionNoticeNotifier extends Notifier<SessionNotice?> {
   SessionNotice? build() => null;
 
   void show(String message,
-          {bool openSettings = false, String? trainMantraId}) =>
+          {bool openSettings = false,
+          String? trainMantraId,
+          String? actionLabel,
+          void Function()? onAction}) =>
       state = SessionNotice(message,
-          openSettings: openSettings, trainMantraId: trainMantraId);
+          openSettings: openSettings,
+          trainMantraId: trainMantraId,
+          actionLabel: actionLabel,
+          onAction: onAction);
 }
 
 final sessionNoticeProvider =

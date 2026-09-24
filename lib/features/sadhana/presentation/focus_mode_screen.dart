@@ -7,11 +7,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../application/sadhana_session_provider.dart';
 import '../application/mantra_text_scale_provider.dart';
 import '../application/selected_mantra_provider.dart';
+import '../services/screen_awake.dart';
 import 'format.dart';
 import 'widgets/counter_section.dart' show ringLabels;
 import 'widgets/mode_status.dart';
 import 'widgets/progress_ring.dart';
 import 'widgets/script_text.dart';
+import 'widgets/alarm_late_note.dart';
 import 'widgets/stop_alert_button.dart';
 import '../../../l10n/l10n.dart';
 import '../../../l10n/labels.dart';
@@ -161,7 +163,7 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
 
     final showRun = s.usesRunToggle;
 
-    return PopScope(
+    return KeepScreenOn(child: PopScope(
       canPop: false, // Back gesture/button must not leave Focus mode.
       child: Scaffold(
         backgroundColor: scheme.surface,
@@ -271,6 +273,8 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
                           ),
                         // A control, so pressing it is never a counted tap.
                         _control(const StopAlertButton()),
+                        if (s.alarmMayBeLate && s.running)
+                          const AlarmLateNote(),
                         const SizedBox(height: 4),
                         Text(
                           l.holdFingersToExit(_exitFingers, focusExitHold.inSeconds),
@@ -343,7 +347,7 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
           ),
         ),
       ),
-    );
+    ));
   }
 
   /// Marks a widget as a control so touches on it are not counted as taps.

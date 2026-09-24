@@ -26,6 +26,17 @@ class CompletionSettingsCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // ---- Screen -----------------------------------------------------
+          SwitchListTile(
+            key: const ValueKey('keep-screen-on'),
+            contentPadding: EdgeInsets.zero,
+            secondary: const Icon(Icons.light_mode_outlined),
+            title: Text(context.l10n.keepScreenOnLabel),
+            subtitle: Text(context.l10n.keepScreenOnSubtitle),
+            value: settings.keepScreenOn,
+            onChanged: notifier.setKeepScreenOn,
+          ),
+          const Divider(height: 32),
           // ---- Vibration --------------------------------------------------
           SwitchListTile(
             contentPadding: EdgeInsets.zero,

@@ -1896,4 +1896,40 @@ class AppLocalizationsKn extends AppLocalizations {
   String vibrationRepeatUntilStopped(int seconds) {
     return 'ಪ್ರತಿ $seconds ಸೆಕೆಂಡಿಗೆ, ನಿಲ್ಲಿಸುವವರೆಗೆ';
   }
+
+  @override
+  String get keepScreenOnLabel => 'ಎಣಿಸುವಾಗ ಪರದೆಯನ್ನು ಆನ್ ಇರಿಸಿ';
+
+  @override
+  String get keepScreenOnSubtitle =>
+      'ಸೆಷನ್ ನಡೆಯುವಾಗ ಪರದೆ ನಿದ್ರಿಸುವುದಿಲ್ಲ. ಪವರ್ ಬಟನ್ ಈಗಲೂ ಫೋನ್ ಲಾಕ್ ಮಾಡುತ್ತದೆ; ಆಗ ಸಮಯ ಅಥವಾ ಲಯದ ಸೆಷನ್ ಮುಗಿದಾಗ ಅಲಾರಂನಂತೆ ಮೊಳಗುತ್ತದೆ.';
+
+  @override
+  String get alarmMayBeLate =>
+      'ಅಲಾರಂ ಸ್ವಲ್ಪ ತಡವಾಗಿ ಮೊಳಗಬಹುದು (ನಿಖರ ಅಲಾರಂಗಳು ಆಫ್ ಆಗಿವೆ).';
+
+  @override
+  String get exactAlarmNotice =>
+      'ಪರದೆ ಆಫ್ ಆಗಿದ್ದರೂ ಸರಿಯಾದ ಸಮಯಕ್ಕೆ ಮೊಳಗಲು, Sadho ಗೆ ನಿಖರ ಅಲಾರಂಗಳನ್ನು ಅನುಮತಿಸಿ.';
+
+  @override
+  String get fullScreenNotice =>
+      'ಮುಗಿದ ಸೆಷನ್ ಅನ್ನು ಲಾಕ್ ಪರದೆಯ ಮೇಲೆ ತೋರಿಸಲು, ಪೂರ್ಣ-ಪರದೆ ಎಚ್ಚರಿಕೆಗಳನ್ನು ಅನುಮತಿಸಿ.';
+
+  @override
+  String get allowAction => 'ಅನುಮತಿಸಿ';
+
+  @override
+  String channelSadhanaAlarmName(String sound) {
+    return 'ಸಾಧನಾ ಅಲಾರಂ · $sound';
+  }
+
+  @override
+  String get channelSadhanaAlarmSilentName => 'ಸಾಧನಾ ಅಲಾರಂ · ಮೌನ';
+
+  @override
+  String get channelNoVibration => 'ಕಂಪನ ಇಲ್ಲ';
+
+  @override
+  String get channelSadhanaAlarmDesc => 'ಸಮಯ ಅಥವಾ ಲಯದ ಸೆಷನ್ ಮುಗಿದಾಗ ಮೊಳಗುತ್ತದೆ';
 }

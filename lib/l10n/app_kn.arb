@@ -1,6 +1,6 @@
 {
   "@@locale": "kn",
-  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section.",
+  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a (completion repeat, Stop, keep-screen-on, Sadhana alarm) are also first-pass and need native review.",
   "navHome": "ಮುಖಪುಟ",
   "navSadhana": "ಸಾಧನೆ",
   "navCalendar": "ಕ್ಯಾಲೆಂಡರ್",
@@ -535,5 +535,15 @@
   "repeatOnce": "ಒಮ್ಮೆ",
   "soundRepeatTimes": "{times} ಬಾರಿ",
   "repeatUntilStopped": "ನಿಲ್ಲಿಸುವವರೆಗೆ",
-  "vibrationRepeatUntilStopped": "ಪ್ರತಿ {seconds} ಸೆಕೆಂಡಿಗೆ, ನಿಲ್ಲಿಸುವವರೆಗೆ"
+  "vibrationRepeatUntilStopped": "ಪ್ರತಿ {seconds} ಸೆಕೆಂಡಿಗೆ, ನಿಲ್ಲಿಸುವವರೆಗೆ",
+  "keepScreenOnLabel": "ಎಣಿಸುವಾಗ ಪರದೆಯನ್ನು ಆನ್ ಇರಿಸಿ",
+  "keepScreenOnSubtitle": "ಸೆಷನ್ ನಡೆಯುವಾಗ ಪರದೆ ನಿದ್ರಿಸುವುದಿಲ್ಲ. ಪವರ್ ಬಟನ್ ಈಗಲೂ ಫೋನ್ ಲಾಕ್ ಮಾಡುತ್ತದೆ; ಆಗ ಸಮಯ ಅಥವಾ ಲಯದ ಸೆಷನ್ ಮುಗಿದಾಗ ಅಲಾರಂನಂತೆ ಮೊಳಗುತ್ತದೆ.",
+  "alarmMayBeLate": "ಅಲಾರಂ ಸ್ವಲ್ಪ ತಡವಾಗಿ ಮೊಳಗಬಹುದು (ನಿಖರ ಅಲಾರಂಗಳು ಆಫ್ ಆಗಿವೆ).",
+  "exactAlarmNotice": "ಪರದೆ ಆಫ್ ಆಗಿದ್ದರೂ ಸರಿಯಾದ ಸಮಯಕ್ಕೆ ಮೊಳಗಲು, Sadho ಗೆ ನಿಖರ ಅಲಾರಂಗಳನ್ನು ಅನುಮತಿಸಿ.",
+  "fullScreenNotice": "ಮುಗಿದ ಸೆಷನ್ ಅನ್ನು ಲಾಕ್ ಪರದೆಯ ಮೇಲೆ ತೋರಿಸಲು, ಪೂರ್ಣ-ಪರದೆ ಎಚ್ಚರಿಕೆಗಳನ್ನು ಅನುಮತಿಸಿ.",
+  "allowAction": "ಅನುಮತಿಸಿ",
+  "channelSadhanaAlarmName": "ಸಾಧನಾ ಅಲಾರಂ · {sound}",
+  "channelSadhanaAlarmSilentName": "ಸಾಧನಾ ಅಲಾರಂ · ಮೌನ",
+  "channelNoVibration": "ಕಂಪನ ಇಲ್ಲ",
+  "channelSadhanaAlarmDesc": "ಸಮಯ ಅಥವಾ ಲಯದ ಸೆಷನ್ ಮುಗಿದಾಗ ಮೊಳಗುತ್ತದೆ"
 }

@@ -32,6 +32,7 @@ class CompletionSettings {
     this.ringtone = Ringtone.templeBell,
     this.soundRepeat = SoundRepeat.once,
     this.vibrationRepeat = VibrationRepeat.once,
+    this.keepScreenOn = true,
   });
 
   final bool vibrationEnabled;
@@ -43,6 +44,9 @@ class CompletionSettings {
   final SoundRepeat soundRepeat;
   final VibrationRepeat vibrationRepeat;
 
+  /// Stops the screen from sleeping while a session is counting.
+  final bool keepScreenOn;
+
   CompletionSettings copyWith({
     bool? vibrationEnabled,
     int? vibrationLevel,
@@ -50,6 +54,7 @@ class CompletionSettings {
     Ringtone? ringtone,
     SoundRepeat? soundRepeat,
     VibrationRepeat? vibrationRepeat,
+    bool? keepScreenOn,
   }) =>
       CompletionSettings(
         vibrationEnabled: vibrationEnabled ?? this.vibrationEnabled,
@@ -58,6 +63,7 @@ class CompletionSettings {
         ringtone: ringtone ?? this.ringtone,
         soundRepeat: soundRepeat ?? this.soundRepeat,
         vibrationRepeat: vibrationRepeat ?? this.vibrationRepeat,
+        keepScreenOn: keepScreenOn ?? this.keepScreenOn,
       );
 }
 
@@ -85,6 +91,8 @@ class CompletionSettingsNotifier extends Notifier<CompletionSettings> {
       soundRepeat: pick(SoundRepeat.values, 'soundRepeat', SoundRepeat.once),
       vibrationRepeat:
           pick(VibrationRepeat.values, 'vibrationRepeat', VibrationRepeat.once),
+      keepScreenOn:
+          box.get('${_prefix}keepScreenOn', defaultValue: true) as bool,
     );
   }
 
@@ -116,6 +124,11 @@ class CompletionSettingsNotifier extends Notifier<CompletionSettings> {
   void setVibrationRepeat(VibrationRepeat r) {
     state = state.copyWith(vibrationRepeat: r);
     AppStorage.settings.put('${_prefix}vibrationRepeat', r.name);
+  }
+
+  void setKeepScreenOn(bool v) {
+    state = state.copyWith(keepScreenOn: v);
+    AppStorage.settings.put('${_prefix}keepScreenOn', v);
   }
 }
 

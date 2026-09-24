@@ -1,6 +1,6 @@
 {
   "@@locale": "hi",
-  "@@x-machine-translation": "First-pass machine translation into Hindi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section.",
+  "@@x-machine-translation": "First-pass machine translation into Hindi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a (completion repeat, Stop, keep-screen-on, Sadhana alarm) are also first-pass and need native review.",
   "navHome": "होम",
   "navSadhana": "साधना",
   "navCalendar": "कैलेंडर",
@@ -535,5 +535,15 @@
   "repeatOnce": "एक बार",
   "soundRepeatTimes": "{times} बार",
   "repeatUntilStopped": "रोकने तक",
-  "vibrationRepeatUntilStopped": "हर {seconds} सेकंड, रोकने तक"
+  "vibrationRepeatUntilStopped": "हर {seconds} सेकंड, रोकने तक",
+  "keepScreenOnLabel": "गिनती के दौरान स्क्रीन चालू रखें",
+  "keepScreenOnSubtitle": "सत्र चलते समय स्क्रीन बंद नहीं होती। पावर बटन से फ़ोन फिर भी लॉक होता है; तब समय या लय वाला सत्र पूरा होने पर अलार्म की तरह बजता है।",
+  "alarmMayBeLate": "अलार्म थोड़ी देर से बज सकता है (सटीक अलार्म बंद हैं)।",
+  "exactAlarmNotice": "स्क्रीन बंद होने पर भी ठीक समय पर बजने के लिए, Sadho को सटीक अलार्म की अनुमति दें।",
+  "fullScreenNotice": "पूरा सत्र लॉक स्क्रीन पर दिखाने के लिए, फ़ुल-स्क्रीन सूचनाओं की अनुमति दें।",
+  "allowAction": "अनुमति दें",
+  "channelSadhanaAlarmName": "साधना अलार्म · {sound}",
+  "channelSadhanaAlarmSilentName": "साधना अलार्म · मौन",
+  "channelNoVibration": "कंपन नहीं",
+  "channelSadhanaAlarmDesc": "समय या लय वाला सत्र पूरा होने पर बजता है"
 }

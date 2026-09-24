@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -24,6 +26,20 @@ class LocalNotificationsScheduler implements ReminderScheduler {
 
   static const _channelId = 'calendar_reminders';
   static const _alarmChannelId = 'alarms_timers';
+
+  /// Asks Android what the notification plugin cannot (see MainActivity).
+  static const _native = MethodChannel('sadho/alarm');
+
+  /// Android's FLAG_INSISTENT: the sound (and vibration) repeat until the
+  /// notification is dismissed.
+  static const _flagInsistent = 4;
+
+  /// A long-short alarm buzz, repeated by FLAG_INSISTENT when that is on.
+  static final _alarmVibration =
+      Int64List.fromList([0, 700, 300, 700, 300, 1200]);
+
+  final _opened = StreamController<String>.broadcast();
+  String? _launchPayload;
 
   static bool get platformSupported =>
       !kIsWeb &&
@@ -54,7 +70,28 @@ class LocalNotificationsScheduler implements ReminderScheduler {
           requestSoundPermission: false,
         ),
       ),
+      onDidReceiveNotificationResponse: (r) {
+        final p = r.payload;
+        if (p != null) _opened.add(p);
+      },
     );
+    try {
+      final launch = await _plugin.getNotificationAppLaunchDetails();
+      if (launch?.didNotificationLaunchApp ?? false) {
+        _launchPayload = launch!.notificationResponse?.payload;
+      }
+    } catch (e) {
+      debugPrint('Could not read how the app was launched: $e');
+    }
+  }
+
+  @override
+  Stream<String> get opened async* {
+    // The tap that launched the app is delivered once, to the first listener.
+    final launch = _launchPayload;
+    _launchPayload = null;
+    if (launch != null) yield launch;
+    yield* _opened.stream;
   }
 
   NotificationDetails get _details {
@@ -91,6 +128,101 @@ class LocalNotificationsScheduler implements ReminderScheduler {
         interruptionLevel: InterruptionLevel.timeSensitive,
       ),
     );
+  }
+
+  /// A Sadhana completion alarm. Android fixes a channel's sound and
+  /// vibration when it is first created, so every combination gets its own
+  /// channel (e.g. "Sadhana alarm · Temple bell").
+  NotificationDetails _styledAlarmDetails(AlarmStyle style) {
+    final l = currentL10n();
+    final sound = style.sound;
+    final id = 'sadhana_alarm_${sound ?? 'silent'}_${style.vibrate ? 'v' : 'nv'}';
+    final name = sound == null
+        ? l.channelSadhanaAlarmSilentName
+        : l.channelSadhanaAlarmName(style.soundLabel);
+    return NotificationDetails(
+      android: AndroidNotificationDetails(
+        id,
+        style.vibrate ? name : '$name · ${l.channelNoVibration}',
+        channelDescription: l.channelSadhanaAlarmDesc,
+        importance: Importance.max,
+        priority: Priority.max,
+        category: AndroidNotificationCategory.alarm,
+        audioAttributesUsage: AudioAttributesUsage.alarm,
+        fullScreenIntent: true,
+        visibility: NotificationVisibility.public,
+        playSound: sound != null,
+        sound: sound == null ? null : RawResourceAndroidNotificationSound(sound),
+        enableVibration: style.vibrate,
+        vibrationPattern: style.vibrate ? _alarmVibration : null,
+        additionalFlags:
+            style.insistent ? Int32List.fromList([_flagInsistent]) : null,
+      ),
+      // Time-sensitive breaks through Focus where allowed; without that
+      // entitlement iOS shows it as a normal notification.
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBanner: true,
+        presentSound: sound != null,
+        interruptionLevel: InterruptionLevel.timeSensitive,
+      ),
+    );
+  }
+
+  AndroidFlutterLocalNotificationsPlugin? get _android =>
+      defaultTargetPlatform == TargetPlatform.android
+          ? _plugin.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          : null;
+
+  @override
+  Future<bool> canScheduleExact() async {
+    // Asked afresh: the user may have just allowed it in the settings.
+    _exactAllowed = await _canScheduleExact();
+    return _exactAllowed! || defaultTargetPlatform != TargetPlatform.android;
+  }
+
+  @override
+  Future<bool> requestExactAlarms() async {
+    try {
+      await _android?.requestExactAlarmsPermission();
+    } catch (e) {
+      debugPrint('Exact alarm permission request failed: $e');
+    }
+    return canScheduleExact();
+  }
+
+  @override
+  Future<bool> canUseFullScreen() async {
+    if (defaultTargetPlatform != TargetPlatform.android) return true;
+    try {
+      return await _native.invokeMethod<bool>('canUseFullScreenIntent') ?? true;
+    } catch (e) {
+      // Unknown: assume allowed (Android then shows a heads-up if it is not).
+      return true;
+    }
+  }
+
+  @override
+  Future<bool> requestFullScreen() async {
+    try {
+      return await _android?.requestFullScreenIntentPermission() ?? true;
+    } catch (e) {
+      debugPrint('Full-screen permission request failed: $e');
+      return false;
+    }
+  }
+
+  @override
+  Future<void> dismissShown(String group) async {
+    try {
+      final shown = await _plugin.getActiveNotifications();
+      for (final n in shown) {
+        if (n.payload == group && n.id != null) await _plugin.cancel(id: n.id!);
+      }
+    } catch (e) {
+      debugPrint('Could not dismiss shown alerts: $e');
+    }
   }
 
   @override
@@ -149,7 +281,9 @@ class LocalNotificationsScheduler implements ReminderScheduler {
         await _zonedAt(
           id: a.id,
           when: a.when,
-          details: a.gentle ? _details : _alarmDetails,
+          details: a.style != null
+              ? _styledAlarmDetails(a.style!)
+              : (a.gentle ? _details : _alarmDetails),
           title: a.title,
           body: a.body,
           payload: group,

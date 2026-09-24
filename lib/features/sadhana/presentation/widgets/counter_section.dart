@@ -5,6 +5,7 @@ import '../../application/sadhana_session_provider.dart';
 import '../focus_mode_screen.dart';
 import '../format.dart';
 import 'mode_status.dart';
+import 'alarm_late_note.dart';
 import 'progress_ring.dart';
 import 'stop_alert_button.dart';
 import '../../../../l10n/l10n.dart';
@@ -132,6 +133,7 @@ class CounterSection extends ConsumerWidget {
               : const SizedBox(width: double.infinity),
         ),
         const StopAlertButton(),
+        if (s.alarmMayBeLate && s.running) const AlarmLateNote(),
       ],
     );
   }

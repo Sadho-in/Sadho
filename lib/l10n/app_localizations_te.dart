@@ -1906,4 +1906,41 @@ class AppLocalizationsTe extends AppLocalizations {
   String vibrationRepeatUntilStopped(int seconds) {
     return 'ప్రతి $seconds సెకన్లకు, ఆపే వరకు';
   }
+
+  @override
+  String get keepScreenOnLabel => 'లెక్కిస్తున్నప్పుడు స్క్రీన్ ఆన్‌లో ఉంచు';
+
+  @override
+  String get keepScreenOnSubtitle =>
+      'సెషన్ నడుస్తున్నప్పుడు స్క్రీన్ నిద్రపోదు. పవర్ బటన్ ఇప్పటికీ ఫోన్‌ను లాక్ చేస్తుంది; అప్పుడు సమయం లేదా లయ సెషన్ ముగిసినప్పుడు అలారం లాగా మోగుతుంది.';
+
+  @override
+  String get alarmMayBeLate =>
+      'అలారం కొంచెం ఆలస్యంగా మోగవచ్చు (ఖచ్చితమైన అలారాలు ఆఫ్‌లో ఉన్నాయి).';
+
+  @override
+  String get exactAlarmNotice =>
+      'స్క్రీన్ ఆఫ్‌లో ఉన్నా సరైన సమయానికి మోగడానికి, Sadhoకు ఖచ్చితమైన అలారాలను అనుమతించండి.';
+
+  @override
+  String get fullScreenNotice =>
+      'ముగిసిన సెషన్‌ను లాక్ స్క్రీన్‌పై చూపడానికి, పూర్తి-స్క్రీన్ హెచ్చరికలను అనుమతించండి.';
+
+  @override
+  String get allowAction => 'అనుమతించు';
+
+  @override
+  String channelSadhanaAlarmName(String sound) {
+    return 'సాధన అలారం · $sound';
+  }
+
+  @override
+  String get channelSadhanaAlarmSilentName => 'సాధన అలారం · నిశ్శబ్దం';
+
+  @override
+  String get channelNoVibration => 'వైబ్రేషన్ లేదు';
+
+  @override
+  String get channelSadhanaAlarmDesc =>
+      'సమయం లేదా లయ సెషన్ ముగిసినప్పుడు మోగుతుంది';
 }

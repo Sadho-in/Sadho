@@ -1,6 +1,6 @@
 {
   "@@locale": "te",
-  "@@x-machine-translation": "First-pass machine translation into Telugu, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section.",
+  "@@x-machine-translation": "First-pass machine translation into Telugu, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a (completion repeat, Stop, keep-screen-on, Sadhana alarm) are also first-pass and need native review.",
   "navHome": "హోమ్",
   "navSadhana": "సాధన",
   "navCalendar": "క్యాలెండర్",
@@ -535,5 +535,15 @@
   "repeatOnce": "ఒకసారి",
   "soundRepeatTimes": "{times} సార్లు",
   "repeatUntilStopped": "ఆపే వరకు",
-  "vibrationRepeatUntilStopped": "ప్రతి {seconds} సెకన్లకు, ఆపే వరకు"
+  "vibrationRepeatUntilStopped": "ప్రతి {seconds} సెకన్లకు, ఆపే వరకు",
+  "keepScreenOnLabel": "లెక్కిస్తున్నప్పుడు స్క్రీన్ ఆన్‌లో ఉంచు",
+  "keepScreenOnSubtitle": "సెషన్ నడుస్తున్నప్పుడు స్క్రీన్ నిద్రపోదు. పవర్ బటన్ ఇప్పటికీ ఫోన్‌ను లాక్ చేస్తుంది; అప్పుడు సమయం లేదా లయ సెషన్ ముగిసినప్పుడు అలారం లాగా మోగుతుంది.",
+  "alarmMayBeLate": "అలారం కొంచెం ఆలస్యంగా మోగవచ్చు (ఖచ్చితమైన అలారాలు ఆఫ్‌లో ఉన్నాయి).",
+  "exactAlarmNotice": "స్క్రీన్ ఆఫ్‌లో ఉన్నా సరైన సమయానికి మోగడానికి, Sadhoకు ఖచ్చితమైన అలారాలను అనుమతించండి.",
+  "fullScreenNotice": "ముగిసిన సెషన్‌ను లాక్ స్క్రీన్‌పై చూపడానికి, పూర్తి-స్క్రీన్ హెచ్చరికలను అనుమతించండి.",
+  "allowAction": "అనుమతించు",
+  "channelSadhanaAlarmName": "సాధన అలారం · {sound}",
+  "channelSadhanaAlarmSilentName": "సాధన అలారం · నిశ్శబ్దం",
+  "channelNoVibration": "వైబ్రేషన్ లేదు",
+  "channelSadhanaAlarmDesc": "సమయం లేదా లయ సెషన్ ముగిసినప్పుడు మోగుతుంది"
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/constants/app_constants.dart';
+import '../../calendar/services/reminder_scheduler.dart';
 import '../../../core/theme/theme_provider.dart';
 import '../../../l10n/l10n.dart';
 import '../../calendar/presentation/calendar_screen.dart';
@@ -42,6 +43,10 @@ extension ShellTabL10n on ShellTab {
       };
 }
 
+/// Alert notifications the user taps (and the one that launched the app).
+final _notificationOpenedProvider = StreamProvider<String>(
+    (ref) => ref.watch(reminderSchedulerProvider).opened);
+
 final shellTabProvider =
     NotifierProvider<ShellTabNotifier, ShellTab>(ShellTabNotifier.new);
 
@@ -63,6 +68,13 @@ class AppShell extends ConsumerWidget {
     final profile = ref.watch(profileProvider);
     final l = context.l10n;
 
+    // Tapping the Sadhana alarm opens the finished session.
+    ref.listen<AsyncValue<String>>(_notificationOpenedProvider, (_, next) {
+      if (next.value == sadhanaTimerGroup) {
+        ref.read(shellTabProvider.notifier).select(ShellTab.sadhana);
+      }
+    });
+
     // Leaving the Sadhana tab silences a completion alert that is still
     // ringing or repeating (its Stop control is no longer on screen).
     ref.listen<ShellTab>(shellTabProvider, (prev, next) {
@@ -82,6 +94,10 @@ class AppShell extends ConsumerWidget {
           duration: const Duration(seconds: 7),
           action: notice.openSettings
               ? SnackBarAction(label: l.settingsAction, onPressed: openAppSettings)
+              : notice.onAction != null
+              ? SnackBarAction(
+                  label: notice.actionLabel ?? l.settingsAction,
+                  onPressed: notice.onAction!)
               : (notice.trainMantraId == null
                   ? null
                   : SnackBarAction(

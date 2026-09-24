@@ -1,6 +1,6 @@
 {
   "@@locale": "gu",
-  "@@x-machine-translation": "First-pass machine translation into Gujarati, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section.",
+  "@@x-machine-translation": "First-pass machine translation into Gujarati, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a (completion repeat, Stop, keep-screen-on, Sadhana alarm) are also first-pass and need native review.",
   "navHome": "હોમ",
   "navSadhana": "સાધના",
   "navCalendar": "કેલેન્ડર",
@@ -535,5 +535,15 @@
   "repeatOnce": "એક વાર",
   "soundRepeatTimes": "{times} વાર",
   "repeatUntilStopped": "બંધ કરો ત્યાં સુધી",
-  "vibrationRepeatUntilStopped": "દર {seconds} સેકન્ડે, બંધ કરો ત્યાં સુધી"
+  "vibrationRepeatUntilStopped": "દર {seconds} સેકન્ડે, બંધ કરો ત્યાં સુધી",
+  "keepScreenOnLabel": "ગણતરી દરમિયાન સ્ક્રીન ચાલુ રાખો",
+  "keepScreenOnSubtitle": "સત્ર ચાલુ હોય ત્યારે સ્ક્રીન બંધ થતી નથી. પાવર બટનથી ફોન તોય લૉક થાય છે; ત્યારે સમય કે લય વાળું સત્ર પૂરું થતાં એલાર્મની જેમ વાગે છે.",
+  "alarmMayBeLate": "એલાર્મ થોડું મોડું વાગી શકે છે (ચોક્કસ એલાર્મ બંધ છે).",
+  "exactAlarmNotice": "સ્ક્રીન બંધ હોય ત્યારે પણ સમયસર વગાડવા, Sadho ને ચોક્કસ એલાર્મની મંજૂરી આપો.",
+  "fullScreenNotice": "પૂરું થયેલું સત્ર લૉક સ્ક્રીન પર બતાવવા, ફુલ-સ્ક્રીન સૂચનાઓની મંજૂરી આપો.",
+  "allowAction": "મંજૂરી આપો",
+  "channelSadhanaAlarmName": "સાધના એલાર્મ · {sound}",
+  "channelSadhanaAlarmSilentName": "સાધના એલાર્મ · શાંત",
+  "channelNoVibration": "કંપન નહીં",
+  "channelSadhanaAlarmDesc": "સમય કે લય વાળું સત્ર પૂરું થતાં વાગે છે"
 }

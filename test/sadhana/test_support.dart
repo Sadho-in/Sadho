@@ -8,6 +8,7 @@ import 'package:advance_calendar/features/sadhana/application/voice_training_pro
 import 'package:advance_calendar/features/sadhana/data/ringtone.dart';
 import 'package:advance_calendar/features/sadhana/services/feedback_service.dart';
 import 'package:advance_calendar/features/sadhana/services/pcm_input.dart';
+import 'package:advance_calendar/features/sadhana/services/screen_awake.dart';
 import 'package:advance_calendar/features/sadhana/services/voice_counter_service.dart';
 import 'package:advance_calendar/features/sadhana/services/volume_button_service.dart';
 import 'package:advance_calendar/features/sadhana/voice/match_model.dart';
@@ -151,6 +152,25 @@ class FakeSound implements SoundDriver {
     final p = _playing;
     _playing = null;
     if (p != null && !p.isCompleted) p.complete();
+  }
+}
+
+/// Stand-in for the keep-screen-on plugin.
+class FakeWakelock implements WakelockDriver {
+  bool on = false;
+  int enables = 0;
+  int disables = 0;
+
+  @override
+  Future<void> enable() async {
+    enables++;
+    on = true;
+  }
+
+  @override
+  Future<void> disable() async {
+    disables++;
+    on = false;
   }
 }
 
@@ -346,8 +366,10 @@ List<Override> testOverrides({
   FakePcmInput? pcm,
   FakeHaptics? haptics,
   FakeSound? sound,
+  FakeWakelock? wakelock,
 }) =>
     [
+      wakelockDriverProvider.overrideWithValue(wakelock ?? FakeWakelock()),
       pcmInputProvider.overrideWithValue(pcm ?? FakePcmInput()),
       // The real clock ticks on a timer, which widget tests must not leave
       // running (and a fixed date keeps them independent of today's).

@@ -3321,6 +3321,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Every {seconds} s until stopped'**
   String vibrationRepeatUntilStopped(int seconds);
+
+  /// No description provided for @keepScreenOnLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep screen on while counting'**
+  String get keepScreenOnLabel;
+
+  /// No description provided for @keepScreenOnSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stops the screen from sleeping while a session runs. The power button still locks the phone; a timed or Rhythm session then rings like an alarm when it finishes.'**
+  String get keepScreenOnSubtitle;
+
+  /// No description provided for @alarmMayBeLate.
+  ///
+  /// In en, this message translates to:
+  /// **'The alarm may ring a little late (exact alarms are off).'**
+  String get alarmMayBeLate;
+
+  /// No description provided for @exactAlarmNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'To ring right on time with the screen off, allow Sadho to set exact alarms.'**
+  String get exactAlarmNotice;
+
+  /// No description provided for @fullScreenNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'To show the finished session over the lock screen, allow full-screen alerts.'**
+  String get fullScreenNotice;
+
+  /// Snackbar action that opens a permission page
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get allowAction;
+
+  /// Android notification channel name; sound is the ringtone's name
+  ///
+  /// In en, this message translates to:
+  /// **'Sadhana alarm · {sound}'**
+  String channelSadhanaAlarmName(String sound);
+
+  /// No description provided for @channelSadhanaAlarmSilentName.
+  ///
+  /// In en, this message translates to:
+  /// **'Sadhana alarm · silent'**
+  String get channelSadhanaAlarmSilentName;
+
+  /// No description provided for @channelNoVibration.
+  ///
+  /// In en, this message translates to:
+  /// **'no vibration'**
+  String get channelNoVibration;
+
+  /// No description provided for @channelSadhanaAlarmDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Rings when a timed or Rhythm session finishes'**
+  String get channelSadhanaAlarmDesc;
 }
 
 class _AppLocalizationsDelegate

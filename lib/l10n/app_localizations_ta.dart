@@ -1911,4 +1911,41 @@ class AppLocalizationsTa extends AppLocalizations {
   String vibrationRepeatUntilStopped(int seconds) {
     return 'ஒவ்வொரு $seconds வினாடிக்கும், நிறுத்தும் வரை';
   }
+
+  @override
+  String get keepScreenOnLabel => 'எண்ணும்போது திரையை இயக்கத்தில் வை';
+
+  @override
+  String get keepScreenOnSubtitle =>
+      'அமர்வு ஓடும்போது திரை உறங்காது. பவர் பொத்தான் இன்னும் தொலைபேசியைப் பூட்டும்; அப்போது நேர அல்லது தாள அமர்வு முடிந்ததும் அலாரம் போல ஒலிக்கும்.';
+
+  @override
+  String get alarmMayBeLate =>
+      'அலாரம் சற்று தாமதமாக ஒலிக்கலாம் (துல்லிய அலாரங்கள் முடக்கப்பட்டுள்ளன).';
+
+  @override
+  String get exactAlarmNotice =>
+      'திரை அணைந்திருந்தாலும் சரியான நேரத்தில் ஒலிக்க, Sadho-க்கு துல்லிய அலாரங்களை அனுமதிக்கவும்.';
+
+  @override
+  String get fullScreenNotice =>
+      'முடிந்த அமர்வைப் பூட்டுத் திரையில் காட்ட, முழுத்திரை விழிப்பூட்டல்களை அனுமதிக்கவும்.';
+
+  @override
+  String get allowAction => 'அனுமதி';
+
+  @override
+  String channelSadhanaAlarmName(String sound) {
+    return 'சாதனா அலாரம் · $sound';
+  }
+
+  @override
+  String get channelSadhanaAlarmSilentName => 'சாதனா அலாரம் · அமைதி';
+
+  @override
+  String get channelNoVibration => 'அதிர்வு இல்லை';
+
+  @override
+  String get channelSadhanaAlarmDesc =>
+      'நேர அல்லது தாள அமர்வு முடிந்ததும் ஒலிக்கும்';
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../application/sadhana_session_provider.dart';
+import '../services/screen_awake.dart';
 
 import 'widgets/completion_settings_card.dart';
 import 'widgets/count_scope_control.dart';
@@ -76,7 +77,7 @@ class _SadhanaScreenState extends ConsumerState<SadhanaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, box) {
+    return KeepScreenOn(child: LayoutBuilder(builder: (context, box) {
       // Shrink the ring so the whole top group stays visible, whatever the
       // size of the card.
       final ring =
@@ -114,6 +115,6 @@ class _SadhanaScreenState extends ConsumerState<SadhanaScreen> {
           ),
         ),
       );
-    });
+    }));
   }
 }

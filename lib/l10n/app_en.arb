@@ -2200,5 +2200,26 @@
         "type": "int"
       }
     }
+  },
+  "keepScreenOnLabel": "Keep screen on while counting",
+  "keepScreenOnSubtitle": "Stops the screen from sleeping while a session runs. The power button still locks the phone; a timed or Rhythm session then rings like an alarm when it finishes.",
+  "alarmMayBeLate": "The alarm may ring a little late (exact alarms are off).",
+  "exactAlarmNotice": "To ring right on time with the screen off, allow Sadho to set exact alarms.",
+  "fullScreenNotice": "To show the finished session over the lock screen, allow full-screen alerts.",
+  "allowAction": "Allow",
+  "channelSadhanaAlarmName": "Sadhana alarm · {sound}",
+  "channelSadhanaAlarmSilentName": "Sadhana alarm · silent",
+  "channelNoVibration": "no vibration",
+  "channelSadhanaAlarmDesc": "Rings when a timed or Rhythm session finishes",
+  "@channelSadhanaAlarmName": {
+    "description": "Android notification channel name; sound is the ringtone's name",
+    "placeholders": {
+      "sound": {
+        "type": "String"
+      }
+    }
+  },
+  "@allowAction": {
+    "description": "Snackbar action that opens a permission page"
   }
 }

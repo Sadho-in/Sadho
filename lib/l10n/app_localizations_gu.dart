@@ -1893,4 +1893,41 @@ class AppLocalizationsGu extends AppLocalizations {
   String vibrationRepeatUntilStopped(int seconds) {
     return 'દર $seconds સેકન્ડે, બંધ કરો ત્યાં સુધી';
   }
+
+  @override
+  String get keepScreenOnLabel => 'ગણતરી દરમિયાન સ્ક્રીન ચાલુ રાખો';
+
+  @override
+  String get keepScreenOnSubtitle =>
+      'સત્ર ચાલુ હોય ત્યારે સ્ક્રીન બંધ થતી નથી. પાવર બટનથી ફોન તોય લૉક થાય છે; ત્યારે સમય કે લય વાળું સત્ર પૂરું થતાં એલાર્મની જેમ વાગે છે.';
+
+  @override
+  String get alarmMayBeLate =>
+      'એલાર્મ થોડું મોડું વાગી શકે છે (ચોક્કસ એલાર્મ બંધ છે).';
+
+  @override
+  String get exactAlarmNotice =>
+      'સ્ક્રીન બંધ હોય ત્યારે પણ સમયસર વગાડવા, Sadho ને ચોક્કસ એલાર્મની મંજૂરી આપો.';
+
+  @override
+  String get fullScreenNotice =>
+      'પૂરું થયેલું સત્ર લૉક સ્ક્રીન પર બતાવવા, ફુલ-સ્ક્રીન સૂચનાઓની મંજૂરી આપો.';
+
+  @override
+  String get allowAction => 'મંજૂરી આપો';
+
+  @override
+  String channelSadhanaAlarmName(String sound) {
+    return 'સાધના એલાર્મ · $sound';
+  }
+
+  @override
+  String get channelSadhanaAlarmSilentName => 'સાધના એલાર્મ · શાંત';
+
+  @override
+  String get channelNoVibration => 'કંપન નહીં';
+
+  @override
+  String get channelSadhanaAlarmDesc =>
+      'સમય કે લય વાળું સત્ર પૂરું થતાં વાગે છે';
 }

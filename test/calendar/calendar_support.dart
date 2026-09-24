@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:advance_calendar/core/storage/app_storage.dart';
 import 'package:advance_calendar/core/theme/app_theme.dart' show SadhoColors;
 import 'package:advance_calendar/features/calendar/application/calendar_marks_provider.dart';
@@ -62,6 +64,48 @@ class FakeScheduler implements ReminderScheduler {
     alertReplacements.add(group);
     alerts[group] = [...next];
   }
+
+  /// Exact alarms / full-screen alarms are allowed (as on most phones).
+  bool exact = true;
+  bool fullScreen = true;
+
+  /// What the permission pages answer when opened.
+  bool grantExact = true;
+  bool grantFullScreen = true;
+  int exactRequests = 0;
+  int fullScreenRequests = 0;
+
+  @override
+  Future<bool> canScheduleExact() async => exact;
+
+  @override
+  Future<bool> requestExactAlarms() async {
+    exactRequests++;
+    return exact = grantExact;
+  }
+
+  @override
+  Future<bool> canUseFullScreen() async => fullScreen;
+
+  @override
+  Future<bool> requestFullScreen() async {
+    fullScreenRequests++;
+    return fullScreen = grantFullScreen;
+  }
+
+  final _opened = StreamController<String>.broadcast();
+
+  /// The user taps a notification of [group].
+  void tapNotification(String group) => _opened.add(group);
+
+  @override
+  Stream<String> get opened => _opened.stream;
+
+  /// Groups whose already-shown alerts were dismissed.
+  final dismissed = <String>[];
+
+  @override
+  Future<void> dismissShown(String group) async => dismissed.add(group);
 }
 
 /// Overrides for the calendar feature in tests.

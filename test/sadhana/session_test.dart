@@ -633,7 +633,7 @@ void main() {
     });
   });
 
-  test('session persists across restarts, always reopening paused', () {
+  test('session persists across restarts; a paused one reopens paused', () {
     final c1 = makeContainer();
     c1.read(sadhanaSessionProvider.notifier)
       ..setSankalp('Peace for all')
@@ -641,8 +641,7 @@ void main() {
       ..setRhythmSeconds(90 * 60) // 1 hr 30 min
       ..setTargetCount(1008)
       ..increment()
-      ..increment()
-      ..toggleRunning();
+      ..increment();
     c1.dispose();
 
     final c2 = makeContainer();
@@ -654,6 +653,30 @@ void main() {
     expect(s.mode, CountMode.rhythm);
     expect(s.rhythmSeconds, 5400, reason: 'custom pace survives a relaunch');
     expect(s.inputActive, isFalse);
+  });
+
+  test('a running Voice or Mala session reopens paused (its input needs Start)',
+      () async {
+    for (final mode in [CountMode.voice, CountMode.mala]) {
+      resetStorage();
+      seedTrainedVoice();
+      final c1 = makeContainer();
+      c1.read(sadhanaSessionProvider.notifier)
+        ..setMode(mode)
+        ..setTargetType(TargetType.time)
+        ..setTargetSeconds(600)
+        ..toggleRunning();
+      await pumpEventQueue();
+      expect(c1.read(sadhanaSessionProvider).running, isTrue);
+      c1.dispose();
+
+      final c2 = makeContainer();
+      final s = c2.read(sadhanaSessionProvider);
+      expect(s.running, isFalse, reason: mode.name);
+      expect(s.inputActive, isFalse);
+      await pumpEventQueue();
+      c2.dispose();
+    }
   });
 
   group('count scope: Combined (default)', () {

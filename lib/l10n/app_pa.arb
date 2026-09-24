@@ -1,6 +1,6 @@
 {
   "@@locale": "pa",
-  "@@x-machine-translation": "First-pass machine translation into Punjabi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section.",
+  "@@x-machine-translation": "First-pass machine translation into Punjabi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a (completion repeat, Stop, keep-screen-on, Sadhana alarm) are also first-pass and need native review.",
   "navHome": "ਹੋਮ",
   "navSadhana": "ਸਾਧਨਾ",
   "navCalendar": "ਕੈਲੰਡਰ",
@@ -535,5 +535,15 @@
   "repeatOnce": "ਇੱਕ ਵਾਰ",
   "soundRepeatTimes": "{times} ਵਾਰ",
   "repeatUntilStopped": "ਰੋਕਣ ਤੱਕ",
-  "vibrationRepeatUntilStopped": "ਹਰ {seconds} ਸਕਿੰਟ, ਰੋਕਣ ਤੱਕ"
+  "vibrationRepeatUntilStopped": "ਹਰ {seconds} ਸਕਿੰਟ, ਰੋਕਣ ਤੱਕ",
+  "keepScreenOnLabel": "ਗਿਣਤੀ ਦੌਰਾਨ ਸਕ੍ਰੀਨ ਚਾਲੂ ਰੱਖੋ",
+  "keepScreenOnSubtitle": "ਸੈਸ਼ਨ ਚੱਲਦੇ ਸਮੇਂ ਸਕ੍ਰੀਨ ਬੰਦ ਨਹੀਂ ਹੁੰਦੀ। ਪਾਵਰ ਬਟਨ ਨਾਲ ਫ਼ੋਨ ਫਿਰ ਵੀ ਲੌਕ ਹੁੰਦਾ ਹੈ; ਤਦ ਸਮੇਂ ਜਾਂ ਲੈਅ ਵਾਲਾ ਸੈਸ਼ਨ ਪੂਰਾ ਹੋਣ 'ਤੇ ਅਲਾਰਮ ਵਾਂਗ ਵੱਜਦਾ ਹੈ।",
+  "alarmMayBeLate": "ਅਲਾਰਮ ਥੋੜ੍ਹਾ ਦੇਰ ਨਾਲ ਵੱਜ ਸਕਦਾ ਹੈ (ਸਹੀ ਅਲਾਰਮ ਬੰਦ ਹਨ)।",
+  "exactAlarmNotice": "ਸਕ੍ਰੀਨ ਬੰਦ ਹੋਣ 'ਤੇ ਵੀ ਠੀਕ ਸਮੇਂ ਵੱਜਣ ਲਈ, Sadho ਨੂੰ ਸਹੀ ਅਲਾਰਮ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ।",
+  "fullScreenNotice": "ਪੂਰਾ ਸੈਸ਼ਨ ਲੌਕ ਸਕ੍ਰੀਨ 'ਤੇ ਦਿਖਾਉਣ ਲਈ, ਫੁੱਲ-ਸਕ੍ਰੀਨ ਸੂਚਨਾਵਾਂ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ।",
+  "allowAction": "ਇਜਾਜ਼ਤ ਦਿਓ",
+  "channelSadhanaAlarmName": "ਸਾਧਨਾ ਅਲਾਰਮ · {sound}",
+  "channelSadhanaAlarmSilentName": "ਸਾਧਨਾ ਅਲਾਰਮ · ਚੁੱਪ",
+  "channelNoVibration": "ਕੰਪਨ ਨਹੀਂ",
+  "channelSadhanaAlarmDesc": "ਸਮੇਂ ਜਾਂ ਲੈਅ ਵਾਲਾ ਸੈਸ਼ਨ ਪੂਰਾ ਹੋਣ 'ਤੇ ਵੱਜਦਾ ਹੈ"
 }

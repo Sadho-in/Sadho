@@ -1892,4 +1892,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String vibrationRepeatUntilStopped(int seconds) {
     return 'Every $seconds s until stopped';
   }
+
+  @override
+  String get keepScreenOnLabel => 'Keep screen on while counting';
+
+  @override
+  String get keepScreenOnSubtitle =>
+      'Stops the screen from sleeping while a session runs. The power button still locks the phone; a timed or Rhythm session then rings like an alarm when it finishes.';
+
+  @override
+  String get alarmMayBeLate =>
+      'The alarm may ring a little late (exact alarms are off).';
+
+  @override
+  String get exactAlarmNotice =>
+      'To ring right on time with the screen off, allow Sadho to set exact alarms.';
+
+  @override
+  String get fullScreenNotice =>
+      'To show the finished session over the lock screen, allow full-screen alerts.';
+
+  @override
+  String get allowAction => 'Allow';
+
+  @override
+  String channelSadhanaAlarmName(String sound) {
+    return 'Sadhana alarm · $sound';
+  }
+
+  @override
+  String get channelSadhanaAlarmSilentName => 'Sadhana alarm · silent';
+
+  @override
+  String get channelNoVibration => 'no vibration';
+
+  @override
+  String get channelSadhanaAlarmDesc =>
+      'Rings when a timed or Rhythm session finishes';
 }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The completion ringtones are only referenced by name from Dart (the
+     Sadhana alarm notification), so resource shrinking must keep them. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@raw/temple_bell,@raw/singing_bowl,@raw/soft_chime,@raw/deep_gong" />

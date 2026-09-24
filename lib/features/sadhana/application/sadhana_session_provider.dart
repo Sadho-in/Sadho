@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +12,7 @@ import '../services/feedback_service.dart';
 import '../services/voice_counter_service.dart';
 import '../services/volume_button_service.dart';
 import '../voice/match_model.dart';
+import 'completion_settings_provider.dart';
 import 'rhythm_pace.dart';
 import 'session_notice_provider.dart';
 import 'voice_training_provider.dart';
@@ -103,6 +105,7 @@ class SadhanaState {
     this.rhythmSeconds = defaultRhythmSeconds,
     this.inputActive = false,
     this.lastVoice,
+    this.alarmMayBeLate = false,
   });
 
   final String mantraId;
@@ -129,6 +132,16 @@ class SadhanaState {
 
   /// Last utterance Voice heard while listening. Transient: never saved.
   final VoiceHitInfo? lastVoice;
+
+  /// The finish alarm is set, but the phone does not allow exact alarms, so
+  /// it may ring a little late. Transient: never saved.
+  final bool alarmMayBeLate;
+
+  /// The finish time is known in advance, so the phone can ring at the end
+  /// even with the screen off or the app closed: a time target (any mode), or
+  /// a count target in Rhythm (the remaining count × the pace). Tap, Voice and
+  /// Mala count targets finish on the user's input instead.
+  bool get hasPredictableEnd => isTimeTarget || mode == CountMode.rhythm;
 
   bool get isSeparate => scope == CountScope.separate;
 
@@ -214,6 +227,7 @@ class SadhanaState {
     bool? inputActive,
     VoiceHitInfo? lastVoice,
     bool clearLastVoice = false,
+    bool? alarmMayBeLate,
   }) =>
       SadhanaState(
         mantraId: mantraId ?? this.mantraId,
@@ -228,6 +242,7 @@ class SadhanaState {
         rhythmSeconds: rhythmSeconds ?? this.rhythmSeconds,
         inputActive: inputActive ?? this.inputActive,
         lastVoice: clearLastVoice ? null : (lastVoice ?? this.lastVoice),
+        alarmMayBeLate: alarmMayBeLate ?? this.alarmMayBeLate,
       );
 
   Map<String, dynamic> toMap() => {
@@ -294,25 +309,46 @@ class SadhanaState {
 class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   static const _storageKey = 'sadhana.session';
 
-  /// A time target that ends this long ago (or less) rings from here; older
-  /// than that, the phone's own notification has already rung.
-  static const ringGrace = Duration(seconds: 5);
+  /// Hive keys: each alarm permission is explained (and offered) only once.
+  static const askedExactKey = 'sadhana.askedExactAlarms';
+  static const askedFullScreenKey = 'sadhana.askedFullScreen';
 
-  /// The notification is set this much AFTER the end, so when the app is in
-  /// the foreground its own clock finishes first and cancels it (one ring, not
-  /// two).
+  /// The phone's alarm is set this much AFTER the predicted end, so when the
+  /// app is open its own clock finishes first, rings in the app and cancels
+  /// the alarm (one ring, not two).
   static const alarmMargin = Duration(seconds: 2);
+
+  /// Without a phone alarm (notifications refused), a session found finished
+  /// on return still rings in the app if it ended at most this long ago.
+  static const lateRingLimit = Duration(minutes: 10);
 
   Timer? _clock;
   Timer? _rhythm;
 
-  // The time target is measured against the real clock, not just against
-  // ticks: a phone with the screen off can stop the app's timers for minutes.
+  // Time and Rhythm beats are measured against the real clock, not just
+  // against ticks: a phone with the screen off can stop the app's timers for
+  // minutes, and the app can even be closed. These are the moments the last
+  // counted second / beat fell due. They are saved with the session, so a
+  // relaunch continues from them.
   DateTime? _lastTickAt;
+  DateTime? _lastBeatAt;
+
+  /// When the running session will reach its target (predictable ends only).
   DateTime? _endsAt;
   bool _alarmScheduled = false;
   bool _askedNotifications = false;
   int _alarmGen = 0;
+
+  /// The session finished while the app was in the background, before the
+  /// phone's alarm rang: the alarm is left to ring (at this time) and the app
+  /// stays quiet.
+  DateTime? _heldAlarmAt;
+
+  /// The app is on screen (not in the background, locked or closed).
+  bool _foreground = true;
+
+  /// A relaunch found the session just finished, before the phone rang.
+  bool _ringOnRestore = false;
   late ReminderScheduler _scheduler;
   _ResumeWatcher? _watcher;
 
@@ -337,15 +373,34 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
     _disposed = false;
     // Catch the clock up when the app comes back to the front.
     try {
-      _watcher = _ResumeWatcher(_tickClock);
+      _watcher = _ResumeWatcher(_onLifecycle);
       WidgetsBinding.instance.addObserver(_watcher!);
+      final now = WidgetsBinding.instance.lifecycleState;
+      _foreground = now == null || _isForeground(now);
     } catch (_) {
       // No Flutter binding (plain unit tests): nothing to watch.
     }
-    // A time-target ring left over from a session that no longer exists (unless
-    // a run has already started in the meantime).
+    final saved = AppStorage.settings.get(_storageKey) as Map?;
+    final restored = _restore(SadhanaState.fromMap(saved), saved);
+    // Pick up where a relaunch left off, or remove an alarm left over from a
+    // session that no longer runs (unless a run has started meanwhile).
     Future.microtask(() {
-      if (_alarmGen == 0 && !_disposed) _setAlarm(null);
+      if (_alarmGen != 0 || _disposed) return;
+      if (state.running) {
+        _syncTimers(fresh: false);
+        _syncInputs();
+        _persist();
+        return;
+      }
+      if (_ringOnRestore) _targetReached();
+      _setAlarm(null);
+      unawaited(_scheduler
+          .dismissShown(sadhanaTimerGroup)
+          .catchError((Object _) {}));
+    });
+    // A new ringtone, vibration or repeat choice applies to the alarm at once.
+    ref.listen(completionSettingsProvider, (_, _) {
+      if (_alarmScheduled && _endsAt != null) _setAlarm(_endsAt!.add(alarmMargin));
     });
     ref.onDispose(() {
       _disposed = true;
@@ -361,7 +416,37 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
     ref.listen(voiceSensitivityProvider, (_, v) {
       if (_voiceActive) _voice.setSensitivity(v);
     });
-    return SadhanaState.fromMap(AppStorage.settings.get(_storageKey) as Map?);
+    return restored;
+  }
+
+  DateTime _now() => ref.read(clockNowProvider)();
+
+  /// A saved session that was running when the app closed: caught up to the
+  /// real clock, so the screen shows the right number at once. A Rhythm or
+  /// timed Tap session keeps running; Voice and Mala wait for Start (their
+  /// input has to be switched on again). One that finished meanwhile is shown
+  /// finished; the phone's alarm has rung for it.
+  SadhanaState _restore(SadhanaState s, Map? saved) {
+    if (saved == null || saved['running'] != true) return s;
+    DateTime? at(String key) => saved[key] is int
+        ? DateTime.fromMillisecondsSinceEpoch(saved[key] as int)
+        : null;
+    _lastTickAt = at('tickAt');
+    _lastBeatAt = at('beatAt');
+    _endsAt = at('endsAt');
+    _alarmScheduled = saved['alarmSet'] == true;
+    if (_lastTickAt == null && _lastBeatAt == null) return s;
+
+    final now = _now();
+    var next = _caughtUp(s.copyWith(running: true), now);
+    if (next.completed) {
+      _ringOnRestore = _shouldRing(now) == _Ring.app;
+      return next.copyWith(running: false);
+    }
+    if (next.mode == CountMode.voice || next.mode == CountMode.mala) {
+      next = next.copyWith(running: false);
+    }
+    return next;
   }
 
   // ---- counting ----------------------------------------------------------
@@ -386,23 +471,29 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   /// Adds one count to the active mode. Ignored once the target has been
   /// reached. Called by every mode's own input and by the + button.
   void increment() {
-    final s = state;
-    if (s.completed) return;
+    if (state.completed) return;
+    _addCounts(1);
+    // A + in Rhythm moves its finish (and so the alarm) one beat earlier.
+    _rhythmCountChanged();
+  }
 
+  /// Adds [n] counts to the active mode; the target (if reached) finishes
+  /// the session. The 108 milestone buzz is for single counts only, not for
+  /// a batch caught up after the app was away.
+  void _addCounts(int n) {
+    final s = state;
     var next = s.withProgress(
-        s.activeProgress.copyWith(count: s.activeProgress.count + 1));
+        s.activeProgress.copyWith(count: s.activeProgress.count + n));
     // In Tap mode with a time target the clock starts on the first tap.
     if (s.isTimeTarget && s.mode == CountMode.tap && !s.running) {
       next = next.copyWith(running: true);
     }
-
-    final reachedTarget = !next.isTimeTarget && next.completed;
-    if (reachedTarget) next = next.copyWith(running: false);
+    if (!next.isTimeTarget && next.completed) {
+      _finish(next);
+      return;
+    }
     _emit(next);
-
-    if (reachedTarget) {
-      _targetReached();
-    } else if (next.count % milestoneEvery == 0) {
+    if (n == 1 && next.count % milestoneEvery == 0) {
       ref.read(feedbackServiceProvider).milestone();
     }
   }
@@ -413,13 +504,28 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
 
   /// Silences a completion alert that is still sounding or repeating (the
   /// Stop control, and leaving the Sadhana screen).
-  void stopAlert() => ref.read(feedbackServiceProvider).stopAlert();
+  void stopAlert() {
+    if (ref.mounted) ref.read(feedbackServiceProvider).stopAlert();
+  }
 
   /// Manual correction: takes one off the shown count (never below zero).
   /// Available in every mode, e.g. when Voice counted a rep that was not one.
   void decrement() {
     final next = state.decremented();
-    if (next != null) _emit(next);
+    if (next == null) return;
+    _emit(next);
+    _rhythmCountChanged();
+  }
+
+  /// A manual + / − while a Rhythm count target runs: the finish moves, so
+  /// the alarm follows it.
+  void _rhythmCountChanged() {
+    final s = state;
+    if (!s.running || s.completed || s.isTimeTarget || s.mode != CountMode.rhythm) {
+      return;
+    }
+    _endsAt = _predictEnd(s);
+    _setAlarm(_endsAt?.add(alarmMargin));
   }
 
   /// Stops whatever is running (microphone, volume keys, timers), keeping the
@@ -520,83 +626,262 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   void _emit(SadhanaState next) {
     final previous = state;
     state = next;
-    AppStorage.settings.put(_storageKey, next.toMap());
     if (previous.running != next.running ||
         previous.mode != next.mode ||
         previous.targetType != next.targetType ||
         previous.rhythmSeconds != next.rhythmSeconds ||
         previous.targetSeconds != next.targetSeconds ||
+        previous.targetCount != next.targetCount ||
         previous.scope != next.scope ||
         previous.completed != next.completed) {
-      _syncTimers();
+      _syncTimers(fresh: !previous.running);
       _syncInputs();
     }
+    _persist();
   }
 
-  void _syncTimers() {
+  /// Saves the session, and while it runs, the moments it is measured from
+  /// (so a relaunch after the app was closed can catch up).
+  void _persist() {
+    final s = state;
+    final running = s.running && !s.completed;
+    int? ms(DateTime? t) => t?.millisecondsSinceEpoch;
+    AppStorage.settings.put(_storageKey, {
+      ...s.toMap(),
+      if (running) ...{
+        'running': true,
+        'tickAt': ms(_lastTickAt),
+        'beatAt': ms(_lastBeatAt),
+        'endsAt': ms(_endsAt),
+        'alarmSet': _alarmScheduled,
+      },
+    });
+  }
+
+  /// Starts or stops the clock and rhythm timers, and sets or removes the
+  /// phone's finish alarm, to match the state. [fresh]: the session has just
+  /// been started or resumed, so it is measured from now; otherwise (the
+  /// target or pace changed mid-run, or a relaunch) from where it was.
+  void _syncTimers({required bool fresh}) {
     _cancelTimers();
     final s = state;
     if (!s.running || s.completed) {
-      _setAlarm(null);
+      _lastTickAt = _lastBeatAt = _endsAt = null;
+      // Finished in the background: that alarm is left to ring.
+      if (_heldAlarmAt == null) _setAlarm(null);
       return;
     }
-
-    if (s.isTimeTarget) {
-      final now = ref.read(clockNowProvider)();
-      _lastTickAt = now;
-      _endsAt = now.add(Duration(seconds: s.targetSeconds - s.elapsedSeconds));
-      _clock = Timer.periodic(const Duration(seconds: 1), (_) => _tickClock());
-      _setAlarm(_endsAt!.add(alarmMargin));
-    } else {
-      _setAlarm(null);
-    }
-    if (s.mode == CountMode.rhythm) {
-      _rhythm = Timer.periodic(
-        Duration(milliseconds: (s.rhythmSeconds * 1000).round()),
-        (_) => increment(),
-      );
-    }
+    _heldAlarmAt = null;
+    final now = _now();
+    if (fresh) _lastTickAt = _lastBeatAt = null;
+    _lastTickAt ??= now;
+    _lastBeatAt ??= now;
+    _endsAt = _predictEnd(s);
+    if (s.isTimeTarget) _scheduleClockTick();
+    if (s.mode == CountMode.rhythm) _scheduleBeat();
+    _setAlarm(_endsAt?.add(alarmMargin));
   }
 
-  /// One second of the time target has passed (or, after the app was away, a
-  /// whole stretch of them: the real clock decides how many).
+  Duration _pace(SadhanaState s) =>
+      Duration(microseconds: (s.rhythmSeconds * 1000000).round());
+
+  /// When the running session will reach its target, or null when that
+  /// depends on the user (Tap, Voice and Mala count targets).
+  DateTime? _predictEnd(SadhanaState s) {
+    if (s.isTimeTarget) {
+      return _lastTickAt?.add(Duration(seconds: s.targetSeconds - s.elapsedSeconds));
+    }
+    if (s.mode == CountMode.rhythm) {
+      final left = math.max(0, s.targetCount - s.count);
+      return _lastBeatAt?.add(_pace(s) * left);
+    }
+    return null;
+  }
+
+  /// The next clock tick, when the next whole second falls due (never
+  /// longer than a second away).
+  void _scheduleClockTick() {
+    _clock?.cancel();
+    _clock = Timer(_until(_lastTickAt!.add(const Duration(seconds: 1)),
+        const Duration(seconds: 1)), _tickClock);
+  }
+
+  /// The next Rhythm beat, when it falls due (never longer than a pace away).
+  void _scheduleBeat() {
+    _rhythm?.cancel();
+    final pace = _pace(state);
+    _rhythm = Timer(_until(_lastBeatAt!.add(pace), pace), _beat);
+  }
+
+  Duration _until(DateTime due, Duration max) {
+    final d = due.difference(_now());
+    if (d.isNegative) return Duration.zero;
+    return d > max ? max : d;
+  }
+
+  /// One second of the time target has passed (or, if the timer was held
+  /// back, a whole stretch of them: the real clock decides how many).
   void _tickClock() {
+    _clock = null;
     final s = state;
     if (!s.running || s.completed || !s.isTimeTarget) return;
-    final last = _lastTickAt;
-    if (last == null) return;
-    final now = ref.read(clockNowProvider)();
-
+    final now = _now();
+    final last = _lastTickAt ?? now;
     var add = now.difference(last).inSeconds;
     if (add < 1) add = 1; // a normal tick (and tests with a frozen clock)
     _lastTickAt = last.add(Duration(seconds: add));
-    final remaining = s.targetSeconds - s.elapsedSeconds;
-    if (add > remaining) add = remaining;
-
-    var next = s.withProgress(s.activeProgress
+    add = math.min(add, s.remainingSeconds);
+    final next = s.withProgress(s.activeProgress
         .copyWith(elapsedSeconds: s.activeProgress.elapsedSeconds + add));
-    final done = next.elapsedSeconds >= next.targetSeconds;
-    if (done) next = next.copyWith(running: false);
-    final endedAt = _endsAt;
-    final rangByPhone = _alarmScheduled;
+    if (next.completed) {
+      _finish(next);
+      return;
+    }
     _emit(next);
-    if (!done) return;
+    _scheduleClockTick();
+  }
 
-    // (`_emit` above already cancelled the phone's own notification: it is no
-    // longer needed, or has already rung, which `rangByPhone` remembers.)
-    final late = endedAt == null ? Duration.zero : now.difference(endedAt);
-    if (late <= ringGrace || (!rangByPhone && late <= const Duration(minutes: 10))) {
-      _targetReached();
+  /// One Rhythm beat (or, if the timer was held back, as many as fell due).
+  void _beat() {
+    _rhythm = null;
+    final s = state;
+    if (!s.running || s.completed || s.mode != CountMode.rhythm) return;
+    final now = _now();
+    final last = _lastBeatAt ?? now;
+    final pace = _pace(s);
+    var beats = now.difference(last).inMicroseconds ~/ pace.inMicroseconds;
+    if (beats < 1) beats = 1; // a normal beat (and tests with a frozen clock)
+    _lastBeatAt = last.add(pace * beats);
+    if (!s.isTimeTarget) beats = math.min(beats, s.targetCount - s.count);
+    _addCounts(beats);
+    if (state.running && !state.completed) _scheduleBeat();
+  }
+
+  /// [s] moved on to [now] by the real clock: the time elapsed (time target)
+  /// and the Rhythm beats that fell due (never past the target, and for a
+  /// time target never past its end). Advances the anchors to match.
+  SadhanaState _caughtUp(SadhanaState s, DateTime now) {
+    var next = s;
+    if (s.isTimeTarget && _lastTickAt != null) {
+      final add = now.difference(_lastTickAt!).inSeconds;
+      if (add > 0) {
+        _lastTickAt = _lastTickAt!.add(Duration(seconds: add));
+        final p = next.activeProgress;
+        next = next.withProgress(p.copyWith(
+            elapsedSeconds: p.elapsedSeconds + math.min(add, next.remainingSeconds)));
+      }
+    }
+    if (s.mode == CountMode.rhythm && _lastBeatAt != null) {
+      final end = _endsAt;
+      final until = s.isTimeTarget && end != null && end.isBefore(now) ? end : now;
+      final pace = _pace(s);
+      var beats = until.difference(_lastBeatAt!).inMicroseconds ~/ pace.inMicroseconds;
+      if (beats > 0) {
+        _lastBeatAt = _lastBeatAt!.add(pace * beats);
+        if (!s.isTimeTarget) beats = math.min(beats, s.targetCount - s.count);
+        final p = next.activeProgress;
+        next = next.withProgress(p.copyWith(count: p.count + math.max(0, beats)));
+      }
+    }
+    return next;
+  }
+
+  /// The app is back on screen: bring a running session up to the real clock
+  /// at once (the screen shows the right number immediately).
+  void _catchUp() {
+    final s = state;
+    if (!s.running || s.completed) return;
+    final next = _caughtUp(s, _now());
+    if (identical(next, s)) return;
+    if (next.completed) {
+      _finish(next);
+      return;
+    }
+    _emit(next);
+    // The anchors moved: re-align the pending tick and beat to them.
+    if (next.isTimeTarget) _scheduleClockTick();
+    if (next.mode == CountMode.rhythm) _scheduleBeat();
+  }
+
+  /// The target was reached: stop, and ring ONCE, in the app or on the phone.
+  void _finish(SadhanaState next) {
+    final ring = _shouldRing(_now());
+    if (ring == _Ring.phone) _heldAlarmAt = _endsAt!.add(alarmMargin);
+    _emit(next.copyWith(running: false));
+    if (ring == _Ring.app) _targetReached();
+  }
+
+  /// Who rings for a session that finishes now:
+  /// - the app is on screen and the phone's alarm has not rung yet: the app
+  ///   (the alarm is cancelled);
+  /// - in the background before the alarm: the phone's alarm (the app may not
+  ///   be allowed to make sound or vibrate from the background);
+  /// - the alarm has already rung (the app was away): nobody again;
+  /// - no alarm could be set: the app, unless it is very late.
+  _Ring _shouldRing(DateTime now) {
+    final end = _endsAt;
+    if (end == null) return _Ring.app; // not a scheduled finish
+    if (!_alarmScheduled) {
+      return now.difference(end) <= lateRingLimit ? _Ring.app : _Ring.none;
+    }
+    if (!now.isBefore(end.add(alarmMargin))) return _Ring.none;
+    return _foreground ? _Ring.app : _Ring.phone;
+  }
+
+  static bool _isForeground(AppLifecycleState s) =>
+      s == AppLifecycleState.resumed || s == AppLifecycleState.inactive;
+
+  void _onLifecycle(AppLifecycleState s) {
+    _foreground = _isForeground(s);
+    if (s == AppLifecycleState.resumed && !_disposed) _onResume();
+  }
+
+  /// Back on screen (unlocked, switched back, or opened from the alarm).
+  void _onResume() {
+    final held = _heldAlarmAt;
+    if (held != null) {
+      // Finished while away. If the phone has not rung yet, ring here instead.
+      _heldAlarmAt = null;
+      if (_now().isBefore(held)) _targetReached();
+      _setAlarm(null);
+    }
+    _catchUp();
+    if (!state.running) {
+      // An alarm that rang while away is still on screen: dismissing it also
+      // stops one that keeps ringing until dismissed.
+      unawaited(_scheduler
+          .dismissShown(sadhanaTimerGroup)
+          .catchError((Object _) {}));
+    } else if (state.alarmMayBeLate && _endsAt != null) {
+      // Exact alarms may have been allowed in the settings meanwhile.
+      _setAlarm(_endsAt!.add(alarmMargin));
     }
   }
 
-  /// Puts (or, with null, removes) the notification that rings at the end of a
-  /// time target even when the app's clock is not running.
+  /// How the finish alarm sounds, from the completion settings: the chosen
+  /// ringtone (or silent), vibration on/off, and ringing until dismissed when
+  /// the sound or the vibration is set to "Until stopped".
+  AlarmStyle _alarmStyle() {
+    final c = ref.read(completionSettingsProvider);
+    final ring = c.ringtoneEnabled;
+    final vib = c.vibrationEnabled;
+    return AlarmStyle(
+      sound: ring ? c.ringtone.rawName : null,
+      soundLabel: c.ringtone.localized(ref.read(l10nProvider)),
+      vibrate: vib,
+      insistent: (ring && c.soundRepeat == SoundRepeat.untilStopped) ||
+          (vib && c.vibrationRepeat == VibrationRepeat.untilStopped),
+    );
+  }
+
+  /// Puts (or, with null, removes) the phone alarm that rings at the end of a
+  /// session with a predictable end, even when the app is not running.
   Future<void> _setAlarm(DateTime? at) async {
     final gen = ++_alarmGen;
     if (at == null) {
       final had = _alarmScheduled;
       _alarmScheduled = false;
+      if (state.alarmMayBeLate) state = state.copyWith(alarmMayBeLate: false);
       if (had || gen == 1) {
         try {
           await _scheduler.replaceAlerts(sadhanaTimerGroup, const []);
@@ -619,12 +904,60 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
           when: at,
           title: l.sadhanaRingTitle,
           body: l.sadhanaRingBody,
+          style: _alarmStyle(),
         ),
       ]);
-      _alarmScheduled = gen == _alarmGen;
+      if (gen != _alarmGen || _disposed) return;
+      _alarmScheduled = true;
+      _persist();
+      await _checkAlarmPermissions(gen);
     } catch (e) {
       debugPrint('Could not schedule the session ring: $e');
     }
+  }
+
+  /// Exact alarms, then full-screen alarms: each is explained and offered
+  /// once. Without exact alarms the alarm still rings, a little flexibly, and
+  /// the screen says so; without full screen it is a heads-up notification.
+  Future<void> _checkAlarmPermissions(int gen) async {
+    final exact = await _scheduler.canScheduleExact();
+    if (gen != _alarmGen || _disposed) return;
+    if (state.alarmMayBeLate == exact) {
+      state = state.copyWith(alarmMayBeLate: !exact);
+    }
+    final l = ref.read(l10nProvider);
+    if (!exact) {
+      _offerOnce(askedExactKey, l.exactAlarmNotice, () async {
+        if (await _scheduler.requestExactAlarms() &&
+            !_disposed &&
+            _alarmScheduled &&
+            _endsAt != null) {
+          _setAlarm(_endsAt!.add(alarmMargin)); // now exact
+        }
+      });
+      return;
+    }
+    if (!await _scheduler.canUseFullScreen()) {
+      if (gen != _alarmGen || _disposed) return;
+      _offerOnce(askedFullScreenKey, l.fullScreenNotice,
+          () => unawaited(_scheduler.requestFullScreen()));
+    }
+  }
+
+  void _offerOnce(String key, String message, void Function() allow) {
+    if (AppStorage.settings.get(key) == true) return;
+    AppStorage.settings.put(key, true);
+    ref.read(sessionNoticeProvider.notifier).show(
+          message,
+          actionLabel: ref.read(l10nProvider).allowAction,
+          onAction: () {
+            try {
+              allow();
+            } catch (e) {
+              debugPrint('Permission request failed: $e');
+            }
+          },
+        );
   }
 
   void _cancelTimers() {
@@ -769,15 +1102,17 @@ final sadhanaSessionProvider =
   SadhanaSessionNotifier.new,
 );
 
-/// Tells the session the app is back on screen, so a time target that ran out
-/// (or moved on) while the phone was locked is caught up at once.
-class _ResumeWatcher with WidgetsBindingObserver {
-  _ResumeWatcher(this.onResume);
+/// Who rings when a session finishes (see `_shouldRing`).
+enum _Ring { app, phone, none }
 
-  final void Function() onResume;
+/// Tells the session when the app goes to the background and comes back, so
+/// a session that ran on (or out) while the phone was locked is caught up at
+/// once, and rings only once.
+class _ResumeWatcher with WidgetsBindingObserver {
+  _ResumeWatcher(this.onChange);
+
+  final void Function(AppLifecycleState state) onChange;
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) onResume();
-  }
+  void didChangeAppLifecycleState(AppLifecycleState state) => onChange(state);
 }

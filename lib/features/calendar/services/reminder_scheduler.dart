@@ -11,6 +11,7 @@ class ScheduledAlert {
     required this.body,
     this.repeatsDaily = false,
     this.gentle = false,
+    this.style,
   });
 
   /// Stable notification id.
@@ -28,6 +29,44 @@ class ScheduledAlert {
   /// An ordinary notification (the calendar's channel) rather than a loud
   /// alarm-style one.
   final bool gentle;
+
+  /// How a Sadhana completion alarm sounds (ringtone, vibration, repeating).
+  /// Null: the standard alarm/timer notification.
+  final AlarmStyle? style;
+}
+
+/// The sound and feel of a Sadhana completion alarm, from the user's
+/// completion settings. It always shows over the lock screen where the phone
+/// allows it (full-screen intent), like an alarm clock.
+class AlarmStyle {
+  const AlarmStyle({
+    required this.sound,
+    required this.soundLabel,
+    required this.vibrate,
+    required this.insistent,
+  });
+
+  /// Android raw resource name of the ringtone (e.g. `temple_bell`), or null
+  /// for a silent alarm.
+  final String? sound;
+
+  /// The ringtone's name, for the notification channel shown in the phone's
+  /// settings.
+  final String soundLabel;
+  final bool vibrate;
+
+  /// Keeps ringing (and vibrating) until dismissed.
+  final bool insistent;
+
+  @override
+  bool operator ==(Object other) =>
+      other is AlarmStyle &&
+      other.sound == sound &&
+      other.vibrate == vibrate &&
+      other.insistent == insistent;
+
+  @override
+  int get hashCode => Object.hash(sound, vibrate, insistent);
 }
 
 /// Groups of alerts (they share a notification payload, so a whole group can
@@ -73,6 +112,29 @@ abstract class ReminderScheduler {
   /// empty list just cancels them. Unless an alert is [ScheduledAlert.gentle]
   /// it rings loudly, on the alarm stream, like an alarm clock.
   Future<void> replaceAlerts(String group, List<ScheduledAlert> alerts);
+
+  /// Whether alarms ring at the exact second (Android's "Alarms & reminders"
+  /// permission). Otherwise they ring a little flexibly. True where there is
+  /// no such permission.
+  Future<bool> canScheduleExact();
+
+  /// Opens the phone's page to allow exact alarms. True if allowed after.
+  Future<bool> requestExactAlarms();
+
+  /// Whether an alarm may show full screen over the lock screen (Android 14+
+  /// asks for this). Otherwise it is a normal heads-up notification.
+  Future<bool> canUseFullScreen();
+
+  /// Opens the phone's page to allow full-screen alarms. True if allowed.
+  Future<bool> requestFullScreen();
+
+  /// The group of every alert notification the user taps (including the one
+  /// that launched the app).
+  Stream<String> get opened;
+
+  /// Removes alerts of [group] that have ALREADY rung and are still on screen
+  /// (which also stops one that keeps ringing until dismissed).
+  Future<void> dismissShown(String group);
 }
 
 /// Does nothing. Used where notifications are unsupported, and in tests.
@@ -94,6 +156,24 @@ class NoopReminderScheduler implements ReminderScheduler {
 
   @override
   Future<void> replaceAlerts(String group, List<ScheduledAlert> alerts) async {}
+
+  @override
+  Future<bool> canScheduleExact() async => true;
+
+  @override
+  Future<bool> requestExactAlarms() async => true;
+
+  @override
+  Future<bool> canUseFullScreen() async => true;
+
+  @override
+  Future<bool> requestFullScreen() async => true;
+
+  @override
+  Stream<String> get opened => const Stream.empty();
+
+  @override
+  Future<void> dismissShown(String group) async {}
 }
 
 /// `main()` overrides this with the real notification scheduler.

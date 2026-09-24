@@ -278,7 +278,6 @@ void main() {
         '(1 s ticks) gets to finish first and cancel it', () {
       expect(SadhanaSessionNotifier.alarmMargin, greaterThan(const Duration(seconds: 1)));
       expect(SadhanaSessionNotifier.alarmMargin, lessThanOrEqualTo(const Duration(seconds: 10)));
-      expect(SadhanaSessionNotifier.ringGrace, greaterThanOrEqualTo(const Duration(seconds: 2)));
     });
 
     tw('asks for the notification permission once, only for a time run',
@@ -349,9 +348,11 @@ void main() {
           clock.now.add(const Duration(seconds: 500)).add(SadhanaSessionNotifier.alarmMargin));
     });
 
-    tw('switching to a count target cancels it', (tester) async {
+    tw('switching to a count target cancels it (Tap: no predictable end)',
+        (tester) async {
       final c = make();
-      await begin(tester, c, CountMode.rhythm, CountScope.combined, seconds: 100);
+      await begin(tester, c, CountMode.tap, CountScope.combined, seconds: 100);
+      expect(ring(), isNotEmpty);
       notifier(c).setTargetType(TargetType.count);
       await tester.pump();
       expect(ring(), isEmpty);
