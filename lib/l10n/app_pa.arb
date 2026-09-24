@@ -1,6 +1,6 @@
 {
   "@@locale": "pa",
-  "@@x-machine-translation": "First-pass machine translation into Punjabi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a (completion repeat, Stop, keep-screen-on, Sadhana alarm) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Punjabi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen) are also first-pass and need native review.",
   "navHome": "ਹੋਮ",
   "navSadhana": "ਸਾਧਨਾ",
   "navCalendar": "ਕੈਲੰਡਰ",
@@ -545,5 +545,10 @@
   "channelSadhanaAlarmName": "ਸਾਧਨਾ ਅਲਾਰਮ · {sound}",
   "channelSadhanaAlarmSilentName": "ਸਾਧਨਾ ਅਲਾਰਮ · ਚੁੱਪ",
   "channelNoVibration": "ਕੰਪਨ ਨਹੀਂ",
-  "channelSadhanaAlarmDesc": "ਸਮੇਂ ਜਾਂ ਲੈਅ ਵਾਲਾ ਸੈਸ਼ਨ ਪੂਰਾ ਹੋਣ 'ਤੇ ਵੱਜਦਾ ਹੈ"
+  "channelSadhanaAlarmDesc": "ਸਮੇਂ ਜਾਂ ਲੈਅ ਵਾਲਾ ਸੈਸ਼ਨ ਪੂਰਾ ਹੋਣ 'ਤੇ ਵੱਜਦਾ ਹੈ",
+  "alarmScreenSadhanaTitle": "ਸਾਧਨਾ ਪੂਰੀ 🙏",
+  "alarmScreenTimerTitle": "ਟਾਈਮਰ ਪੂਰਾ ਹੋਇਆ",
+  "alarmScreenSunTitle": "ਸੂਰਜ ਅਲਾਰਮ",
+  "alarmScreenUnlock": "Sadho ਖੋਲ੍ਹਣ ਲਈ ਅਨਲੌਕ ਕਰੋ",
+  "alarmScreenUnlockHint": "ਐਪ ਦੇ ਬਾਕੀ ਹਿੱਸੇ ਲਈ ਫ਼ੋਨ ਅਨਲੌਕ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।"
 }

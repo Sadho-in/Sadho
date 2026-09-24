@@ -1,6 +1,6 @@
 {
   "@@locale": "gu",
-  "@@x-machine-translation": "First-pass machine translation into Gujarati, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a (completion repeat, Stop, keep-screen-on, Sadhana alarm) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Gujarati, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen) are also first-pass and need native review.",
   "navHome": "હોમ",
   "navSadhana": "સાધના",
   "navCalendar": "કેલેન્ડર",
@@ -545,5 +545,10 @@
   "channelSadhanaAlarmName": "સાધના એલાર્મ · {sound}",
   "channelSadhanaAlarmSilentName": "સાધના એલાર્મ · શાંત",
   "channelNoVibration": "કંપન નહીં",
-  "channelSadhanaAlarmDesc": "સમય કે લય વાળું સત્ર પૂરું થતાં વાગે છે"
+  "channelSadhanaAlarmDesc": "સમય કે લય વાળું સત્ર પૂરું થતાં વાગે છે",
+  "alarmScreenSadhanaTitle": "સાધના પૂર્ણ 🙏",
+  "alarmScreenTimerTitle": "ટાઇમર પૂરું થયું",
+  "alarmScreenSunTitle": "સૂર્ય એલાર્મ",
+  "alarmScreenUnlock": "Sadho ખોલવા માટે અનલૉક કરો",
+  "alarmScreenUnlockHint": "ઍપના બાકીના ભાગ માટે ફોન અનલૉક હોવો જોઈએ."
 }

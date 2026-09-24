@@ -2221,5 +2221,10 @@
   },
   "@allowAction": {
     "description": "Snackbar action that opens a permission page"
-  }
+  },
+  "alarmScreenSadhanaTitle": "Sadhana complete 🙏",
+  "alarmScreenTimerTitle": "Timer finished",
+  "alarmScreenSunTitle": "Sun alarm",
+  "alarmScreenUnlock": "Unlock to open Sadho",
+  "alarmScreenUnlockHint": "The rest of the app needs the phone unlocked."
 }

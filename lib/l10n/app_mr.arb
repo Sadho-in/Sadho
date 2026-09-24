@@ -1,6 +1,6 @@
 {
   "@@locale": "mr",
-  "@@x-machine-translation": "First-pass machine translation into Marathi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a (completion repeat, Stop, keep-screen-on, Sadhana alarm) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Marathi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen) are also first-pass and need native review.",
   "navHome": "होम",
   "navSadhana": "साधना",
   "navCalendar": "कॅलेंडर",
@@ -545,5 +545,10 @@
   "channelSadhanaAlarmName": "साधना अलार्म · {sound}",
   "channelSadhanaAlarmSilentName": "साधना अलार्म · शांत",
   "channelNoVibration": "कंपन नाही",
-  "channelSadhanaAlarmDesc": "वेळ किंवा लय असलेले सत्र पूर्ण झाल्यावर वाजते"
+  "channelSadhanaAlarmDesc": "वेळ किंवा लय असलेले सत्र पूर्ण झाल्यावर वाजते",
+  "alarmScreenSadhanaTitle": "साधना पूर्ण 🙏",
+  "alarmScreenTimerTitle": "टायमर संपला",
+  "alarmScreenSunTitle": "सूर्य अलार्म",
+  "alarmScreenUnlock": "Sadho उघडण्यासाठी अनलॉक करा",
+  "alarmScreenUnlockHint": "अ‍ॅपच्या उर्वरित भागासाठी फोन अनलॉक असावा लागतो."
 }

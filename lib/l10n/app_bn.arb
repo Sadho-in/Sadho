@@ -1,6 +1,6 @@
 {
   "@@locale": "bn",
-  "@@x-machine-translation": "First-pass machine translation into Bengali, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a (completion repeat, Stop, keep-screen-on, Sadhana alarm) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Bengali, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen) are also first-pass and need native review.",
   "navHome": "হোম",
   "navSadhana": "সাধনা",
   "navCalendar": "ক্যালেন্ডার",
@@ -545,5 +545,10 @@
   "channelSadhanaAlarmName": "সাধনা অ্যালার্ম · {sound}",
   "channelSadhanaAlarmSilentName": "সাধনা অ্যালার্ম · নীরব",
   "channelNoVibration": "কম্পন নেই",
-  "channelSadhanaAlarmDesc": "সময় বা ছন্দের সেশন শেষ হলে বাজে"
+  "channelSadhanaAlarmDesc": "সময় বা ছন্দের সেশন শেষ হলে বাজে",
+  "alarmScreenSadhanaTitle": "সাধনা সম্পূর্ণ 🙏",
+  "alarmScreenTimerTitle": "টাইমার শেষ",
+  "alarmScreenSunTitle": "সূর্য অ্যালার্ম",
+  "alarmScreenUnlock": "Sadho খুলতে আনলক করুন",
+  "alarmScreenUnlockHint": "অ্যাপের বাকি অংশের জন্য ফোন আনলক থাকতে হবে।"
 }

@@ -1932,4 +1932,20 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get channelSadhanaAlarmDesc => 'ಸಮಯ ಅಥವಾ ಲಯದ ಸೆಷನ್ ಮುಗಿದಾಗ ಮೊಳಗುತ್ತದೆ';
+
+  @override
+  String get alarmScreenSadhanaTitle => 'ಸಾಧನೆ ಪೂರ್ಣ 🙏';
+
+  @override
+  String get alarmScreenTimerTitle => 'ಟೈಮರ್ ಮುಗಿಯಿತು';
+
+  @override
+  String get alarmScreenSunTitle => 'ಸೂರ್ಯ ಅಲಾರಂ';
+
+  @override
+  String get alarmScreenUnlock => 'Sadho ತೆರೆಯಲು ಅನ್‌ಲಾಕ್ ಮಾಡಿ';
+
+  @override
+  String get alarmScreenUnlockHint =>
+      'ಆ್ಯಪ್‌ನ ಉಳಿದ ಭಾಗಕ್ಕೆ ಫೋನ್ ಅನ್‌ಲಾಕ್ ಆಗಿರಬೇಕು.';
 }

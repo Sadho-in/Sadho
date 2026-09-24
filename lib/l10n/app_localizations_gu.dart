@@ -1930,4 +1930,20 @@ class AppLocalizationsGu extends AppLocalizations {
   @override
   String get channelSadhanaAlarmDesc =>
       'સમય કે લય વાળું સત્ર પૂરું થતાં વાગે છે';
+
+  @override
+  String get alarmScreenSadhanaTitle => 'સાધના પૂર્ણ 🙏';
+
+  @override
+  String get alarmScreenTimerTitle => 'ટાઇમર પૂરું થયું';
+
+  @override
+  String get alarmScreenSunTitle => 'સૂર્ય એલાર્મ';
+
+  @override
+  String get alarmScreenUnlock => 'Sadho ખોલવા માટે અનલૉક કરો';
+
+  @override
+  String get alarmScreenUnlockHint =>
+      'ઍપના બાકીના ભાગ માટે ફોન અનલૉક હોવો જોઈએ.';
 }

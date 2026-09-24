@@ -3381,6 +3381,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rings when a timed or Rhythm session finishes'**
   String get channelSadhanaAlarmDesc;
+
+  /// No description provided for @alarmScreenSadhanaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sadhana complete 🙏'**
+  String get alarmScreenSadhanaTitle;
+
+  /// No description provided for @alarmScreenTimerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Timer finished'**
+  String get alarmScreenTimerTitle;
+
+  /// No description provided for @alarmScreenSunTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun alarm'**
+  String get alarmScreenSunTitle;
+
+  /// No description provided for @alarmScreenUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock to open Sadho'**
+  String get alarmScreenUnlock;
+
+  /// No description provided for @alarmScreenUnlockHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The rest of the app needs the phone unlocked.'**
+  String get alarmScreenUnlockHint;
 }
 
 class _AppLocalizationsDelegate

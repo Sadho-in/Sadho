@@ -8,6 +8,8 @@ import 'features/clock/application/sun_alarm_provider.dart';
 import 'features/onboarding/application/onboarding_provider.dart';
 import 'features/onboarding/presentation/onboarding_screen.dart';
 import 'features/profile/application/daily_reminder_provider.dart';
+import 'features/shell/application/alarm_screen_provider.dart';
+import 'features/shell/presentation/alarm_finished_screen.dart';
 import 'features/shell/presentation/app_shell.dart';
 import 'l10n/app_localizations.dart';
 import 'l10n/locale_provider.dart';
@@ -24,6 +26,8 @@ class SadhoApp extends ConsumerWidget {
     final palette = ref.watch(paletteProvider);
     final locale = ref.watch(localeProvider);
     final onboarded = ref.watch(onboardingCompleteProvider);
+    // Set only while an alarm has opened the app over the lock screen.
+    final alarm = ref.watch(alarmScreenProvider);
     return MaterialApp(
       title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
@@ -34,6 +38,21 @@ class SadhoApp extends ConsumerWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       home: onboarded ? const AppShell() : const OnboardingScreen(),
+      // Over the lock screen, the app itself is not shown at all (not painted,
+      // not touchable, not read by screen readers): only the finished screen.
+      // The same structure either way, so the app keeps its state.
+      builder: (context, child) => Stack(
+        children: [
+          Offstage(
+            offstage: alarm != null,
+            child: ExcludeSemantics(
+              excluding: alarm != null,
+              child: TickerMode(enabled: alarm == null, child: child!),
+            ),
+          ),
+          if (alarm != null) AlarmFinishedScreen(group: alarm),
+        ],
+      ),
     );
   }
 }

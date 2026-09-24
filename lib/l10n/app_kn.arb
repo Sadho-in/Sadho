@@ -1,6 +1,6 @@
 {
   "@@locale": "kn",
-  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a (completion repeat, Stop, keep-screen-on, Sadhana alarm) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen) are also first-pass and need native review.",
   "navHome": "ಮುಖಪುಟ",
   "navSadhana": "ಸಾಧನೆ",
   "navCalendar": "ಕ್ಯಾಲೆಂಡರ್",
@@ -545,5 +545,10 @@
   "channelSadhanaAlarmName": "ಸಾಧನಾ ಅಲಾರಂ · {sound}",
   "channelSadhanaAlarmSilentName": "ಸಾಧನಾ ಅಲಾರಂ · ಮೌನ",
   "channelNoVibration": "ಕಂಪನ ಇಲ್ಲ",
-  "channelSadhanaAlarmDesc": "ಸಮಯ ಅಥವಾ ಲಯದ ಸೆಷನ್ ಮುಗಿದಾಗ ಮೊಳಗುತ್ತದೆ"
+  "channelSadhanaAlarmDesc": "ಸಮಯ ಅಥವಾ ಲಯದ ಸೆಷನ್ ಮುಗಿದಾಗ ಮೊಳಗುತ್ತದೆ",
+  "alarmScreenSadhanaTitle": "ಸಾಧನೆ ಪೂರ್ಣ 🙏",
+  "alarmScreenTimerTitle": "ಟೈಮರ್ ಮುಗಿಯಿತು",
+  "alarmScreenSunTitle": "ಸೂರ್ಯ ಅಲಾರಂ",
+  "alarmScreenUnlock": "Sadho ತೆರೆಯಲು ಅನ್‌ಲಾಕ್ ಮಾಡಿ",
+  "alarmScreenUnlockHint": "ಆ್ಯಪ್‌ನ ಉಳಿದ ಭಾಗಕ್ಕೆ ಫೋನ್ ಅನ್‌ಲಾಕ್ ಆಗಿರಬೇಕು."
 }

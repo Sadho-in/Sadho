@@ -68,11 +68,15 @@ class AppShell extends ConsumerWidget {
     final profile = ref.watch(profileProvider);
     final l = context.l10n;
 
-    // Tapping the Sadhana alarm opens the finished session.
+    // Tapping an alarm opens where it belongs: the finished Sadhana
+    // session, or the Clock tab for the timer and the sun alarm.
     ref.listen<AsyncValue<String>>(_notificationOpenedProvider, (_, next) {
-      if (next.value == sadhanaTimerGroup) {
-        ref.read(shellTabProvider.notifier).select(ShellTab.sadhana);
-      }
+      final tab = switch (next.value) {
+        sadhanaTimerGroup => ShellTab.sadhana,
+        timerGroup || sunAlarmGroup => ShellTab.clock,
+        _ => null,
+      };
+      if (tab != null) ref.read(shellTabProvider.notifier).select(tab);
     });
 
     // Leaving the Sadhana tab silences a completion alert that is still

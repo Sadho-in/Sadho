@@ -1943,4 +1943,20 @@ class AppLocalizationsTe extends AppLocalizations {
   @override
   String get channelSadhanaAlarmDesc =>
       'సమయం లేదా లయ సెషన్ ముగిసినప్పుడు మోగుతుంది';
+
+  @override
+  String get alarmScreenSadhanaTitle => 'సాధన పూర్తి 🙏';
+
+  @override
+  String get alarmScreenTimerTitle => 'టైమర్ ముగిసింది';
+
+  @override
+  String get alarmScreenSunTitle => 'సూర్య అలారం';
+
+  @override
+  String get alarmScreenUnlock => 'Sadho తెరవడానికి అన్‌లాక్ చేయండి';
+
+  @override
+  String get alarmScreenUnlockHint =>
+      'యాప్‌లోని మిగతా భాగానికి ఫోన్ అన్‌లాక్ అయి ఉండాలి.';
 }

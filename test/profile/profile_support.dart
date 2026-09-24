@@ -15,7 +15,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:advance_calendar/features/clock/services/location_service.dart';
 
 import '../clock/clock_support.dart';
-import '../sadhana/test_support.dart' show FakePcmInput, FakeVoice, FakeVolume;
+import '../sadhana/test_support.dart'
+    show FakeLockScreen, FakePcmInput, FakeVoice, FakeVolume;
 
 export '../clock/clock_support.dart';
 
@@ -89,6 +90,7 @@ ProfileRig profileRig({
   Map<String, Object?> saved = const {},
   List<Override> extra = const [],
   bool resetStorage = true,
+  FakeLockScreen? lockScreen,
 }) {
   final clock = FakeClock(now ?? clockTestNow());
   final sched = scheduler ?? FakeScheduler();
@@ -100,6 +102,7 @@ ProfileRig profileRig({
     location: phone,
     saved: saved,
     resetStorage: resetStorage,
+    lockScreen: lockScreen,
     extra: [
       backupFilesProvider.overrideWithValue(f),
       // The Profile page shows a Sadhana setting, which builds the session and

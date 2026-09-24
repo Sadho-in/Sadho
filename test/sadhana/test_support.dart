@@ -13,6 +13,7 @@ import 'package:advance_calendar/features/sadhana/services/voice_counter_service
 import 'package:advance_calendar/features/sadhana/services/volume_button_service.dart';
 import 'package:advance_calendar/features/sadhana/voice/match_model.dart';
 import 'package:advance_calendar/features/sadhana/voice/mfcc.dart';
+import 'package:advance_calendar/features/shell/services/lock_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 
@@ -171,6 +172,58 @@ class FakeWakelock implements WakelockDriver {
   Future<void> disable() async {
     disables++;
     on = false;
+  }
+}
+
+/// Stand-in for the phone's lock screen (see MainActivity).
+class FakeLockScreen implements LockScreen {
+  FakeLockScreen({this.locked = false, this.launch, this.unlockSucceeds = true});
+
+  bool locked;
+
+  /// The alarm group the app is opened for (as MainActivity reports it).
+  String? launch;
+  bool unlockSucceeds;
+
+  /// Whether the app currently shows over the lock screen. Like the phone,
+  /// an alarm launch has already switched it on.
+  late bool showing = launch != null;
+
+  /// Every change, in order (true = on).
+  final changes = <bool>[];
+  int unlockRequests = 0;
+  void Function(String)? _onOpened;
+
+  @override
+  Future<String?> takeAlarmLaunch() async {
+    final g = launch;
+    launch = null;
+    return g;
+  }
+
+  @override
+  void listen(void Function(String group) onOpened) => _onOpened = onOpened;
+
+  /// An alarm opens the app while it is already running.
+  void alarmOpens(String group) {
+    showing = true;
+    _onOpened?.call(group);
+  }
+
+  @override
+  Future<void> setShowOverLockScreen(bool on) async {
+    showing = on;
+    changes.add(on);
+  }
+
+  @override
+  Future<bool> isLocked() async => locked;
+
+  @override
+  Future<bool> requestUnlock() async {
+    unlockRequests++;
+    if (unlockSucceeds) locked = false;
+    return !locked;
   }
 }
 
@@ -367,8 +420,10 @@ List<Override> testOverrides({
   FakeHaptics? haptics,
   FakeSound? sound,
   FakeWakelock? wakelock,
+  FakeLockScreen? lockScreen,
 }) =>
     [
+      lockScreenProvider.overrideWithValue(lockScreen ?? FakeLockScreen()),
       wakelockDriverProvider.overrideWithValue(wakelock ?? FakeWakelock()),
       pcmInputProvider.overrideWithValue(pcm ?? FakePcmInput()),
       // The real clock ticks on a timer, which widget tests must not leave

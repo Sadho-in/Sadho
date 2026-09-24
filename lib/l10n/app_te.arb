@@ -1,6 +1,6 @@
 {
   "@@locale": "te",
-  "@@x-machine-translation": "First-pass machine translation into Telugu, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a (completion repeat, Stop, keep-screen-on, Sadhana alarm) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Telugu, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen) are also first-pass and need native review.",
   "navHome": "హోమ్",
   "navSadhana": "సాధన",
   "navCalendar": "క్యాలెండర్",
@@ -545,5 +545,10 @@
   "channelSadhanaAlarmName": "సాధన అలారం · {sound}",
   "channelSadhanaAlarmSilentName": "సాధన అలారం · నిశ్శబ్దం",
   "channelNoVibration": "వైబ్రేషన్ లేదు",
-  "channelSadhanaAlarmDesc": "సమయం లేదా లయ సెషన్ ముగిసినప్పుడు మోగుతుంది"
+  "channelSadhanaAlarmDesc": "సమయం లేదా లయ సెషన్ ముగిసినప్పుడు మోగుతుంది",
+  "alarmScreenSadhanaTitle": "సాధన పూర్తి 🙏",
+  "alarmScreenTimerTitle": "టైమర్ ముగిసింది",
+  "alarmScreenSunTitle": "సూర్య అలారం",
+  "alarmScreenUnlock": "Sadho తెరవడానికి అన్‌లాక్ చేయండి",
+  "alarmScreenUnlockHint": "యాప్‌లోని మిగతా భాగానికి ఫోన్ అన్‌లాక్ అయి ఉండాలి."
 }

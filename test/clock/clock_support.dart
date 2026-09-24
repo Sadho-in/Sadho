@@ -10,7 +10,8 @@ import 'package:flutter_test/flutter_test.dart' show addTearDown;
 
 import '../calendar/calendar_support.dart';
 import '../sadhana/test_support.dart'
-    show FakeFeedback, FakeHaptics, FakeSound, FakeWakelock;
+    show FakeFeedback, FakeHaptics, FakeSound, FakeWakelock, FakeLockScreen;
+import 'package:advance_calendar/features/shell/services/lock_screen.dart';
 import 'package:advance_calendar/features/sadhana/services/screen_awake.dart';
 
 export '../calendar/calendar_support.dart';
@@ -88,6 +89,7 @@ List<Override> clockOverrides({
   FakeFeedback? feedback,
   FakeHaptics? haptics,
   FakeSound? sound,
+  FakeLockScreen? lockScreen,
 }) {
   final c = clock ?? FakeClock(clockTestNow());
   return [
@@ -95,6 +97,7 @@ List<Override> clockOverrides({
     nowProvider.overrideWith(() => FakeNow(c.now)),
     reminderSchedulerProvider.overrideWithValue(scheduler ?? FakeScheduler()),
     wakelockDriverProvider.overrideWithValue(FakeWakelock()),
+    lockScreenProvider.overrideWithValue(lockScreen ?? FakeLockScreen()),
     locationServiceProvider.overrideWithValue(
       location ?? FakeLocationService(state: LocationAccess.denied),
     ),
@@ -118,6 +121,7 @@ ProviderContainer clockContainer({
   FakeFeedback? feedback,
   FakeHaptics? haptics,
   FakeSound? sound,
+  FakeLockScreen? lockScreen,
   Map<String, Object?> saved = const {},
   List<Override> extra = const [],
   bool resetStorage = true,
@@ -134,6 +138,7 @@ ProviderContainer clockContainer({
         feedback: feedback,
         haptics: haptics,
         sound: sound,
+        lockScreen: lockScreen,
       ),
       ...extra,
     ],

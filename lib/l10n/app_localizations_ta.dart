@@ -1948,4 +1948,20 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get channelSadhanaAlarmDesc =>
       'நேர அல்லது தாள அமர்வு முடிந்ததும் ஒலிக்கும்';
+
+  @override
+  String get alarmScreenSadhanaTitle => 'சாதனா நிறைவு 🙏';
+
+  @override
+  String get alarmScreenTimerTitle => 'டைமர் முடிந்தது';
+
+  @override
+  String get alarmScreenSunTitle => 'சூரிய அலாரம்';
+
+  @override
+  String get alarmScreenUnlock => 'Sadho-வைத் திறக்கத் திறவுங்கள்';
+
+  @override
+  String get alarmScreenUnlockHint =>
+      'செயலியின் மற்ற பகுதிகளுக்கு தொலைபேசி திறக்கப்பட்டிருக்க வேண்டும்.';
 }
