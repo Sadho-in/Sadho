@@ -1,4 +1,4 @@
-package com.example.advance_calendar
+package `in`.sadho.app
 
 import android.app.ActivityManager
 import android.app.KeyguardManager

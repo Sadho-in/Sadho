@@ -1,9 +1,16 @@
 # Sadho
 
-A devotional companion app — **Sadho** (sadho.in). The Flutter project folder is
-still `advance_calendar`; the Android/iOS display name and the in-app title are
-**Sadho**. The package / bundle id is the Flutter default
-(`com.example.advance_calendar`) for now.
+A devotional companion app — **Sadho** (sadho.in). The Flutter project folder
+and Dart package are still `advance_calendar` (that name is internal only); the
+Android/iOS display name and the in-app title are **Sadho**.
+
+> **The app ID is permanent: `in.sadho.app`.** It is the Android
+> `applicationId` (android/app/build.gradle.kts) and the iOS bundle identifier
+> (ios/Runner.xcodeproj). Once the app is uploaded to Google Play or the App
+> Store it can NEVER change: a different ID is a different app, with no
+> updates, reviews or installs carried over. Do not rename it. The Kotlin
+> package (android/app/src/main/kotlin/in/sadho/app) and the Android
+> `namespace` match it; the Dart package name does not need to.
 
 ## Phase 1 — what is delivered
 
