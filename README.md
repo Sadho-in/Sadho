@@ -502,6 +502,10 @@ flutter run          # Android
 flutter test
 ```
 
+## QA
+
+integration_test/ is parked and not run. QA is device-free (flutter test only).
+
 ## TODO — later phases
 
 Clearly marked in code as `TODO(phase-2)` / `TODO(later-phase)`.
