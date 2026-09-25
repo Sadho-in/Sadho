@@ -3765,6 +3765,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Volume keys count, even with the screen off'**
   String get pressVolumeKeysScreenOff;
+
+  /// Switch in the Mala panel: count volume-key presses with the phone locked (Android only)
+  ///
+  /// In en, this message translates to:
+  /// **'Count with the screen off'**
+  String get malaScreenOffLabel;
+
+  /// Subtitle of the 'Count with the screen off' switch when it is on
+  ///
+  /// In en, this message translates to:
+  /// **'Lock the phone and keep pressing a volume key. A notification shows the count and rings at your target.'**
+  String get malaScreenOffOnSubtitle;
+
+  /// Subtitle of the 'Count with the screen off' switch when it is off
+  ///
+  /// In en, this message translates to:
+  /// **'Off: the volume keys count only while Sadho is open and the screen is on.'**
+  String get malaScreenOffOffSubtitle;
+
+  /// Help under the mode buttons for Mala when screen-off counting is on
+  ///
+  /// In en, this message translates to:
+  /// **'Press Start, then press either volume key to count, even with the phone locked and the screen off. Handy with eyes closed or the phone in a pocket.'**
+  String get modeHelpMalaScreenOff;
+
+  /// One-time explainer shown the first time Mala counts with the screen off (a short snackbar); its Check button opens Alarms & reliability, where the battery setting is
+  ///
+  /// In en, this message translates to:
+  /// **'Lock the phone and press a volume key to count. Set battery to Unrestricted.'**
+  String get malaScreenOffExplainer;
 }
 
 class _AppLocalizationsDelegate

@@ -5,11 +5,13 @@ import 'package:advance_calendar/features/sadhana/presentation/mantra_library_sc
 import 'package:advance_calendar/features/sadhana/presentation/voice_training_screen.dart';
 import 'package:advance_calendar/features/sadhana/presentation/widgets/mantra_form_sheet.dart';
 import 'package:advance_calendar/features/sadhana/services/feedback_service.dart';
+import 'package:advance_calendar/features/sadhana/services/mala_background_service.dart';
 import 'package:advance_calendar/features/shell/presentation/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../sadhana/test_support.dart' show FakeFeedback, seedTrainedVoice;
+import '../sadhana/test_support.dart'
+    show FakeFeedback, FakeMalaService, seedTrainedVoice;
 import 'audit_harness.dart';
 
 /// P4.3-2b: the Sadhana tab and everything it opens, in every language, text
@@ -84,6 +86,35 @@ void main() {
       session(rig).setMode(CountMode.voice);
       await settle(tester);
     });
+  });
+
+  // P5-4: the Mala panel ("Count with the screen off"), on and off, and a
+  // screen-off session counting (status line + the one-time explainer).
+  for (final on in [true, false]) {
+    testWidgets('Sadhana: Mala panel, screen-off ${on ? 'on' : 'off'}',
+        (tester) async {
+      await auditApp(tester, 'Mala panel (${on ? 'on' : 'off'})', (rig) async {
+        await openSadhana(tester, rig);
+        session(rig).setMode(CountMode.mala);
+        await settle(tester);
+        await reveal(tester, find.byKey(const ValueKey('mala-screen-off')));
+      }, saved: {'mala.screenOff': on}, extra: [
+        malaBackgroundServiceProvider.overrideWithValue(FakeMalaService()),
+      ]);
+    });
+  }
+
+  testWidgets('Sadhana: Mala counting with the screen off', (tester) async {
+    await auditApp(tester, 'Mala screen-off running', (rig) async {
+      await openSadhana(tester, rig);
+      session(rig)
+        ..setMode(CountMode.mala)
+        ..toggleRunning();
+      await settle(tester);
+      expect(rig.container.read(sadhanaSessionProvider).malaScreenOff, isTrue);
+    }, extra: [
+      malaBackgroundServiceProvider.overrideWithValue(FakeMalaService()),
+    ]);
   });
 
   testWidgets('Sadhana: counting, with the Stop button showing', (tester) async {

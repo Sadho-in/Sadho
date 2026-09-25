@@ -2473,5 +2473,25 @@
   "pressVolumeKeysScreenOff": "Volume keys count, even with the screen off",
   "@pressVolumeKeysScreenOff": {
     "description": "Mala mode status line while the background counter is running (keys count with the screen off too)"
+  },
+  "malaScreenOffLabel": "Count with the screen off",
+  "@malaScreenOffLabel": {
+    "description": "Switch in the Mala panel: count volume-key presses with the phone locked (Android only)"
+  },
+  "malaScreenOffOnSubtitle": "Lock the phone and keep pressing a volume key. A notification shows the count and rings at your target.",
+  "@malaScreenOffOnSubtitle": {
+    "description": "Subtitle of the 'Count with the screen off' switch when it is on"
+  },
+  "malaScreenOffOffSubtitle": "Off: the volume keys count only while Sadho is open and the screen is on.",
+  "@malaScreenOffOffSubtitle": {
+    "description": "Subtitle of the 'Count with the screen off' switch when it is off"
+  },
+  "modeHelpMalaScreenOff": "Press Start, then press either volume key to count, even with the phone locked and the screen off. Handy with eyes closed or the phone in a pocket.",
+  "@modeHelpMalaScreenOff": {
+    "description": "Help under the mode buttons for Mala when screen-off counting is on"
+  },
+  "malaScreenOffExplainer": "Lock the phone and press a volume key to count. Set battery to Unrestricted.",
+  "@malaScreenOffExplainer": {
+    "description": "One-time explainer shown the first time Mala counts with the screen off (a short snackbar); its Check button opens Alarms & reliability, where the battery setting is"
   }
 }

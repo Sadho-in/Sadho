@@ -288,11 +288,12 @@ panel only for Voice), target, vibration and ringtone, and the sankalp.
     - Mic permission is requested on first use (`permission_handler` on Android);
       if denied or unavailable the app explains why and switches to Tap (with a
       Settings shortcut if it was blocked for good).
-  - **Mala** — hardware **volume-button** counter (`volume_button_listener`).
-    Press Start, then every volume Up/Down press adds one count. On Android the
-    key event is consumed, so the system volume does not change and its volume
-    panel is not shown. Keys go back to normal when you pause, finish or switch
-    mode. Great for eyes-closed or in-pocket counting.
+  - **Mala** — hardware **volume-button** counter. Press Start, then every
+    volume Up/Down press adds one count; the volume never changes. On Android
+    it **counts with the screen off** (see "Mala with the screen off" below);
+    elsewhere, or with that switched off, `volume_button_listener` counts while
+    the app is on screen. Keys go back to normal when you pause, finish or
+    switch mode. Great for eyes-closed or in-pocket counting.
   - Voice is Android/iOS only and Mala is Android only; on other platforms
     (web, desktop, and iOS for Mala) choosing them shows a clear message and
     stays on Tap.
@@ -400,10 +401,55 @@ implemented in Dart in this repo (`lib/features/sadhana/voice/`).
 
 **Permissions**: Android `RECORD_AUDIO`, `ACCESS_COARSE_LOCATION`, `POST_NOTIFICATIONS`,
 `RECEIVE_BOOT_COMPLETED`, `SCHEDULE_EXACT_ALARM` (+ `VIBRATE`; `INTERNET` is only
-for Google Fonts); iOS `NSMicrophoneUsageDescription` and `NSLocationWhenInUseUsageDescription`. Voice needs no speech
+for Google Fonts), `FOREGROUND_SERVICE` + `FOREGROUND_SERVICE_SPECIAL_USE` (Mala
+with the screen off); iOS `NSMicrophoneUsageDescription` and `NSLocationWhenInUseUsageDescription`. Voice needs no speech
 recognition permission or service. The Android build enables core-library
 desugaring and registers the plugin's alarm and boot receivers (required by
 `flutter_local_notifications`).
+
+### Mala with the screen off (Android)
+
+Lock the phone and keep pressing a volume key: every press counts, and the
+phone rings at your target.
+
+- **How it works.** Start in Mala mode starts a native **foreground service**
+  (`MalaCounterService.kt`) that runs only while that Mala session runs. It
+  holds an active `MediaSession` set to "playing" with **remote playback**
+  through a `VolumeProviderCompat` (relative volume). Android then sends the
+  hardware volume keys to it, even with the screen off, and each key press is
+  one count. The real volume never changes, no audio is played (no silent-audio
+  trick), and with the app on screen the keys go straight to the service, so
+  no volume panel appears.
+- **The service owns the count while it runs** (it works even if Flutter is
+  paused or its engine is gone): count, target, session id and the Mala bucket
+  are kept in SharedPreferences. A held key counts once (auto-repeat is
+  ignored) and counts are at least 120 ms apart. An ongoing notification shows
+  "Mala · 54 / 108" live, with Pause/Resume and Stop.
+- **It is the ONLY Mala counter** while it runs (screen on or off), so nothing
+  counts twice. Counts go to the Mala bucket in Combined and Separate. The 108
+  milestone buzz still comes (from the service's own vibration when the app is
+  in the background). Pause, Reset, another mode or mantra, and a raised target
+  stop it; the notification's Pause/Stop update the app. On return or relaunch
+  the app catches up from the service, capped at the target.
+- **At the target**: with the app in the background the service posts the same
+  alarm-style notification as the Sadhana finish alarm (its channel, ringtone,
+  vibration, "Until stopped" = insistent, full screen over the lock screen,
+  opening the small "finished" screen, alarm group `mala`). With the app on
+  screen the in-app alert plays instead. It never rings twice. After the target
+  a press only gives a short tick, and the service gives the keys back 10
+  minutes later if nobody stops it.
+- **Settings**: "Count with the screen off" in the Mala panel (on by default,
+  Android only). The first screen-off session explains it once, with a button
+  to Alarms & reliability. If the service cannot start, the app says so once
+  and counts with `volume_button_listener` while it is on screen.
+- **Limits.** Set Sadho's battery use to **Unrestricted** (some phones, Samsung
+  especially, stop background work otherwise). Music or a video playing at the
+  same time takes the volume keys back (it is the more recent media session),
+  and some phones show a small volume panel when the screen is on and another
+  app is in front. The service starts only while Sadho is on screen (Android 12+
+  rule); if the phone kills Sadho completely, counting stops, and the count so
+  far is kept. Not available on iPhone (iOS cannot receive volume keys in the
+  background); no Bluetooth malas yet.
 
 ### Voice (Beta): how it works
 
@@ -502,6 +548,25 @@ flutter run          # Android
 flutter test
 ```
 
+## Release notes (Play Console)
+
+**Foreground service (specialUse) declaration — Mala with the screen off.**
+The manifest declares `MalaCounterService` with
+`foregroundServiceType="specialUse"` and the subtype
+"Counts mala repetitions from hardware volume-key presses while the screen is
+off, and rings when the user's target is reached (hands-free japa counter)."
+Before uploading a build with it, in Play Console → App content → **Foreground
+service permissions**:
+1. Tick **Special use** and paste the same description.
+2. Explain the user benefit: hands-free counting of japa/mala repetitions with
+   the phone locked (eyes closed, phone in a pocket); it runs only while the user
+   has started a Mala session, shows an ongoing notification with the count and
+   Pause/Stop, and stops when the session is paused, reset or finished.
+3. Add a **demo video** (a short screen recording, e.g. unlisted YouTube): choose
+   Mala, press Start, lock the phone, press a volume key several times, unlock and
+   show the count and the notification "Mala · n / target", then reach a small
+   target (e.g. 5) with the screen off and show it ringing.
+
 ## QA
 
 integration_test/ is parked and not run. QA is device-free (flutter test only).
@@ -517,10 +582,8 @@ Clearly marked in code as `TODO(phase-2)` / `TODO(later-phase)`.
       better accuracy in noise and on short mantras, and counting several reps in
       one breath (subsequence matching). Cloud recognition is deliberately not
       used. See `lib/features/sadhana/services/voice_counter_service.dart`.
-- [ ] **Mala, phase 2**: a true **Bluetooth smart-mala (BLE)** integration, and
-      counting with the screen off / app in the background via an Android
-      **foreground service** — both need the hardware and native work
-      (`lib/features/sadhana/services/volume_button_service.dart`).
+- [ ] **Mala, phase 2**: a true **Bluetooth smart-mala (BLE)** integration
+      (needs the hardware). Screen-off counting on Android is done (P5).
 - [ ] **OCR**: scan a page/gutka to add a mantra or paath to the library.
 - [ ] **Home-screen widgets** (Android/iOS).
 - [ ] **Profile, later**: real accounts (sign-in, working sign-out, change

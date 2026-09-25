@@ -2160,4 +2160,23 @@ class AppLocalizationsGu extends AppLocalizations {
   @override
   String get pressVolumeKeysScreenOff =>
       'વોલ્યુમ કી ગણે છે, સ્ક્રીન બંધ હોય ત્યારે પણ';
+
+  @override
+  String get malaScreenOffLabel => 'સ્ક્રીન બંધ હોય ત્યારે પણ ગણો';
+
+  @override
+  String get malaScreenOffOnSubtitle =>
+      'ફોન લૉક કરો અને વોલ્યુમ કી દબાવતા રહો. એક સૂચના ગણતરી બતાવે છે અને લક્ષ્ય પર વાગે છે.';
+
+  @override
+  String get malaScreenOffOffSubtitle =>
+      'બંધ: Sadho ખુલ્લું હોય અને સ્ક્રીન ચાલુ હોય ત્યારે જ વોલ્યુમ કી ગણે છે.';
+
+  @override
+  String get modeHelpMalaScreenOff =>
+      'Start દબાવો, પછી ગણવા માટે કોઈપણ વોલ્યુમ કી દબાવો, ફોન લૉક અને સ્ક્રીન બંધ હોય ત્યારે પણ. આંખો બંધ કરીને કે ફોન ખિસ્સામાં હોય ત્યારે ઉપયોગી.';
+
+  @override
+  String get malaScreenOffExplainer =>
+      'ફોન લૉક કરો, ગણવા વોલ્યુમ કી દબાવો. બૅટરી \'અપ્રતિબંધિત\' કરો.';
 }

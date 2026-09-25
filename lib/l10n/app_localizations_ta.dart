@@ -2179,4 +2179,23 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get pressVolumeKeysScreenOff =>
       'திரை அணைந்திருந்தாலும் ஒலியளவு விசைகள் எண்ணும்';
+
+  @override
+  String get malaScreenOffLabel => 'திரை அணைந்திருந்தாலும் எண்ணு';
+
+  @override
+  String get malaScreenOffOnSubtitle =>
+      'ஃபோனைப் பூட்டி ஒலியளவு விசையை அழுத்திக்கொண்டே இருங்கள். ஒரு அறிவிப்பு எண்ணிக்கையைக் காட்டி இலக்கில் ஒலிக்கும்.';
+
+  @override
+  String get malaScreenOffOffSubtitle =>
+      'அணைப்பு: Sadho திறந்து திரை இயங்கும்போது மட்டுமே ஒலியளவு விசைகள் எண்ணும்.';
+
+  @override
+  String get modeHelpMalaScreenOff =>
+      'Start அழுத்தி, பிறகு எண்ண ஏதேனும் ஒலியளவு விசையை அழுத்தவும், ஃபோன் பூட்டப்பட்டு திரை அணைந்திருந்தாலும். கண்களை மூடியோ ஃபோன் பையில் இருந்தாலோ வசதியானது.';
+
+  @override
+  String get malaScreenOffExplainer =>
+      'ஃபோனைப் பூட்டி, எண்ண ஒலியளவு விசையை அழுத்தவும். பேட்டரியை \'கட்டுப்பாடற்றது\' ஆக்கவும்.';
 }

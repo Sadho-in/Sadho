@@ -2163,4 +2163,23 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get pressVolumeKeysScreenOff =>
       'वॉल्यूम की गिनती करती हैं, स्क्रीन बंद होने पर भी';
+
+  @override
+  String get malaScreenOffLabel => 'स्क्रीन बंद होने पर भी गिनें';
+
+  @override
+  String get malaScreenOffOnSubtitle =>
+      'फ़ोन लॉक करें और वॉल्यूम की दबाते रहें। एक सूचना गिनती दिखाती है और लक्ष्य पर बजती है।';
+
+  @override
+  String get malaScreenOffOffSubtitle =>
+      'बंद: वॉल्यूम की केवल तभी गिनती हैं जब Sadho खुला हो और स्क्रीन चालू हो।';
+
+  @override
+  String get modeHelpMalaScreenOff =>
+      'Start दबाएं, फिर गिनने के लिए कोई भी वॉल्यूम की दबाएं, फ़ोन लॉक और स्क्रीन बंद होने पर भी। आँखें बंद करके या फ़ोन जेब में रखकर उपयोगी।';
+
+  @override
+  String get malaScreenOffExplainer =>
+      'फ़ोन लॉक करें, गिनने के लिए वॉल्यूम की दबाएं। बैटरी \'अप्रतिबंधित\' करें।';
 }

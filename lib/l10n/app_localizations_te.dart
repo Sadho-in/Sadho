@@ -2173,4 +2173,23 @@ class AppLocalizationsTe extends AppLocalizations {
   @override
   String get pressVolumeKeysScreenOff =>
       'స్క్రీన్ ఆఫ్‌లో ఉన్నా వాల్యూమ్ కీలు లెక్కిస్తాయి';
+
+  @override
+  String get malaScreenOffLabel => 'స్క్రీన్ ఆఫ్‌లో ఉన్నా లెక్కించు';
+
+  @override
+  String get malaScreenOffOnSubtitle =>
+      'ఫోన్ లాక్ చేసి వాల్యూమ్ కీ నొక్కుతూ ఉండండి. ఒక నోటిఫికేషన్ లెక్కను చూపి లక్ష్యం వద్ద మోగుతుంది.';
+
+  @override
+  String get malaScreenOffOffSubtitle =>
+      'ఆఫ్: Sadho తెరిచి, స్క్రీన్ ఆన్‌లో ఉన్నప్పుడే వాల్యూమ్ కీలు లెక్కిస్తాయి.';
+
+  @override
+  String get modeHelpMalaScreenOff =>
+      'Start నొక్కి, ఆపై లెక్కించడానికి ఏదైనా వాల్యూమ్ కీ నొక్కండి, ఫోన్ లాక్ అయి స్క్రీన్ ఆఫ్‌లో ఉన్నా కూడా. కళ్ళు మూసుకుని లేదా ఫోన్ జేబులో ఉన్నప్పుడు ఉపయోగకరం.';
+
+  @override
+  String get malaScreenOffExplainer =>
+      'ఫోన్ లాక్ చేసి, లెక్కించడానికి వాల్యూమ్ కీ నొక్కండి. బ్యాటరీని \'అనియంత్రితం\' చేయండి.';
 }

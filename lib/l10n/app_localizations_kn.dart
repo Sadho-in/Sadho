@@ -2161,4 +2161,23 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get pressVolumeKeysScreenOff =>
       'ಪರದೆ ಆಫ್ ಆಗಿದ್ದರೂ ವಾಲ್ಯೂಮ್ ಕೀಗಳು ಎಣಿಸುತ್ತವೆ';
+
+  @override
+  String get malaScreenOffLabel => 'ಪರದೆ ಆಫ್ ಆಗಿದ್ದರೂ ಎಣಿಸಿ';
+
+  @override
+  String get malaScreenOffOnSubtitle =>
+      'ಫೋನ್ ಲಾಕ್ ಮಾಡಿ ವಾಲ್ಯೂಮ್ ಕೀ ಒತ್ತುತ್ತಿರಿ. ಒಂದು ಅಧಿಸೂಚನೆ ಎಣಿಕೆಯನ್ನು ತೋರಿಸಿ ಗುರಿಯಲ್ಲಿ ರಿಂಗ್ ಆಗುತ್ತದೆ.';
+
+  @override
+  String get malaScreenOffOffSubtitle =>
+      'ಆಫ್: Sadho ತೆರೆದಿದ್ದು ಪರದೆ ಆನ್ ಆಗಿರುವಾಗ ಮಾತ್ರ ವಾಲ್ಯೂಮ್ ಕೀಗಳು ಎಣಿಸುತ್ತವೆ.';
+
+  @override
+  String get modeHelpMalaScreenOff =>
+      'Start ಒತ್ತಿ, ನಂತರ ಎಣಿಸಲು ಯಾವುದೇ ವಾಲ್ಯೂಮ್ ಕೀ ಒತ್ತಿ, ಫೋನ್ ಲಾಕ್ ಆಗಿ ಪರದೆ ಆಫ್ ಆಗಿದ್ದರೂ. ಕಣ್ಣು ಮುಚ್ಚಿ ಅಥವಾ ಫೋನ್ ಜೇಬಿನಲ್ಲಿದ್ದಾಗ ಅನುಕೂಲಕರ.';
+
+  @override
+  String get malaScreenOffExplainer =>
+      'ಫೋನ್ ಲಾಕ್ ಮಾಡಿ, ಎಣಿಸಲು ವಾಲ್ಯೂಮ್ ಕೀ ಒತ್ತಿ. ಬ್ಯಾಟರಿ \'ಅನಿರ್ಬಂಧಿತ\' ಮಾಡಿ.';
 }

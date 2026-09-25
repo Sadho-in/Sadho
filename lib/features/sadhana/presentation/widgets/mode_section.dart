@@ -4,9 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/rhythm_pace.dart';
 import '../../application/sadhana_session_provider.dart';
 import '../../application/selected_mantra_provider.dart';
+import '../../application/mala_settings_provider.dart';
 import '../../application/voice_training_provider.dart';
+import '../../services/mala_background_service.dart';
 import '../../services/voice_counter_service.dart';
 import '../../services/volume_button_service.dart';
+import 'mala_panel.dart';
 import 'mode_meta.dart';
 import 'rhythm_pace_editor.dart';
 import 'section_card.dart';
@@ -43,6 +46,9 @@ class ModeSection extends ConsumerWidget {
     final pace = ref.watch(sadhanaSessionProvider.select((s) => s.rhythmSeconds));
     final theme = Theme.of(context);
     final l = context.l10n;
+    // With the background service, Mala works with the screen off too.
+    final malaScreenOff = ref.read(malaBackgroundServiceProvider).isSupported &&
+        ref.watch(malaScreenOffProvider);
     // Modes this device can never run, said up front rather than after a tap.
     final unusable = [
       if (!ref.read(voiceCounterServiceProvider).isSupported)
@@ -75,7 +81,9 @@ class ModeSection extends ConsumerWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            _modeHelp(l)[mode]!,
+            mode == CountMode.mala && malaScreenOff
+                ? l.modeHelpMalaScreenOff
+                : _modeHelp(l)[mode]!,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -110,6 +118,7 @@ class ModeSection extends ConsumerWidget {
             const RhythmPaceEditor(),
           ],
           if (mode == CountMode.voice) const VoicePanel(),
+          if (mode == CountMode.mala) const MalaPanel(),
         ],
       ),
     );

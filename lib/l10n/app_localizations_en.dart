@@ -2159,4 +2159,23 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get pressVolumeKeysScreenOff =>
       'Volume keys count, even with the screen off';
+
+  @override
+  String get malaScreenOffLabel => 'Count with the screen off';
+
+  @override
+  String get malaScreenOffOnSubtitle =>
+      'Lock the phone and keep pressing a volume key. A notification shows the count and rings at your target.';
+
+  @override
+  String get malaScreenOffOffSubtitle =>
+      'Off: the volume keys count only while Sadho is open and the screen is on.';
+
+  @override
+  String get modeHelpMalaScreenOff =>
+      'Press Start, then press either volume key to count, even with the phone locked and the screen off. Handy with eyes closed or the phone in a pocket.';
+
+  @override
+  String get malaScreenOffExplainer =>
+      'Lock the phone and press a volume key to count. Set battery to Unrestricted.';
 }

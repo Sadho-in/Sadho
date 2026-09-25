@@ -17,6 +17,7 @@ import '../services/voice_counter_service.dart';
 import '../services/volume_button_service.dart';
 import '../voice/match_model.dart';
 import 'completion_settings_provider.dart';
+import 'mala_settings_provider.dart';
 import 'rhythm_pace.dart';
 import 'session_notice_provider.dart';
 import 'voice_training_provider.dart';
@@ -409,6 +410,9 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   /// Hive key: the "screen-off counting is not available" notice was shown.
   static const malaFallbackNoticeKey = 'sadhana.malaFallbackNoticed';
 
+  /// Hive key: the one-time "how screen-off Mala works" explainer was shown.
+  static const malaExplainedKey = 'sadhana.malaExplained';
+
   @override
   SadhanaState build() {
     // Read once here: ref cannot be used inside onDispose.
@@ -465,6 +469,15 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
       if (_malaActive) unawaited(_volume.stop());
       _malaUnlisten?.call();
       if (_malaServiceAlive) unawaited(_mala.stop());
+    });
+    // "Count with the screen off" switched while Mala runs: restart its input
+    // the new way (service or in-app listener).
+    ref.listen(malaScreenOffProvider, (_, _) {
+      final s = state;
+      if (s.running && s.mode == CountMode.mala) {
+        _emit(s.copyWith(running: false));
+        _emit(state.copyWith(running: true));
+      }
     });
     // The Strict ↔ Lenient slider takes effect on a listening session at once.
     ref.listen(voiceSensitivityProvider, (_, v) {
@@ -1153,7 +1166,7 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   Future<void> _startMala() async {
     _malaActive = true;
     final gen = ++_malaGen;
-    if (_mala.isSupported) {
+    if (_mala.isSupported && ref.read(malaScreenOffProvider)) {
       if (await _startMalaService(gen)) return;
       if (_disposed || !_malaActive || gen != _malaGen) return;
     }
@@ -1200,6 +1213,7 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
     if (ok) {
       state = state.copyWith(inputActive: true, malaScreenOff: true);
       _persist();
+      _explainMalaOnce();
       return true;
     }
     _malaVia = _MalaVia.none;
@@ -1219,6 +1233,17 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
     if (state.inputActive || state.malaScreenOff) {
       state = state.copyWith(inputActive: false, malaScreenOff: false);
     }
+  }
+
+  /// The first screen-off Mala session: how it works (lock the phone, press
+  /// either volume key) and that the battery should be Unrestricted, with a
+  /// button to "Alarms & reliability".
+  void _explainMalaOnce() {
+    if (AppStorage.settings.get(malaExplainedKey) == true) return;
+    AppStorage.settings.put(malaExplainedKey, true);
+    final l = ref.read(l10nProvider);
+    ref.read(sessionNoticeProvider.notifier).show(l.malaScreenOffExplainer,
+        actionLabel: l.alarmExplainerCheck, openAlarmsPage: true);
   }
 
   /// Screen-off counting could not start: said once, then the volume keys

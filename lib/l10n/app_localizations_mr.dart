@@ -2159,4 +2159,23 @@ class AppLocalizationsMr extends AppLocalizations {
   @override
   String get pressVolumeKeysScreenOff =>
       'व्हॉल्यूम की मोजतात, स्क्रीन बंद असतानाही';
+
+  @override
+  String get malaScreenOffLabel => 'स्क्रीन बंद असतानाही मोजा';
+
+  @override
+  String get malaScreenOffOnSubtitle =>
+      'फोन लॉक करा आणि व्हॉल्यूम की दाबत राहा. एक सूचना मोजणी दाखवते आणि लक्ष्यावर वाजते.';
+
+  @override
+  String get malaScreenOffOffSubtitle =>
+      'बंद: Sadho उघडे असताना आणि स्क्रीन चालू असतानाच व्हॉल्यूम की मोजतात.';
+
+  @override
+  String get modeHelpMalaScreenOff =>
+      'Start दाबा, मग मोजण्यासाठी कोणतीही व्हॉल्यूम की दाबा, फोन लॉक आणि स्क्रीन बंद असतानाही. डोळे मिटून किंवा फोन खिशात असताना उपयुक्त.';
+
+  @override
+  String get malaScreenOffExplainer =>
+      'फोन लॉक करा, मोजण्यासाठी व्हॉल्यूम की दाबा. बॅटरी \'अप्रतिबंधित\' करा.';
 }

@@ -2162,4 +2162,23 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get pressVolumeKeysScreenOff => 'ভলিউম কী গোনে, স্ক্রিন বন্ধ থাকলেও';
+
+  @override
+  String get malaScreenOffLabel => 'স্ক্রিন বন্ধ থাকলেও গুনুন';
+
+  @override
+  String get malaScreenOffOnSubtitle =>
+      'ফোন লক করুন এবং ভলিউম কী চাপতে থাকুন। একটি বিজ্ঞপ্তি গণনা দেখায় এবং লক্ষ্যে বাজে।';
+
+  @override
+  String get malaScreenOffOffSubtitle =>
+      'বন্ধ: Sadho খোলা ও স্ক্রিন চালু থাকলেই কেবল ভলিউম কী গোনে।';
+
+  @override
+  String get modeHelpMalaScreenOff =>
+      'Start চাপুন, তারপর গুনতে যেকোনো ভলিউম কী চাপুন, ফোন লক ও স্ক্রিন বন্ধ থাকলেও। চোখ বন্ধ করে বা ফোন পকেটে রেখে সুবিধাজনক।';
+
+  @override
+  String get malaScreenOffExplainer =>
+      'ফোন লক করে গুনতে ভলিউম কী চাপুন। ব্যাটারি \'অপ্রতিবন্ধিত\' করুন।';
 }

@@ -2162,4 +2162,23 @@ class AppLocalizationsPa extends AppLocalizations {
   @override
   String get pressVolumeKeysScreenOff =>
       'ਵਾਲੀਅਮ ਕੁੰਜੀਆਂ ਗਿਣਦੀਆਂ ਹਨ, ਸਕ੍ਰੀਨ ਬੰਦ ਹੋਣ \'ਤੇ ਵੀ';
+
+  @override
+  String get malaScreenOffLabel => 'ਸਕ੍ਰੀਨ ਬੰਦ ਹੋਣ \'ਤੇ ਵੀ ਗਿਣੋ';
+
+  @override
+  String get malaScreenOffOnSubtitle =>
+      'ਫ਼ੋਨ ਲਾਕ ਕਰੋ ਅਤੇ ਵਾਲੀਅਮ ਕੁੰਜੀ ਦਬਾਉਂਦੇ ਰਹੋ। ਇੱਕ ਸੂਚਨਾ ਗਿਣਤੀ ਦਿਖਾਉਂਦੀ ਹੈ ਅਤੇ ਟੀਚੇ \'ਤੇ ਵੱਜਦੀ ਹੈ।';
+
+  @override
+  String get malaScreenOffOffSubtitle =>
+      'ਬੰਦ: ਵਾਲੀਅਮ ਕੁੰਜੀਆਂ ਸਿਰਫ਼ ਉਦੋਂ ਗਿਣਦੀਆਂ ਹਨ ਜਦੋਂ Sadho ਖੁੱਲ੍ਹਾ ਹੋਵੇ ਅਤੇ ਸਕ੍ਰੀਨ ਚਾਲੂ ਹੋਵੇ।';
+
+  @override
+  String get modeHelpMalaScreenOff =>
+      'Start ਦਬਾਓ, ਫਿਰ ਗਿਣਨ ਲਈ ਕੋਈ ਵੀ ਵਾਲੀਅਮ ਕੁੰਜੀ ਦਬਾਓ, ਫ਼ੋਨ ਲਾਕ ਅਤੇ ਸਕ੍ਰੀਨ ਬੰਦ ਹੋਣ \'ਤੇ ਵੀ। ਅੱਖਾਂ ਬੰਦ ਕਰਕੇ ਜਾਂ ਫ਼ੋਨ ਜੇਬ ਵਿੱਚ ਰੱਖ ਕੇ ਸੌਖਾ।';
+
+  @override
+  String get malaScreenOffExplainer =>
+      'ਫ਼ੋਨ ਲਾਕ ਕਰੋ, ਗਿਣਨ ਲਈ ਵਾਲੀਅਮ ਕੁੰਜੀ ਦਬਾਓ। ਬੈਟਰੀ \'ਅਪ੍ਰਤਿਬੰਧਿਤ\' ਕਰੋ।';
 }

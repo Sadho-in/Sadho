@@ -4,10 +4,12 @@ import 'package:volume_button_listener/volume_button_listener.dart';
 
 /// Hardware volume-button counting for Mala mode.
 ///
-/// TODO(later-phase): true Bluetooth smart-mala (BLE) support, and counting
-/// with the screen off / app in the background via a foreground service.
-/// Both need the physical device and native work. Until then, volume keys are
-/// only captured while the app is in the foreground.
+/// This is the in-app listener: it counts only while the app is on screen.
+/// On Android, Mala normally counts through the background service instead
+/// (mala_background_service.dart), which works with the screen off; this is
+/// its fallback, and the counter where there is no such service.
+///
+/// TODO(later-phase): true Bluetooth smart-mala (BLE) support.
 abstract class VolumeButtonService {
   /// False where volume keys cannot be captured (web, desktop, iOS).
   bool get isSupported;
