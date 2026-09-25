@@ -115,6 +115,31 @@ Future<void> selectTab(WidgetTester tester, ProfileRig rig, ShellTab tab) async 
 BuildContext appContext(WidgetTester tester) =>
     tester.element(find.byType(AppShell, skipOffstage: false));
 
+/// Scrolls the (vertical) scrollable holding [finder] until it is built and on
+/// screen. Returns [finder] for chaining into a tap.
+Future<Finder> reveal(WidgetTester tester, Finder finder) async {
+  if (finder.evaluate().isNotEmpty) {
+    await tester.ensureVisible(finder.first);
+    await settle(tester);
+    return finder;
+  }
+  final vertical = find.byWidgetPredicate(
+      (w) => w is Scrollable && w.axisDirection == AxisDirection.down);
+  for (var i = 0; i < vertical.evaluate().length; i++) {
+    try {
+      await tester.scrollUntilVisible(finder, 150,
+          scrollable: vertical.at(i), maxScrolls: 80);
+      await settle(tester);
+      return finder;
+    } on StateError {
+      // Not in this one: try the next scrollable.
+    } on TestFailure {
+      // Ditto.
+    }
+  }
+  throw StateError('Could not scroll to $finder');
+}
+
 /// Lets animations finish without waiting on the clocks that tick forever
 /// (big clock, timer, stopwatch), which `pumpAndSettle` would.
 Future<void> settle(WidgetTester tester) async {
@@ -152,14 +177,15 @@ Future<List<String>> collectLayoutFailures(
   // Every error as it is reported (the binding would keep only a summary once
   // there is more than one, and print pages per overflow). They are all
   // reported through the returned list instead.
-  final reported = <FlutterErrorDetails>[];
+  // Described as they come, while the widgets named are still mounted.
+  final reported = <String>[];
   final original = FlutterError.onError;
-  FlutterError.onError = reported.add;
+  FlutterError.onError = (d) => reported.add(_describe(d));
   void check(AuditCombo c, String when) {
     final e = tester.takeException();
     if (e == null && reported.isEmpty) return;
     final lines = {
-      for (final d in reported) _firstLine(d.exceptionAsString()),
+      ...reported,
       if (reported.isEmpty) _firstLine(e!),
     };
     reported.clear();
@@ -252,6 +278,30 @@ Future<void> _scrollThrough(WidgetTester tester) async {
     if (p.hasContentDimensions) p.jumpTo(start);
     await tester.pump();
   }
+}
+
+/// The error's first lines plus, for an overflow, which widget it was (its
+/// creator chain), so the report points at the code to fix.
+String _describe(FlutterErrorDetails d) {
+  final head = _firstLine(d.exceptionAsString());
+  final String full;
+  try {
+    full = d.toDiagnosticsNode().toStringDeep(minLevel: DiagnosticLevel.debug);
+  } catch (_) {
+    return head;
+  }
+  final at = full.indexOf('creator: ');
+  if (at < 0) return head;
+  final chain = full
+      .substring(at + 9)
+      .split('\n')
+      .take(3)
+      .join(' ')
+      .replaceAll(RegExp(r'\s+'), ' ')
+      .split(' ← ')
+      .take(9)
+      .join(' ← ');
+  return '$head [$chain]';
 }
 
 String _firstLine(Object e) {

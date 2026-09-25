@@ -275,10 +275,12 @@ class _PlanCard extends ConsumerWidget {
                   color: scheme.onSurfaceVariant,
                 ),
                 const SizedBox(width: 6),
-                Text(
-                  l.titledDaysTag(plan.kind.localized(l), plan.totalDays),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: scheme.onSurfaceVariant,
+                Flexible(
+                  child: Text(
+                    l.titledDaysTag(plan.kind.localized(l), plan.totalDays),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
                   ),
                 ),
               ],
