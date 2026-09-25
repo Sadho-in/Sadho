@@ -52,6 +52,9 @@ class AppDates {
   /// A date with the year: "Sep 21, 2026".
   String mediumDate(DateTime d) => DateFormat.yMMMd(tag).format(d);
 
+  /// A date and a clock time: "Sep 21, 2026 5:05 PM".
+  String dateTime(DateTime d) => DateFormat.yMMMd(tag).add_jm().format(d);
+
   /// The month and year: "September 2026".
   String monthYear(DateTime d) => DateFormat.yMMMM(tag).format(d);
 }

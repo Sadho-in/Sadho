@@ -2061,4 +2061,60 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get summaryNotSet => 'Not set';
+
+  @override
+  String get clockToolNotepadTitle => 'Notepad';
+
+  @override
+  String get clockToolNotepadSubtitle => 'Notes, kept on this phone';
+
+  @override
+  String get notesSearchHint => 'Search notes';
+
+  @override
+  String get notesEmpty => 'No notes yet. Tap + to write one.';
+
+  @override
+  String notesNoMatch(String query) {
+    return 'No notes match “$query”.';
+  }
+
+  @override
+  String get noteNew => 'New note';
+
+  @override
+  String get noteEdit => 'Note';
+
+  @override
+  String get noteTitleHint => 'Title (optional)';
+
+  @override
+  String get noteTextHint => 'Write here…';
+
+  @override
+  String get noteUntitled => 'Empty note';
+
+  @override
+  String noteCreatedAt(String when) {
+    return 'Created $when';
+  }
+
+  @override
+  String noteEditedAt(String when) {
+    return 'Edited $when';
+  }
+
+  @override
+  String get noteSavedAsYouType => 'Saved as you type';
+
+  @override
+  String get noteDelete => 'Delete note';
+
+  @override
+  String get noteDeleteQuestion => 'Delete this note?';
+
+  @override
+  String noteDeleteBody(String title) {
+    return '“$title” will be removed from this phone. This cannot be undone.';
+  }
 }

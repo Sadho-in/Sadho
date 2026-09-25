@@ -8,7 +8,8 @@ enum ClockTool {
   worldClock('World clock', 'Amritsar, Haridwar, London and more', Icons.public),
   timer('Sadhana & vrat timer', 'Aarti, Chalisa, Path, Havan, or until sunset',
       Icons.hourglass_bottom),
-  stopwatch('Paath stopwatch', 'Start, stop and lap', Icons.timer_outlined);
+  stopwatch('Paath stopwatch', 'Start, stop and lap', Icons.timer_outlined),
+  notepad('Notepad', 'Notes, kept on this phone', Icons.sticky_note_2_outlined);
 
   const ClockTool(this.title, this.subtitle, this.icon);
   final String title;

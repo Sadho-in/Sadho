@@ -2327,5 +2327,89 @@
   "summaryNotSet": "Not set",
   "@summaryNotSet": {
     "description": "Closed Sankalp card summary when no intention is written"
+  },
+  "clockToolNotepadTitle": "Notepad",
+  "@clockToolNotepadTitle": {
+    "description": "Clock tab tool: the notepad"
+  },
+  "clockToolNotepadSubtitle": "Notes, kept on this phone",
+  "@clockToolNotepadSubtitle": {
+    "description": "Under the Notepad tool on the Clock tab"
+  },
+  "notesSearchHint": "Search notes",
+  "@notesSearchHint": {
+    "description": "Search box on the notes list"
+  },
+  "notesEmpty": "No notes yet. Tap + to write one.",
+  "@notesEmpty": {
+    "description": "The notes list when there are no notes"
+  },
+  "notesNoMatch": "No notes match “{query}”.",
+  "@notesNoMatch": {
+    "description": "The notes list when the search finds nothing",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "noteNew": "New note",
+  "@noteNew": {
+    "description": "Button / page title: write a new note"
+  },
+  "noteEdit": "Note",
+  "@noteEdit": {
+    "description": "Page title while editing a note"
+  },
+  "noteTitleHint": "Title (optional)",
+  "@noteTitleHint": {
+    "description": "The title box of a note"
+  },
+  "noteTextHint": "Write here…",
+  "@noteTextHint": {
+    "description": "The text box of a note"
+  },
+  "noteUntitled": "Empty note",
+  "@noteUntitled": {
+    "description": "A note with no title and no text, in the list"
+  },
+  "noteCreatedAt": "Created {when}",
+  "@noteCreatedAt": {
+    "description": "When a note was written",
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "noteEditedAt": "Edited {when}",
+  "@noteEditedAt": {
+    "description": "When a note was last changed",
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "noteSavedAsYouType": "Saved as you type",
+  "@noteSavedAsYouType": {
+    "description": "Small note in the note editor: there is no Save button"
+  },
+  "noteDelete": "Delete note",
+  "@noteDelete": {
+    "description": "Tooltip of the delete button on a note"
+  },
+  "noteDeleteQuestion": "Delete this note?",
+  "@noteDeleteQuestion": {
+    "description": "Title of the dialog before deleting a note"
+  },
+  "noteDeleteBody": "“{title}” will be removed from this phone. This cannot be undone.",
+  "@noteDeleteBody": {
+    "description": "Body of the dialog before deleting a note",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
   }
 }

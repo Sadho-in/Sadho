@@ -1,6 +1,6 @@
 {
   "@@locale": "ta",
-  "@@x-machine-translation": "First-pass machine translation into Tamil, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Tamil, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review.",
   "navHome": "முகப்பு",
   "navSadhana": "சாதனை",
   "navCalendar": "காலண்டர்",
@@ -582,5 +582,21 @@
   "summaryVibrationOn": "அதிர்வு இயக்கத்தில்",
   "summaryVibrationOff": "அதிர்வு முடக்கத்தில்",
   "summarySoundOff": "ஒலி முடக்கத்தில்",
-  "summaryNotSet": "அமைக்கப்படவில்லை"
+  "summaryNotSet": "அமைக்கப்படவில்லை",
+  "clockToolNotepadTitle": "குறிப்பேடு",
+  "clockToolNotepadSubtitle": "குறிப்புகள், இந்த ஃபோனிலேயே",
+  "notesSearchHint": "குறிப்புகளைத் தேடு",
+  "notesEmpty": "இன்னும் குறிப்புகள் இல்லை. எழுத + தட்டவும்.",
+  "notesNoMatch": "“{query}” உடன் பொருந்தும் குறிப்பு இல்லை.",
+  "noteNew": "புதிய குறிப்பு",
+  "noteEdit": "குறிப்பு",
+  "noteTitleHint": "தலைப்பு (விருப்பம்)",
+  "noteTextHint": "இங்கே எழுதுங்கள்…",
+  "noteUntitled": "காலியான குறிப்பு",
+  "noteCreatedAt": "உருவாக்கியது {when}",
+  "noteEditedAt": "திருத்தியது {when}",
+  "noteSavedAsYouType": "தட்டச்சு செய்யும்போதே சேமிக்கப்படும்",
+  "noteDelete": "குறிப்பை நீக்கு",
+  "noteDeleteQuestion": "இந்தக் குறிப்பை நீக்கவா?",
+  "noteDeleteBody": "“{title}” இந்த ஃபோனிலிருந்து நீக்கப்படும். இதைத் திரும்பப் பெற முடியாது."
 }

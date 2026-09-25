@@ -1,6 +1,6 @@
 {
   "@@locale": "pa",
-  "@@x-machine-translation": "First-pass machine translation into Punjabi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Punjabi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review.",
   "navHome": "ਹੋਮ",
   "navSadhana": "ਸਾਧਨਾ",
   "navCalendar": "ਕੈਲੰਡਰ",
@@ -582,5 +582,21 @@
   "summaryVibrationOn": "ਕੰਬਣੀ ਚਾਲੂ",
   "summaryVibrationOff": "ਕੰਬਣੀ ਬੰਦ",
   "summarySoundOff": "ਆਵਾਜ਼ ਬੰਦ",
-  "summaryNotSet": "ਤੈਅ ਨਹੀਂ"
+  "summaryNotSet": "ਤੈਅ ਨਹੀਂ",
+  "clockToolNotepadTitle": "ਨੋਟਪੈਡ",
+  "clockToolNotepadSubtitle": "ਨੋਟ, ਇਸੇ ਫ਼ੋਨ 'ਤੇ ਸੰਭਾਲੇ",
+  "notesSearchHint": "ਨੋਟ ਖੋਜੋ",
+  "notesEmpty": "ਹਾਲੇ ਕੋਈ ਨੋਟ ਨਹੀਂ। ਲਿਖਣ ਲਈ + ਦਬਾਓ।",
+  "notesNoMatch": "“{query}” ਨਾਲ ਕੋਈ ਨੋਟ ਮੇਲ ਨਹੀਂ ਖਾਂਦਾ।",
+  "noteNew": "ਨਵਾਂ ਨੋਟ",
+  "noteEdit": "ਨੋਟ",
+  "noteTitleHint": "ਸਿਰਲੇਖ (ਵਿਕਲਪਿਕ)",
+  "noteTextHint": "ਇੱਥੇ ਲਿਖੋ…",
+  "noteUntitled": "ਖਾਲੀ ਨੋਟ",
+  "noteCreatedAt": "ਬਣਾਇਆ {when}",
+  "noteEditedAt": "ਬਦਲਿਆ {when}",
+  "noteSavedAsYouType": "ਲਿਖਦੇ ਸਮੇਂ ਸੰਭਾਲਿਆ ਜਾਂਦਾ ਹੈ",
+  "noteDelete": "ਨੋਟ ਮਿਟਾਓ",
+  "noteDeleteQuestion": "ਕੀ ਇਹ ਨੋਟ ਮਿਟਾਉਣਾ ਹੈ?",
+  "noteDeleteBody": "“{title}” ਇਸ ਫ਼ੋਨ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਜਾਵੇਗਾ। ਇਹ ਵਾਪਸ ਨਹੀਂ ਹੋ ਸਕਦਾ।"
 }

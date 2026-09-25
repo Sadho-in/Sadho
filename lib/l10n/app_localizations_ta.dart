@@ -2081,4 +2081,60 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get summaryNotSet => 'அமைக்கப்படவில்லை';
+
+  @override
+  String get clockToolNotepadTitle => 'குறிப்பேடு';
+
+  @override
+  String get clockToolNotepadSubtitle => 'குறிப்புகள், இந்த ஃபோனிலேயே';
+
+  @override
+  String get notesSearchHint => 'குறிப்புகளைத் தேடு';
+
+  @override
+  String get notesEmpty => 'இன்னும் குறிப்புகள் இல்லை. எழுத + தட்டவும்.';
+
+  @override
+  String notesNoMatch(String query) {
+    return '“$query” உடன் பொருந்தும் குறிப்பு இல்லை.';
+  }
+
+  @override
+  String get noteNew => 'புதிய குறிப்பு';
+
+  @override
+  String get noteEdit => 'குறிப்பு';
+
+  @override
+  String get noteTitleHint => 'தலைப்பு (விருப்பம்)';
+
+  @override
+  String get noteTextHint => 'இங்கே எழுதுங்கள்…';
+
+  @override
+  String get noteUntitled => 'காலியான குறிப்பு';
+
+  @override
+  String noteCreatedAt(String when) {
+    return 'உருவாக்கியது $when';
+  }
+
+  @override
+  String noteEditedAt(String when) {
+    return 'திருத்தியது $when';
+  }
+
+  @override
+  String get noteSavedAsYouType => 'தட்டச்சு செய்யும்போதே சேமிக்கப்படும்';
+
+  @override
+  String get noteDelete => 'குறிப்பை நீக்கு';
+
+  @override
+  String get noteDeleteQuestion => 'இந்தக் குறிப்பை நீக்கவா?';
+
+  @override
+  String noteDeleteBody(String title) {
+    return '“$title” இந்த ஃபோனிலிருந்து நீக்கப்படும். இதைத் திரும்பப் பெற முடியாது.';
+  }
 }

@@ -1,6 +1,6 @@
 {
   "@@locale": "mr",
-  "@@x-machine-translation": "First-pass machine translation into Marathi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Marathi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review.",
   "navHome": "होम",
   "navSadhana": "साधना",
   "navCalendar": "कॅलेंडर",
@@ -582,5 +582,21 @@
   "summaryVibrationOn": "कंपन सुरू",
   "summaryVibrationOff": "कंपन बंद",
   "summarySoundOff": "आवाज बंद",
-  "summaryNotSet": "ठरवलेले नाही"
+  "summaryNotSet": "ठरवलेले नाही",
+  "clockToolNotepadTitle": "नोटपॅड",
+  "clockToolNotepadSubtitle": "नोंदी, याच फोनवर जतन",
+  "notesSearchHint": "नोंदी शोधा",
+  "notesEmpty": "अजून कोणतीही नोंद नाही. लिहिण्यासाठी + दाबा.",
+  "notesNoMatch": "“{query}” शी जुळणारी नोंद नाही.",
+  "noteNew": "नवीन नोंद",
+  "noteEdit": "नोंद",
+  "noteTitleHint": "शीर्षक (ऐच्छिक)",
+  "noteTextHint": "इथे लिहा…",
+  "noteUntitled": "रिकामी नोंद",
+  "noteCreatedAt": "तयार {when}",
+  "noteEditedAt": "बदल {when}",
+  "noteSavedAsYouType": "लिहिताना जतन होते",
+  "noteDelete": "नोंद हटवा",
+  "noteDeleteQuestion": "ही नोंद हटवायची?",
+  "noteDeleteBody": "“{title}” या फोनवरून काढली जाईल. हे परत करता येणार नाही."
 }

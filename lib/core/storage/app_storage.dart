@@ -13,12 +13,14 @@ class AppStorage {
   static const mantraOverridesBoxName = 'mantra_overrides';
   static const voiceTemplatesBoxName = 'voice_templates';
   static const calendarMarksBoxName = 'calendar_marks';
+  static const notesBoxName = 'notes';
 
   static late KvStore _settings;
   static late KvStore _customMantras;
   static late KvStore _mantraOverrides;
   static late KvStore _voiceTemplates;
   static late KvStore _calendarMarks;
+  static late KvStore _notes;
 
   /// Initialises Hive for Flutter and opens every box the app uses.
   static Future<void> init() async {
@@ -34,6 +36,7 @@ class AppStorage {
         HiveKvStore(await Hive.openBox(mantraOverridesBoxName));
     _voiceTemplates = HiveKvStore(await Hive.openBox(voiceTemplatesBoxName));
     _calendarMarks = HiveKvStore(await Hive.openBox(calendarMarksBoxName));
+    _notes = HiveKvStore(await Hive.openBox(notesBoxName));
   }
 
   /// Swaps in empty in-memory stores. For tests only.
@@ -43,6 +46,7 @@ class AppStorage {
     _mantraOverrides = MemoryKvStore();
     _voiceTemplates = MemoryKvStore();
     _calendarMarks = MemoryKvStore();
+    _notes = MemoryKvStore();
   }
 
   /// Every store by box name (backup, restore and "delete everything").
@@ -52,6 +56,7 @@ class AppStorage {
         mantraOverridesBoxName: _mantraOverrides,
         voiceTemplatesBoxName: _voiceTemplates,
         calendarMarksBoxName: _calendarMarks,
+        notesBoxName: _notes,
       };
 
   /// Erases everything the app has saved on this phone.
@@ -77,4 +82,7 @@ class AppStorage {
 
   /// Calendar marks, keyed by mark id.
   static KvStore get calendarMarks => _calendarMarks;
+
+  /// Notepad notes, keyed by note id.
+  static KvStore get notes => _notes;
 }

@@ -2075,4 +2075,60 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get summaryNotSet => 'నిర్ణయించలేదు';
+
+  @override
+  String get clockToolNotepadTitle => 'నోట్‌ప్యాడ్';
+
+  @override
+  String get clockToolNotepadSubtitle => 'నోట్స్, ఈ ఫోన్‌లోనే';
+
+  @override
+  String get notesSearchHint => 'నోట్స్ వెతకండి';
+
+  @override
+  String get notesEmpty => 'ఇంకా నోట్స్ లేవు. రాయడానికి + నొక్కండి.';
+
+  @override
+  String notesNoMatch(String query) {
+    return '“$query” కి సరిపోయే నోట్ లేదు.';
+  }
+
+  @override
+  String get noteNew => 'కొత్త నోట్';
+
+  @override
+  String get noteEdit => 'నోట్';
+
+  @override
+  String get noteTitleHint => 'శీర్షిక (ఐచ్ఛికం)';
+
+  @override
+  String get noteTextHint => 'ఇక్కడ రాయండి…';
+
+  @override
+  String get noteUntitled => 'ఖాళీ నోట్';
+
+  @override
+  String noteCreatedAt(String when) {
+    return 'సృష్టించినది $when';
+  }
+
+  @override
+  String noteEditedAt(String when) {
+    return 'మార్చినది $when';
+  }
+
+  @override
+  String get noteSavedAsYouType => 'రాస్తున్నప్పుడే సేవ్ అవుతుంది';
+
+  @override
+  String get noteDelete => 'నోట్ తొలగించు';
+
+  @override
+  String get noteDeleteQuestion => 'ఈ నోట్ తొలగించాలా?';
+
+  @override
+  String noteDeleteBody(String title) {
+    return '“$title” ఈ ఫోన్ నుండి తీసివేయబడుతుంది. దీన్ని తిరిగి పొందలేరు.';
+  }
 }

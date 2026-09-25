@@ -2061,4 +2061,60 @@ class AppLocalizationsMr extends AppLocalizations {
 
   @override
   String get summaryNotSet => 'ठरवलेले नाही';
+
+  @override
+  String get clockToolNotepadTitle => 'नोटपॅड';
+
+  @override
+  String get clockToolNotepadSubtitle => 'नोंदी, याच फोनवर जतन';
+
+  @override
+  String get notesSearchHint => 'नोंदी शोधा';
+
+  @override
+  String get notesEmpty => 'अजून कोणतीही नोंद नाही. लिहिण्यासाठी + दाबा.';
+
+  @override
+  String notesNoMatch(String query) {
+    return '“$query” शी जुळणारी नोंद नाही.';
+  }
+
+  @override
+  String get noteNew => 'नवीन नोंद';
+
+  @override
+  String get noteEdit => 'नोंद';
+
+  @override
+  String get noteTitleHint => 'शीर्षक (ऐच्छिक)';
+
+  @override
+  String get noteTextHint => 'इथे लिहा…';
+
+  @override
+  String get noteUntitled => 'रिकामी नोंद';
+
+  @override
+  String noteCreatedAt(String when) {
+    return 'तयार $when';
+  }
+
+  @override
+  String noteEditedAt(String when) {
+    return 'बदल $when';
+  }
+
+  @override
+  String get noteSavedAsYouType => 'लिहिताना जतन होते';
+
+  @override
+  String get noteDelete => 'नोंद हटवा';
+
+  @override
+  String get noteDeleteQuestion => 'ही नोंद हटवायची?';
+
+  @override
+  String noteDeleteBody(String title) {
+    return '“$title” या फोनवरून काढली जाईल. हे परत करता येणार नाही.';
+  }
 }

@@ -1,6 +1,6 @@
 {
   "@@locale": "kn",
-  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review.",
   "navHome": "ಮುಖಪುಟ",
   "navSadhana": "ಸಾಧನೆ",
   "navCalendar": "ಕ್ಯಾಲೆಂಡರ್",
@@ -582,5 +582,21 @@
   "summaryVibrationOn": "ಕಂಪನ ಆನ್",
   "summaryVibrationOff": "ಕಂಪನ ಆಫ್",
   "summarySoundOff": "ಧ್ವನಿ ಆಫ್",
-  "summaryNotSet": "ನಿಗದಿಸಿಲ್ಲ"
+  "summaryNotSet": "ನಿಗದಿಸಿಲ್ಲ",
+  "clockToolNotepadTitle": "ನೋಟ್‌ಪ್ಯಾಡ್",
+  "clockToolNotepadSubtitle": "ಟಿಪ್ಪಣಿಗಳು, ಈ ಫೋನ್‌ನಲ್ಲೇ",
+  "notesSearchHint": "ಟಿಪ್ಪಣಿಗಳನ್ನು ಹುಡುಕಿ",
+  "notesEmpty": "ಇನ್ನೂ ಟಿಪ್ಪಣಿಗಳಿಲ್ಲ. ಬರೆಯಲು + ಒತ್ತಿ.",
+  "notesNoMatch": "“{query}” ಗೆ ಹೊಂದುವ ಟಿಪ್ಪಣಿ ಇಲ್ಲ.",
+  "noteNew": "ಹೊಸ ಟಿಪ್ಪಣಿ",
+  "noteEdit": "ಟಿಪ್ಪಣಿ",
+  "noteTitleHint": "ಶೀರ್ಷಿಕೆ (ಐಚ್ಛಿಕ)",
+  "noteTextHint": "ಇಲ್ಲಿ ಬರೆಯಿರಿ…",
+  "noteUntitled": "ಖಾಲಿ ಟಿಪ್ಪಣಿ",
+  "noteCreatedAt": "ರಚಿಸಿದ್ದು {when}",
+  "noteEditedAt": "ಬದಲಿಸಿದ್ದು {when}",
+  "noteSavedAsYouType": "ಬರೆಯುತ್ತಿದ್ದಂತೆ ಉಳಿಸಲಾಗುತ್ತದೆ",
+  "noteDelete": "ಟಿಪ್ಪಣಿ ಅಳಿಸಿ",
+  "noteDeleteQuestion": "ಈ ಟಿಪ್ಪಣಿಯನ್ನು ಅಳಿಸಬೇಕೆ?",
+  "noteDeleteBody": "“{title}” ಈ ಫೋನ್‌ನಿಂದ ತೆಗೆದುಹಾಕಲಾಗುತ್ತದೆ. ಇದನ್ನು ಮರಳಿ ಪಡೆಯಲಾಗದು."
 }

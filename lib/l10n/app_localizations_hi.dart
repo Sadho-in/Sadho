@@ -2064,4 +2064,60 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get summaryNotSet => 'तय नहीं';
+
+  @override
+  String get clockToolNotepadTitle => 'नोटपैड';
+
+  @override
+  String get clockToolNotepadSubtitle => 'नोट्स, इसी फ़ोन पर सहेजे';
+
+  @override
+  String get notesSearchHint => 'नोट्स खोजें';
+
+  @override
+  String get notesEmpty => 'अभी कोई नोट नहीं। लिखने के लिए + दबाएँ।';
+
+  @override
+  String notesNoMatch(String query) {
+    return '“$query” से कोई नोट मेल नहीं खाता।';
+  }
+
+  @override
+  String get noteNew => 'नया नोट';
+
+  @override
+  String get noteEdit => 'नोट';
+
+  @override
+  String get noteTitleHint => 'शीर्षक (वैकल्पिक)';
+
+  @override
+  String get noteTextHint => 'यहाँ लिखें…';
+
+  @override
+  String get noteUntitled => 'खाली नोट';
+
+  @override
+  String noteCreatedAt(String when) {
+    return 'बनाया $when';
+  }
+
+  @override
+  String noteEditedAt(String when) {
+    return 'बदला $when';
+  }
+
+  @override
+  String get noteSavedAsYouType => 'लिखते समय सहेजा जाता है';
+
+  @override
+  String get noteDelete => 'नोट हटाएँ';
+
+  @override
+  String get noteDeleteQuestion => 'यह नोट हटाएँ?';
+
+  @override
+  String noteDeleteBody(String title) {
+    return '“$title” इस फ़ोन से हटा दिया जाएगा। इसे वापस नहीं लाया जा सकता।';
+  }
 }

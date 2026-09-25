@@ -1,6 +1,6 @@
 {
   "@@locale": "te",
-  "@@x-machine-translation": "First-pass machine translation into Telugu, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Telugu, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review.",
   "navHome": "హోమ్",
   "navSadhana": "సాధన",
   "navCalendar": "క్యాలెండర్",
@@ -582,5 +582,21 @@
   "summaryVibrationOn": "వైబ్రేషన్ ఆన్",
   "summaryVibrationOff": "వైబ్రేషన్ ఆఫ్",
   "summarySoundOff": "శబ్దం ఆఫ్",
-  "summaryNotSet": "నిర్ణయించలేదు"
+  "summaryNotSet": "నిర్ణయించలేదు",
+  "clockToolNotepadTitle": "నోట్‌ప్యాడ్",
+  "clockToolNotepadSubtitle": "నోట్స్, ఈ ఫోన్‌లోనే",
+  "notesSearchHint": "నోట్స్ వెతకండి",
+  "notesEmpty": "ఇంకా నోట్స్ లేవు. రాయడానికి + నొక్కండి.",
+  "notesNoMatch": "“{query}” కి సరిపోయే నోట్ లేదు.",
+  "noteNew": "కొత్త నోట్",
+  "noteEdit": "నోట్",
+  "noteTitleHint": "శీర్షిక (ఐచ్ఛికం)",
+  "noteTextHint": "ఇక్కడ రాయండి…",
+  "noteUntitled": "ఖాళీ నోట్",
+  "noteCreatedAt": "సృష్టించినది {when}",
+  "noteEditedAt": "మార్చినది {when}",
+  "noteSavedAsYouType": "రాస్తున్నప్పుడే సేవ్ అవుతుంది",
+  "noteDelete": "నోట్ తొలగించు",
+  "noteDeleteQuestion": "ఈ నోట్ తొలగించాలా?",
+  "noteDeleteBody": "“{title}” ఈ ఫోన్ నుండి తీసివేయబడుతుంది. దీన్ని తిరిగి పొందలేరు."
 }

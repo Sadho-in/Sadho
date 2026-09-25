@@ -174,6 +174,7 @@ extension ClockToolL10n on ClockTool {
         ClockTool.worldClock => l.clockToolWorldClockTitle,
         ClockTool.timer => l.clockToolTimerTitle,
         ClockTool.stopwatch => l.clockToolStopwatchTitle,
+        ClockTool.notepad => l.clockToolNotepadTitle,
       };
 
   String localizedSubtitle(AppLocalizations l) => switch (this) {
@@ -182,6 +183,7 @@ extension ClockToolL10n on ClockTool {
         ClockTool.worldClock => l.clockToolWorldClockSubtitle,
         ClockTool.timer => l.clockToolTimerSubtitle,
         ClockTool.stopwatch => l.clockToolStopwatchSubtitle,
+        ClockTool.notepad => l.clockToolNotepadSubtitle,
       };
 }
 

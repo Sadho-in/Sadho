@@ -2064,4 +2064,60 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get summaryNotSet => 'ঠিক করা নেই';
+
+  @override
+  String get clockToolNotepadTitle => 'নোটপ্যাড';
+
+  @override
+  String get clockToolNotepadSubtitle => 'নোট, এই ফোনেই রাখা';
+
+  @override
+  String get notesSearchHint => 'নোট খুঁজুন';
+
+  @override
+  String get notesEmpty => 'এখনও কোনো নোট নেই। লিখতে + চাপুন।';
+
+  @override
+  String notesNoMatch(String query) {
+    return '“$query” এর সাথে কোনো নোট মেলেনি।';
+  }
+
+  @override
+  String get noteNew => 'নতুন নোট';
+
+  @override
+  String get noteEdit => 'নোট';
+
+  @override
+  String get noteTitleHint => 'শিরোনাম (ঐচ্ছিক)';
+
+  @override
+  String get noteTextHint => 'এখানে লিখুন…';
+
+  @override
+  String get noteUntitled => 'খালি নোট';
+
+  @override
+  String noteCreatedAt(String when) {
+    return 'তৈরি $when';
+  }
+
+  @override
+  String noteEditedAt(String when) {
+    return 'সম্পাদিত $when';
+  }
+
+  @override
+  String get noteSavedAsYouType => 'লেখার সময়ই সংরক্ষিত হয়';
+
+  @override
+  String get noteDelete => 'নোট মুছুন';
+
+  @override
+  String get noteDeleteQuestion => 'এই নোটটি মুছবেন?';
+
+  @override
+  String noteDeleteBody(String title) {
+    return '“$title” এই ফোন থেকে মুছে যাবে। এটি ফেরানো যাবে না।';
+  }
 }

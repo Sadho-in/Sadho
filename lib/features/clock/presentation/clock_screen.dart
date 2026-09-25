@@ -8,6 +8,7 @@ import '../application/sun_alarm_provider.dart';
 import '../application/timer_provider.dart';
 import '../data/clock_tool.dart';
 import '../data/timer_presets.dart';
+import '../../notepad/presentation/notepad_page.dart';
 import 'tools/big_clock_page.dart';
 import 'tools/stopwatch_page.dart';
 import 'tools/sun_alarm_page.dart';
@@ -27,6 +28,7 @@ Future<void> openClockTool(BuildContext context, ClockTool tool) =>
           ClockTool.worldClock => const WorldClockPage(),
           ClockTool.timer => const TimerPage(),
           ClockTool.stopwatch => const StopwatchPage(),
+          ClockTool.notepad => const NotepadPage(),
         },
       ),
     );
@@ -164,6 +166,7 @@ class _Status extends ConsumerWidget {
         );
       case ClockTool.clock:
       case ClockTool.worldClock:
+      case ClockTool.notepad:
         return const SizedBox.shrink();
     }
   }

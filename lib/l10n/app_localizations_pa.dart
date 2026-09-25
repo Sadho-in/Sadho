@@ -2064,4 +2064,60 @@ class AppLocalizationsPa extends AppLocalizations {
 
   @override
   String get summaryNotSet => 'ਤੈਅ ਨਹੀਂ';
+
+  @override
+  String get clockToolNotepadTitle => 'ਨੋਟਪੈਡ';
+
+  @override
+  String get clockToolNotepadSubtitle => 'ਨੋਟ, ਇਸੇ ਫ਼ੋਨ \'ਤੇ ਸੰਭਾਲੇ';
+
+  @override
+  String get notesSearchHint => 'ਨੋਟ ਖੋਜੋ';
+
+  @override
+  String get notesEmpty => 'ਹਾਲੇ ਕੋਈ ਨੋਟ ਨਹੀਂ। ਲਿਖਣ ਲਈ + ਦਬਾਓ।';
+
+  @override
+  String notesNoMatch(String query) {
+    return '“$query” ਨਾਲ ਕੋਈ ਨੋਟ ਮੇਲ ਨਹੀਂ ਖਾਂਦਾ।';
+  }
+
+  @override
+  String get noteNew => 'ਨਵਾਂ ਨੋਟ';
+
+  @override
+  String get noteEdit => 'ਨੋਟ';
+
+  @override
+  String get noteTitleHint => 'ਸਿਰਲੇਖ (ਵਿਕਲਪਿਕ)';
+
+  @override
+  String get noteTextHint => 'ਇੱਥੇ ਲਿਖੋ…';
+
+  @override
+  String get noteUntitled => 'ਖਾਲੀ ਨੋਟ';
+
+  @override
+  String noteCreatedAt(String when) {
+    return 'ਬਣਾਇਆ $when';
+  }
+
+  @override
+  String noteEditedAt(String when) {
+    return 'ਬਦਲਿਆ $when';
+  }
+
+  @override
+  String get noteSavedAsYouType => 'ਲਿਖਦੇ ਸਮੇਂ ਸੰਭਾਲਿਆ ਜਾਂਦਾ ਹੈ';
+
+  @override
+  String get noteDelete => 'ਨੋਟ ਮਿਟਾਓ';
+
+  @override
+  String get noteDeleteQuestion => 'ਕੀ ਇਹ ਨੋਟ ਮਿਟਾਉਣਾ ਹੈ?';
+
+  @override
+  String noteDeleteBody(String title) {
+    return '“$title” ਇਸ ਫ਼ੋਨ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਜਾਵੇਗਾ। ਇਹ ਵਾਪਸ ਨਹੀਂ ਹੋ ਸਕਦਾ।';
+  }
 }

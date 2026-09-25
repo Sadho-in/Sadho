@@ -3603,6 +3603,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not set'**
   String get summaryNotSet;
+
+  /// Clock tab tool: the notepad
+  ///
+  /// In en, this message translates to:
+  /// **'Notepad'**
+  String get clockToolNotepadTitle;
+
+  /// Under the Notepad tool on the Clock tab
+  ///
+  /// In en, this message translates to:
+  /// **'Notes, kept on this phone'**
+  String get clockToolNotepadSubtitle;
+
+  /// Search box on the notes list
+  ///
+  /// In en, this message translates to:
+  /// **'Search notes'**
+  String get notesSearchHint;
+
+  /// The notes list when there are no notes
+  ///
+  /// In en, this message translates to:
+  /// **'No notes yet. Tap + to write one.'**
+  String get notesEmpty;
+
+  /// The notes list when the search finds nothing
+  ///
+  /// In en, this message translates to:
+  /// **'No notes match “{query}”.'**
+  String notesNoMatch(String query);
+
+  /// Button / page title: write a new note
+  ///
+  /// In en, this message translates to:
+  /// **'New note'**
+  String get noteNew;
+
+  /// Page title while editing a note
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get noteEdit;
+
+  /// The title box of a note
+  ///
+  /// In en, this message translates to:
+  /// **'Title (optional)'**
+  String get noteTitleHint;
+
+  /// The text box of a note
+  ///
+  /// In en, this message translates to:
+  /// **'Write here…'**
+  String get noteTextHint;
+
+  /// A note with no title and no text, in the list
+  ///
+  /// In en, this message translates to:
+  /// **'Empty note'**
+  String get noteUntitled;
+
+  /// When a note was written
+  ///
+  /// In en, this message translates to:
+  /// **'Created {when}'**
+  String noteCreatedAt(String when);
+
+  /// When a note was last changed
+  ///
+  /// In en, this message translates to:
+  /// **'Edited {when}'**
+  String noteEditedAt(String when);
+
+  /// Small note in the note editor: there is no Save button
+  ///
+  /// In en, this message translates to:
+  /// **'Saved as you type'**
+  String get noteSavedAsYouType;
+
+  /// Tooltip of the delete button on a note
+  ///
+  /// In en, this message translates to:
+  /// **'Delete note'**
+  String get noteDelete;
+
+  /// Title of the dialog before deleting a note
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this note?'**
+  String get noteDeleteQuestion;
+
+  /// Body of the dialog before deleting a note
+  ///
+  /// In en, this message translates to:
+  /// **'“{title}” will be removed from this phone. This cannot be undone.'**
+  String noteDeleteBody(String title);
 }
 
 class _AppLocalizationsDelegate

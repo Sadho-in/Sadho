@@ -1,6 +1,6 @@
 {
   "@@locale": "bn",
-  "@@x-machine-translation": "First-pass machine translation into Bengali, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Bengali, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review.",
   "navHome": "হোম",
   "navSadhana": "সাধনা",
   "navCalendar": "ক্যালেন্ডার",
@@ -582,5 +582,21 @@
   "summaryVibrationOn": "কম্পন চালু",
   "summaryVibrationOff": "কম্পন বন্ধ",
   "summarySoundOff": "শব্দ বন্ধ",
-  "summaryNotSet": "ঠিক করা নেই"
+  "summaryNotSet": "ঠিক করা নেই",
+  "clockToolNotepadTitle": "নোটপ্যাড",
+  "clockToolNotepadSubtitle": "নোট, এই ফোনেই রাখা",
+  "notesSearchHint": "নোট খুঁজুন",
+  "notesEmpty": "এখনও কোনো নোট নেই। লিখতে + চাপুন।",
+  "notesNoMatch": "“{query}” এর সাথে কোনো নোট মেলেনি।",
+  "noteNew": "নতুন নোট",
+  "noteEdit": "নোট",
+  "noteTitleHint": "শিরোনাম (ঐচ্ছিক)",
+  "noteTextHint": "এখানে লিখুন…",
+  "noteUntitled": "খালি নোট",
+  "noteCreatedAt": "তৈরি {when}",
+  "noteEditedAt": "সম্পাদিত {when}",
+  "noteSavedAsYouType": "লেখার সময়ই সংরক্ষিত হয়",
+  "noteDelete": "নোট মুছুন",
+  "noteDeleteQuestion": "এই নোটটি মুছবেন?",
+  "noteDeleteBody": "“{title}” এই ফোন থেকে মুছে যাবে। এটি ফেরানো যাবে না।"
 }

@@ -2063,4 +2063,60 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get summaryNotSet => 'ನಿಗದಿಸಿಲ್ಲ';
+
+  @override
+  String get clockToolNotepadTitle => 'ನೋಟ್‌ಪ್ಯಾಡ್';
+
+  @override
+  String get clockToolNotepadSubtitle => 'ಟಿಪ್ಪಣಿಗಳು, ಈ ಫೋನ್‌ನಲ್ಲೇ';
+
+  @override
+  String get notesSearchHint => 'ಟಿಪ್ಪಣಿಗಳನ್ನು ಹುಡುಕಿ';
+
+  @override
+  String get notesEmpty => 'ಇನ್ನೂ ಟಿಪ್ಪಣಿಗಳಿಲ್ಲ. ಬರೆಯಲು + ಒತ್ತಿ.';
+
+  @override
+  String notesNoMatch(String query) {
+    return '“$query” ಗೆ ಹೊಂದುವ ಟಿಪ್ಪಣಿ ಇಲ್ಲ.';
+  }
+
+  @override
+  String get noteNew => 'ಹೊಸ ಟಿಪ್ಪಣಿ';
+
+  @override
+  String get noteEdit => 'ಟಿಪ್ಪಣಿ';
+
+  @override
+  String get noteTitleHint => 'ಶೀರ್ಷಿಕೆ (ಐಚ್ಛಿಕ)';
+
+  @override
+  String get noteTextHint => 'ಇಲ್ಲಿ ಬರೆಯಿರಿ…';
+
+  @override
+  String get noteUntitled => 'ಖಾಲಿ ಟಿಪ್ಪಣಿ';
+
+  @override
+  String noteCreatedAt(String when) {
+    return 'ರಚಿಸಿದ್ದು $when';
+  }
+
+  @override
+  String noteEditedAt(String when) {
+    return 'ಬದಲಿಸಿದ್ದು $when';
+  }
+
+  @override
+  String get noteSavedAsYouType => 'ಬರೆಯುತ್ತಿದ್ದಂತೆ ಉಳಿಸಲಾಗುತ್ತದೆ';
+
+  @override
+  String get noteDelete => 'ಟಿಪ್ಪಣಿ ಅಳಿಸಿ';
+
+  @override
+  String get noteDeleteQuestion => 'ಈ ಟಿಪ್ಪಣಿಯನ್ನು ಅಳಿಸಬೇಕೆ?';
+
+  @override
+  String noteDeleteBody(String title) {
+    return '“$title” ಈ ಫೋನ್‌ನಿಂದ ತೆಗೆದುಹಾಕಲಾಗುತ್ತದೆ. ಇದನ್ನು ಮರಳಿ ಪಡೆಯಲಾಗದು.';
+  }
 }

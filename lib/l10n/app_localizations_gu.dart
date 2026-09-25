@@ -2062,4 +2062,60 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get summaryNotSet => 'નક્કી નથી';
+
+  @override
+  String get clockToolNotepadTitle => 'નોટપેડ';
+
+  @override
+  String get clockToolNotepadSubtitle => 'નોંધો, આ જ ફોન પર સાચવેલી';
+
+  @override
+  String get notesSearchHint => 'નોંધો શોધો';
+
+  @override
+  String get notesEmpty => 'હજી કોઈ નોંધ નથી. લખવા માટે + દબાવો.';
+
+  @override
+  String notesNoMatch(String query) {
+    return '“$query” સાથે કોઈ નોંધ મેળ ખાતી નથી.';
+  }
+
+  @override
+  String get noteNew => 'નવી નોંધ';
+
+  @override
+  String get noteEdit => 'નોંધ';
+
+  @override
+  String get noteTitleHint => 'શીર્ષક (વૈકલ્પિક)';
+
+  @override
+  String get noteTextHint => 'અહીં લખો…';
+
+  @override
+  String get noteUntitled => 'ખાલી નોંધ';
+
+  @override
+  String noteCreatedAt(String when) {
+    return 'બનાવી $when';
+  }
+
+  @override
+  String noteEditedAt(String when) {
+    return 'બદલી $when';
+  }
+
+  @override
+  String get noteSavedAsYouType => 'લખતાં જ સચવાય છે';
+
+  @override
+  String get noteDelete => 'નોંધ કાઢી નાખો';
+
+  @override
+  String get noteDeleteQuestion => 'આ નોંધ કાઢી નાખવી છે?';
+
+  @override
+  String noteDeleteBody(String title) {
+    return '“$title” આ ફોન પરથી દૂર થશે. આ પાછું લાવી શકાશે નહીં.';
+  }
 }

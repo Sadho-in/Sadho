@@ -7,6 +7,7 @@ import 'package:advance_calendar/features/clock/data/sun_alarm.dart';
 import 'package:advance_calendar/features/clock/data/timer_presets.dart';
 import 'package:advance_calendar/features/clock/presentation/clock_screen.dart';
 import 'package:advance_calendar/features/clock/services/location_service.dart';
+import 'package:advance_calendar/features/notepad/application/notes_provider.dart';
 import 'package:advance_calendar/features/shell/presentation/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -151,6 +152,72 @@ void main() {
       sw.stop();
       await openTool(tester, ClockTool.stopwatch);
       expect(rig.container.read(stopwatchProvider).laps.length, 20);
+    });
+  });
+
+  void fillNotes(ProfileRig rig) {
+    final notes = rig.container.read(notesProvider.notifier);
+    notes.save(notes.draft(),
+        title: 'Things to bring for the havan on Sunday morning',
+        text: 'Samagri, ghee, camphor, mango wood, flowers, a clean cloth and '
+            'the book with the mantras for the ahutis');
+    rig.clock.advance(const Duration(minutes: 3));
+    notes.save(notes.draft(), title: '', text: 'Jaap 108\nthen 1008 on Ekadashi');
+  }
+
+  testWidgets('Notepad, empty', (tester) async {
+    await auditApp(tester, 'Notepad (empty)', (rig) async {
+      await openTool(tester, ClockTool.notepad);
+      expect(key('notes-empty'), findsOneWidget);
+    });
+  });
+
+  testWidgets('Notepad, with notes and a search', (tester) async {
+    await auditApp(tester, 'Notepad (notes)', (rig) async {
+      fillNotes(rig);
+      await openTool(tester, ClockTool.notepad);
+      await tester.enterText(key('notes-search'), 'ghee');
+      await settle(tester);
+    });
+  });
+
+  testWidgets('Notepad, search with no match', (tester) async {
+    await auditApp(tester, 'Notepad (no match)', (rig) async {
+      fillNotes(rig);
+      await openTool(tester, ClockTool.notepad);
+      await tester.enterText(key('notes-search'), 'a query that matches nothing');
+      await settle(tester);
+      expect(key('notes-empty'), findsOneWidget);
+    });
+  });
+
+  testWidgets('Note editor (a long note)', (tester) async {
+    await auditApp(tester, 'Note editor', (rig) async {
+      fillNotes(rig);
+      await openTool(tester, ClockTool.notepad);
+      final id = rig.container.read(notesProvider).last.id;
+      await tester.tap(key('note-$id'));
+      await settle(tester);
+      expect(key('note-times'), findsOneWidget);
+    });
+  });
+
+  testWidgets('Note editor, new', (tester) async {
+    await auditApp(tester, 'Note editor (new)', (rig) async {
+      await openTool(tester, ClockTool.notepad);
+      await tester.tap(key('note-add'));
+      await settle(tester);
+    });
+  });
+
+  testWidgets('Note delete dialog', (tester) async {
+    await auditApp(tester, 'Note delete dialog', (rig) async {
+      fillNotes(rig);
+      await openTool(tester, ClockTool.notepad);
+      final id = rig.container.read(notesProvider).last.id;
+      await tester.tap(await reveal(tester, key('note-delete-$id')));
+      await settle(tester);
+      expect(key('note-delete-dialog'), findsOneWidget);
     });
   });
 }

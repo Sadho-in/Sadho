@@ -10,10 +10,11 @@ import 'clock_ui_support.dart';
 
 void main() {
   group('the tool list', () {
-    testWidgets('has the five tools, in order, each with its blurb', (
+    // Six since P4.3-7 added the Notepad (last).
+    testWidgets('has the six tools, in order, each with its blurb', (
       tester,
     ) async {
-      await pumpClock(tester, const ClockScreen());
+      await pumpClock(tester, const ClockScreen(), height: 1200);
       final tools = [
         ('Clock', 'A large, live time and date'),
         ('Sun-based alarm', 'Wake at sunrise or sunset, with an offset'),
@@ -23,6 +24,7 @@ void main() {
           'Aarti, Chalisa, Path, Havan, or until sunset',
         ),
         ('Paath stopwatch', 'Start, stop and lap'),
+        ('Notepad', 'Notes, kept on this phone'),
       ];
       var lastY = -1.0;
       for (final (title, blurb) in tools) {
@@ -32,7 +34,7 @@ void main() {
         expect(y, greaterThan(lastY), reason: '$title is below the one before');
         lastY = y;
       }
-      expect(ClockTool.values.length, 5);
+      expect(ClockTool.values.length, 6);
     });
 
     testWidgets('no longer shows the "Coming soon" placeholder', (
