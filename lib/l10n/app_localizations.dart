@@ -3711,6 +3711,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Strongest contrast, for easy reading'**
   String get paletteHighContrastBlurb;
+
+  /// Name of the Android notification channel for the ongoing Mala counter notification (shown in the phone's notification settings)
+  ///
+  /// In en, this message translates to:
+  /// **'Mala counter'**
+  String get malaNotificationChannel;
+
+  /// Title of the ongoing Mala notification while counting toward a count target, e.g. 'Mala · 54 / 108'. The numbers are filled in live by the phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Mala · {count} / {target}'**
+  String malaNotificationTitle(String count, String target);
+
+  /// Title of the ongoing Mala notification with a time target (only the count is shown)
+  ///
+  /// In en, this message translates to:
+  /// **'Mala · {count}'**
+  String malaNotificationTitleCount(String count);
+
+  /// Text of the ongoing Mala notification while counting
+  ///
+  /// In en, this message translates to:
+  /// **'Press a volume key to count, even with the screen off.'**
+  String get malaNotificationRunning;
+
+  /// Text of the ongoing Mala notification once the target is reached
+  ///
+  /// In en, this message translates to:
+  /// **'Target reached 🙏'**
+  String get malaNotificationDone;
+
+  /// Title of the alarm notification that rings when a Mala count target is reached with the screen off
+  ///
+  /// In en, this message translates to:
+  /// **'🔔 Mala complete'**
+  String get malaRingTitle;
+
+  /// Body of the Mala target alarm notification
+  ///
+  /// In en, this message translates to:
+  /// **'You reached your target of {target} 🙏'**
+  String malaRingBody(int target);
+
+  /// Shown once when the background (screen-off) Mala counter could not start and the app falls back to counting volume keys only while it is open
+  ///
+  /// In en, this message translates to:
+  /// **'Screen-off counting could not start on this phone. The volume keys count only while Sadho is open.'**
+  String get malaScreenOffUnavailable;
+
+  /// Mala mode status line while the background counter is running (keys count with the screen off too)
+  ///
+  /// In en, this message translates to:
+  /// **'Volume keys count, even with the screen off'**
+  String get pressVolumeKeysScreenOff;
 }
 
 class _AppLocalizationsDelegate

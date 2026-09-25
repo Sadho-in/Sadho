@@ -2123,4 +2123,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paletteHighContrastBlurb => 'Strongest contrast, for easy reading';
+
+  @override
+  String get malaNotificationChannel => 'Mala counter';
+
+  @override
+  String malaNotificationTitle(String count, String target) {
+    return 'Mala · $count / $target';
+  }
+
+  @override
+  String malaNotificationTitleCount(String count) {
+    return 'Mala · $count';
+  }
+
+  @override
+  String get malaNotificationRunning =>
+      'Press a volume key to count, even with the screen off.';
+
+  @override
+  String get malaNotificationDone => 'Target reached 🙏';
+
+  @override
+  String get malaRingTitle => '🔔 Mala complete';
+
+  @override
+  String malaRingBody(int target) {
+    return 'You reached your target of $target 🙏';
+  }
+
+  @override
+  String get malaScreenOffUnavailable =>
+      'Screen-off counting could not start on this phone. The volume keys count only while Sadho is open.';
+
+  @override
+  String get pressVolumeKeysScreenOff =>
+      'Volume keys count, even with the screen off';
 }

@@ -2124,4 +2124,40 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get paletteHighContrastBlurb => 'સૌથી વધુ તફાવત, સરળ વાંચન માટે';
+
+  @override
+  String get malaNotificationChannel => 'માળા કાઉન્ટર';
+
+  @override
+  String malaNotificationTitle(String count, String target) {
+    return 'માળા · $count / $target';
+  }
+
+  @override
+  String malaNotificationTitleCount(String count) {
+    return 'માળા · $count';
+  }
+
+  @override
+  String get malaNotificationRunning =>
+      'ગણવા માટે વોલ્યુમ કી દબાવો, સ્ક્રીન બંધ હોય ત્યારે પણ.';
+
+  @override
+  String get malaNotificationDone => 'લક્ષ્ય પૂર્ણ 🙏';
+
+  @override
+  String get malaRingTitle => '🔔 માળા પૂર્ણ';
+
+  @override
+  String malaRingBody(int target) {
+    return 'તમે $targetનું લક્ષ્ય પૂરું કર્યું 🙏';
+  }
+
+  @override
+  String get malaScreenOffUnavailable =>
+      'આ ફોન પર સ્ક્રીન બંધ હોય ત્યારે ગણતરી શરૂ થઈ શકી નહીં. Sadho ખુલ્લું હોય ત્યારે જ વોલ્યુમ કી ગણશે.';
+
+  @override
+  String get pressVolumeKeysScreenOff =>
+      'વોલ્યુમ કી ગણે છે, સ્ક્રીન બંધ હોય ત્યારે પણ';
 }

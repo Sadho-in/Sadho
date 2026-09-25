@@ -2137,4 +2137,40 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get paletteHighContrastBlurb => 'అత్యధిక వ్యత్యాసం, సులభంగా చదవడానికి';
+
+  @override
+  String get malaNotificationChannel => 'మాల కౌంటర్';
+
+  @override
+  String malaNotificationTitle(String count, String target) {
+    return 'మాల · $count / $target';
+  }
+
+  @override
+  String malaNotificationTitleCount(String count) {
+    return 'మాల · $count';
+  }
+
+  @override
+  String get malaNotificationRunning =>
+      'లెక్కించడానికి వాల్యూమ్ కీ నొక్కండి, స్క్రీన్ ఆఫ్‌లో ఉన్నా కూడా.';
+
+  @override
+  String get malaNotificationDone => 'లక్ష్యం పూర్తి 🙏';
+
+  @override
+  String get malaRingTitle => '🔔 మాల పూర్తి';
+
+  @override
+  String malaRingBody(int target) {
+    return 'మీరు $target లక్ష్యాన్ని చేరుకున్నారు 🙏';
+  }
+
+  @override
+  String get malaScreenOffUnavailable =>
+      'ఈ ఫోన్‌లో స్క్రీన్ ఆఫ్‌లో లెక్కింపు ప్రారంభం కాలేదు. Sadho తెరిచి ఉన్నప్పుడే వాల్యూమ్ కీలు లెక్కిస్తాయి.';
+
+  @override
+  String get pressVolumeKeysScreenOff =>
+      'స్క్రీన్ ఆఫ్‌లో ఉన్నా వాల్యూమ్ కీలు లెక్కిస్తాయి';
 }

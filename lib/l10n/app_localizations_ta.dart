@@ -2143,4 +2143,40 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get paletteHighContrastBlurb => 'அதிகபட்ச வேறுபாடு, எளிதில் படிக்க';
+
+  @override
+  String get malaNotificationChannel => 'மாலை கவுண்டர்';
+
+  @override
+  String malaNotificationTitle(String count, String target) {
+    return 'மாலை · $count / $target';
+  }
+
+  @override
+  String malaNotificationTitleCount(String count) {
+    return 'மாலை · $count';
+  }
+
+  @override
+  String get malaNotificationRunning =>
+      'எண்ண ஒலியளவு விசையை அழுத்தவும், திரை அணைந்திருந்தாலும்.';
+
+  @override
+  String get malaNotificationDone => 'இலக்கு நிறைவு 🙏';
+
+  @override
+  String get malaRingTitle => '🔔 மாலை நிறைவு';
+
+  @override
+  String malaRingBody(int target) {
+    return 'நீங்கள் $target என்ற இலக்கை அடைந்தீர்கள் 🙏';
+  }
+
+  @override
+  String get malaScreenOffUnavailable =>
+      'இந்த ஃபோனில் திரை அணைந்த நிலையில் எண்ணுதலைத் தொடங்க முடியவில்லை. Sadho திறந்திருக்கும்போது மட்டுமே ஒலியளவு விசைகள் எண்ணும்.';
+
+  @override
+  String get pressVolumeKeysScreenOff =>
+      'திரை அணைந்திருந்தாலும் ஒலியளவு விசைகள் எண்ணும்';
 }

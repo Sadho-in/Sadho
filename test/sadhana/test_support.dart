@@ -512,14 +512,25 @@ class FakeMalaService implements MalaBackgroundService {
     return true;
   }
 
+  /// The app that started it was killed (its engine gone, no dispose ran):
+  /// nothing it would still send arrives. A relaunched app listens anew.
+  bool _oldAppGone = false;
+
+  void appKilled() {
+    _listeners.clear();
+    _oldAppGone = true;
+  }
+
   @override
   Future<void> update(MalaServiceConfig c) async {
+    if (_oldAppGone) return;
     updates++;
     _adopt(c, fresh: false);
   }
 
   @override
   Future<void> pause() async {
+    if (_oldAppGone) return;
     pauses++;
     if (status == MalaServiceStatus.stopped) return;
     status = MalaServiceStatus.paused;
@@ -536,6 +547,7 @@ class FakeMalaService implements MalaBackgroundService {
 
   @override
   Future<void> stop() async {
+    if (_oldAppGone) return;
     stops++;
     if (status == MalaServiceStatus.stopped) return;
     status = MalaServiceStatus.stopped;
@@ -550,6 +562,7 @@ class FakeMalaService implements MalaBackgroundService {
 
   @override
   VoidCallback listen(void Function(MalaServiceEvent event) onEvent) {
+    _oldAppGone = false; // a relaunched app
     _listeners.add(onEvent);
     return () => _listeners.remove(onEvent);
   }

@@ -2419,5 +2419,59 @@
   "paletteHighContrastBlurb": "Strongest contrast, for easy reading",
   "@paletteHighContrastBlurb": {
     "description": "Under the high-contrast palette's name"
+  },
+  "malaNotificationChannel": "Mala counter",
+  "@malaNotificationChannel": {
+    "description": "Name of the Android notification channel for the ongoing Mala counter notification (shown in the phone's notification settings)"
+  },
+  "malaNotificationTitle": "Mala · {count} / {target}",
+  "@malaNotificationTitle": {
+    "description": "Title of the ongoing Mala notification while counting toward a count target, e.g. 'Mala · 54 / 108'. The numbers are filled in live by the phone.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "malaNotificationTitleCount": "Mala · {count}",
+  "@malaNotificationTitleCount": {
+    "description": "Title of the ongoing Mala notification with a time target (only the count is shown)",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "malaNotificationRunning": "Press a volume key to count, even with the screen off.",
+  "@malaNotificationRunning": {
+    "description": "Text of the ongoing Mala notification while counting"
+  },
+  "malaNotificationDone": "Target reached 🙏",
+  "@malaNotificationDone": {
+    "description": "Text of the ongoing Mala notification once the target is reached"
+  },
+  "malaRingTitle": "🔔 Mala complete",
+  "@malaRingTitle": {
+    "description": "Title of the alarm notification that rings when a Mala count target is reached with the screen off"
+  },
+  "malaRingBody": "You reached your target of {target} 🙏",
+  "@malaRingBody": {
+    "description": "Body of the Mala target alarm notification",
+    "placeholders": {
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "malaScreenOffUnavailable": "Screen-off counting could not start on this phone. The volume keys count only while Sadho is open.",
+  "@malaScreenOffUnavailable": {
+    "description": "Shown once when the background (screen-off) Mala counter could not start and the app falls back to counting volume keys only while it is open"
+  },
+  "pressVolumeKeysScreenOff": "Volume keys count, even with the screen off",
+  "@pressVolumeKeysScreenOff": {
+    "description": "Mala mode status line while the background counter is running (keys count with the screen off too)"
   }
 }

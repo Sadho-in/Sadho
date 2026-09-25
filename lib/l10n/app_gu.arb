@@ -1,6 +1,6 @@
 {
   "@@locale": "gu",
-  "@@x-machine-translation": "First-pass machine translation into Gujarati, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review. Strings added in P4.3 (High contrast palette and accessibility labels) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Gujarati, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review. Strings added in P4.3 (High contrast palette and accessibility labels) are also first-pass and need native review. Strings added in P5 (Mala with the screen off, quiet mode, voice calibration) are also first-pass and need native review.",
   "navHome": "હોમ",
   "navSadhana": "સાધના",
   "navCalendar": "કેલેન્ડર",
@@ -600,5 +600,14 @@
   "noteDeleteQuestion": "આ નોંધ કાઢી નાખવી છે?",
   "noteDeleteBody": "“{title}” આ ફોન પરથી દૂર થશે. આ પાછું લાવી શકાશે નહીં.",
   "paletteHighContrastName": "ઉચ્ચ કૉન્ટ્રાસ્ટ",
-  "paletteHighContrastBlurb": "સૌથી વધુ તફાવત, સરળ વાંચન માટે"
+  "paletteHighContrastBlurb": "સૌથી વધુ તફાવત, સરળ વાંચન માટે",
+  "malaNotificationChannel": "માળા કાઉન્ટર",
+  "malaNotificationTitle": "માળા · {count} / {target}",
+  "malaNotificationTitleCount": "માળા · {count}",
+  "malaNotificationRunning": "ગણવા માટે વોલ્યુમ કી દબાવો, સ્ક્રીન બંધ હોય ત્યારે પણ.",
+  "malaNotificationDone": "લક્ષ્ય પૂર્ણ 🙏",
+  "malaRingTitle": "🔔 માળા પૂર્ણ",
+  "malaRingBody": "તમે {target}નું લક્ષ્ય પૂરું કર્યું 🙏",
+  "malaScreenOffUnavailable": "આ ફોન પર સ્ક્રીન બંધ હોય ત્યારે ગણતરી શરૂ થઈ શકી નહીં. Sadho ખુલ્લું હોય ત્યારે જ વોલ્યુમ કી ગણશે.",
+  "pressVolumeKeysScreenOff": "વોલ્યુમ કી ગણે છે, સ્ક્રીન બંધ હોય ત્યારે પણ"
 }

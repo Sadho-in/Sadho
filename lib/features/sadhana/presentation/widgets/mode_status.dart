@@ -61,7 +61,7 @@ class ModeStatusLine extends ConsumerWidget {
         ),
       CountMode.mala when s.running && s.inputActive => (
           s.mode.icon,
-          l.pressVolumeKeys,
+          s.malaScreenOff ? l.pressVolumeKeysScreenOff : l.pressVolumeKeys,
           true,
         ),
       CountMode.mala when s.running => (

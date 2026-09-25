@@ -1,6 +1,6 @@
 {
   "@@locale": "kn",
-  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review. Strings added in P4.3 (High contrast palette and accessibility labels) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review. Strings added in P4.3 (High contrast palette and accessibility labels) are also first-pass and need native review. Strings added in P5 (Mala with the screen off, quiet mode, voice calibration) are also first-pass and need native review.",
   "navHome": "ಮುಖಪುಟ",
   "navSadhana": "ಸಾಧನೆ",
   "navCalendar": "ಕ್ಯಾಲೆಂಡರ್",
@@ -600,5 +600,14 @@
   "noteDeleteQuestion": "ಈ ಟಿಪ್ಪಣಿಯನ್ನು ಅಳಿಸಬೇಕೆ?",
   "noteDeleteBody": "“{title}” ಈ ಫೋನ್‌ನಿಂದ ತೆಗೆದುಹಾಕಲಾಗುತ್ತದೆ. ಇದನ್ನು ಮರಳಿ ಪಡೆಯಲಾಗದು.",
   "paletteHighContrastName": "ಹೆಚ್ಚಿನ ಕಾಂಟ್ರಾಸ್ಟ್",
-  "paletteHighContrastBlurb": "ಅತಿ ಹೆಚ್ಚಿನ ವ್ಯತ್ಯಾಸ, ಸುಲಭ ಓದಿಗಾಗಿ"
+  "paletteHighContrastBlurb": "ಅತಿ ಹೆಚ್ಚಿನ ವ್ಯತ್ಯಾಸ, ಸುಲಭ ಓದಿಗಾಗಿ",
+  "malaNotificationChannel": "ಮಾಲೆ ಕೌಂಟರ್",
+  "malaNotificationTitle": "ಮಾಲೆ · {count} / {target}",
+  "malaNotificationTitleCount": "ಮಾಲೆ · {count}",
+  "malaNotificationRunning": "ಎಣಿಸಲು ವಾಲ್ಯೂಮ್ ಕೀ ಒತ್ತಿ, ಪರದೆ ಆಫ್ ಆಗಿದ್ದರೂ.",
+  "malaNotificationDone": "ಗುರಿ ಪೂರ್ಣ 🙏",
+  "malaRingTitle": "🔔 ಮಾಲೆ ಪೂರ್ಣ",
+  "malaRingBody": "ನೀವು {target} ಗುರಿಯನ್ನು ತಲುಪಿದಿರಿ 🙏",
+  "malaScreenOffUnavailable": "ಈ ಫೋನ್‌ನಲ್ಲಿ ಪರದೆ ಆಫ್ ಆಗಿರುವಾಗ ಎಣಿಕೆ ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ. Sadho ತೆರೆದಿರುವಾಗ ಮಾತ್ರ ವಾಲ್ಯೂಮ್ ಕೀಗಳು ಎಣಿಸುತ್ತವೆ.",
+  "pressVolumeKeysScreenOff": "ಪರದೆ ಆಫ್ ಆಗಿದ್ದರೂ ವಾಲ್ಯೂಮ್ ಕೀಗಳು ಎಣಿಸುತ್ತವೆ"
 }

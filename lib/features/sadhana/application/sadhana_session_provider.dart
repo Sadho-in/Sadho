@@ -6,10 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/storage/app_storage.dart';
 import '../../alarms/services/alarm_health.dart';
+import '../../calendar/services/local_notifications_scheduler.dart'
+    show sadhanaAlarmChannel;
 import '../../calendar/services/reminder_planner.dart' show reminderId;
 import '../../calendar/services/reminder_scheduler.dart';
 import '../../clock/application/clock_source.dart';
 import '../services/feedback_service.dart';
+import '../services/mala_background_service.dart';
 import '../services/voice_counter_service.dart';
 import '../services/volume_button_service.dart';
 import '../voice/match_model.dart';
@@ -107,6 +110,7 @@ class SadhanaState {
     this.inputActive = false,
     this.lastVoice,
     this.alarmMayBeLate = false,
+    this.malaScreenOff = false,
   });
 
   final String mantraId;
@@ -137,6 +141,10 @@ class SadhanaState {
   /// The finish alarm is set, but the phone does not allow exact alarms, so
   /// it may ring a little late. Transient: never saved.
   final bool alarmMayBeLate;
+
+  /// Mala is counted by the background service, so the volume keys count
+  /// with the screen off too. Transient: never saved.
+  final bool malaScreenOff;
 
   /// The finish time is known in advance, so the phone can ring at the end
   /// even with the screen off or the app closed: a time target (any mode), or
@@ -229,6 +237,7 @@ class SadhanaState {
     VoiceHitInfo? lastVoice,
     bool clearLastVoice = false,
     bool? alarmMayBeLate,
+    bool? malaScreenOff,
   }) =>
       SadhanaState(
         mantraId: mantraId ?? this.mantraId,
@@ -244,6 +253,7 @@ class SadhanaState {
         inputActive: inputActive ?? this.inputActive,
         lastVoice: clearLastVoice ? null : (lastVoice ?? this.lastVoice),
         alarmMayBeLate: alarmMayBeLate ?? this.alarmMayBeLate,
+        malaScreenOff: malaScreenOff ?? this.malaScreenOff,
       );
 
   Map<String, dynamic> toMap() => {
@@ -368,12 +378,45 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   int _malaGen = 0;
   bool _disposed = false;
 
+  // ---- Mala in the background (screen off, Android) ----
+  // While a Mala session runs, the native service is the ONLY Mala counter
+  // (screen on or off); the in-app volume-key listener is only the fallback.
+  late MalaBackgroundService _mala;
+  VoidCallback? _malaUnlisten;
+  _MalaVia _malaVia = _MalaVia.none;
+
+  /// The service holds a session (counting, paused, or ticking after the
+  /// target), identified by [_malaSessionId] (saved, so a relaunch can take
+  /// it over and catch up).
+  bool _malaServiceAlive = false;
+  String? _malaSessionId;
+  String? _malaMantraId;
+
+  /// Paused from the service's notification: it stays paused there (with
+  /// Resume) until the session changes in the app.
+  bool _malaPausedByService = false;
+
+  /// The service reached the target: it stays on, so further presses give
+  /// only the short tick (and never change the volume).
+  bool _malaReachedViaService = false;
+
+  /// The count, base and target the service last knew.
+  (int, int, int)? _malaPushed;
+
+  /// Catching up with the service: it is not settled until that is done.
+  bool _malaCatchingUp = false;
+
+  /// Hive key: the "screen-off counting is not available" notice was shown.
+  static const malaFallbackNoticeKey = 'sadhana.malaFallbackNoticed';
+
   @override
   SadhanaState build() {
     // Read once here: ref cannot be used inside onDispose.
     _voice = ref.read(voiceCounterServiceProvider);
     _volume = ref.read(volumeButtonServiceProvider);
     _scheduler = ref.read(reminderSchedulerProvider);
+    _mala = ref.read(malaBackgroundServiceProvider);
+    _malaUnlisten = _mala.listen(_onMalaEvent);
     _disposed = false;
     // Catch the clock up when the app comes back to the front.
     try {
@@ -385,10 +428,14 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
       // No Flutter binding (plain unit tests): nothing to watch.
     }
     final saved = AppStorage.settings.get(_storageKey) as Map?;
+    final malaSession = saved?['malaSession'];
+    _malaSessionId = malaSession is String ? malaSession : null;
     final restored = _restore(SadhanaState.fromMap(saved), saved);
     // Pick up where a relaunch left off, or remove an alarm left over from a
     // session that no longer runs (unless a run has started meanwhile).
     Future.microtask(() {
+      // A Mala session the service may still be counting (or finished).
+      if (_malaSessionId != null && !_disposed) unawaited(_reconnectMala());
       if (_alarmGen != 0 || _disposed) return;
       if (state.running) {
         _syncTimers(fresh: false);
@@ -405,6 +452,7 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
     // A new ringtone, vibration or repeat choice applies to the alarm at once.
     ref.listen(completionSettingsProvider, (_, _) {
       if (_alarmScheduled && _endsAt != null) _setAlarm(_endsAt!.add(alarmMargin));
+      if (_malaServiceAlive) _pushMala(force: true);
     });
     ref.onDispose(() {
       _disposed = true;
@@ -415,6 +463,8 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
           .catchError((Object _) {}));
       if (_voiceActive) unawaited(_voice.stop());
       if (_malaActive) unawaited(_volume.stop());
+      _malaUnlisten?.call();
+      if (_malaServiceAlive) unawaited(_mala.stop());
     });
     // The Strict ↔ Lenient slider takes effect on a listening session at once.
     ref.listen(voiceSensitivityProvider, (_, v) {
@@ -542,6 +592,8 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   /// mode's own (Separate). Also silences a completion alert.
   void reset() {
     stopAlert();
+    // A Mala service paused from its notification is stopped too.
+    _malaPausedByService = false;
     _emit(state.cleared().copyWith(running: false));
   }
 
@@ -641,6 +693,7 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
       _syncTimers(fresh: !previous.running);
       _syncInputs();
     }
+    _syncMalaService();
     _persist();
   }
 
@@ -659,6 +712,7 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
         'endsAt': ms(_endsAt),
         'alarmSet': _alarmScheduled,
       },
+      if (_malaSessionId != null) 'malaSession': _malaSessionId,
     });
   }
 
@@ -842,6 +896,8 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
 
   /// Back on screen (unlocked, switched back, or opened from the alarm).
   void _onResume() {
+    // Mala counted on in the background: catch up.
+    if (_malaSessionId != null) unawaited(_reconnectMala());
     final held = _heldAlarmAt;
     if (held != null) {
       // Finished while away. If the phone has not rung yet, ring here instead.
@@ -1097,6 +1153,11 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   Future<void> _startMala() async {
     _malaActive = true;
     final gen = ++_malaGen;
+    if (_mala.isSupported) {
+      if (await _startMalaService(gen)) return;
+      if (_disposed || !_malaActive || gen != _malaGen) return;
+    }
+    _malaVia = _MalaVia.listener;
     final ok = await _volume.start(() {
       if (_malaActive && gen == _malaGen) increment();
     });
@@ -1110,14 +1171,290 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
       return;
     }
     _malaActive = false;
+    _malaVia = _MalaVia.none;
     _fallbackToTap(ref.read(l10nProvider).fallbackMalaUnsupported);
+  }
+
+  /// Starts (or takes back from its notification's pause) the background
+  /// counter. True if it counts now, or the start was overtaken by a pause
+  /// or a switch; false to fall back to the in-app listener.
+  Future<bool> _startMalaService(int gen) async {
+    if (!_malaServiceAlive || _malaSessionId == null) {
+      _malaSessionId = 'mala-${_now().microsecondsSinceEpoch}';
+    }
+    _malaMantraId = state.mantraId;
+    _malaVia = _MalaVia.service;
+    _malaPausedByService = false;
+    _malaReachedViaService = false;
+    final ok = await _mala.start(_malaConfig());
+    if (_disposed) return true;
+    if (ok) {
+      _malaServiceAlive = true;
+      _malaPushed = _malaNumbers(state);
+    }
+    if (!_malaActive || gen != _malaGen) {
+      // Paused or switched while it started: settle it to the session now.
+      _syncMalaService();
+      return true;
+    }
+    if (ok) {
+      state = state.copyWith(inputActive: true, malaScreenOff: true);
+      _persist();
+      return true;
+    }
+    _malaVia = _MalaVia.none;
+    _malaSessionId = null;
+    _noticeMalaFallbackOnce();
+    return false;
   }
 
   void _stopMala() {
     _malaActive = false;
     _malaGen++;
-    unawaited(_volume.stop());
-    if (state.inputActive) state = state.copyWith(inputActive: false);
+    // The service is settled by _syncMalaService (it may stay on).
+    if (_malaVia != _MalaVia.service) {
+      _malaVia = _MalaVia.none;
+      unawaited(_volume.stop());
+    }
+    if (state.inputActive || state.malaScreenOff) {
+      state = state.copyWith(inputActive: false, malaScreenOff: false);
+    }
+  }
+
+  /// Screen-off counting could not start: said once, then the volume keys
+  /// count only while the app is on screen.
+  void _noticeMalaFallbackOnce() {
+    if (AppStorage.settings.get(malaFallbackNoticeKey) == true) return;
+    AppStorage.settings.put(malaFallbackNoticeKey, true);
+    ref
+        .read(sessionNoticeProvider.notifier)
+        .show(ref.read(l10nProvider).malaScreenOffUnavailable);
+  }
+
+  // ---- the background Mala service ----------------------------------------
+
+  /// Other modes' counts that add to Mala's toward the target (Combined).
+  int _malaBase(SadhanaState s) => s.isSeparate
+      ? 0
+      : s.totalProgress.count - s.progressOf(CountMode.mala).count;
+
+  /// A time target never finishes on a count: the service never "reaches".
+  static const _noCountTarget = 1 << 30;
+
+  int _malaTarget(SadhanaState s) =>
+      s.isTimeTarget ? _noCountTarget : s.targetCount;
+
+  (int, int, int) _malaNumbers(SadhanaState s) =>
+      (s.progressOf(CountMode.mala).count, _malaBase(s), _malaTarget(s));
+
+  MalaServiceConfig _malaConfig() {
+    final s = state;
+    final c = ref.read(completionSettingsProvider);
+    final l = ref.read(l10nProvider);
+    final style = _alarmStyle();
+    final channel = sadhanaAlarmChannel(style, l);
+    return MalaServiceConfig(
+      sessionId: _malaSessionId!,
+      count: s.progressOf(CountMode.mala).count,
+      base: _malaBase(s),
+      target: _malaTarget(s),
+      vibration: c.vibrationEnabled,
+      milestoneEvery: milestoneEvery,
+      milestoneMs: DeviceFeedbackService.pulseMs(c.vibrationLevel),
+      milestoneAmplitude: DeviceFeedbackService.amplitudeFor(c.vibrationLevel),
+      ackMs: DeviceFeedbackService.ackMs(c.vibrationLevel),
+      ackAmplitude: DeviceFeedbackService.amplitudeFor(c.vibrationLevel),
+      ring: MalaRing(
+        channelId: channel.id,
+        channelName: channel.name,
+        channelDescription: channel.description,
+        sound: style.sound,
+        vibrate: style.vibrate,
+        insistent: style.insistent,
+        title: l.malaRingTitle,
+        body: l.malaRingBody(s.targetCount),
+      ),
+      text: MalaNotificationText(
+        channel: l.malaNotificationChannel,
+        title: s.isTimeTarget
+            ? l.malaNotificationTitleCount('{count}')
+            : l.malaNotificationTitle('{count}', '{target}'),
+        running: l.malaNotificationRunning,
+        paused: l.pausedHeadline,
+        done: l.malaNotificationDone,
+        pause: l.pause,
+        resume: l.resume,
+        stop: l.stop,
+      ),
+    );
+  }
+
+  /// Keeps the service in step with the session: it stays on only while this
+  /// Mala session runs, is paused from its notification, or ticks after the
+  /// target; anything else (Pause, Reset, another mode or mantra, a raised
+  /// target...) stops it. Otherwise it gets the new count / target.
+  void _syncMalaService() {
+    if (!_malaServiceAlive || _malaCatchingUp) return;
+    final s = state;
+    final keep = s.mode == CountMode.mala &&
+        s.mantraId == _malaMantraId &&
+        ((_malaActive && s.running && !s.completed) ||
+            (_malaPausedByService && !s.running && !s.completed) ||
+            (_malaReachedViaService && s.completed && !s.isTimeTarget));
+    if (!keep) {
+      _stopMalaService();
+      return;
+    }
+    _pushMala();
+  }
+
+  void _pushMala({bool force = false}) {
+    final n = _malaNumbers(state);
+    if (!force && n == _malaPushed) return;
+    _malaPushed = n;
+    unawaited(_mala.update(_malaConfig()));
+  }
+
+  void _stopMalaService({bool tell = true}) {
+    _malaServiceAlive = false;
+    _malaPausedByService = false;
+    _malaReachedViaService = false;
+    _malaPushed = null;
+    _malaSessionId = null;
+    if (_malaVia == _MalaVia.service) _malaVia = _MalaVia.none;
+    if (tell) unawaited(_mala.stop());
+    if (state.malaScreenOff) state = state.copyWith(malaScreenOff: false);
+  }
+
+  /// Something the service did: counted a press, or was paused, resumed or
+  /// stopped from its notification.
+  void _onMalaEvent(MalaServiceEvent e) {
+    if (_disposed || !ref.mounted) return;
+    final id = e.state.sessionId;
+    if (id == null || id != _malaSessionId) return; // an older session
+    switch (e.kind) {
+      case 'count':
+        _adoptMala(e.state, feedback: e.feedback);
+      case 'paused':
+        _adoptMala(e.state);
+        _malaPausedByService = true;
+        if (state.running && state.mode == CountMode.mala) {
+          _emit(state.copyWith(running: false));
+        }
+      case 'resumed':
+        _malaPausedByService = false;
+        final s = state;
+        if (!s.running && !s.completed && s.mode == CountMode.mala) {
+          _malaActive = true;
+          _malaGen++;
+          _malaVia = _MalaVia.service;
+          _emit(s.copyWith(running: true, inputActive: true, malaScreenOff: true));
+        }
+      case 'stopped':
+        _adoptMala(e.state);
+        _stopMalaService(tell: false);
+        _malaActive = false;
+        if (state.running && state.mode == CountMode.mala) {
+          _emit(state.copyWith(running: false));
+        } else {
+          _persist();
+        }
+    }
+  }
+
+  /// Takes the service's count as the Mala count (capped at the target). If
+  /// that reaches the target, the session finishes; the app rings only if
+  /// the service says so ([feedback]), or, catching up, if it did not ring.
+  void _adoptMala(MalaServiceState st,
+      {MalaAppFeedback feedback = MalaAppFeedback.none, bool catchUp = false}) {
+    final s = state;
+    if (s.mode != CountMode.mala) return;
+    var count = st.count;
+    if (!s.isTimeTarget) {
+      count = math.min(count, math.max(0, s.targetCount - _malaBase(s)));
+    }
+    final p = s.progressOf(CountMode.mala);
+    if (count != p.count) {
+      final next = s.withProgress(p.copyWith(count: count));
+      _malaPushed = _malaNumbers(next);
+      if (!s.completed && next.completed && !next.isTimeTarget) {
+        _malaReachedViaService = _malaServiceAlive;
+        _emit(next.copyWith(running: false));
+        final ringHere = catchUp ? !st.rang : feedback == MalaAppFeedback.ring;
+        if (ringHere) _targetReached();
+        return;
+      }
+      _emit(next);
+    }
+    final fb = ref.read(feedbackServiceProvider);
+    switch (feedback) {
+      case MalaAppFeedback.milestone:
+        fb.milestone();
+      case MalaAppFeedback.ack:
+        fb.acknowledge();
+      case MalaAppFeedback.ring:
+      case MalaAppFeedback.none:
+        break;
+    }
+  }
+
+  /// Back on screen, or relaunched: reads the service's saved state and
+  /// catches up (the service may have counted, paused, stopped or rung while
+  /// the app was away or closed).
+  Future<void> _reconnectMala() async {
+    final id = _malaSessionId;
+    if (id == null) return;
+    final st = await _mala.currentState();
+    if (_disposed || !ref.mounted || id != _malaSessionId) return;
+    if (st == null || st.sessionId != id) {
+      // The service knows nothing of it (the phone restarted, say).
+      if (!_malaServiceAlive) {
+        _malaSessionId = null;
+        _persist();
+      }
+      return;
+    }
+    if (st.status != MalaServiceStatus.stopped && !_malaServiceAlive) {
+      // Relaunched while it still counts: take it over.
+      _malaServiceAlive = true;
+      _malaVia = _MalaVia.service;
+      _malaMantraId = state.mantraId;
+    }
+    _malaCatchingUp = true;
+    try {
+      switch (st.status) {
+        case MalaServiceStatus.running:
+          _malaPausedByService = false;
+        case MalaServiceStatus.paused:
+          _malaPausedByService = true;
+        case MalaServiceStatus.stopped:
+          break;
+      }
+      _adoptMala(st, catchUp: true);
+      if (!ref.mounted || _malaSessionId != id) return;
+      final s = state;
+      if (st.status == MalaServiceStatus.running &&
+          s.mode == CountMode.mala &&
+          !s.completed) {
+        _malaActive = true;
+        _malaGen++;
+        if (!s.running) {
+          _emit(s.copyWith(running: true, inputActive: true, malaScreenOff: true));
+        }
+      } else if (st.status == MalaServiceStatus.running && s.completed) {
+        _malaReachedViaService = true;
+      }
+    } finally {
+      _malaCatchingUp = false;
+    }
+    if (st.status == MalaServiceStatus.stopped) {
+      _stopMalaService(tell: false);
+      _persist();
+    } else {
+      _syncMalaService();
+    }
+    // An alarm that rang while away stops when the app is back.
+    if (st.rang) unawaited(_mala.dismissRing());
   }
 
   /// Leaves Voice/Mala for Tap and tells the user why.
@@ -1140,6 +1477,17 @@ final sadhanaSessionProvider =
 
 /// Who rings when a session finishes (see `_shouldRing`).
 enum _Ring { app, phone, none }
+
+/// What counts Mala's volume keys right now.
+enum _MalaVia {
+  none,
+
+  /// The native background service (screen on or off).
+  service,
+
+  /// The in-app listener (the fallback; the screen must stay on).
+  listener,
+}
 
 /// Tells the session when the app goes to the background and comes back, so
 /// a session that ran on (or out) while the phone was locked is caught up at

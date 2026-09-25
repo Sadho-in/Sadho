@@ -2125,4 +2125,40 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get paletteHighContrastBlurb => 'ಅತಿ ಹೆಚ್ಚಿನ ವ್ಯತ್ಯಾಸ, ಸುಲಭ ಓದಿಗಾಗಿ';
+
+  @override
+  String get malaNotificationChannel => 'ಮಾಲೆ ಕೌಂಟರ್';
+
+  @override
+  String malaNotificationTitle(String count, String target) {
+    return 'ಮಾಲೆ · $count / $target';
+  }
+
+  @override
+  String malaNotificationTitleCount(String count) {
+    return 'ಮಾಲೆ · $count';
+  }
+
+  @override
+  String get malaNotificationRunning =>
+      'ಎಣಿಸಲು ವಾಲ್ಯೂಮ್ ಕೀ ಒತ್ತಿ, ಪರದೆ ಆಫ್ ಆಗಿದ್ದರೂ.';
+
+  @override
+  String get malaNotificationDone => 'ಗುರಿ ಪೂರ್ಣ 🙏';
+
+  @override
+  String get malaRingTitle => '🔔 ಮಾಲೆ ಪೂರ್ಣ';
+
+  @override
+  String malaRingBody(int target) {
+    return 'ನೀವು $target ಗುರಿಯನ್ನು ತಲುಪಿದಿರಿ 🙏';
+  }
+
+  @override
+  String get malaScreenOffUnavailable =>
+      'ಈ ಫೋನ್‌ನಲ್ಲಿ ಪರದೆ ಆಫ್ ಆಗಿರುವಾಗ ಎಣಿಕೆ ಪ್ರಾರಂಭವಾಗಲಿಲ್ಲ. Sadho ತೆರೆದಿರುವಾಗ ಮಾತ್ರ ವಾಲ್ಯೂಮ್ ಕೀಗಳು ಎಣಿಸುತ್ತವೆ.';
+
+  @override
+  String get pressVolumeKeysScreenOff =>
+      'ಪರದೆ ಆಫ್ ಆಗಿದ್ದರೂ ವಾಲ್ಯೂಮ್ ಕೀಗಳು ಎಣಿಸುತ್ತವೆ';
 }
