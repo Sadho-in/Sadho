@@ -108,8 +108,10 @@ class _StyleTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
+              // Centred under its preview, also when a long name wraps.
               Text(
                 style.localized(l),
+                textAlign: TextAlign.center,
                 style: theme.textTheme.labelSmall?.copyWith(
                   fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
                 ),

@@ -90,6 +90,7 @@ class StopwatchPage extends ConsumerWidget {
                           child: Text(
                             sw.running ? l.tapLapToMark : l.startThenTapLap,
                             key: const ValueKey('sw-empty'),
+                            textAlign: TextAlign.center,
                             style: theme.textTheme.bodyLarge?.copyWith(
                               color: scheme.onSurfaceVariant,
                             ),

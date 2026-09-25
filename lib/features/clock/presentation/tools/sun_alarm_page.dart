@@ -97,6 +97,7 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                       children: [
                         Text(
                           s.enabled ? l.alarmRingsAt : l.alarmWouldRingAt,
+                          textAlign: TextAlign.center,
                           style: theme.textTheme.titleMedium?.copyWith(
                             color: scheme.onPrimaryContainer,
                           ),
