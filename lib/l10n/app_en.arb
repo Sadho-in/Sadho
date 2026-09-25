@@ -2293,5 +2293,39 @@
         "type": "int"
       }
     }
+  },
+  "collapseSection": "Collapse {section}",
+  "@collapseSection": {
+    "description": "Tooltip / screen-reader label of an open card's header: closes it",
+    "placeholders": {
+      "section": {
+        "type": "String"
+      }
+    }
+  },
+  "expandSection": "Expand {section}",
+  "@expandSection": {
+    "description": "Tooltip / screen-reader label of a closed card's header: opens it",
+    "placeholders": {
+      "section": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryVibrationOn": "Vibration on",
+  "@summaryVibrationOn": {
+    "description": "Closed Completion card summary: vibration is on"
+  },
+  "summaryVibrationOff": "Vibration off",
+  "@summaryVibrationOff": {
+    "description": "Closed Completion card summary: vibration is off"
+  },
+  "summarySoundOff": "Sound off",
+  "@summarySoundOff": {
+    "description": "Closed Completion card summary: the ringtone is off"
+  },
+  "summaryNotSet": "Not set",
+  "@summaryNotSet": {
+    "description": "Closed Sankalp card summary when no intention is written"
   }
 }

@@ -2042,4 +2042,26 @@ class AppLocalizationsHi extends AppLocalizations {
   String durationSeconds(int seconds) {
     return '$seconds सेकंड';
   }
+
+  @override
+  String collapseSection(String section) {
+    return '$section छिपाएँ';
+  }
+
+  @override
+  String expandSection(String section) {
+    return '$section दिखाएँ';
+  }
+
+  @override
+  String get summaryVibrationOn => 'कंपन चालू';
+
+  @override
+  String get summaryVibrationOff => 'कंपन बंद';
+
+  @override
+  String get summarySoundOff => 'ध्वनि बंद';
+
+  @override
+  String get summaryNotSet => 'तय नहीं';
 }

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/sadhana_session_provider.dart';
 import 'section_card.dart';
+import '../../application/collapsed_cards_provider.dart';
 import '../../../../l10n/l10n.dart';
 
 /// Editable sankalp (intention) for the session; saved as you type.
@@ -32,8 +33,14 @@ class _SankalpFieldState extends ConsumerState<SankalpField> {
 
   @override
   Widget build(BuildContext context) {
-    return SectionCard(
-      title: context.l10n.sankalpLabel,
+    final l = context.l10n;
+    final sankalp = ref.watch(sadhanaSessionProvider.select((s) => s.sankalp));
+    // The first words, on one line (the summary ellipsises the rest).
+    final firstLine = sankalp.trim().split('\n').first.trim();
+    return CollapsibleSectionCard(
+      id: SadhanaCard.sankalp,
+      title: l.sankalpLabel,
+      summary: firstLine.isEmpty ? l.summaryNotSet : firstLine,
       child: TextField(
         controller: _controller,
         minLines: 2,

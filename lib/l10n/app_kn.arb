@@ -1,6 +1,6 @@
 {
   "@@locale": "kn",
-  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review.",
   "navHome": "ಮುಖಪುಟ",
   "navSadhana": "ಸಾಧನೆ",
   "navCalendar": "ಕ್ಯಾಲೆಂಡರ್",
@@ -576,5 +576,11 @@
   "customTimerRange": "1 ಸೆಕೆಂಡಿನಿಂದ 24 ಗಂಟೆಗಳವರೆಗೆ ಆರಿಸಿ.",
   "durationHours": "{hours} ಗಂ",
   "durationMinutes": "{minutes} ನಿ",
-  "durationSeconds": "{seconds} ಸೆ"
+  "durationSeconds": "{seconds} ಸೆ",
+  "collapseSection": "{section} ಮರೆಮಾಡಿ",
+  "expandSection": "{section} ತೋರಿಸಿ",
+  "summaryVibrationOn": "ಕಂಪನ ಆನ್",
+  "summaryVibrationOff": "ಕಂಪನ ಆಫ್",
+  "summarySoundOff": "ಧ್ವನಿ ಆಫ್",
+  "summaryNotSet": "ನಿಗದಿಸಿಲ್ಲ"
 }

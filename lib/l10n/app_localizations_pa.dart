@@ -2042,4 +2042,26 @@ class AppLocalizationsPa extends AppLocalizations {
   String durationSeconds(int seconds) {
     return '$seconds ਸਕਿੰਟ';
   }
+
+  @override
+  String collapseSection(String section) {
+    return '$section ਲੁਕਾਓ';
+  }
+
+  @override
+  String expandSection(String section) {
+    return '$section ਦਿਖਾਓ';
+  }
+
+  @override
+  String get summaryVibrationOn => 'ਕੰਬਣੀ ਚਾਲੂ';
+
+  @override
+  String get summaryVibrationOff => 'ਕੰਬਣੀ ਬੰਦ';
+
+  @override
+  String get summarySoundOff => 'ਆਵਾਜ਼ ਬੰਦ';
+
+  @override
+  String get summaryNotSet => 'ਤੈਅ ਨਹੀਂ';
 }

@@ -6,6 +6,7 @@ import '../../application/sadhana_session_provider.dart';
 import '../../data/ringtone.dart';
 import '../../services/feedback_service.dart';
 import 'section_card.dart';
+import '../../application/collapsed_cards_provider.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../l10n/labels.dart';
 
@@ -21,8 +22,16 @@ class CompletionSettingsCard extends ConsumerWidget {
     final feedback = ref.read(feedbackServiceProvider);
     final theme = Theme.of(context);
 
-    return SectionCard(
-      title: context.l10n.completionTitle,
+    final l = context.l10n;
+    return CollapsibleSectionCard(
+      id: SadhanaCard.completion,
+      title: l.completionTitle,
+      summary: [
+        settings.vibrationEnabled ? l.summaryVibrationOn : l.summaryVibrationOff,
+        settings.ringtoneEnabled
+            ? settings.ringtone.localized(l)
+            : l.summarySoundOff,
+      ].join(', '),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

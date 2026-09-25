@@ -46,6 +46,21 @@ void main() {
     }
   }
 
+  testWidgets('Sadhana: Target, Completion and Sankalp closed', (tester) async {
+    await auditApp(tester, 'Sadhana (cards closed)', (rig) async {
+      await openSadhana(tester, rig);
+      session(rig)
+        ..setTargetType(TargetType.time)
+        ..setTargetSeconds(23 * 3600 + 59 * 60 + 59)
+        ..setSankalp('May this japa bring peace and strength to every being');
+      await settle(tester);
+      expect(await reveal(tester, find.byKey(const ValueKey('summary-sankalp'))),
+          findsOneWidget);
+    }, saved: {
+      'sadhana.collapsedCards': ['completion', 'sankalp', 'target'],
+    });
+  });
+
   testWidgets('Sadhana: Voice panel, mantra not trained', (tester) async {
     await auditApp(tester, 'Voice panel (untrained)', (rig) async {
       await openSadhana(tester, rig);

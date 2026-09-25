@@ -2059,4 +2059,26 @@ class AppLocalizationsTa extends AppLocalizations {
   String durationSeconds(int seconds) {
     return '$seconds வி';
   }
+
+  @override
+  String collapseSection(String section) {
+    return '$section மறை';
+  }
+
+  @override
+  String expandSection(String section) {
+    return '$section காட்டு';
+  }
+
+  @override
+  String get summaryVibrationOn => 'அதிர்வு இயக்கத்தில்';
+
+  @override
+  String get summaryVibrationOff => 'அதிர்வு முடக்கத்தில்';
+
+  @override
+  String get summarySoundOff => 'ஒலி முடக்கத்தில்';
+
+  @override
+  String get summaryNotSet => 'அமைக்கப்படவில்லை';
 }

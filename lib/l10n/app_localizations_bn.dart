@@ -2042,4 +2042,26 @@ class AppLocalizationsBn extends AppLocalizations {
   String durationSeconds(int seconds) {
     return '$seconds সেকেন্ড';
   }
+
+  @override
+  String collapseSection(String section) {
+    return '$section লুকান';
+  }
+
+  @override
+  String expandSection(String section) {
+    return '$section দেখান';
+  }
+
+  @override
+  String get summaryVibrationOn => 'কম্পন চালু';
+
+  @override
+  String get summaryVibrationOff => 'কম্পন বন্ধ';
+
+  @override
+  String get summarySoundOff => 'শব্দ বন্ধ';
+
+  @override
+  String get summaryNotSet => 'ঠিক করা নেই';
 }

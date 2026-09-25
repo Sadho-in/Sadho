@@ -2041,4 +2041,26 @@ class AppLocalizationsKn extends AppLocalizations {
   String durationSeconds(int seconds) {
     return '$seconds ಸೆ';
   }
+
+  @override
+  String collapseSection(String section) {
+    return '$section ಮರೆಮಾಡಿ';
+  }
+
+  @override
+  String expandSection(String section) {
+    return '$section ತೋರಿಸಿ';
+  }
+
+  @override
+  String get summaryVibrationOn => 'ಕಂಪನ ಆನ್';
+
+  @override
+  String get summaryVibrationOff => 'ಕಂಪನ ಆಫ್';
+
+  @override
+  String get summarySoundOff => 'ಧ್ವನಿ ಆಫ್';
+
+  @override
+  String get summaryNotSet => 'ನಿಗದಿಸಿಲ್ಲ';
 }

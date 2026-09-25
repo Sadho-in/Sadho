@@ -3567,6 +3567,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{seconds} s'**
   String durationSeconds(int seconds);
+
+  /// Tooltip / screen-reader label of an open card's header: closes it
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse {section}'**
+  String collapseSection(String section);
+
+  /// Tooltip / screen-reader label of a closed card's header: opens it
+  ///
+  /// In en, this message translates to:
+  /// **'Expand {section}'**
+  String expandSection(String section);
+
+  /// Closed Completion card summary: vibration is on
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration on'**
+  String get summaryVibrationOn;
+
+  /// Closed Completion card summary: vibration is off
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration off'**
+  String get summaryVibrationOff;
+
+  /// Closed Completion card summary: the ringtone is off
+  ///
+  /// In en, this message translates to:
+  /// **'Sound off'**
+  String get summarySoundOff;
+
+  /// Closed Sankalp card summary when no intention is written
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get summaryNotSet;
 }
 
 class _AppLocalizationsDelegate

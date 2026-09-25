@@ -2053,4 +2053,26 @@ class AppLocalizationsTe extends AppLocalizations {
   String durationSeconds(int seconds) {
     return '$seconds సె';
   }
+
+  @override
+  String collapseSection(String section) {
+    return '$section దాచు';
+  }
+
+  @override
+  String expandSection(String section) {
+    return '$section చూపు';
+  }
+
+  @override
+  String get summaryVibrationOn => 'వైబ్రేషన్ ఆన్';
+
+  @override
+  String get summaryVibrationOff => 'వైబ్రేషన్ ఆఫ్';
+
+  @override
+  String get summarySoundOff => 'శబ్దం ఆఫ్';
+
+  @override
+  String get summaryNotSet => 'నిర్ణయించలేదు';
 }

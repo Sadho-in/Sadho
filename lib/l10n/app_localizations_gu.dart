@@ -2040,4 +2040,26 @@ class AppLocalizationsGu extends AppLocalizations {
   String durationSeconds(int seconds) {
     return '$seconds સેકન્ડ';
   }
+
+  @override
+  String collapseSection(String section) {
+    return '$section છુપાવો';
+  }
+
+  @override
+  String expandSection(String section) {
+    return '$section બતાવો';
+  }
+
+  @override
+  String get summaryVibrationOn => 'કંપન ચાલુ';
+
+  @override
+  String get summaryVibrationOff => 'કંપન બંધ';
+
+  @override
+  String get summarySoundOff => 'અવાજ બંધ';
+
+  @override
+  String get summaryNotSet => 'નક્કી નથી';
 }

@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/sadhana_session_provider.dart';
 import '../format.dart';
 import 'section_card.dart';
+import '../../application/collapsed_cards_provider.dart';
+import '../../../../l10n/labels.dart';
 import '../../../../l10n/l10n.dart';
 
 const _presets = [27, 108, 1008];
@@ -34,8 +36,12 @@ class TargetSection extends ConsumerWidget {
     final notifier = ref.read(sadhanaSessionProvider.notifier);
 
     final l = context.l10n;
-    return SectionCard(
+    return CollapsibleSectionCard(
+      id: SadhanaCard.target,
       title: l.targetSectionTitle,
+      summary: s.isTimeTarget
+          ? formatShortDuration(l, s.targetSeconds)
+          : '${s.targetCount}',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

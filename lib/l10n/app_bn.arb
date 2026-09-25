@@ -1,6 +1,6 @@
 {
   "@@locale": "bn",
-  "@@x-machine-translation": "First-pass machine translation into Bengali, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Bengali, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review.",
   "navHome": "হোম",
   "navSadhana": "সাধনা",
   "navCalendar": "ক্যালেন্ডার",
@@ -576,5 +576,11 @@
   "customTimerRange": "1 সেকেন্ড থেকে 24 ঘণ্টার মধ্যে বেছে নিন।",
   "durationHours": "{hours} ঘণ্টা",
   "durationMinutes": "{minutes} মিনিট",
-  "durationSeconds": "{seconds} সেকেন্ড"
+  "durationSeconds": "{seconds} সেকেন্ড",
+  "collapseSection": "{section} লুকান",
+  "expandSection": "{section} দেখান",
+  "summaryVibrationOn": "কম্পন চালু",
+  "summaryVibrationOff": "কম্পন বন্ধ",
+  "summarySoundOff": "শব্দ বন্ধ",
+  "summaryNotSet": "ঠিক করা নেই"
 }

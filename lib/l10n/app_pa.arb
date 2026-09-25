@@ -1,6 +1,6 @@
 {
   "@@locale": "pa",
-  "@@x-machine-translation": "First-pass machine translation into Punjabi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Punjabi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review.",
   "navHome": "ਹੋਮ",
   "navSadhana": "ਸਾਧਨਾ",
   "navCalendar": "ਕੈਲੰਡਰ",
@@ -576,5 +576,11 @@
   "customTimerRange": "1 ਸਕਿੰਟ ਤੋਂ 24 ਘੰਟੇ ਤੱਕ ਚੁਣੋ।",
   "durationHours": "{hours} ਘੰਟੇ",
   "durationMinutes": "{minutes} ਮਿੰਟ",
-  "durationSeconds": "{seconds} ਸਕਿੰਟ"
+  "durationSeconds": "{seconds} ਸਕਿੰਟ",
+  "collapseSection": "{section} ਲੁਕਾਓ",
+  "expandSection": "{section} ਦਿਖਾਓ",
+  "summaryVibrationOn": "ਕੰਬਣੀ ਚਾਲੂ",
+  "summaryVibrationOff": "ਕੰਬਣੀ ਬੰਦ",
+  "summarySoundOff": "ਆਵਾਜ਼ ਬੰਦ",
+  "summaryNotSet": "ਤੈਅ ਨਹੀਂ"
 }
