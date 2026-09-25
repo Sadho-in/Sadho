@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import android.view.KeyEvent
 import android.view.WindowManager
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -24,6 +25,7 @@ import io.flutter.plugin.common.MethodChannel
  */
 class MainActivity : FlutterActivity() {
     private var channel: MethodChannel? = null
+    private var malaChannel: MethodChannel? = null
 
     /** The alarm group this activity was just opened for (until Dart takes it). */
     private var alarmLaunch: String? = null
@@ -68,11 +70,101 @@ class MainActivity : FlutterActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        MalaCounterService.appInForeground = true
+    }
+
+    override fun onPause() {
+        MalaCounterService.appInForeground = false
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        MalaCounterService.listener = null
+        super.onDestroy()
+    }
+
+    /**
+     * While the Mala service counts, a volume key pressed with the app on
+     * screen goes straight to it (one count per press, not per auto-repeat),
+     * so the system never shows its volume panel and the volume never changes.
+     */
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        val service = MalaCounterService.instance
+        val volumeKey = event.keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
+            event.keyCode == KeyEvent.KEYCODE_VOLUME_DOWN
+        if (volumeKey && service != null && service.isCounting) {
+            if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
+                service.onForegroundKey()
+            }
+            return true
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
+    /** "sadho/mala": start, pause, resume, stop and read the Mala service. */
+    private fun configureMala(flutterEngine: FlutterEngine) {
+        val ch = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "sadho/mala")
+        malaChannel = ch
+        MalaCounterService.listener = { event -> ch.invokeMethod("event", event) }
+        ch.setMethodCallHandler { call, result ->
+            when (call.method) {
+                // Only ever called with the app on screen (the user pressed Start).
+                "start" -> {
+                    val args = call.arguments as? Map<*, *> ?: emptyMap<String, Any?>()
+                    try {
+                        MalaCounterService.writeConfig(this, args, fresh = true)
+                        val intent = Intent(this, MalaCounterService::class.java)
+                            .setAction(MalaCounterService.ACTION_START)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            startForegroundService(intent)
+                        } else {
+                            startService(intent)
+                        }
+                        result.success(true)
+                    } catch (e: Exception) {
+                        // E.g. ForegroundServiceStartNotAllowedException.
+                        MalaCounterService.markStopped(this)
+                        result.success(false)
+                    }
+                }
+                "update" -> {
+                    val args = call.arguments as? Map<*, *> ?: emptyMap<String, Any?>()
+                    MalaCounterService.writeConfig(this, args, fresh = false)
+                    MalaCounterService.instance?.reload()
+                    result.success(null)
+                }
+                "pause" -> {
+                    MalaCounterService.instance?.pauseCounting()
+                    result.success(null)
+                }
+                "resume" -> {
+                    MalaCounterService.instance?.resumeCounting()
+                    result.success(null)
+                }
+                "stop" -> {
+                    val service = MalaCounterService.instance
+                    if (service != null) service.stopCounting() else MalaCounterService.markStopped(this)
+                    result.success(null)
+                }
+                "currentState" -> result.success(MalaCounterService.readState(this))
+                "dismissRing" -> {
+                    (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+                        .cancel(MalaCounterService.RING_NOTIFICATION_ID)
+                    result.success(null)
+                }
+                else -> result.notImplemented()
+            }
+        }
+    }
+
     private val keyguard: KeyguardManager
         get() = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        configureMala(flutterEngine)
         val ch = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "sadho/alarm")
         channel = ch
         ch.setMethodCallHandler { call, result ->
@@ -153,6 +245,6 @@ class MainActivity : FlutterActivity() {
         private const val PAYLOAD = "payload"
 
         /** The alert groups that are alarms (see reminder_scheduler.dart). */
-        private val ALARM_GROUPS = setOf("sadhana-timer", "timer", "sun-alarm")
+        private val ALARM_GROUPS = setOf("sadhana-timer", "timer", "sun-alarm", "mala")
     }
 }

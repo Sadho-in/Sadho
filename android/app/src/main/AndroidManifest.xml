@@ -29,6 +29,13 @@
          position, so only COARSE location is requested. It is used on the
          device and never uploaded. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- Mala with the screen off (MalaCounterService): a foreground service
+         that runs only while a Mala session is running, started when the user
+         presses Start. It counts hardware volume-key presses through a
+         MediaSession with remote volume (no audio is played) and rings at the
+         target. specialUse, declared in the Play Console. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
     <application
         android:label="Sadho"
         android:name="${applicationName}"
@@ -55,6 +62,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <service
+            android:name=".MalaCounterService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Counts mala repetitions from hardware volume-key presses while the screen is off, and rings when the user's target is reached (hands-free japa counter)."/>
+        </service>
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
             <intent-filter>

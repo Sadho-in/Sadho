@@ -6,6 +6,7 @@ import 'core/app_restart.dart';
 import 'core/storage/app_storage.dart';
 import 'features/calendar/services/local_notifications_scheduler.dart';
 import 'features/calendar/services/reminder_scheduler.dart';
+import 'features/sadhana/services/mala_background_service.dart';
 import 'l10n/date_formats.dart';
 
 // TODO(phase-2): initialise Supabase (auth + sync) here.
@@ -30,9 +31,17 @@ Future<void> main() async {
     }
   }
 
+  // Mala with the screen off: a native foreground service, Android only.
+  final MalaBackgroundService mala = AndroidMalaBackgroundService.platformSupported
+      ? AndroidMalaBackgroundService()
+      : const UnsupportedMalaBackgroundService();
+
   runApp(AppRestart(
     builder: (_) => ProviderScope(
-      overrides: [reminderSchedulerProvider.overrideWithValue(scheduler)],
+      overrides: [
+        reminderSchedulerProvider.overrideWithValue(scheduler),
+        malaBackgroundServiceProvider.overrideWithValue(mala),
+      ],
       child: const SadhoApp(),
     ),
   ));

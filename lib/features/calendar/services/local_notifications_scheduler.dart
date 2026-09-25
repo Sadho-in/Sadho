@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
 
+import '../../../l10n/app_localizations.dart';
 import '../../../l10n/labels.dart';
 import '../../clock/services/tz_init.dart';
 import '../data/calendar_mark.dart';
@@ -23,6 +24,23 @@ import 'reminder_scheduler.dart';
 AndroidScheduleMode scheduleModeFor({required bool alarm, required bool exact}) {
   if (!exact) return AndroidScheduleMode.inexactAllowWhileIdle;
   return alarm ? AndroidScheduleMode.alarmClock : AndroidScheduleMode.exactAllowWhileIdle;
+}
+
+/// The Android notification channel of a Sadhana completion alarm with
+/// [style]. Android fixes a channel's sound and vibration when it is first
+/// created, so every combination gets its own channel (e.g. "Sadhana alarm ·
+/// Temple bell"). The Mala service rings on the same channel.
+({String id, String name, String description}) sadhanaAlarmChannel(
+    AlarmStyle style, AppLocalizations l) {
+  final sound = style.sound;
+  final name = sound == null
+      ? l.channelSadhanaAlarmSilentName
+      : l.channelSadhanaAlarmName(style.soundLabel);
+  return (
+    id: 'sadhana_alarm_${sound ?? 'silent'}_${style.vibrate ? 'v' : 'nv'}',
+    name: style.vibrate ? name : '$name · ${l.channelNoVibration}',
+    description: l.channelSadhanaAlarmDesc,
+  );
 }
 
 /// Real reminders through `flutter_local_notifications` + `timezone`.
@@ -143,21 +161,15 @@ class LocalNotificationsScheduler implements ReminderScheduler {
     );
   }
 
-  /// A Sadhana completion alarm. Android fixes a channel's sound and
-  /// vibration when it is first created, so every combination gets its own
-  /// channel (e.g. "Sadhana alarm · Temple bell").
+  /// A Sadhana completion alarm, on its [sadhanaAlarmChannel].
   NotificationDetails _styledAlarmDetails(AlarmStyle style) {
-    final l = currentL10n();
     final sound = style.sound;
-    final id = 'sadhana_alarm_${sound ?? 'silent'}_${style.vibrate ? 'v' : 'nv'}';
-    final name = sound == null
-        ? l.channelSadhanaAlarmSilentName
-        : l.channelSadhanaAlarmName(style.soundLabel);
+    final channel = sadhanaAlarmChannel(style, currentL10n());
     return NotificationDetails(
       android: AndroidNotificationDetails(
-        id,
-        style.vibrate ? name : '$name · ${l.channelNoVibration}',
-        channelDescription: l.channelSadhanaAlarmDesc,
+        channel.id,
+        channel.name,
+        channelDescription: channel.description,
         importance: Importance.max,
         priority: Priority.max,
         category: AndroidNotificationCategory.alarm,

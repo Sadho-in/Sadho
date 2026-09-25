@@ -48,6 +48,11 @@ kotlin {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    // Mala screen-off counting (MalaCounterService): MediaSessionCompat and
+    // VolumeProviderCompat receive the volume keys; NotificationCompat /
+    // ServiceCompat for the foreground notification.
+    implementation("androidx.media:media:1.7.0")
+    implementation("androidx.core:core-ktx:1.13.1")
 }
 
 flutter {

@@ -8,6 +8,7 @@ import 'package:advance_calendar/features/calendar/application/now_provider.dart
 import 'package:advance_calendar/features/sadhana/application/voice_training_provider.dart';
 import 'package:advance_calendar/features/sadhana/data/ringtone.dart';
 import 'package:advance_calendar/features/sadhana/services/feedback_service.dart';
+import 'package:advance_calendar/features/sadhana/services/mala_background_service.dart';
 import 'package:advance_calendar/features/sadhana/services/pcm_input.dart';
 import 'package:advance_calendar/features/sadhana/services/screen_awake.dart';
 import 'package:advance_calendar/features/sadhana/services/voice_counter_service.dart';
@@ -451,6 +452,173 @@ class FakeVolume implements VolumeButtonService {
   }
 }
 
+/// Stand-in for the native Mala service (MalaCounterService.kt). It behaves
+/// like the real one: it owns the count while it runs, plays feedback itself
+/// only when the app is not on screen ([appInForeground]) and otherwise asks
+/// the app to, rings once at the target, and keeps its state after a stop.
+class FakeMalaService implements MalaBackgroundService {
+  FakeMalaService({this.supported = true, this.startOk = true});
+
+  bool supported;
+  bool startOk;
+  int starts = 0, updates = 0, pauses = 0, resumes = 0, stops = 0, dismissals = 0;
+  MalaServiceConfig? config;
+
+  /// The phone's own idea of whether the app is on screen.
+  bool appInForeground = true;
+
+  /// What the service played itself (vibration / the alarm notification).
+  int nativeMilestones = 0, nativeTicks = 0, nativeRings = 0;
+
+  String? sessionId;
+  int count = 0, base = 0, target = 108;
+  MalaServiceStatus status = MalaServiceStatus.stopped;
+  bool reached = false, rang = false;
+  final _listeners = <void Function(MalaServiceEvent)>[];
+
+  bool get running => status == MalaServiceStatus.running;
+
+  MalaServiceState get state => MalaServiceState(
+        sessionId: sessionId,
+        count: count,
+        base: base,
+        target: target,
+        status: status,
+        reached: reached,
+        rang: rang,
+      );
+
+  void _adopt(MalaServiceConfig c, {required bool fresh}) {
+    config = c;
+    sessionId = c.sessionId;
+    count = c.count;
+    base = c.base;
+    target = c.target;
+    if (fresh) rang = false;
+    reached = base + count >= target;
+    if (!reached) rang = false;
+  }
+
+  @override
+  bool get isSupported => supported;
+
+  @override
+  Future<bool> start(MalaServiceConfig c) async {
+    starts++;
+    if (!startOk) return false;
+    _adopt(c, fresh: true);
+    status = MalaServiceStatus.running;
+    _emit('started');
+    return true;
+  }
+
+  @override
+  Future<void> update(MalaServiceConfig c) async {
+    updates++;
+    _adopt(c, fresh: false);
+  }
+
+  @override
+  Future<void> pause() async {
+    pauses++;
+    if (status == MalaServiceStatus.stopped) return;
+    status = MalaServiceStatus.paused;
+    _emit('paused');
+  }
+
+  @override
+  Future<void> resume() async {
+    resumes++;
+    if (status == MalaServiceStatus.stopped) return;
+    status = MalaServiceStatus.running;
+    _emit('resumed');
+  }
+
+  @override
+  Future<void> stop() async {
+    stops++;
+    if (status == MalaServiceStatus.stopped) return;
+    status = MalaServiceStatus.stopped;
+    _emit('stopped');
+  }
+
+  @override
+  Future<MalaServiceState?> currentState() async => state;
+
+  @override
+  Future<void> dismissRing() async => dismissals++;
+
+  @override
+  VoidCallback listen(void Function(MalaServiceEvent event) onEvent) {
+    _listeners.add(onEvent);
+    return () => _listeners.remove(onEvent);
+  }
+
+  /// Whether the app is listening (its engine is attached).
+  bool get hasListener => _listeners.isNotEmpty;
+
+  /// A hardware volume-key press (counted only while running).
+  void press() {
+    if (!running) return;
+    if (reached) {
+      _feedback(MalaAppFeedback.ack, () => nativeTicks++);
+      return;
+    }
+    count++;
+    final shown = base + count;
+    reached = shown >= target;
+    if (reached) {
+      if (appInForeground) {
+        _emit('count', MalaAppFeedback.ring);
+      } else if (!rang) {
+        rang = true;
+        nativeRings++;
+        _emit('count');
+      } else {
+        _emit('count');
+      }
+      return;
+    }
+    final every = config?.milestoneEvery ?? 108;
+    if (every > 0 && shown % every == 0) {
+      _feedback(MalaAppFeedback.milestone, () => nativeMilestones++);
+    } else {
+      _emit('count');
+    }
+  }
+
+  /// Presses while the app's engine is gone: the count moves on, nobody hears.
+  void pressWhileDetached(int times) {
+    final saved = [..._listeners];
+    _listeners.clear();
+    for (var i = 0; i < times; i++) {
+      press();
+    }
+    _listeners.addAll(saved);
+  }
+
+  void _feedback(MalaAppFeedback kind, void Function() native) {
+    if (appInForeground) {
+      _emit('count', kind);
+    } else {
+      if (config?.vibration ?? true) native();
+      _emit('count');
+    }
+  }
+
+  /// The notification's Pause / Resume / Stop buttons.
+  void notificationPause() => pause();
+  void notificationResume() => resume();
+  void notificationStop() => stop();
+
+  void _emit(String kind, [MalaAppFeedback feedback = MalaAppFeedback.none]) {
+    final e = MalaServiceEvent(kind: kind, state: state, feedback: feedback);
+    for (final l in [..._listeners]) {
+      l(e);
+    }
+  }
+}
+
 /// Provider overrides that replace every plugin-backed service.
 ///
 /// Pass [haptics] and/or [sound] to run the REAL feedback service (settings
@@ -466,8 +634,10 @@ List<Override> testOverrides({
   FakeWakelock? wakelock,
   FakeLockScreen? lockScreen,
   FakeAlarmHealth? alarmHealth,
+  FakeMalaService? mala,
 }) =>
     [
+      if (mala != null) malaBackgroundServiceProvider.overrideWithValue(mala),
       alarmHealthProvider.overrideWithValue(alarmHealth ?? FakeAlarmHealth()),
       lockScreenProvider.overrideWithValue(lockScreen ?? FakeLockScreen()),
       wakelockDriverProvider.overrideWithValue(wakelock ?? FakeWakelock()),
