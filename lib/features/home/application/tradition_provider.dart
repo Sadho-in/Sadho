@@ -5,6 +5,8 @@ import '../../calendar/application/now_provider.dart';
 import '../../clock/application/location_provider.dart';
 import '../../clock/data/sun_alarm.dart';
 import '../data/tradition.dart';
+import '../../../l10n/date_formats.dart';
+import '../../../l10n/locale_provider.dart';
 
 /// The tradition picked on Home, or null until one is picked (Profile counts
 /// picking one towards its completion). Saved in Hive.
@@ -38,6 +40,7 @@ final todayDetailsProvider = Provider<List<TodayDetail>>((ref) {
   final day = DateTime(now.year, now.month, now.day);
   return todayDetails(
     tradition,
+    dates: AppDates(ref.watch(localeProvider)),
     sunrise: sunEventOn(SunEventKind.sunrise, day, p.lat, p.lon),
     sunset: sunEventOn(SunEventKind.sunset, day, p.lat, p.lon),
   );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../l10n/l10n.dart';
 import '../../../../l10n/labels.dart';
 import '../../data/world_cities.dart';
 import '../widgets/tick_builder.dart';
+import '../../../../l10n/date_formats.dart';
 
 /// Full-screen world clock: a fixed list of example cities for now.
 class WorldClockPage extends StatelessWidget {
@@ -49,7 +49,7 @@ class _CityCard extends StatelessWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final l = context.l10n;
-    final time = (use24 ? DateFormat('HH:mm') : DateFormat.jm()).format(ct.time);
+    final time = AppDates.of(context).time(ct.time, use24: use24);
     final name = ct.city.name;
     return Card(
       key: ValueKey('city-$name'),

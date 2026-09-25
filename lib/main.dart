@@ -6,12 +6,15 @@ import 'core/app_restart.dart';
 import 'core/storage/app_storage.dart';
 import 'features/calendar/services/local_notifications_scheduler.dart';
 import 'features/calendar/services/reminder_scheduler.dart';
+import 'l10n/date_formats.dart';
 
 // TODO(phase-2): initialise Supabase (auth + sync) here.
 // TODO(later-phase): Android/iOS home-screen widgets, OCR.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppStorage.init();
+  // Month and weekday names for all nine app languages.
+  initAppDateFormatting();
 
   // Calendar reminders are local notifications. If they cannot be set up (an
   // unsupported platform, a plugin failure) the calendar still works, just

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../l10n/l10n.dart';
 import '../../../../l10n/labels.dart';
@@ -10,6 +9,7 @@ import '../../application/location_provider.dart';
 import '../../application/sun_alarm_provider.dart';
 import '../../data/sun_alarm.dart';
 import '../../services/location_service.dart';
+import '../../../../l10n/date_formats.dart';
 
 /// Full-screen sun-based alarm: follow sunrise or sunset, with a quick or a
 /// custom offset. The alarm time is worked out from where you are, every day.
@@ -70,7 +70,7 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
     final where = ref.watch(locationProvider);
     final now = ref.watch(nowProvider);
     final upcoming = ref.watch(upcomingSunAlarmsProvider);
-    final time = DateFormat.jm();
+    final dates = AppDates.of(context);
     final p = where.point;
     final today = DateTime(now.year, now.month, now.day);
     final rise = sunEventOn(SunEventKind.sunrise, today, p.lat, p.lon);
@@ -106,7 +106,7 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            next == null ? '—' : time.format(next.alarm),
+                            next == null ? '—' : dates.time(next.alarm),
                             key: const ValueKey('sun-alarm-time'),
                             style: theme.textTheme.displayMedium?.copyWith(
                               color: scheme.onPrimaryContainer,
@@ -119,8 +119,8 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                         Text(
                           next == null
                               ? l.noEventToFollow(kind.localized(l).toLowerCase())
-                              : '${_dayName(l, next.alarm, today)} · '
-                                  '${kind.localized(l)} ${time.format(next.event)} · '
+                              : '${_dayName(l, dates, next.alarm, today)} · '
+                                  '${kind.localized(l)} ${dates.time(next.event)} · '
                                   '${offsetLabelIn(l, s.offsetMinutes, kind).toLowerCase()}',
                           key: const ValueKey('sun-alarm-detail'),
                           textAlign: TextAlign.center,
@@ -163,8 +163,8 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                 const SizedBox(height: 8),
                 Text(
                   l.todayHereSunriseSunset(
-                      rise == null ? '—' : time.format(rise),
-                      set == null ? '—' : time.format(set)),
+                      rise == null ? '—' : dates.time(rise),
+                      set == null ? '—' : dates.time(set)),
                   key: const ValueKey('sun-today'),
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -329,11 +329,12 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
     );
   }
 
-  static String _dayName(AppLocalizations l, DateTime t, DateTime today) {
+  static String _dayName(
+      AppLocalizations l, AppDates dates, DateTime t, DateTime today) {
     final d = DateTime(t.year, t.month, t.day);
     final diff = d.difference(today).inDays;
     if (diff == 0) return l.today;
     if (diff == 1) return l.tomorrow;
-    return DateFormat('EEE d MMM').format(t);
+    return dates.shortDayDate(t);
   }
 }

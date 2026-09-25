@@ -63,6 +63,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                       ),
                     ),
                     TableCalendar<void>(
+                      // Month title and weekday names in the app's language.
+                      locale: Localizations.localeOf(context).toString(),
                       firstDay: DateTime(2000),
                       lastDay: DateTime(2100, 12, 31),
                       focusedDay: _focused,

@@ -6,12 +6,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 
 import '../profile/profile_support.dart';
+import 'package:advance_calendar/l10n/date_formats.dart';
+import 'package:flutter/widgets.dart' show Locale;
 
 void main() {
   final rise = DateTime(2026, 9, 22, 6, 5);
   final set = DateTime(2026, 9, 22, 18, 12);
+  final en = AppDates(const Locale('en'));
   List<TodayDetail> details(Tradition t) =>
-      todayDetails(t, sunrise: rise, sunset: set);
+      todayDetails(t, sunrise: rise, sunset: set, dates: en);
   List<String> labels(Tradition t) => [for (final d in details(t)) d.label];
 
   group('the details for each tradition', () {
@@ -70,7 +73,8 @@ void main() {
     });
 
     test('no sunrise (polar) shows a dash, not a made-up time', () {
-      final s = todayDetails(Tradition.place, sunrise: null, sunset: null);
+      final s = todayDetails(Tradition.place,
+          sunrise: null, sunset: null, dates: en);
       expect((s[0].value, s[1].value), ('—', '—'));
     });
 

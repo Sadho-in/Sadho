@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../l10n/l10n.dart';
 import '../widgets/tick_builder.dart';
+import '../../../../l10n/date_formats.dart';
 
 /// Full-screen clock: a large live time with the date beneath it.
 class BigClockPage extends StatelessWidget {
@@ -29,7 +29,8 @@ class BigClockPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TickBuilder(
               builder: (context, now) {
-                final hm = (use24 ? DateFormat('HH:mm') : DateFormat('h:mm')).format(now);
+                final dates = AppDates.of(context);
+                final hm = dates.hoursMinutes(now, use24: use24);
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -39,7 +40,7 @@ class BigClockPage extends StatelessWidget {
                       final narrow = box.maxWidth < 600;
                       final hmText = Text(hm, key: const ValueKey('clock-time'), style: digits);
                       final secText = Text(
-                        ':${DateFormat('ss').format(now)}',
+                        ':${dates.seconds(now)}',
                         key: const ValueKey('clock-seconds'),
                         style: digits.copyWith(
                           fontSize: narrow ? 64 : 72,
@@ -49,7 +50,7 @@ class BigClockPage extends StatelessWidget {
                       final period = use24
                           ? null
                           : Text(
-                              DateFormat('a').format(now),
+                              dates.period(now),
                               key: const ValueKey('clock-period'),
                               style: theme.textTheme.headlineMedium?.copyWith(
                                 color: scheme.onSurfaceVariant,
@@ -90,7 +91,7 @@ class BigClockPage extends StatelessWidget {
                     }),
                     const SizedBox(height: 24),
                     Text(
-                      DateFormat('EEEE, d MMMM y').format(now),
+                      dates.fullDate(now),
                       key: const ValueKey('clock-date'),
                       textAlign: TextAlign.center,
                       style: theme.textTheme.headlineSmall,

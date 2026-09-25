@@ -130,6 +130,16 @@ class TimerNotifier extends Notifier<TimerState> {
 
   @override
   TimerState build() {
+    // The end-of-timer notification is worded in the app's language: a new
+    // language re-words the one waiting for a running timer.
+    // (After a microtask: inside the listener the texts are still the old
+    // language's.)
+    ref.listen(localeProvider, (_, _) => Future.microtask(() {
+          final t = state;
+          if (ref.mounted && t.running && t.endsAt != null) {
+            _scheduleRing(t, t.endsAt!);
+          }
+        }));
     var s = TimerState.fromMap(AppStorage.settings.get(_key));
     final now = ref.read(clockNowProvider)();
     if (s.phase == TimerPhase.running) {

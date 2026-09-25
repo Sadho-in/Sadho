@@ -54,6 +54,9 @@ class DailyReminderNotifier extends Notifier<DailyReminder> {
 
   @override
   DailyReminder build() {
+    // Worded in the app's language: a new language re-words it (after a
+    // microtask: inside the listener the texts are still the old language's).
+    ref.listen(localeProvider, (_, _) => Future.microtask(reschedule));
     Future.microtask(reschedule);
     return DailyReminder.fromMap(AppStorage.settings.get(_key));
   }

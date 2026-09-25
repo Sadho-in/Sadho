@@ -3,12 +3,12 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../core/app_restart.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../sadhana/presentation/widgets/section_card.dart';
 import '../../application/backup_service.dart';
+import '../../../../l10n/date_formats.dart';
 
 /// Backup and restore: everything saved on the phone, to a file you choose.
 ///
@@ -57,7 +57,7 @@ class BackupCard extends ConsumerWidget {
 
     final made = contents.exportedAt == null
         ? ''
-        : l.madeOnSuffix(DateFormat.yMMMd().format(contents.exportedAt!));
+        : l.madeOnSuffix(AppDates.of(context).mediumDate(contents.exportedAt!));
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(

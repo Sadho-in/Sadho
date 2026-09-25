@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../l10n/l10n.dart';
 import '../../../../l10n/labels.dart';
@@ -11,6 +10,7 @@ import '../../application/timer_provider.dart';
 import '../../data/timer_presets.dart';
 import '../widgets/custom_duration_dialog.dart';
 import '../widgets/tick_builder.dart';
+import '../../../../l10n/date_formats.dart';
 
 /// Full-screen Sadhana & vrat timer: pick Aarti, Chalisa, Path, Havan, a
 /// Custom length or "Vrat → sunset", then start. At zero it vibrates and rings (the completion
@@ -253,7 +253,7 @@ class _VratNote extends ConsumerWidget {
         children: [
           if (target != null)
             Text(
-              l.sunsetAtTime(DateFormat.jm().format(target)),
+              l.sunsetAtTime(AppDates.of(context).time(target)),
               key: const ValueKey('vrat-sunset'),
               style: theme.textTheme.titleMedium,
             ),

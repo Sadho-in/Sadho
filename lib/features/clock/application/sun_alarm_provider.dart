@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../core/storage/app_storage.dart';
+import '../../../l10n/date_formats.dart';
 import '../../../l10n/labels.dart';
 import '../../../l10n/locale_provider.dart';
 import '../../calendar/application/now_provider.dart';
@@ -27,6 +27,10 @@ class SunAlarmNotifier extends Notifier<SunAlarmSettings> {
   @override
   SunAlarmSettings build() {
     ref.listen(locationProvider.select((l) => l.point), (_, _) => reschedule());
+    // The notifications are worded (and their times written) in the app's
+    // language: a new language re-words them (after a microtask: inside the
+    // listener the texts are still the old language's).
+    ref.listen(localeProvider, (_, _) => Future.microtask(reschedule));
     // Recompute when the app returns to the front (a new day may have begun).
     try {
       _watcher = _ResumeWatcher(reschedule);
@@ -77,7 +81,7 @@ class SunAlarmNotifier extends Notifier<SunAlarmSettings> {
         p.lon,
         days: sunAlarmDaysAhead,
       );
-      final time = DateFormat.jm();
+      final dates = AppDates(ref.read(localeProvider));
       final emoji = state.event == SunEventKind.sunrise ? '🌅' : '🌇';
       final l = ref.read(l10nProvider);
       final event = state.event.localized(l);
@@ -87,7 +91,7 @@ class SunAlarmNotifier extends Notifier<SunAlarmSettings> {
             id: reminderId(sunAlarmGroup, 0, i),
             when: upcoming[i].alarm,
             title: l.sunAlarmNotifTitle(emoji, event),
-            body: l.sunAlarmNotifBody(event, time.format(upcoming[i].event),
+            body: l.sunAlarmNotifBody(event, dates.time(upcoming[i].event),
                 offsetLabelIn(l, state.offsetMinutes, state.event)),
           ),
       ]);

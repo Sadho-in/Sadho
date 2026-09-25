@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import '../../../l10n/date_formats.dart';
 
 /// Which set of "Today" details the Home tab shows.
 enum Tradition {
@@ -65,19 +65,19 @@ List<TodayDetail> todayDetails(
   Tradition tradition, {
   required DateTime? sunrise,
   required DateTime? sunset,
+  required AppDates dates,
 }) {
-  final time = DateFormat.jm();
   TodayDetail rise() => TodayDetail(
     'sunrise',
     'Sunrise',
-    sunrise == null ? '—' : time.format(sunrise),
+    sunrise == null ? '—' : dates.time(sunrise),
     Icons.wb_twilight,
     example: false,
   );
   TodayDetail set() => TodayDetail(
     'sunset',
     'Sunset',
-    sunset == null ? '—' : time.format(sunset),
+    sunset == null ? '—' : dates.time(sunset),
     Icons.nights_stay_outlined,
     example: false,
   );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../l10n/l10n.dart';
 import '../../../l10n/labels.dart';
@@ -15,6 +14,7 @@ import 'tools/sun_alarm_page.dart';
 import 'tools/timer_page.dart';
 import 'tools/world_clock_page.dart';
 import 'widgets/tick_builder.dart';
+import '../../../l10n/date_formats.dart';
 
 /// Opens [tool] full-screen.
 Future<void> openClockTool(BuildContext context, ClockTool tool) =>
@@ -136,7 +136,7 @@ class _Status extends ConsumerWidget {
         final upcoming = ref.watch(upcomingSunAlarmsProvider);
         final at = upcoming.isEmpty
             ? ''
-            : ' · ${DateFormat.jm().format(upcoming.first.alarm)}';
+            : ' · ${AppDates.of(context).time(upcoming.first.alarm)}';
         return line('${l.statusOn} · ${offsetLabelIn(l, s.offsetMinutes, s.event)}$at');
       case ClockTool.timer:
         final t = ref.watch(timerProvider);
