@@ -243,8 +243,14 @@ Future<void> auditApp(
   List<Override> extra = const [],
   List<AuditCombo>? combos,
   bool scroll = true,
+  void Function()? prepare,
+  double height = auditHeight,
 }) async {
-  final rig = await openAuditApp(tester, saved: saved, extra: extra);
+  final rig =
+      profileRig(saved: {'onboarding.done': true, ...saved}, extra: extra);
+  // Anything the phone should already hold before the app starts.
+  prepare?.call();
+  await openAuditApp(tester, rig: rig, height: height);
   await open(rig);
   final failures = <String>[];
   final e = tester.takeException();
@@ -290,6 +296,10 @@ String _describe(FlutterErrorDetails d) {
   } catch (_) {
     return head;
   }
+  // With widget-creation tracking (on in `flutter test`) the report names
+  // the source line that built the widget: the most useful pointer.
+  final where = RegExp(r'file:///[^\s)]*?/(lib/[^\s):]+:\d+)').firstMatch(full);
+  if (where != null) return '$head [${where.group(1)}]';
   final at = full.indexOf('creator: ');
   if (at < 0) return head;
   final chain = full

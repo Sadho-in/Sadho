@@ -57,8 +57,10 @@ class CounterSection extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 6),
+        // An equal share each, so a long label (a translation, a large text
+        // size) wraps under its own button instead of pushing the row wider.
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _Control(
               label: l.actionReset,
@@ -176,11 +178,19 @@ class _Control extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          child,
-          Text(label, style: Theme.of(context).textTheme.labelSmall),
-        ],
+  Widget build(BuildContext context) => Expanded(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // One slot height for all four (the + button is the tallest), so
+            // the buttons share a centre line whatever their labels do.
+            SizedBox(height: 54, child: Center(child: child)),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+          ],
+        ),
       );
 }

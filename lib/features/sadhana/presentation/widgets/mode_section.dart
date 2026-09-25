@@ -56,17 +56,20 @@ class ModeSection extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // An equal share each: a long name wraps under its own button.
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               for (final m in _modeOrder)
-                _ModeButton(
-                  mode: m,
-                  l10n: l,
-                  selected: mode == m,
-                  // Unsupported platforms / denied permissions are handled by
-                  // the session: it falls back to Tap and shows a message.
-                  onTap: () => _select(context, ref, m),
+                Expanded(
+                  child: _ModeButton(
+                    mode: m,
+                    l10n: l,
+                    selected: mode == m,
+                    // Unsupported platforms / denied permissions are handled
+                    // by the session: it falls back to Tap and shows a message.
+                    onTap: () => _select(context, ref, m),
+                  ),
                 ),
             ],
           ),
@@ -177,6 +180,7 @@ class _ModeButton extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               mode.localized(l10n),
+              textAlign: TextAlign.center,
               style: theme.textTheme.labelMedium?.copyWith(
                 fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                 color: selected ? scheme.primary : scheme.onSurfaceVariant,

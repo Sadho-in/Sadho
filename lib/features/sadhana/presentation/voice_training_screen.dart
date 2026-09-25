@@ -146,7 +146,15 @@ class _VoiceTrainingScreenState extends ConsumerState<VoiceTrainingScreen>
       appBar: AppBar(
         title: Row(
           mainAxisSize: MainAxisSize.min,
-          children: [Text(context.l10n.trainVoice), const SizedBox(width: 8), const BetaBadge()],
+          children: [
+            // An app-bar title is one line; the screen says it again below.
+            Flexible(
+              child: Text(context.l10n.trainVoice,
+                  maxLines: 1, overflow: TextOverflow.ellipsis),
+            ),
+            const SizedBox(width: 8),
+            const BetaBadge(),
+          ],
         ),
       ),
       body: Align(

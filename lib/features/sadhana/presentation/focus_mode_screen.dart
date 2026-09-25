@@ -234,23 +234,32 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
                             ),
                           ),
                         ),
-                        const Spacer(),
-                        AnimatedBuilder(
-                          animation: _pulse,
-                          builder: (_, child) => Transform.scale(
-                            scale: 1 + 0.04 * math.sin(math.pi * _pulse.value),
-                            child: child,
-                          ),
-                          child: ProgressRing(
-                            progress: s.progress,
-                            primaryText: labels.primary,
-                            secondaryText: labels.secondary,
-                            completed: s.completed,
-                            size: ring,
-                            strokeWidth: math.max(14, ring * 0.06),
+                        // The ring sits centred in the room left over, and
+                        // shrinks when a large text size leaves too little.
+                        Expanded(
+                          flex: 2,
+                          child: Center(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: AnimatedBuilder(
+                                animation: _pulse,
+                                builder: (_, child) => Transform.scale(
+                                  scale: 1 +
+                                      0.04 * math.sin(math.pi * _pulse.value),
+                                  child: child,
+                                ),
+                                child: ProgressRing(
+                                  progress: s.progress,
+                                  primaryText: labels.primary,
+                                  secondaryText: labels.secondary,
+                                  completed: s.completed,
+                                  size: ring,
+                                  strokeWidth: math.max(14, ring * 0.06),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                        const Spacer(),
                         const ModeStatusLine(),
                         const SizedBox(height: 12),
                         // Tap mode's own status already says "Tap anywhere to
@@ -258,6 +267,7 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
                         if (s.completed)
                           Text(
                             l.targetReachedFocus,
+                            textAlign: TextAlign.center,
                             style: theme.textTheme.titleMedium?.copyWith(
                               color: scheme.secondary,
                               fontWeight: FontWeight.w600,
@@ -278,6 +288,7 @@ class _FocusModeScreenState extends ConsumerState<FocusModeScreen>
                         const SizedBox(height: 4),
                         Text(
                           l.holdFingersToExit(_exitFingers, focusExitHold.inSeconds),
+                          textAlign: TextAlign.center,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: scheme.onSurfaceVariant,
                           ),
@@ -378,8 +389,9 @@ class _HoldToExitButton extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(14),
           child: Container(
-            height: 40,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            // At least 40 high; taller when a long label wraps.
+            constraints: const BoxConstraints(minHeight: 40),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: BoxDecoration(
               border: Border.all(color: scheme.outline),
               borderRadius: BorderRadius.circular(14),
@@ -407,8 +419,11 @@ class _HoldToExitButton extends StatelessWidget {
                   children: [
                     Icon(Icons.logout, size: 18, color: scheme.onSurface),
                     const SizedBox(width: 8),
-                    Text(l.holdToExit,
-                        style: Theme.of(context).textTheme.labelLarge),
+                    Flexible(
+                      child: Text(l.holdToExit,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.labelLarge),
+                    ),
                   ],
                 ),
               ],

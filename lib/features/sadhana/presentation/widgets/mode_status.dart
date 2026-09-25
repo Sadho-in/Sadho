@@ -110,11 +110,15 @@ class ModeStatusLine extends ConsumerWidget {
               children: [
                 icon0,
                 const SizedBox(width: 6),
-                Text(
-                  l.modeSemanticLabel(s.mode.localized(l)),
-                  style: theme.textTheme.labelLarge?.copyWith(
-                    color: scheme.onSurface,
-                    fontWeight: FontWeight.w700,
+                // Wraps (rather than overflows) when a long mode name and a
+                // large text size leave no room; the status then shares.
+                Flexible(
+                  child: Text(
+                    l.modeSemanticLabel(s.mode.localized(l)),
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      color: scheme.onSurface,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
                 if (s.mode == CountMode.voice) ...[
