@@ -1,6 +1,6 @@
 {
   "@@locale": "bn",
-  "@@x-machine-translation": "First-pass machine translation into Bengali, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Bengali, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review.",
   "navHome": "হোম",
   "navSadhana": "সাধনা",
   "navCalendar": "ক্যালেন্ডার",
@@ -569,5 +569,12 @@
   "healthBatterySamsungHint": "Samsung: সেটিংস › ব্যাটারি › ব্যাকগ্রাউন্ড ব্যবহারের সীমায়, Sadho-কে “স্লিপিং অ্যাপস” ও “ডিপ স্লিপিং অ্যাপস” থেকে সরান, এবং ব্যাটারি ব্যবহার “অসীমাবদ্ধ” করুন।",
   "alarmExplainerOk": "এই সেশন শেষ হলে অ্যালার্মের মতো বাজবে, স্ক্রিন বা অ্যাপ বন্ধ থাকলেও।",
   "alarmExplainerAttention": "এই সেশন শেষ হলে অ্যালার্মের মতো বাজবে, তবে ঠিক সময়ে বাজাতে ফোনের একটি সেটিং বদলাতে হবে।",
-  "alarmExplainerCheck": "দেখুন"
+  "alarmExplainerCheck": "দেখুন",
+  "customTimerName": "কাস্টম টাইমার",
+  "customChipLabel": "কাস্টম · {duration}",
+  "customTimerTitle": "নিজের সময়কাল",
+  "customTimerRange": "1 সেকেন্ড থেকে 24 ঘণ্টার মধ্যে বেছে নিন।",
+  "durationHours": "{hours} ঘণ্টা",
+  "durationMinutes": "{minutes} মিনিট",
+  "durationSeconds": "{seconds} সেকেন্ড"
 }

@@ -9,10 +9,11 @@ import '../../../../l10n/labels.dart';
 import '../../application/location_provider.dart';
 import '../../application/timer_provider.dart';
 import '../../data/timer_presets.dart';
+import '../widgets/custom_duration_dialog.dart';
 import '../widgets/tick_builder.dart';
 
-/// Full-screen Sadhana & vrat timer: pick Aarti, Chalisa, Path, Havan or
-/// "Vrat → sunset", then start. At zero it vibrates and rings (the completion
+/// Full-screen Sadhana & vrat timer: pick Aarti, Chalisa, Path, Havan, a
+/// Custom length or "Vrat → sunset", then start. At zero it vibrates and rings (the completion
 /// feedback), and a notification covers the case where the app is closed.
 class TimerPage extends ConsumerWidget {
   const TimerPage({super.key});
@@ -24,6 +25,7 @@ class TimerPage extends ConsumerWidget {
     final t = ref.watch(timerProvider);
     final notifier = ref.read(timerProvider.notifier);
     final locked = t.running;
+    final lastCustom = ref.watch(lastCustomTimerProvider);
     final l = context.l10n;
 
     return Scaffold(
@@ -54,6 +56,26 @@ class TimerPage extends ConsumerWidget {
                                   ? null
                                   : (_) => notifier.selectPreset(p),
                             ),
+                          ChoiceChip(
+                            key: const ValueKey('preset-custom'),
+                            avatar: const Icon(Icons.tune, size: 18),
+                            label: Text(lastCustom == null
+                                ? l.custom
+                                : l.customChipLabel(
+                                    formatShortDuration(l, lastCustom))),
+                            selected: t.presetId == customTimerId,
+                            onSelected: locked
+                                ? null
+                                : (_) async {
+                                    final secs = await showCustomDurationDialog(
+                                      context,
+                                      initialSeconds: lastCustom ?? 10 * 60,
+                                    );
+                                    if (secs != null) {
+                                      notifier.selectCustom(secs);
+                                    }
+                                  },
+                          ),
                           ChoiceChip(
                             key: const ValueKey('preset-vrat'),
                             avatar: const Icon(Icons.wb_twilight, size: 18),

@@ -203,10 +203,13 @@ void main() {
     testWidgets('shows the sunset it counts to, and whose sky it is', (
       tester,
     ) async {
+      // Taller than the default 800: since P4.3-4 the Custom chip adds a row
+      // of chips, which puts the vrat note just below an 800 px screen.
       final rig = await pumpClock(
         tester,
         const TimerPage(),
         now: threeHoursBeforeSunset(),
+        height: 1000,
       );
       await choose(tester, 'preset-vrat');
       final t = rig.container.read(timerProvider);
@@ -259,6 +262,7 @@ void main() {
         tester,
         const TimerPage(),
         location: FakeLocationService(lat: 51.5074, lon: -0.1278),
+        height: 1000, // see "shows the sunset it counts to" above
       );
       await tester.pump();
       await choose(tester, 'preset-vrat');

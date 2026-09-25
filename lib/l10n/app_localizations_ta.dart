@@ -2029,4 +2029,34 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get alarmExplainerCheck => 'சரிபார்';
+
+  @override
+  String get customTimerName => 'தனிப்பயன் டைமர்';
+
+  @override
+  String customChipLabel(String duration) {
+    return 'தனிப்பயன் · $duration';
+  }
+
+  @override
+  String get customTimerTitle => 'தனிப்பயன் கால அளவு';
+
+  @override
+  String get customTimerRange =>
+      '1 விநாடி முதல் 24 மணிநேரம் வரை தேர்வுசெய்யவும்.';
+
+  @override
+  String durationHours(int hours) {
+    return '$hours மணி';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes நிமி';
+  }
+
+  @override
+  String durationSeconds(int seconds) {
+    return '$seconds வி';
+  }
 }

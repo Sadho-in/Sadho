@@ -2013,4 +2013,33 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get alarmExplainerCheck => 'দেখুন';
+
+  @override
+  String get customTimerName => 'কাস্টম টাইমার';
+
+  @override
+  String customChipLabel(String duration) {
+    return 'কাস্টম · $duration';
+  }
+
+  @override
+  String get customTimerTitle => 'নিজের সময়কাল';
+
+  @override
+  String get customTimerRange => '1 সেকেন্ড থেকে 24 ঘণ্টার মধ্যে বেছে নিন।';
+
+  @override
+  String durationHours(int hours) {
+    return '$hours ঘণ্টা';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes মিনিট';
+  }
+
+  @override
+  String durationSeconds(int seconds) {
+    return '$seconds সেকেন্ড';
+  }
 }

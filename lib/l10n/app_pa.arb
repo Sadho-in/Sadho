@@ -1,6 +1,6 @@
 {
   "@@locale": "pa",
-  "@@x-machine-translation": "First-pass machine translation into Punjabi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Punjabi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review.",
   "navHome": "ਹੋਮ",
   "navSadhana": "ਸਾਧਨਾ",
   "navCalendar": "ਕੈਲੰਡਰ",
@@ -569,5 +569,12 @@
   "healthBatterySamsungHint": "Samsung: ਸੈਟਿੰਗਾਂ › ਬੈਟਰੀ › ਬੈਕਗ੍ਰਾਊਂਡ ਵਰਤੋਂ ਸੀਮਾਵਾਂ ਵਿੱਚ, Sadho ਨੂੰ “ਸਲੀਪਿੰਗ ਐਪਸ” ਅਤੇ “ਡੀਪ ਸਲੀਪਿੰਗ ਐਪਸ” ਤੋਂ ਹਟਾਓ, ਅਤੇ ਬੈਟਰੀ ਵਰਤੋਂ “ਬਿਨਾਂ ਪਾਬੰਦੀ” ਕਰੋ।",
   "alarmExplainerOk": "ਇਹ ਸੈਸ਼ਨ ਪੂਰਾ ਹੋਣ 'ਤੇ ਅਲਾਰਮ ਵਾਂਗ ਵੱਜੇਗਾ, ਸਕ੍ਰੀਨ ਜਾਂ ਐਪ ਬੰਦ ਹੋਵੇ ਤਾਂ ਵੀ।",
   "alarmExplainerAttention": "ਇਹ ਸੈਸ਼ਨ ਪੂਰਾ ਹੋਣ 'ਤੇ ਅਲਾਰਮ ਵਾਂਗ ਵੱਜੇਗਾ, ਪਰ ਸਮੇਂ ਸਿਰ ਵੱਜਣ ਲਈ ਫ਼ੋਨ ਦੀ ਇੱਕ ਸੈਟਿੰਗ ਬਦਲਣੀ ਪਵੇਗੀ।",
-  "alarmExplainerCheck": "ਜਾਂਚੋ"
+  "alarmExplainerCheck": "ਜਾਂਚੋ",
+  "customTimerName": "ਕਸਟਮ ਟਾਈਮਰ",
+  "customChipLabel": "ਕਸਟਮ · {duration}",
+  "customTimerTitle": "ਆਪਣਾ ਸਮਾਂ",
+  "customTimerRange": "1 ਸਕਿੰਟ ਤੋਂ 24 ਘੰਟੇ ਤੱਕ ਚੁਣੋ।",
+  "durationHours": "{hours} ਘੰਟੇ",
+  "durationMinutes": "{minutes} ਮਿੰਟ",
+  "durationSeconds": "{seconds} ਸਕਿੰਟ"
 }

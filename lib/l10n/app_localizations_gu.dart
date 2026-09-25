@@ -2011,4 +2011,33 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get alarmExplainerCheck => 'તપાસો';
+
+  @override
+  String get customTimerName => 'કસ્ટમ ટાઈમર';
+
+  @override
+  String customChipLabel(String duration) {
+    return 'કસ્ટમ · $duration';
+  }
+
+  @override
+  String get customTimerTitle => 'પોતાનો સમયગાળો';
+
+  @override
+  String get customTimerRange => '1 સેકન્ડથી 24 કલાક સુધી પસંદ કરો.';
+
+  @override
+  String durationHours(int hours) {
+    return '$hours કલાક';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes મિનિટ';
+  }
+
+  @override
+  String durationSeconds(int seconds) {
+    return '$seconds સેકન્ડ';
+  }
 }

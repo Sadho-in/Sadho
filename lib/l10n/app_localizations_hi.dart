@@ -2013,4 +2013,33 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get alarmExplainerCheck => 'जाँचें';
+
+  @override
+  String get customTimerName => 'कस्टम टाइमर';
+
+  @override
+  String customChipLabel(String duration) {
+    return 'कस्टम · $duration';
+  }
+
+  @override
+  String get customTimerTitle => 'अपनी अवधि';
+
+  @override
+  String get customTimerRange => '1 सेकंड से 24 घंटे तक चुनें।';
+
+  @override
+  String durationHours(int hours) {
+    return '$hours घंटे';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes मिनट';
+  }
+
+  @override
+  String durationSeconds(int seconds) {
+    return '$seconds सेकंड';
+  }
 }

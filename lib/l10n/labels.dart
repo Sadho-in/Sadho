@@ -236,8 +236,22 @@ String presetLabelFor(AppLocalizations l, String presetId, String fallback) =>
       'path' => l.presetPath,
       'havan' => l.presetHavan,
       'vrat_sunset' => l.vratToSunset,
+      'custom' => l.customTimerName,
       _ => fallback,
     };
+
+/// A length as its non-zero parts: 1020 -> "17 min", 3630 -> "1 h 30 s",
+/// 86400 -> "24 h".
+String formatShortDuration(AppLocalizations l, int seconds) {
+  final h = seconds ~/ 3600;
+  final m = (seconds % 3600) ~/ 60;
+  final s = seconds % 60;
+  return [
+    if (h > 0) l.durationHours(h),
+    if (m > 0) l.durationMinutes(m),
+    if (s > 0 || seconds == 0) l.durationSeconds(s),
+  ].join(' ');
+}
 
 extension CityTimeL10n on CityTime {
   /// [CityTime.dayLabel], but in the chosen language.

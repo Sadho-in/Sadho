@@ -87,6 +87,25 @@ void main() {
     });
   });
 
+  testWidgets('Timer, a custom length chosen (long chip label)', (tester) async {
+    await auditApp(tester, 'Timer (custom)', (rig) async {
+      rig.container
+          .read(timerProvider.notifier)
+          .selectCustom(23 * 3600 + 59 * 60 + 59);
+      await openTool(tester, ClockTool.timer);
+      expect(key('preset-custom'), findsOneWidget);
+    });
+  });
+
+  testWidgets('Timer, custom-duration picker', (tester) async {
+    await auditApp(tester, 'Custom duration dialog', (rig) async {
+      await openTool(tester, ClockTool.timer);
+      await tester.tap(await reveal(tester, key('preset-custom')));
+      await settle(tester);
+      expect(key('custom-ok'), findsOneWidget);
+    });
+  });
+
   testWidgets('Timer, Vrat -> sunset, running', (tester) async {
     await auditApp(tester, 'Timer (vrat, running)', (rig) async {
       rig.container.read(timerProvider.notifier)

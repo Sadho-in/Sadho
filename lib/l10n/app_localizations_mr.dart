@@ -2010,4 +2010,33 @@ class AppLocalizationsMr extends AppLocalizations {
 
   @override
   String get alarmExplainerCheck => 'तपासा';
+
+  @override
+  String get customTimerName => 'कस्टम टायमर';
+
+  @override
+  String customChipLabel(String duration) {
+    return 'कस्टम · $duration';
+  }
+
+  @override
+  String get customTimerTitle => 'स्वतःचा कालावधी';
+
+  @override
+  String get customTimerRange => '1 सेकंद ते 24 तास यामध्ये निवडा.';
+
+  @override
+  String durationHours(int hours) {
+    return '$hours तास';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes मि';
+  }
+
+  @override
+  String durationSeconds(int seconds) {
+    return '$seconds से';
+  }
 }

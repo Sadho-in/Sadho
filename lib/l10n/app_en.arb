@@ -2245,5 +2245,53 @@
   "healthBatterySamsungHint": "Samsung: in Settings › Battery › Background usage limits, remove Sadho from “Sleeping apps” and “Deep sleeping apps”, and set its battery use to “Unrestricted”.",
   "alarmExplainerOk": "This session will ring like an alarm when it finishes, even with the screen off or the app closed.",
   "alarmExplainerAttention": "This session will ring like an alarm when it finishes, but your phone needs a setting changed to ring on time.",
-  "alarmExplainerCheck": "Check"
+  "alarmExplainerCheck": "Check",
+  "customTimerName": "Custom timer",
+  "@customTimerName": {
+    "description": "The name of a timer run with a custom duration (on the timer and in its notification)"
+  },
+  "customChipLabel": "Custom · {duration}",
+  "@customChipLabel": {
+    "description": "The Custom timer choice showing the last custom duration, e.g. Custom · 17 min",
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "customTimerTitle": "Custom duration",
+  "@customTimerTitle": {
+    "description": "Title of the dialog that picks a custom timer duration"
+  },
+  "customTimerRange": "Choose from 1 second up to 24 hours.",
+  "@customTimerRange": {
+    "description": "Shown when the custom timer duration is zero or longer than 24 hours"
+  },
+  "durationHours": "{hours} h",
+  "@durationHours": {
+    "description": "Hours in a short duration, e.g. 2 h",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "durationMinutes": "{minutes} min",
+  "@durationMinutes": {
+    "description": "Minutes in a short duration, e.g. 17 min",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "durationSeconds": "{seconds} s",
+  "@durationSeconds": {
+    "description": "Seconds in a short duration, e.g. 30 s",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -2012,4 +2012,33 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get alarmExplainerCheck => 'ಪರಿಶೀಲಿಸಿ';
+
+  @override
+  String get customTimerName => 'ಕಸ್ಟಮ್ ಟೈಮರ್';
+
+  @override
+  String customChipLabel(String duration) {
+    return 'ಕಸ್ಟಮ್ · $duration';
+  }
+
+  @override
+  String get customTimerTitle => 'ನಿಮ್ಮ ಅವಧಿ';
+
+  @override
+  String get customTimerRange => '1 ಸೆಕೆಂಡಿನಿಂದ 24 ಗಂಟೆಗಳವರೆಗೆ ಆರಿಸಿ.';
+
+  @override
+  String durationHours(int hours) {
+    return '$hours ಗಂ';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes ನಿ';
+  }
+
+  @override
+  String durationSeconds(int seconds) {
+    return '$seconds ಸೆ';
+  }
 }

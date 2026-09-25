@@ -2024,4 +2024,33 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get alarmExplainerCheck => 'తనిఖీ చేయి';
+
+  @override
+  String get customTimerName => 'కస్టమ్ టైమర్';
+
+  @override
+  String customChipLabel(String duration) {
+    return 'కస్టమ్ · $duration';
+  }
+
+  @override
+  String get customTimerTitle => 'మీ సమయం';
+
+  @override
+  String get customTimerRange => '1 సెకను నుండి 24 గంటల వరకు ఎంచుకోండి.';
+
+  @override
+  String durationHours(int hours) {
+    return '$hours గం';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes ని';
+  }
+
+  @override
+  String durationSeconds(int seconds) {
+    return '$seconds సె';
+  }
 }

@@ -2010,4 +2010,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get alarmExplainerCheck => 'Check';
+
+  @override
+  String get customTimerName => 'Custom timer';
+
+  @override
+  String customChipLabel(String duration) {
+    return 'Custom · $duration';
+  }
+
+  @override
+  String get customTimerTitle => 'Custom duration';
+
+  @override
+  String get customTimerRange => 'Choose from 1 second up to 24 hours.';
+
+  @override
+  String durationHours(int hours) {
+    return '$hours h';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String durationSeconds(int seconds) {
+    return '$seconds s';
+  }
 }

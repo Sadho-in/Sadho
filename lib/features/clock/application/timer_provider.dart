@@ -158,6 +158,21 @@ class TimerNotifier extends Notifier<TimerState> {
     ));
   }
 
+  /// A length the user chose (1 s to 24 h); it is remembered for the
+  /// Custom chip. Runs exactly like a preset. False if [seconds] is out of
+  /// range or a countdown is running.
+  bool selectCustom(int seconds) {
+    if (state.running || !isValidCustomSeconds(seconds)) return false;
+    ref.read(lastCustomTimerProvider.notifier).set(seconds);
+    _set(TimerState(
+      presetId: customTimerId,
+      label: 'Custom timer',
+      totalSeconds: seconds,
+      remainingSeconds: seconds,
+    ));
+    return true;
+  }
+
   /// "Vrat → sunset": counts down to the next sunset at the user's place
   /// (today's if it is still ahead, otherwise tomorrow's).
   void selectVratToSunset() {
@@ -285,3 +300,24 @@ class TimerNotifier extends Notifier<TimerState> {
 
 final timerProvider =
     NotifierProvider<TimerNotifier, TimerState>(TimerNotifier.new);
+
+/// The last custom timer length in seconds (null until one is chosen), saved
+/// so the Custom chip can show it ("Custom · 17 min") after a restart.
+class LastCustomTimerNotifier extends Notifier<int?> {
+  static const _key = 'clock.timer.custom';
+
+  @override
+  int? build() {
+    final v = AppStorage.settings.get(_key);
+    return v is int && isValidCustomSeconds(v) ? v : null;
+  }
+
+  void set(int seconds) {
+    if (!isValidCustomSeconds(seconds)) return;
+    state = seconds;
+    AppStorage.settings.put(_key, seconds);
+  }
+}
+
+final lastCustomTimerProvider =
+    NotifierProvider<LastCustomTimerNotifier, int?>(LastCustomTimerNotifier.new);

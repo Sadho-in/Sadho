@@ -24,6 +24,16 @@ const timerPresets = [
 /// than a fixed length).
 const vratSunsetId = 'vrat_sunset';
 
+/// The id of a run with a length the user chose ("Custom").
+const customTimerId = 'custom';
+
+/// A custom length is from 1 second up to 24 hours.
+const minCustomSeconds = 1;
+const maxCustomSeconds = 24 * 3600;
+
+bool isValidCustomSeconds(int s) =>
+    s >= minCustomSeconds && s <= maxCustomSeconds;
+
 /// 90 -> "1:30", 3725 -> "1:02:05", 65 -> "01:05". Never negative.
 String formatCountdown(int seconds) {
   final s = seconds < 0 ? 0 : seconds;

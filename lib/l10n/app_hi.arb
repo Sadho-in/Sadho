@@ -1,6 +1,6 @@
 {
   "@@locale": "hi",
-  "@@x-machine-translation": "First-pass machine translation into Hindi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Hindi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review.",
   "navHome": "होम",
   "navSadhana": "साधना",
   "navCalendar": "कैलेंडर",
@@ -569,5 +569,12 @@
   "healthBatterySamsungHint": "Samsung: सेटिंग्स › बैटरी › बैकग्राउंड उपयोग सीमाएँ में, Sadho को “स्लीपिंग ऐप्स” और “डीप स्लीपिंग ऐप्स” से हटाएँ, और बैटरी उपयोग “अप्रतिबंधित” करें।",
   "alarmExplainerOk": "यह सत्र पूरा होने पर अलार्म की तरह बजेगा, स्क्रीन बंद हो या ऐप बंद हो तब भी।",
   "alarmExplainerAttention": "यह सत्र पूरा होने पर अलार्म की तरह बजेगा, पर समय पर बजने के लिए फ़ोन की एक सेटिंग बदलनी होगी।",
-  "alarmExplainerCheck": "जाँचें"
+  "alarmExplainerCheck": "जाँचें",
+  "customTimerName": "कस्टम टाइमर",
+  "customChipLabel": "कस्टम · {duration}",
+  "customTimerTitle": "अपनी अवधि",
+  "customTimerRange": "1 सेकंड से 24 घंटे तक चुनें।",
+  "durationHours": "{hours} घंटे",
+  "durationMinutes": "{minutes} मिनट",
+  "durationSeconds": "{seconds} सेकंड"
 }

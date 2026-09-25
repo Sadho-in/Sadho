@@ -2013,4 +2013,33 @@ class AppLocalizationsPa extends AppLocalizations {
 
   @override
   String get alarmExplainerCheck => 'ਜਾਂਚੋ';
+
+  @override
+  String get customTimerName => 'ਕਸਟਮ ਟਾਈਮਰ';
+
+  @override
+  String customChipLabel(String duration) {
+    return 'ਕਸਟਮ · $duration';
+  }
+
+  @override
+  String get customTimerTitle => 'ਆਪਣਾ ਸਮਾਂ';
+
+  @override
+  String get customTimerRange => '1 ਸਕਿੰਟ ਤੋਂ 24 ਘੰਟੇ ਤੱਕ ਚੁਣੋ।';
+
+  @override
+  String durationHours(int hours) {
+    return '$hours ਘੰਟੇ';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes ਮਿੰਟ';
+  }
+
+  @override
+  String durationSeconds(int seconds) {
+    return '$seconds ਸਕਿੰਟ';
+  }
 }

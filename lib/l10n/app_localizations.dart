@@ -3525,6 +3525,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check'**
   String get alarmExplainerCheck;
+
+  /// The name of a timer run with a custom duration (on the timer and in its notification)
+  ///
+  /// In en, this message translates to:
+  /// **'Custom timer'**
+  String get customTimerName;
+
+  /// The Custom timer choice showing the last custom duration, e.g. Custom · 17 min
+  ///
+  /// In en, this message translates to:
+  /// **'Custom · {duration}'**
+  String customChipLabel(String duration);
+
+  /// Title of the dialog that picks a custom timer duration
+  ///
+  /// In en, this message translates to:
+  /// **'Custom duration'**
+  String get customTimerTitle;
+
+  /// Shown when the custom timer duration is zero or longer than 24 hours
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from 1 second up to 24 hours.'**
+  String get customTimerRange;
+
+  /// Hours in a short duration, e.g. 2 h
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h'**
+  String durationHours(int hours);
+
+  /// Minutes in a short duration, e.g. 17 min
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String durationMinutes(int minutes);
+
+  /// Seconds in a short duration, e.g. 30 s
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} s'**
+  String durationSeconds(int seconds);
 }
 
 class _AppLocalizationsDelegate

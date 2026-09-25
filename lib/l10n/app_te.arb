@@ -1,6 +1,6 @@
 {
   "@@locale": "te",
-  "@@x-machine-translation": "First-pass machine translation into Telugu, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Telugu, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review.",
   "navHome": "హోమ్",
   "navSadhana": "సాధన",
   "navCalendar": "క్యాలెండర్",
@@ -569,5 +569,12 @@
   "healthBatterySamsungHint": "Samsung: సెట్టింగ్‌లు › బ్యాటరీ › బ్యాక్‌గ్రౌండ్ వినియోగ పరిమితులులో, Sadhoను “స్లీపింగ్ యాప్‌లు”, “డీప్ స్లీపింగ్ యాప్‌లు” నుండి తీసివేసి, బ్యాటరీ వినియోగాన్ని “అపరిమితం”గా సెట్ చేయండి.",
   "alarmExplainerOk": "ఈ సెషన్ ముగిసినప్పుడు అలారం లాగా మోగుతుంది, స్క్రీన్ లేదా యాప్ మూసి ఉన్నా.",
   "alarmExplainerAttention": "ఈ సెషన్ ముగిసినప్పుడు అలారం లాగా మోగుతుంది, కానీ సమయానికి మోగడానికి ఫోన్‌లో ఒక సెట్టింగ్ మార్చాలి.",
-  "alarmExplainerCheck": "తనిఖీ చేయి"
+  "alarmExplainerCheck": "తనిఖీ చేయి",
+  "customTimerName": "కస్టమ్ టైమర్",
+  "customChipLabel": "కస్టమ్ · {duration}",
+  "customTimerTitle": "మీ సమయం",
+  "customTimerRange": "1 సెకను నుండి 24 గంటల వరకు ఎంచుకోండి.",
+  "durationHours": "{hours} గం",
+  "durationMinutes": "{minutes} ని",
+  "durationSeconds": "{seconds} సె"
 }
