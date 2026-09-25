@@ -62,34 +62,43 @@ class _CityCard extends StatelessWidget {
               color: ct.isDaytime ? scheme.primary : scheme.secondary,
             ),
             const SizedBox(width: 14),
+            // The time sits on the right, or under the city when a long
+            // name or a large text size leaves no room beside it.
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 8,
                 children: [
-                  Text(name, style: theme.textTheme.titleLarge),
-                  Text(
-                    ct.city.region,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: scheme.onSurfaceVariant,
-                    ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(name, style: theme.textTheme.titleLarge),
+                      Text(
+                        ct.city.region,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '${ct.dayLabelIn(l)} · ${ct.relativeLabelIn(l)}',
+                        key: ValueKey('city-$name-note'),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 2),
                   Text(
-                    '${ct.dayLabelIn(l)} · ${ct.relativeLabelIn(l)}',
-                    key: ValueKey('city-$name-note'),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: scheme.onSurfaceVariant,
+                    time,
+                    key: ValueKey('city-$name-time'),
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontFeatures: const [FontFeature.tabularFigures()],
                     ),
                   ),
                 ],
-              ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              time,
-              key: ValueKey('city-$name-time'),
-              style: theme.textTheme.headlineMedium?.copyWith(
-                fontFeatures: const [FontFeature.tabularFigures()],
               ),
             ),
           ],

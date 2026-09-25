@@ -148,9 +148,17 @@ class _LapList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
               children: [
-                SizedBox(width: 72, child: Text(l.lap, style: head)),
-                Expanded(child: Text(l.lapTime, style: head)),
-                Text(l.total, style: head),
+                SizedBox(width: 64, child: Text(l.lap, style: head)),
+                Expanded(
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    spacing: 4,
+                    children: [
+                      Text(l.lapTime, style: head),
+                      Text(l.total, style: head),
+                    ],
+                  ),
+                ),
               ],
             ),
           );
@@ -168,29 +176,38 @@ class _LapList extends StatelessWidget {
           child: Row(
             children: [
               SizedBox(
-                width: 72,
+                width: 64,
                 child: Text('${entry.number}', style: mono?.copyWith(color: color)),
               ),
+              // The total sits on the right, or under the lap time when a
+              // large text size leaves no room beside it.
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  spacing: 4,
                   children: [
-                    Text(
-                      formatStopwatch(entry.lap),
-                      key: ValueKey('lap-${entry.number}-time'),
-                      style: mono?.copyWith(color: color),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          formatStopwatch(entry.lap),
+                          key: ValueKey('lap-${entry.number}-time'),
+                          style: mono?.copyWith(color: color),
+                        ),
+                        if (tag != null)
+                          Text(tag,
+                              style: theme.textTheme.labelSmall
+                                  ?.copyWith(color: color)),
+                      ],
                     ),
-                    if (tag != null)
-                      Text(tag,
-                          style: theme.textTheme.labelSmall
-                              ?.copyWith(color: color)),
+                    Text(
+                      formatStopwatch(entry.total),
+                      key: ValueKey('lap-${entry.number}-total'),
+                      style: mono?.copyWith(color: scheme.onSurfaceVariant),
+                    ),
                   ],
                 ),
-              ),
-              Text(
-                formatStopwatch(entry.total),
-                key: ValueKey('lap-${entry.number}-total'),
-                style: mono?.copyWith(color: scheme.onSurfaceVariant),
               ),
             ],
           ),

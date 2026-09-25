@@ -60,17 +60,13 @@ class BigClockPage extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             FittedBox(fit: BoxFit.scaleDown, child: hmText),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.baseline,
-                              textBaseline: TextBaseline.alphabetic,
-                              children: [
-                                secText,
-                                if (period != null) ...[
-                                  const SizedBox(width: 12),
-                                  period,
-                                ],
-                              ],
+                            // AM/PM goes under the seconds when a large
+                            // text size leaves no room beside them.
+                            Wrap(
+                              alignment: WrapAlignment.center,
+                              crossAxisAlignment: WrapCrossAlignment.end,
+                              spacing: 12,
+                              children: [secText, ?period],
                             ),
                           ],
                         );

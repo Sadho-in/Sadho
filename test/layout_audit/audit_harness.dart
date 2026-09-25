@@ -245,9 +245,12 @@ Future<void> auditApp(
   bool scroll = true,
   void Function()? prepare,
   double height = auditHeight,
+  FakeLocationService? location,
 }) async {
-  final rig =
-      profileRig(saved: {'onboarding.done': true, ...saved}, extra: extra);
+  final rig = profileRig(
+      saved: {'onboarding.done': true, ...saved},
+      extra: extra,
+      location: location);
   // Anything the phone should already hold before the app starts.
   prepare?.call();
   await openAuditApp(tester, rig: rig, height: height);

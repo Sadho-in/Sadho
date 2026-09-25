@@ -248,36 +248,76 @@ class _SunAlarmPageState extends ConsumerState<SunAlarmPage> {
                 ],
                 const SizedBox(height: 24),
                 // ---- where ---------------------------------------------
+                // Not a ListTile: its trailing slot is too narrow for the
+                // button in some languages at a large text size, so the
+                // button sits under the text, on the right.
                 Card(
-                  child: ListTile(
-                    leading: Icon(
-                      p.source == LocationSource.fallback
-                          ? Icons.location_off_outlined
-                          : Icons.my_location,
-                    ),
-                    title: Text(where.summaryIn(l), key: const ValueKey('sun-where')),
-                    subtitle: Text(
-                      '${p.lat.toStringAsFixed(2)}°, ${p.lon.toStringAsFixed(2)}°'
-                      '${where.failed ? l.couldNotReadPosition : ''}',
-                    ),
-                    trailing: where.busy
-                        ? const SizedBox.square(
-                            dimension: 24,
-                            child: CircularProgressIndicator(strokeWidth: 2.5),
-                          )
-                        : TextButton(
-                            key: const ValueKey('use-location'),
-                            onPressed: where.access == LocationAccess.deniedForever
-                                ? ref.read(locationProvider.notifier).openSettings
-                                : () => ref
-                                    .read(locationProvider.notifier)
-                                    .refresh(ask: true),
-                            child: Text(
-                              where.access == LocationAccess.deniedForever
-                                  ? l.settingsAction
-                                  : l.useMyLocation,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 12, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: Icon(
+                                p.source == LocationSource.fallback
+                                    ? Icons.location_off_outlined
+                                    : Icons.my_location,
+                                color: scheme.onSurfaceVariant,
+                              ),
                             ),
-                          ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(where.summaryIn(l),
+                                      key: const ValueKey('sun-where'),
+                                      style: theme.textTheme.bodyLarge),
+                                  Text(
+                                    '${p.lat.toStringAsFixed(2)}°, ${p.lon.toStringAsFixed(2)}°'
+                                    '${where.failed ? l.couldNotReadPosition : ''}',
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                        color: scheme.onSurfaceVariant),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: where.busy
+                              ? const Padding(
+                                  padding: EdgeInsets.all(12),
+                                  child: SizedBox.square(
+                                    dimension: 24,
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 2.5),
+                                  ),
+                                )
+                              : TextButton(
+                                  key: const ValueKey('use-location'),
+                                  onPressed: where.access ==
+                                          LocationAccess.deniedForever
+                                      ? ref
+                                          .read(locationProvider.notifier)
+                                          .openSettings
+                                      : () => ref
+                                          .read(locationProvider.notifier)
+                                          .refresh(ask: true),
+                                  child: Text(
+                                    where.access == LocationAccess.deniedForever
+                                        ? l.settingsAction
+                                        : l.useMyLocation,
+                                  ),
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
