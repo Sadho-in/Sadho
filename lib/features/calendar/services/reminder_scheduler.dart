@@ -79,11 +79,16 @@ const dailyReminderGroup = 'daily-sadhana';
 /// The end of a Sadhana session with a time target (rings if the app is not
 /// running its own clock, e.g. with the screen off).
 const sadhanaTimerGroup = 'sadhana-timer';
+/// A Mala count target reached with the screen off: rung by the native Mala
+/// service (not scheduled here), but it opens the app the same way.
+const malaGroup = 'mala';
+
 const alertGroups = {
   sunAlarmGroup,
   timerGroup,
   dailyReminderGroup,
   sadhanaTimerGroup,
+  malaGroup,
 };
 
 /// Puts a mark's reminders on the phone's alarm system (local notifications:

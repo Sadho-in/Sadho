@@ -73,7 +73,7 @@ class AppShell extends ConsumerWidget {
     // session, or the Clock tab for the timer and the sun alarm.
     ref.listen<AsyncValue<String>>(_notificationOpenedProvider, (_, next) {
       final tab = switch (next.value) {
-        sadhanaTimerGroup => ShellTab.sadhana,
+        sadhanaTimerGroup || malaGroup => ShellTab.sadhana,
         timerGroup || sunAlarmGroup => ShellTab.clock,
         _ => null,
       };

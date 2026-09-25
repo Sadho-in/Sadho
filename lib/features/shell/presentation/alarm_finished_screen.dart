@@ -23,9 +23,9 @@ class AlarmFinishedScreen extends ConsumerWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final alarm = ref.read(alarmScreenProvider.notifier);
-    final isSadhana = group == sadhanaTimerGroup;
+    final isSadhana = group == sadhanaTimerGroup || group == malaGroup;
     final title = switch (group) {
-      sadhanaTimerGroup => l.alarmScreenSadhanaTitle,
+      sadhanaTimerGroup || malaGroup => l.alarmScreenSadhanaTitle,
       sunAlarmGroup => l.alarmScreenSunTitle,
       _ => l.alarmScreenTimerTitle,
     };

@@ -1,4 +1,6 @@
 import 'package:advance_calendar/core/storage/app_storage.dart';
+import 'package:advance_calendar/features/sadhana/application/completion_settings_provider.dart';
+import 'package:advance_calendar/features/sadhana/data/ringtone.dart';
 import 'package:advance_calendar/features/sadhana/application/sadhana_session_provider.dart';
 import 'package:advance_calendar/features/sadhana/application/session_notice_provider.dart';
 import 'package:advance_calendar/features/sadhana/services/mala_background_service.dart';
@@ -387,6 +389,30 @@ void main() {
       await tester.pump();
       expect(feedback.completions, 0);
       expect(mala.dismissals, 1);
+    });
+
+    test('the ring is the Sadhana alarm: its channel, sound and repeat',
+        () async {
+      final c = await startMala(target: 5);
+      var ring = mala.config!.ring;
+      expect(ring.sound, Ringtone.templeBell.rawName);
+      expect(ring.channelId, 'sadhana_alarm_${Ringtone.templeBell.rawName}_v');
+      expect(ring.insistent, isFalse);
+      expect(ring.title, contains('Mala'));
+      // A settings change applies to the running service at once.
+      final settings = c.read(completionSettingsProvider.notifier)
+        ..setSoundRepeat(SoundRepeat.untilStopped);
+      await pumpEventQueue();
+      expect(mala.config!.ring.insistent, isTrue);
+      settings
+        ..setRingtoneEnabled(false)
+        ..setVibrationEnabled(false);
+      await pumpEventQueue();
+      ring = mala.config!.ring;
+      expect(ring.sound, isNull);
+      expect(ring.vibrate, isFalse);
+      expect(ring.channelId, 'sadhana_alarm_silent_nv');
+      expect(mala.config!.vibration, isFalse);
     });
 
     test('a time target never finishes on a count', () async {

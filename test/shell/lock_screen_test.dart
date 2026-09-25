@@ -4,6 +4,7 @@ import 'package:advance_calendar/app.dart';
 import 'package:advance_calendar/features/calendar/services/reminder_scheduler.dart';
 import 'package:advance_calendar/features/profile/presentation/profile_screen.dart';
 import 'package:advance_calendar/features/sadhana/services/feedback_service.dart';
+import 'package:advance_calendar/features/sadhana/services/mala_background_service.dart';
 import 'package:advance_calendar/features/shell/application/alarm_screen_provider.dart';
 import 'package:advance_calendar/features/shell/presentation/app_shell.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +30,15 @@ void main() {
 
   late FakeLockScreen lock;
 
+  late FakeMalaService mala;
+
   Future<ProfileRig> open(WidgetTester tester, FakeLockScreen l) async {
     lock = l;
-    final rig = profileRig(saved: {'onboarding.done': true}, lockScreen: l);
+    mala = FakeMalaService();
+    final rig = profileRig(
+        saved: {'onboarding.done': true},
+        lockScreen: l,
+        extra: [malaBackgroundServiceProvider.overrideWithValue(mala)]);
     phoneScreen(tester, height: 2400);
     await tester.pumpWidget(UncontrolledProviderScope(
         container: rig.container, child: const SadhoApp()));
@@ -61,7 +68,7 @@ void main() {
   });
 
   group('opened by an alarm', () {
-    for (final group in [sadhanaTimerGroup, timerGroup, sunAlarmGroup]) {
+    for (final group in [sadhanaTimerGroup, timerGroup, sunAlarmGroup, malaGroup]) {
       testWidgets('$group while locked: only the finished screen, over the '
           'lock screen', (tester) async {
         final rig = await open(tester, FakeLockScreen(locked: true, launch: group));
@@ -195,8 +202,54 @@ void main() {
     });
   });
 
-  test('only the three alarm groups can use the lock screen', () {
-    expect(lockScreenAlarmGroups, {sadhanaTimerGroup, timerGroup, sunAlarmGroup});
+  // P5-3 adds the Mala target ring ("mala") to the alarms that may use the
+  // lock screen; everything else still may not.
+  group('the Mala target ring (P5-3)', () {
+    testWidgets('shows the Sadhana result and nothing else', (tester) async {
+      final rig = await open(tester, FakeLockScreen(locked: true, launch: malaGroup));
+      expect(alarm(rig), malaGroup);
+      expect(find.text('Sadhana complete 🙏'), findsOneWidget);
+      expect(find.byKey(const ValueKey('alarm-result')), findsOneWidget);
+      expect(appShell, findsNothing);
+    });
+
+    testWidgets('Stop silences the ring the Mala service posted', (tester) async {
+      final rig = await open(tester, FakeLockScreen(locked: true, launch: malaGroup));
+      final fb = rig.container.read(feedbackServiceProvider) as FakeFeedback;
+      await tester.tap(find.byKey(const ValueKey('alarm-stop')));
+      await tester.pump();
+      expect(fb.alertStops, 1);
+      expect(mala.dismissals, 1);
+      expect(lock.showing, isFalse);
+    });
+
+    testWidgets('Unlock opens the Sadhana tab', (tester) async {
+      final rig = await open(tester, FakeLockScreen(locked: true, launch: malaGroup));
+      await tester.tap(find.byKey(const ValueKey('alarm-unlock')));
+      await tester.pump();
+      expect(rig.container.read(shellTabProvider), ShellTab.sadhana);
+    });
+
+    test('MainActivity treats the same groups as alarms', () {
+      final kotlin = File('android/app/src/main/kotlin/in/sadho/app/MainActivity.kt')
+          .readAsStringSync();
+      final set = RegExp(r'ALARM_GROUPS = setOf\(([^)]*)\)').firstMatch(kotlin)!.group(1)!;
+      final groups = RegExp(r'"([^"]+)"').allMatches(set).map((m) => m.group(1)).toSet();
+      expect(groups, lockScreenAlarmGroups);
+      final service = File(
+              'android/app/src/main/kotlin/in/sadho/app/MalaCounterService.kt')
+          .readAsStringSync();
+      expect(service, contains('const val MALA_GROUP = "$malaGroup"'));
+      // The same alarm style as the Sadhana finish alarm.
+      expect(service, contains('FLAG_INSISTENT'));
+      expect(service, contains('setFullScreenIntent'));
+      expect(service, contains('USAGE_ALARM'));
+    });
+  });
+
+  test('only the four alarm groups can use the lock screen', () {
+    expect(lockScreenAlarmGroups,
+        {sadhanaTimerGroup, timerGroup, sunAlarmGroup, malaGroup});
     expect(lockScreenAlarmGroups, isNot(contains(dailyReminderGroup)));
   });
 

@@ -5,10 +5,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../calendar/services/reminder_scheduler.dart';
 import '../../sadhana/services/feedback_service.dart';
+import '../../sadhana/services/mala_background_service.dart';
 import '../services/lock_screen.dart';
 
 /// The alarm groups that may open the app over the lock screen.
-const lockScreenAlarmGroups = {sadhanaTimerGroup, timerGroup, sunAlarmGroup};
+const lockScreenAlarmGroups = {
+  sadhanaTimerGroup,
+  timerGroup,
+  sunAlarmGroup,
+  malaGroup,
+};
 
 /// Which alarm's "finished" screen is showing over the lock screen, or null.
 ///
@@ -85,6 +91,13 @@ class AlarmScreenNotifier extends Notifier<String?> {
         .read(reminderSchedulerProvider)
         .dismissShown(group)
         .catchError((Object _) {}));
+    // The Mala ring is posted by the Mala service itself.
+    if (group == malaGroup) {
+      unawaited(ref
+          .read(malaBackgroundServiceProvider)
+          .dismissRing()
+          .catchError((Object _) {}));
+    }
     await _leave();
   }
 
