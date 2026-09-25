@@ -36,6 +36,11 @@
          target. specialUse, declared in the Play Console. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
+    <!-- Quiet mode during sadhana (optional, off by default): sets Do Not
+         Disturb to alarms-only while a session runs and restores it after.
+         The user grants this access in the phone's settings; Sadho never
+         changes Do Not Disturb without it. -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
     <application
         android:label="Sadho"
         android:name="${applicationName}"

@@ -6,6 +6,7 @@ import 'core/app_restart.dart';
 import 'core/storage/app_storage.dart';
 import 'features/calendar/services/local_notifications_scheduler.dart';
 import 'features/calendar/services/reminder_scheduler.dart';
+import 'features/sadhana/services/dnd_driver.dart';
 import 'features/sadhana/services/mala_background_service.dart';
 import 'l10n/date_formats.dart';
 
@@ -41,6 +42,9 @@ Future<void> main() async {
       overrides: [
         reminderSchedulerProvider.overrideWithValue(scheduler),
         malaBackgroundServiceProvider.overrideWithValue(mala),
+        // Quiet mode during sadhana (Do Not Disturb), Android only.
+        if (AndroidDndDriver.platformSupported)
+          dndDriverProvider.overrideWithValue(const AndroidDndDriver()),
       ],
       child: const SadhoApp(),
     ),

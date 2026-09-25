@@ -7,6 +7,7 @@ import 'package:advance_calendar/features/alarms/services/alarm_health.dart';
 import 'package:advance_calendar/features/calendar/application/now_provider.dart';
 import 'package:advance_calendar/features/sadhana/application/voice_training_provider.dart';
 import 'package:advance_calendar/features/sadhana/data/ringtone.dart';
+import 'package:advance_calendar/features/sadhana/services/dnd_driver.dart';
 import 'package:advance_calendar/features/sadhana/services/feedback_service.dart';
 import 'package:advance_calendar/features/sadhana/services/mala_background_service.dart';
 import 'package:advance_calendar/features/sadhana/services/pcm_input.dart';
@@ -632,6 +633,39 @@ class FakeMalaService implements MalaBackgroundService {
   }
 }
 
+/// Stand-in for the phone's Do Not Disturb.
+class FakeDnd implements DndDriver {
+  FakeDnd({this.supported = true, this.access = true, this.filter = DndFilter.all});
+
+  bool supported;
+  bool access;
+  int filter;
+
+  /// Every mode set, in order.
+  final sets = <int>[];
+  int settingsOpened = 0;
+
+  @override
+  bool get isSupported => supported;
+
+  @override
+  Future<bool> hasAccess() async => access;
+
+  @override
+  Future<int?> currentFilter() async => filter;
+
+  @override
+  Future<bool> setFilter(int f) async {
+    if (!access) return false;
+    sets.add(f);
+    filter = f;
+    return true;
+  }
+
+  @override
+  Future<void> openAccessSettings() async => settingsOpened++;
+}
+
 /// Provider overrides that replace every plugin-backed service.
 ///
 /// Pass [haptics] and/or [sound] to run the REAL feedback service (settings
@@ -648,8 +682,10 @@ List<Override> testOverrides({
   FakeLockScreen? lockScreen,
   FakeAlarmHealth? alarmHealth,
   FakeMalaService? mala,
+  FakeDnd? dnd,
 }) =>
     [
+      if (dnd != null) dndDriverProvider.overrideWithValue(dnd),
       if (mala != null) malaBackgroundServiceProvider.overrideWithValue(mala),
       alarmHealthProvider.overrideWithValue(alarmHealth ?? FakeAlarmHealth()),
       lockScreenProvider.overrideWithValue(lockScreen ?? FakeLockScreen()),

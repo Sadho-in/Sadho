@@ -2226,4 +2226,25 @@ class AppLocalizationsMr extends AppLocalizations {
 
   @override
   String get recalibrateVoice => 'पुन्हा कॅलिब्रेट करा';
+
+  @override
+  String get quietModeLabel => 'सत्रादरम्यान इतर सूचना शांत करा';
+
+  @override
+  String get quietModeSubtitle =>
+      'सत्र सुरू असताना \'व्यत्यय आणू नका\' (फक्त अलार्म) सुरू करते, जेणेकरून Sadho चा अलार्म तरीही वाजेल. नंतर तुमची स्वतःची सेटिंग परत येते.';
+
+  @override
+  String get quietModeAccessTitle => '\'व्यत्यय आणू नका\' प्रवेश द्या';
+
+  @override
+  String get quietModeAccessBody =>
+      'साधनेदरम्यान इतर सूचना शांत करण्यासाठी Sadho ला \'व्यत्यय आणू नका\' प्रवेश हवा. पुढील स्क्रीनवर Sadho शोधा आणि परवानगी द्या. Sadho फक्त सत्र सुरू असताना \'फक्त अलार्म\' मोड सुरू करते आणि नंतर तुमची सेटिंग परत करते.';
+
+  @override
+  String get healthDndTitle => '\'व्यत्यय आणू नका\' प्रवेश';
+
+  @override
+  String get healthDndBody =>
+      'सत्रादरम्यान इतर सूचना शांत करण्यासाठी आवश्यक. याशिवाय Sadho \'व्यत्यय आणू नका\' ला हात लावत नाही.';
 }

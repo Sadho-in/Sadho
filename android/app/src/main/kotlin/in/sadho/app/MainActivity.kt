@@ -224,6 +224,47 @@ class MainActivity : FlutterActivity() {
                         ),
                     )
                 }
+                // Quiet mode (Do Not Disturb). Only ever changed with the
+                // user's Notification Policy access; never asked otherwise.
+                "dndStatus" -> {
+                    val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        result.success(
+                            mapOf(
+                                "access" to nm.isNotificationPolicyAccessGranted,
+                                "filter" to nm.currentInterruptionFilter,
+                            ),
+                        )
+                    } else {
+                        result.success(mapOf("access" to false, "filter" to 0))
+                    }
+                }
+                "dndSetFilter" -> {
+                    val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    val filter = (call.arguments as? Number)?.toInt()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                        filter != null && filter > 0 &&
+                        nm.isNotificationPolicyAccessGranted
+                    ) {
+                        try {
+                            nm.setInterruptionFilter(filter)
+                            result.success(true)
+                        } catch (e: SecurityException) {
+                            result.success(false)
+                        }
+                    } else {
+                        result.success(false)
+                    }
+                }
+                "openDndSettings" -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        startActivity(
+                            Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                        )
+                    }
+                    result.success(null)
+                }
                 // The app's own info page, where Battery is one tap away.
                 "openBatterySettings" -> {
                     startActivity(

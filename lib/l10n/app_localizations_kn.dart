@@ -2228,4 +2228,25 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get recalibrateVoice => 'ಮತ್ತೆ ಮಾಪನ ಮಾಡಿ';
+
+  @override
+  String get quietModeLabel => 'ಅವಧಿಯಲ್ಲಿ ಇತರ ಅಧಿಸೂಚನೆಗಳನ್ನು ನಿಶ್ಯಬ್ದಗೊಳಿಸಿ';
+
+  @override
+  String get quietModeSubtitle =>
+      'ಅವಧಿ ನಡೆಯುವಾಗ \'ಅಡಚಣೆ ಮಾಡಬೇಡಿ\' (ಅಲಾರಾಂ ಮಾತ್ರ) ಆನ್ ಮಾಡುತ್ತದೆ, ಆದ್ದರಿಂದ Sadho ಅಲಾರಾಂ ರಿಂಗ್ ಆಗುತ್ತದೆ. ನಂತರ ನಿಮ್ಮ ಸ್ವಂತ ಸೆಟ್ಟಿಂಗ್ ಮರಳುತ್ತದೆ.';
+
+  @override
+  String get quietModeAccessTitle => '\'ಅಡಚಣೆ ಮಾಡಬೇಡಿ\' ಪ್ರವೇಶ ಅನುಮತಿಸಿ';
+
+  @override
+  String get quietModeAccessBody =>
+      'ಸಾಧನೆಯ ವೇಳೆ ಇತರ ಅಧಿಸೂಚನೆಗಳನ್ನು ನಿಶ್ಯಬ್ದಗೊಳಿಸಲು Sadho ಗೆ \'ಅಡಚಣೆ ಮಾಡಬೇಡಿ\' ಪ್ರವೇಶ ಬೇಕು. ಮುಂದಿನ ಪರದೆಯಲ್ಲಿ Sadho ಹುಡುಕಿ ಅನುಮತಿಸಿ. ಅವಧಿ ನಡೆಯುವಾಗ ಮಾತ್ರ Sadho \'ಅಲಾರಾಂ ಮಾತ್ರ\' ಮೋಡ್ ಆನ್ ಮಾಡಿ, ನಂತರ ನಿಮ್ಮ ಸೆಟ್ಟಿಂಗ್ ಮರಳಿಸುತ್ತದೆ.';
+
+  @override
+  String get healthDndTitle => '\'ಅಡಚಣೆ ಮಾಡಬೇಡಿ\' ಪ್ರವೇಶ';
+
+  @override
+  String get healthDndBody =>
+      'ಅವಧಿಯಲ್ಲಿ ಇತರ ಅಧಿಸೂಚನೆಗಳನ್ನು ನಿಶ್ಯಬ್ದಗೊಳಿಸಲು ಅಗತ್ಯ. ಇದಿಲ್ಲದೆ Sadho \'ಅಡಚಣೆ ಮಾಡಬೇಡಿ\' ಅನ್ನು ಮುಟ್ಟುವುದಿಲ್ಲ.';
 }

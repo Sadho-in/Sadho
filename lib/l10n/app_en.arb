@@ -2574,5 +2574,29 @@
   "recalibrateVoice": "Re-calibrate",
   "@recalibrateVoice": {
     "description": "Voice panel button: run the calibration again"
+  },
+  "quietModeLabel": "Silence other notifications during a session",
+  "@quietModeLabel": {
+    "description": "Completion card switch: quiet mode (Do Not Disturb) while a session runs, Android"
+  },
+  "quietModeSubtitle": "Turns on Do Not Disturb (alarms only) while a session runs, so Sadho's alarm still rings. Your own setting comes back afterwards.",
+  "@quietModeSubtitle": {
+    "description": "Subtitle of the quiet mode switch"
+  },
+  "quietModeAccessTitle": "Allow Do Not Disturb access",
+  "@quietModeAccessTitle": {
+    "description": "Dialog title when quiet mode is turned on without Do Not Disturb access"
+  },
+  "quietModeAccessBody": "To silence other notifications during sadhana, Sadho needs Do Not Disturb access. On the next screen, find Sadho and allow it. Sadho only turns on alarms-only mode while a session runs, and puts your setting back afterwards.",
+  "@quietModeAccessBody": {
+    "description": "Dialog body explaining why Do Not Disturb access is needed for quiet mode"
+  },
+  "healthDndTitle": "Do Not Disturb access",
+  "@healthDndTitle": {
+    "description": "Alarms & reliability row title (shown only while quiet mode is on)"
+  },
+  "healthDndBody": "Needed to silence other notifications during a session. Without it, Sadho leaves Do Not Disturb alone.",
+  "@healthDndBody": {
+    "description": "Alarms & reliability row body for Do Not Disturb access"
   }
 }

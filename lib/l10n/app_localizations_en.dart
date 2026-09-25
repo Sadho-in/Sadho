@@ -2226,4 +2226,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recalibrateVoice => 'Re-calibrate';
+
+  @override
+  String get quietModeLabel => 'Silence other notifications during a session';
+
+  @override
+  String get quietModeSubtitle =>
+      'Turns on Do Not Disturb (alarms only) while a session runs, so Sadho\'s alarm still rings. Your own setting comes back afterwards.';
+
+  @override
+  String get quietModeAccessTitle => 'Allow Do Not Disturb access';
+
+  @override
+  String get quietModeAccessBody =>
+      'To silence other notifications during sadhana, Sadho needs Do Not Disturb access. On the next screen, find Sadho and allow it. Sadho only turns on alarms-only mode while a session runs, and puts your setting back afterwards.';
+
+  @override
+  String get healthDndTitle => 'Do Not Disturb access';
+
+  @override
+  String get healthDndBody =>
+      'Needed to silence other notifications during a session. Without it, Sadho leaves Do Not Disturb alone.';
 }

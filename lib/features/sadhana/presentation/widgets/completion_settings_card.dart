@@ -4,6 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/completion_settings_provider.dart';
 import '../../application/sadhana_session_provider.dart';
 import '../../data/ringtone.dart';
+import '../../../../core/storage/app_storage.dart';
+import '../../application/quiet_mode_provider.dart';
+import '../../services/dnd_driver.dart';
 import '../../services/feedback_service.dart';
 import 'section_card.dart';
 import '../../application/collapsed_cards_provider.dart';
@@ -45,6 +48,17 @@ class CompletionSettingsCard extends ConsumerWidget {
             value: settings.keepScreenOn,
             onChanged: notifier.setKeepScreenOn,
           ),
+          // ---- Quiet mode (Android) --------------------------------------
+          if (ref.read(dndDriverProvider).isSupported)
+            SwitchListTile(
+              key: const ValueKey('quiet-during-session'),
+              contentPadding: EdgeInsets.zero,
+              secondary: const Icon(Icons.do_not_disturb_on_outlined),
+              title: Text(context.l10n.quietModeLabel),
+              subtitle: Text(context.l10n.quietModeSubtitle),
+              value: settings.quietDuringSession,
+              onChanged: (on) => setQuietMode(context, ref, on),
+            ),
           const Divider(height: 32),
           // ---- Vibration --------------------------------------------------
           SwitchListTile(
@@ -193,4 +207,38 @@ class _RepeatChoice<T extends Enum> extends StatelessWidget {
           ],
         ),
       );
+}
+
+/// Turns quiet mode on or off. Turning it on without Do Not Disturb access
+/// explains why it is needed (the first time) and opens the phone's page to
+/// allow it; Sadho never changes Do Not Disturb without that access.
+Future<void> setQuietMode(BuildContext context, WidgetRef ref, bool on) async {
+  ref.read(completionSettingsProvider.notifier).setQuietDuringSession(on);
+  if (!on) return;
+  final dnd = ref.read(dndDriverProvider);
+  if (!dnd.isSupported || await dnd.hasAccess()) return;
+  if (AppStorage.settings.get(QuietModeNotifier.explainedKey) == true) {
+    await dnd.openAccessSettings();
+    return;
+  }
+  AppStorage.settings.put(QuietModeNotifier.explainedKey, true);
+  if (!context.mounted) return;
+  final l = context.l10n;
+  final open = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: Text(l.quietModeAccessTitle),
+      content: SingleChildScrollView(child: Text(l.quietModeAccessBody)),
+      actions: [
+        TextButton(
+            onPressed: () => Navigator.pop(ctx, false), child: Text(l.later)),
+        FilledButton(
+          key: const ValueKey('quiet-open-settings'),
+          onPressed: () => Navigator.pop(ctx, true),
+          child: Text(l.openSettingsAction),
+        ),
+      ],
+    ),
+  );
+  if (open == true) await dnd.openAccessSettings();
 }

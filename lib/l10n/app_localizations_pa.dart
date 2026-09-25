@@ -2229,4 +2229,25 @@ class AppLocalizationsPa extends AppLocalizations {
 
   @override
   String get recalibrateVoice => 'ਮੁੜ ਕੈਲੀਬ੍ਰੇਟ ਕਰੋ';
+
+  @override
+  String get quietModeLabel => 'ਸੈਸ਼ਨ ਦੌਰਾਨ ਹੋਰ ਸੂਚਨਾਵਾਂ ਚੁੱਪ ਕਰੋ';
+
+  @override
+  String get quietModeSubtitle =>
+      'ਸੈਸ਼ਨ ਚੱਲਦੇ ਸਮੇਂ \'ਪਰੇਸ਼ਾਨ ਨਾ ਕਰੋ\' (ਸਿਰਫ਼ ਅਲਾਰਮ) ਚਾਲੂ ਕਰਦਾ ਹੈ, ਤਾਂ ਜੋ Sadho ਦਾ ਅਲਾਰਮ ਫਿਰ ਵੀ ਵੱਜੇ। ਬਾਅਦ ਵਿੱਚ ਤੁਹਾਡੀ ਆਪਣੀ ਸੈਟਿੰਗ ਵਾਪਸ ਆ ਜਾਂਦੀ ਹੈ।';
+
+  @override
+  String get quietModeAccessTitle => '\'ਪਰੇਸ਼ਾਨ ਨਾ ਕਰੋ\' ਪਹੁੰਚ ਦਿਓ';
+
+  @override
+  String get quietModeAccessBody =>
+      'ਸਾਧਨਾ ਦੌਰਾਨ ਹੋਰ ਸੂਚਨਾਵਾਂ ਚੁੱਪ ਕਰਨ ਲਈ Sadho ਨੂੰ \'ਪਰੇਸ਼ਾਨ ਨਾ ਕਰੋ\' ਪਹੁੰਚ ਚਾਹੀਦੀ ਹੈ। ਅਗਲੀ ਸਕ੍ਰੀਨ \'ਤੇ Sadho ਲੱਭੋ ਅਤੇ ਇਜਾਜ਼ਤ ਦਿਓ। Sadho ਸਿਰਫ਼ ਸੈਸ਼ਨ ਚੱਲਦੇ ਸਮੇਂ \'ਸਿਰਫ਼ ਅਲਾਰਮ\' ਮੋਡ ਚਾਲੂ ਕਰਦਾ ਹੈ ਅਤੇ ਬਾਅਦ ਵਿੱਚ ਤੁਹਾਡੀ ਸੈਟਿੰਗ ਵਾਪਸ ਕਰ ਦਿੰਦਾ ਹੈ।';
+
+  @override
+  String get healthDndTitle => '\'ਪਰੇਸ਼ਾਨ ਨਾ ਕਰੋ\' ਪਹੁੰਚ';
+
+  @override
+  String get healthDndBody =>
+      'ਸੈਸ਼ਨ ਦੌਰਾਨ ਹੋਰ ਸੂਚਨਾਵਾਂ ਚੁੱਪ ਕਰਨ ਲਈ ਲੋੜੀਂਦਾ। ਇਸ ਤੋਂ ਬਿਨਾਂ Sadho \'ਪਰੇਸ਼ਾਨ ਨਾ ਕਰੋ\' ਨੂੰ ਨਹੀਂ ਛੇੜਦਾ।';
 }

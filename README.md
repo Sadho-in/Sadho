@@ -402,7 +402,7 @@ implemented in Dart in this repo (`lib/features/sadhana/voice/`).
 **Permissions**: Android `RECORD_AUDIO`, `ACCESS_COARSE_LOCATION`, `POST_NOTIFICATIONS`,
 `RECEIVE_BOOT_COMPLETED`, `SCHEDULE_EXACT_ALARM` (+ `VIBRATE`; `INTERNET` is only
 for Google Fonts), `FOREGROUND_SERVICE` + `FOREGROUND_SERVICE_SPECIAL_USE` (Mala
-with the screen off); iOS `NSMicrophoneUsageDescription` and `NSLocationWhenInUseUsageDescription`. Voice needs no speech
+with the screen off), `ACCESS_NOTIFICATION_POLICY` (quiet mode); iOS `NSMicrophoneUsageDescription` and `NSLocationWhenInUseUsageDescription`. Voice needs no speech
 recognition permission or service. The Android build enables core-library
 desugaring and registers the plugin's alarm and boot receivers (required by
 `flutter_local_notifications`).
@@ -450,6 +450,22 @@ phone rings at your target.
   rule); if the phone kills Sadho completely, counting stops, and the count so
   far is kept. Not available on iPhone (iOS cannot receive volume keys in the
   background); no Bluetooth malas yet.
+
+### Quiet mode during sadhana (Android)
+
+"Silence other notifications during a session" in the Completion card (off by
+default). When on, starting a session sets the phone's Do Not Disturb to
+**alarms only**, so Sadho's own completion alarm still rings. Pausing,
+finishing, resetting, leaving the Sadhana screen or switching it off puts the
+user's own setting back; the setting is saved before it is changed, so if Sadho
+is killed mid-session it is restored at the next start. It needs **Do Not
+Disturb access** (Notification Policy access): turning the switch on without it
+explains why once and opens the phone's page to allow it, and Alarms &
+reliability shows a row for it while the switch is on. Sadho never changes Do Not
+Disturb without that access, leaves it alone if you were already on alarms only
+or total silence, and does not undo a change you made yourself during the
+session. It applies to sessions that are started (Rhythm, Voice, Mala and time
+targets); a Tap count target has no Start, so it is not silenced.
 
 ### Voice (Beta): how it works
 
@@ -588,6 +604,10 @@ service permissions**:
    Mala, press Start, lock the phone, press a volume key several times, unlock and
    show the count and the notification "Mala · n / target", then reach a small
    target (e.g. 5) with the screen off and show it ringing.
+
+**Do Not Disturb (quiet mode)** uses `ACCESS_NOTIFICATION_POLICY`, a normal
+permission the user grants on the phone's "Do Not Disturb access" page; no Play
+Console declaration is needed for it.
 
 ## QA
 

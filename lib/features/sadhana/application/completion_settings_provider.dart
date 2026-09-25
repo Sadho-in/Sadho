@@ -33,6 +33,7 @@ class CompletionSettings {
     this.soundRepeat = SoundRepeat.once,
     this.vibrationRepeat = VibrationRepeat.once,
     this.keepScreenOn = true,
+    this.quietDuringSession = false,
   });
 
   final bool vibrationEnabled;
@@ -47,6 +48,10 @@ class CompletionSettings {
   /// Stops the screen from sleeping while a session is counting.
   final bool keepScreenOn;
 
+  /// Silences other notifications while a session runs (Do Not Disturb,
+  /// alarms only), Android. Off by default.
+  final bool quietDuringSession;
+
   CompletionSettings copyWith({
     bool? vibrationEnabled,
     int? vibrationLevel,
@@ -55,6 +60,7 @@ class CompletionSettings {
     SoundRepeat? soundRepeat,
     VibrationRepeat? vibrationRepeat,
     bool? keepScreenOn,
+    bool? quietDuringSession,
   }) =>
       CompletionSettings(
         vibrationEnabled: vibrationEnabled ?? this.vibrationEnabled,
@@ -64,6 +70,7 @@ class CompletionSettings {
         soundRepeat: soundRepeat ?? this.soundRepeat,
         vibrationRepeat: vibrationRepeat ?? this.vibrationRepeat,
         keepScreenOn: keepScreenOn ?? this.keepScreenOn,
+        quietDuringSession: quietDuringSession ?? this.quietDuringSession,
       );
 }
 
@@ -93,6 +100,8 @@ class CompletionSettingsNotifier extends Notifier<CompletionSettings> {
           pick(VibrationRepeat.values, 'vibrationRepeat', VibrationRepeat.once),
       keepScreenOn:
           box.get('${_prefix}keepScreenOn', defaultValue: true) as bool,
+      quietDuringSession:
+          box.get('${_prefix}quietDuringSession', defaultValue: false) == true,
     );
   }
 
@@ -124,6 +133,11 @@ class CompletionSettingsNotifier extends Notifier<CompletionSettings> {
   void setVibrationRepeat(VibrationRepeat r) {
     state = state.copyWith(vibrationRepeat: r);
     AppStorage.settings.put('${_prefix}vibrationRepeat', r.name);
+  }
+
+  void setQuietDuringSession(bool v) {
+    state = state.copyWith(quietDuringSession: v);
+    AppStorage.settings.put('${_prefix}quietDuringSession', v);
   }
 
   void setKeepScreenOn(bool v) {

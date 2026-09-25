@@ -12,6 +12,7 @@ import '../../clock/presentation/clock_screen.dart';
 import '../../home/presentation/home_screen.dart';
 import '../../profile/presentation/profile_screen.dart';
 import '../../sadhana/application/mantra_library_provider.dart';
+import '../../sadhana/application/quiet_mode_provider.dart';
 import '../../sadhana/application/sadhana_session_provider.dart';
 import '../../sadhana/application/session_notice_provider.dart';
 import '../../sadhana/presentation/sadhana_screen.dart';
@@ -85,8 +86,12 @@ class AppShell extends ConsumerWidget {
     ref.listen<ShellTab>(shellTabProvider, (prev, next) {
       if (prev == ShellTab.sadhana && next != ShellTab.sadhana) {
         ref.read(sadhanaSessionProvider.notifier).stopAlert();
+        // Quiet mode ends with the screen: the user's Do Not Disturb comes back.
+        ref.read(quietModeProvider.notifier).leftSadhana();
       }
     });
+    // Quiet mode lives as long as the app (and restores a leftover at start).
+    ref.listen<bool>(quietModeProvider, (_, _) {});
 
     // Session messages (permission denied, unsupported mode...). Listening
     // here, above every route, shows them once and over Focus mode too.

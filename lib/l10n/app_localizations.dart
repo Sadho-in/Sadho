@@ -3867,6 +3867,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Re-calibrate'**
   String get recalibrateVoice;
+
+  /// Completion card switch: quiet mode (Do Not Disturb) while a session runs, Android
+  ///
+  /// In en, this message translates to:
+  /// **'Silence other notifications during a session'**
+  String get quietModeLabel;
+
+  /// Subtitle of the quiet mode switch
+  ///
+  /// In en, this message translates to:
+  /// **'Turns on Do Not Disturb (alarms only) while a session runs, so Sadho\'s alarm still rings. Your own setting comes back afterwards.'**
+  String get quietModeSubtitle;
+
+  /// Dialog title when quiet mode is turned on without Do Not Disturb access
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Do Not Disturb access'**
+  String get quietModeAccessTitle;
+
+  /// Dialog body explaining why Do Not Disturb access is needed for quiet mode
+  ///
+  /// In en, this message translates to:
+  /// **'To silence other notifications during sadhana, Sadho needs Do Not Disturb access. On the next screen, find Sadho and allow it. Sadho only turns on alarms-only mode while a session runs, and puts your setting back afterwards.'**
+  String get quietModeAccessBody;
+
+  /// Alarms & reliability row title (shown only while quiet mode is on)
+  ///
+  /// In en, this message translates to:
+  /// **'Do Not Disturb access'**
+  String get healthDndTitle;
+
+  /// Alarms & reliability row body for Do Not Disturb access
+  ///
+  /// In en, this message translates to:
+  /// **'Needed to silence other notifications during a session. Without it, Sadho leaves Do Not Disturb alone.'**
+  String get healthDndBody;
 }
 
 class _AppLocalizationsDelegate

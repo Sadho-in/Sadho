@@ -6,7 +6,9 @@ import 'package:advance_calendar/features/alarms/services/alarm_health.dart';
 import 'package:advance_calendar/features/calendar/services/reminder_scheduler.dart';
 import 'package:advance_calendar/features/profile/application/backup_service.dart';
 import 'package:advance_calendar/features/profile/presentation/profile_screen.dart';
+import 'package:advance_calendar/features/sadhana/application/completion_settings_provider.dart';
 import 'package:advance_calendar/features/sadhana/application/session_notice_provider.dart';
+import 'package:advance_calendar/features/sadhana/services/dnd_driver.dart';
 import 'package:advance_calendar/features/shell/language_provider.dart';
 import 'package:advance_calendar/features/shell/presentation/language_sheet.dart';
 import 'package:advance_calendar/core/theme/theme_provider.dart';
@@ -14,7 +16,7 @@ import 'package:advance_calendar/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../sadhana/test_support.dart' show FakeAlarmHealth;
+import '../sadhana/test_support.dart' show FakeAlarmHealth, FakeDnd;
 import 'audit_harness.dart';
 
 /// P4.3-2e: Profile and everything under it, the lock-screen alarm screen,
@@ -67,13 +69,20 @@ void main() {
             ..battery = false
             ..samsung = true;
         }
+        // P5-6: with quiet mode on, the Do Not Disturb access row too.
+        if (broken) {
+          rig.container
+              .read(completionSettingsProvider.notifier)
+              .setQuietDuringSession(true);
+        }
         openAlarmsReliability(appContext(tester));
         await settle(tester);
         expect(await reveal(tester, key('health-battery')), findsOneWidget);
         if (broken) {
           expect(await reveal(tester, key('health-battery-fix')), findsOneWidget);
+          expect(await reveal(tester, key('health-dnd-fix')), findsOneWidget);
         }
-      });
+      }, extra: [dndDriverProvider.overrideWithValue(FakeDnd(access: !broken))]);
     });
   }
 

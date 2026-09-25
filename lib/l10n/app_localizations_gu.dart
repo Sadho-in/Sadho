@@ -2227,4 +2227,25 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get recalibrateVoice => 'ફરી કેલિબ્રેટ કરો';
+
+  @override
+  String get quietModeLabel => 'સત્ર દરમિયાન અન્ય સૂચનાઓ શાંત કરો';
+
+  @override
+  String get quietModeSubtitle =>
+      'સત્ર ચાલે ત્યારે \'ખલેલ પાડશો નહીં\' (ફક્ત એલાર્મ) ચાલુ કરે છે, જેથી Sadhoનો એલાર્મ તો પણ વાગે. પછી તમારી પોતાની સેટિંગ પાછી આવે છે.';
+
+  @override
+  String get quietModeAccessTitle => '\'ખલેલ પાડશો નહીં\' ઍક્સેસ આપો';
+
+  @override
+  String get quietModeAccessBody =>
+      'સાધના દરમિયાન અન્ય સૂચનાઓ શાંત કરવા Sadhoને \'ખલેલ પાડશો નહીં\' ઍક્સેસ જોઈએ. આગલી સ્ક્રીન પર Sadho શોધો અને મંજૂરી આપો. Sadho ફક્ત સત્ર ચાલે ત્યારે \'ફક્ત એલાર્મ\' મોડ ચાલુ કરે છે અને પછી તમારી સેટિંગ પાછી મૂકે છે.';
+
+  @override
+  String get healthDndTitle => '\'ખલેલ પાડશો નહીં\' ઍક્સેસ';
+
+  @override
+  String get healthDndBody =>
+      'સત્ર દરમિયાન અન્ય સૂચનાઓ શાંત કરવા જરૂરી. તેના વિના Sadho \'ખલેલ પાડશો નહીં\'ને અડતું નથી.';
 }

@@ -11,6 +11,7 @@ import 'package:advance_calendar/core/storage/app_storage.dart';
 import 'package:advance_calendar/features/sadhana/application/voice_training_provider.dart';
 import 'package:advance_calendar/features/sadhana/presentation/widgets/mantra_form_sheet.dart';
 import 'package:advance_calendar/features/sadhana/services/feedback_service.dart';
+import 'package:advance_calendar/features/sadhana/services/dnd_driver.dart';
 import 'package:advance_calendar/features/sadhana/services/mala_background_service.dart';
 import 'package:advance_calendar/features/shell/presentation/app_shell.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../sadhana/synth.dart';
 import '../sadhana/test_support.dart'
-    show FakeFeedback, FakeMalaService, FakePcmInput, seedTrainedVoice;
+    show FakeDnd, FakeFeedback, FakeMalaService, FakePcmInput, seedTrainedVoice;
 import 'audit_harness.dart';
 
 /// P4.3-2b: the Sadhana tab and everything it opens, in every language, text
@@ -210,6 +211,24 @@ void main() {
       }, prepare: trained ? seedTrainedVoice : null);
     });
   }
+
+  // P5-6: the quiet-mode switch in the Completion card, and its explanation.
+  testWidgets('Sadhana: quiet mode switch', (tester) async {
+    await auditApp(tester, 'Quiet mode switch', (rig) async {
+      await openSadhana(tester, rig);
+      await reveal(tester, find.byKey(const ValueKey('quiet-during-session')));
+    }, extra: [dndDriverProvider.overrideWithValue(FakeDnd())]);
+  });
+
+  testWidgets('Sadhana: quiet mode access explanation', (tester) async {
+    await auditApp(tester, 'Quiet mode dialog', (rig) async {
+      await openSadhana(tester, rig);
+      await tester.tap(
+          await reveal(tester, find.byKey(const ValueKey('quiet-during-session'))));
+      await settle(tester);
+      expect(find.byType(AlertDialog), findsOneWidget);
+    }, extra: [dndDriverProvider.overrideWithValue(FakeDnd(access: false))]);
+  });
 
   // P5-5: the voice calibration screen, before, while and after listening.
   for (final stage in ['start', 'listening', 'done']) {

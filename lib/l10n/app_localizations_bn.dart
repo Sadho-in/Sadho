@@ -2229,4 +2229,25 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get recalibrateVoice => 'আবার ক্যালিব্রেট করুন';
+
+  @override
+  String get quietModeLabel => 'সেশনের সময় অন্যান্য বিজ্ঞপ্তি নীরব করুন';
+
+  @override
+  String get quietModeSubtitle =>
+      'সেশন চলাকালীন \'বিরক্ত করবেন না\' (শুধু অ্যালার্ম) চালু করে, যাতে Sadho-র অ্যালার্ম তবুও বাজে। পরে আপনার নিজের সেটিং ফিরে আসে।';
+
+  @override
+  String get quietModeAccessTitle => '\'বিরক্ত করবেন না\' অ্যাক্সেস দিন';
+
+  @override
+  String get quietModeAccessBody =>
+      'সাধনার সময় অন্যান্য বিজ্ঞপ্তি নীরব করতে Sadho-র \'বিরক্ত করবেন না\' অ্যাক্সেস দরকার। পরের স্ক্রিনে Sadho খুঁজে অনুমতি দিন। Sadho শুধু সেশন চলাকালীন \'শুধু অ্যালার্ম\' মোড চালু করে এবং পরে আপনার সেটিং ফিরিয়ে দেয়।';
+
+  @override
+  String get healthDndTitle => '\'বিরক্ত করবেন না\' অ্যাক্সেস';
+
+  @override
+  String get healthDndBody =>
+      'সেশনের সময় অন্যান্য বিজ্ঞপ্তি নীরব করতে দরকার। এটি ছাড়া Sadho \'বিরক্ত করবেন না\' ছোঁয় না।';
 }

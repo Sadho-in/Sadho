@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/l10n.dart';
+import '../../sadhana/application/completion_settings_provider.dart';
+import '../../sadhana/services/dnd_driver.dart';
 import '../application/alarm_health_provider.dart';
 import '../services/alarm_health.dart';
 
@@ -45,6 +47,7 @@ class _AlarmsReliabilityPageState extends ConsumerState<AlarmsReliabilityPage>
 
   Future<void> _refresh() async {
     if (!mounted) return;
+    ref.invalidate(dndAccessProvider);
     await ref.read(alarmHealthStatusProvider.notifier).refresh();
   }
 
@@ -57,6 +60,11 @@ class _AlarmsReliabilityPageState extends ConsumerState<AlarmsReliabilityPage>
   Widget build(BuildContext context) {
     final l = context.l10n;
     final status = ref.watch(alarmHealthStatusProvider).value;
+    // Do Not Disturb access matters only while quiet mode is switched on.
+    final quiet = ref.watch(
+            completionSettingsProvider.select((c) => c.quietDuringSession)) &&
+        ref.read(dndDriverProvider).isSupported;
+    final dndOk = quiet ? ref.watch(dndAccessProvider).value : null;
     return Scaffold(
       appBar: AppBar(title: Text(l.alarmsReliabilityTitle)),
       body: status == null
@@ -103,6 +111,18 @@ class _AlarmsReliabilityPageState extends ConsumerState<AlarmsReliabilityPage>
                     onFix: () => _fix((h) => h.fixBattery()),
                   ),
                 ],
+                if (quiet)
+                  _HealthRow(
+                    id: 'dnd',
+                    icon: Icons.do_not_disturb_on_outlined,
+                    title: l.healthDndTitle,
+                    body: l.healthDndBody,
+                    ok: dndOk ?? true,
+                    onFix: () async {
+                      await ref.read(dndDriverProvider).openAccessSettings();
+                      await _refresh();
+                    },
+                  ),
               ],
             ),
     );
@@ -216,3 +236,8 @@ class AlarmsReliabilityCard extends ConsumerWidget {
 Color okGreen(Brightness brightness) => brightness == Brightness.dark
     ? const Color(0xFF8FD694)
     : const Color(0xFF14521A);
+
+/// Whether Sadho may change Do Not Disturb (quiet mode). Re-read whenever the
+/// page is refreshed (on return from the phone's settings).
+final dndAccessProvider = FutureProvider.autoDispose<bool>(
+    (ref) => ref.read(dndDriverProvider).hasAccess());

@@ -2240,4 +2240,27 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get recalibrateVoice => 'మళ్లీ కాలిబ్రేట్ చేయండి';
+
+  @override
+  String get quietModeLabel =>
+      'సెషన్ సమయంలో ఇతర నోటిఫికేషన్‌లను నిశ్శబ్దం చేయండి';
+
+  @override
+  String get quietModeSubtitle =>
+      'సెషన్ నడుస్తున్నప్పుడు \'అంతరాయం కలిగించవద్దు\' (అలారాలు మాత్రమే) ఆన్ చేస్తుంది, కాబట్టి Sadho అలారం మోగుతుంది. తర్వాత మీ సొంత సెట్టింగ్ తిరిగి వస్తుంది.';
+
+  @override
+  String get quietModeAccessTitle =>
+      '\'అంతరాయం కలిగించవద్దు\' యాక్సెస్ అనుమతించండి';
+
+  @override
+  String get quietModeAccessBody =>
+      'సాధన సమయంలో ఇతర నోటిఫికేషన్‌లను నిశ్శబ్దం చేయడానికి Sadho కు \'అంతరాయం కలిగించవద్దు\' యాక్సెస్ కావాలి. తర్వాతి స్క్రీన్‌లో Sadho ని కనుగొని అనుమతించండి. సెషన్ నడుస్తున్నప్పుడే Sadho \'అలారాలు మాత్రమే\' మోడ్ ఆన్ చేసి, తర్వాత మీ సెట్టింగ్‌ను తిరిగి పెడుతుంది.';
+
+  @override
+  String get healthDndTitle => '\'అంతరాయం కలిగించవద్దు\' యాక్సెస్';
+
+  @override
+  String get healthDndBody =>
+      'సెషన్ సమయంలో ఇతర నోటిఫికేషన్‌లను నిశ్శబ్దం చేయడానికి అవసరం. ఇది లేకుండా Sadho \'అంతరాయం కలిగించవద్దు\'ను తాకదు.';
 }
