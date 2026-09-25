@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../../application/mark_style_provider.dart';
@@ -20,6 +22,7 @@ class MarkGlyph extends StatelessWidget {
     required this.types,
     required this.child,
     this.dotSize = 8,
+    this.contentHeight = 0,
   });
 
   final MarkStyle style;
@@ -29,6 +32,11 @@ class MarkGlyph extends StatelessWidget {
   final List<MarkType> types;
   final Widget child;
   final double dotSize;
+
+  /// How tall [child] is. A shape is never shorter than that: when a large
+  /// text size makes it taller than the cell is wide, a circle becomes an
+  /// upright pill and a square a taller rectangle, so nothing spills out.
+  final double contentHeight;
 
   /// The fill of a shape for [type]: solid for Filled, a light tint otherwise.
   static Color fill(MarkStyle style, MarkType type, Brightness b) {
@@ -79,32 +87,36 @@ class MarkGlyph extends StatelessWidget {
       );
     }
 
-    final decoration = BoxDecoration(
-      color: fill(style, type, b),
-      border: Border.all(
-        color: outline,
-        width: style == MarkStyle.highlight ? 1.2 : 2,
-      ),
-      shape: style == MarkStyle.circle || style == MarkStyle.filled
-          ? BoxShape.circle
-          : BoxShape.rectangle,
-      borderRadius: switch (style) {
-        MarkStyle.highlight => BorderRadius.circular(10),
-        MarkStyle.square => BorderRadius.circular(8),
-        _ => null,
-      },
-    );
+    final border = style == MarkStyle.highlight ? 1.2 : 2.0;
+    final round = style == MarkStyle.circle || style == MarkStyle.filled;
+    BoxDecoration decoration({required bool tall, required double side}) =>
+        BoxDecoration(
+          color: fill(style, type, b),
+          border: Border.all(color: outline, width: border),
+          shape: round && !tall ? BoxShape.circle : BoxShape.rectangle,
+          borderRadius: switch (style) {
+            MarkStyle.highlight => BorderRadius.circular(10),
+            MarkStyle.square => BorderRadius.circular(8),
+            _ when tall => BorderRadius.circular(side / 2),
+            _ => null,
+          },
+        );
 
     return LayoutBuilder(builder: (context, box) {
       final raw = box.biggest.shortestSide;
       final side = (raw.isFinite ? raw : 44.0).clamp(0.0, 44.0).toDouble();
       final full = style == MarkStyle.highlight;
+      final needed = contentHeight + 2 * border + 2;
+      final tall = !full && needed > side;
+      final height = tall
+          ? (box.maxHeight.isFinite ? math.min(needed, box.maxHeight) : needed)
+          : side;
       return Center(
         child: Container(
           key: const ValueKey('mark-shape'),
           width: full ? double.infinity : side,
-          height: full ? double.infinity : side,
-          decoration: decoration,
+          height: full ? double.infinity : height,
+          decoration: decoration(tall: tall, side: side),
           alignment: Alignment.center,
           child: child,
         ),

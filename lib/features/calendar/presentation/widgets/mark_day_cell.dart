@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../../../../l10n/l10n.dart';
@@ -29,6 +31,34 @@ class MarkDayCell extends StatelessWidget {
   final MarkStyle style;
   final bool isToday;
 
+  static const _emojiStyle = TextStyle(fontSize: 11, height: 1.1);
+
+  /// How tall the date number and an emoji under it are at the current text
+  /// size (measured with the real styles, so a large text size makes the
+  /// grid rows and the mark shapes grow instead of overflowing).
+  static double contentHeight(BuildContext context) {
+    final scaler = MediaQuery.textScalerOf(context);
+    double measure(String text, TextStyle? style) {
+      final p = TextPainter(
+        text: TextSpan(text: text, style: style),
+        textDirection: TextDirection.ltr,
+        textScaler: scaler,
+      )..layout();
+      final h = p.height;
+      p.dispose();
+      return h;
+    }
+
+    return measure('30', Theme.of(context).textTheme.bodyMedium) +
+        measure('🪔', _emojiStyle);
+  }
+
+  /// The month grid's row height: the usual 56, or more when the text size
+  /// needs it (room for the number, the emoji, the Dot style's dots and the
+  /// cell padding).
+  static double rowHeight(BuildContext context) =>
+      math.max(56, contentHeight(context) + 16);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -45,11 +75,18 @@ class MarkDayCell extends StatelessWidget {
         ? MarkPalette.onColor(MarkPalette.base(types.first, theme.brightness))
         : scheme.onSurface;
 
-    final number = Text(
-      '${day.day}',
-      style: theme.textTheme.bodyMedium?.copyWith(
-        color: numberColor,
-        fontWeight: isToday ? FontWeight.w800 : FontWeight.w500,
+    // A date is one line: it never wraps into two in a narrow (one
+    // seventh of the width) cell, and only scales down if it could not fit
+    // at all (not before a very large text size).
+    final number = FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Text(
+        '${day.day}',
+        maxLines: 1,
+        style: theme.textTheme.bodyMedium?.copyWith(
+          color: numberColor,
+          fontWeight: isToday ? FontWeight.w800 : FontWeight.w500,
+        ),
       ),
     );
     final content = Column(
@@ -60,7 +97,7 @@ class MarkDayCell extends StatelessWidget {
         if (emoji != null)
           Text(
             emoji,
-            style: TextStyle(fontSize: 11, height: 1.1, color: numberColor),
+            style: _emojiStyle.copyWith(color: numberColor),
           ),
       ],
     );
@@ -80,7 +117,12 @@ class MarkDayCell extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(
-                child: MarkGlyph(style: style, types: types, child: content),
+                child: MarkGlyph(
+                  style: style,
+                  types: types,
+                  contentHeight: contentHeight(context),
+                  child: content,
+                ),
               ),
               if (isToday)
                 Positioned(

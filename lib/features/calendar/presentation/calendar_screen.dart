@@ -72,7 +72,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                         CalendarFormat.month: 'Month',
                       },
                       availableGestures: AvailableGestures.horizontalSwipe,
-                      rowHeight: 56,
+                      rowHeight: MarkDayCell.rowHeight(context),
                       daysOfWeekHeight: 22,
                       startingDayOfWeek: StartingDayOfWeek.sunday,
                       onPageChanged: (d) => setState(() => _focused = d),

@@ -497,7 +497,14 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
             ),
 
             const SizedBox(height: 22),
-            Row(
+            // One row when it fits; otherwise Delete above and Cancel/Save
+            // under it, on the right (each pair wraps the same way).
+            OverflowBar(
+              alignment: _editingId == null
+                  ? MainAxisAlignment.end
+                  : MainAxisAlignment.spaceBetween,
+              overflowAlignment: OverflowBarAlignment.end,
+              overflowSpacing: 4,
               children: [
                 if (_editingId != null)
                   TextButton.icon(
@@ -507,16 +514,21 @@ class _MarkEditorSheetState extends ConsumerState<MarkEditorSheet> {
                     label: Text(l.actionDelete,
                         style: TextStyle(color: scheme.error)),
                   ),
-                const Spacer(),
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(l.actionCancel),
-                ),
-                const SizedBox(width: 8),
-                FilledButton(
-                  key: const ValueKey('save-mark'),
-                  onPressed: _saving ? null : _save,
-                  child: Text(l.actionSave),
+                OverflowBar(
+                  spacing: 8,
+                  overflowSpacing: 4,
+                  overflowAlignment: OverflowBarAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(l.actionCancel),
+                    ),
+                    FilledButton(
+                      key: const ValueKey('save-mark'),
+                      onPressed: _saving ? null : _save,
+                      child: Text(l.actionSave),
+                    ),
+                  ],
                 ),
               ],
             ),
