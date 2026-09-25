@@ -10,8 +10,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../profile/profile_support.dart';
+import '../sadhana/test_support.dart' show FakeLockScreen;
 
 export '../profile/profile_support.dart';
+export '../sadhana/test_support.dart' show FakeLockScreen;
 
 /// Layout audit: every screen, in the real app theme, in each of the nine
 /// languages, on a small phone (360×640), at the default text size and a
@@ -246,11 +248,13 @@ Future<void> auditApp(
   void Function()? prepare,
   double height = auditHeight,
   FakeLocationService? location,
+  FakeLockScreen? lockScreen,
 }) async {
   final rig = profileRig(
       saved: {'onboarding.done': true, ...saved},
       extra: extra,
-      location: location);
+      location: location,
+      lockScreen: lockScreen);
   // Anything the phone should already hold before the app starts.
   prepare?.call();
   await openAuditApp(tester, rig: rig, height: height);

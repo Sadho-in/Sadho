@@ -162,10 +162,14 @@ class _HealthRow extends StatelessWidget {
                     Icon(ok ? Icons.check_circle : Icons.error_outline,
                         size: 18, color: color),
                     const SizedBox(width: 6),
-                    Text(
-                      ok ? l.healthOk : l.healthNeedsAttention,
-                      key: ValueKey('health-$id-status'),
-                      style: theme.textTheme.labelLarge?.copyWith(color: color),
+                    // Wraps within the card when it is long.
+                    Flexible(
+                      child: Text(
+                        ok ? l.healthOk : l.healthNeedsAttention,
+                        key: ValueKey('health-$id-status'),
+                        style:
+                            theme.textTheme.labelLarge?.copyWith(color: color),
+                      ),
                     ),
                   ],
                 ),
