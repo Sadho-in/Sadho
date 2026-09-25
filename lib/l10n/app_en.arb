@@ -2411,5 +2411,13 @@
         "type": "String"
       }
     }
+  },
+  "paletteHighContrastName": "High contrast",
+  "@paletteHighContrastName": {
+    "description": "Name of the high-contrast colour palette"
+  },
+  "paletteHighContrastBlurb": "Strongest contrast, for easy reading",
+  "@paletteHighContrastBlurb": {
+    "description": "Under the high-contrast palette's name"
   }
 }

@@ -248,7 +248,10 @@ void main() {
 
     testWidgets('the Count toggle is one slim line', (tester) async {
       await openShell(tester, _phones[1].$2);
-      expect(rect(tester, find.byType(CountScopeControl)).height, lessThan(44));
+      // One 48 dp tap target high (was < 44 before P4.3-9 made every tap
+      // target at least 48 dp).
+      expect(rect(tester, find.byType(CountScopeControl)).height,
+          lessThanOrEqualTo(48));
     });
 
     testWidgets('the Library button opens the library', (tester) async {

@@ -20,6 +20,20 @@ class PaletteColors {
     required this.surfaceContainer,
     required this.surfaceContainerHigh,
     required this.surfaceContainerHighest,
+    this.onSurfaceVariant,
+    this.outline,
+    this.outlineVariant,
+    this.error,
+    this.onError,
+    this.errorContainer,
+    this.onErrorContainer,
+    this.tertiary,
+    this.onTertiary,
+    this.tertiaryContainer,
+    this.onTertiaryContainer,
+    this.inverseSurface,
+    this.onInverseSurface,
+    this.inversePrimary,
   });
 
   final Color primary, onPrimary, primaryContainer, onPrimaryContainer;
@@ -30,6 +44,14 @@ class PaletteColors {
       surfaceContainer,
       surfaceContainerHigh,
       surfaceContainerHighest;
+
+  /// The remaining roles (secondary text, borders, errors, snackbars...).
+  /// Null takes Material's colour for the palette; the High contrast palette
+  /// sets every one, so all of its text and controls are pinned down.
+  final Color? onSurfaceVariant, outline, outlineVariant;
+  final Color? error, onError, errorContainer, onErrorContainer;
+  final Color? tertiary, onTertiary, tertiaryContainer, onTertiaryContainer;
+  final Color? inverseSurface, onInverseSurface, inversePrimary;
 }
 
 /// A soothing colour theme the user can choose in Profile.
@@ -232,6 +254,77 @@ final _lotus = _derive(
   accentDark: const Color(0xFF9ADAB8),
 );
 
+/// High contrast: black on white (white on black in dark mode) with deep
+/// accents. Every text colour is at least 7:1 on every surface it sits on
+/// (WCAG AAA) and every control at least 3:1.
+const _highContrast = SadhoPalette(
+  id: 'highContrast',
+  name: 'High contrast',
+  blurb: 'Strongest contrast, for easy reading',
+  light: PaletteColors(
+    primary: Color(0xFF003A8C),
+    onPrimary: Color(0xFFFFFFFF),
+    primaryContainer: Color(0xFFD8E6FF),
+    onPrimaryContainer: Color(0xFF001533),
+    secondary: Color(0xFF6B2E00),
+    onSecondary: Color(0xFFFFFFFF),
+    secondaryContainer: Color(0xFFFFE3CF),
+    onSecondaryContainer: Color(0xFF2A1000),
+    surface: Color(0xFFFFFFFF),
+    onSurface: Color(0xFF000000),
+    surfaceContainerLowest: Color(0xFFFFFFFF),
+    surfaceContainerLow: Color(0xFFF7F7F7),
+    surfaceContainer: Color(0xFFF0F0F0),
+    surfaceContainerHigh: Color(0xFFE8E8E8),
+    surfaceContainerHighest: Color(0xFFE0E0E0),
+    onSurfaceVariant: Color(0xFF1F1F1F),
+    outline: Color(0xFF262626),
+    outlineVariant: Color(0xFF595959),
+    error: Color(0xFF8C0009),
+    onError: Color(0xFFFFFFFF),
+    errorContainer: Color(0xFFFFDAD6),
+    onErrorContainer: Color(0xFF410002),
+    tertiary: Color(0xFF005226),
+    onTertiary: Color(0xFFFFFFFF),
+    tertiaryContainer: Color(0xFFC8F2D5),
+    onTertiaryContainer: Color(0xFF00210C),
+    inverseSurface: Color(0xFF121212),
+    onInverseSurface: Color(0xFFFFFFFF),
+    inversePrimary: Color(0xFFB5D0FF),
+  ),
+  dark: PaletteColors(
+    primary: Color(0xFFA8C8FF),
+    onPrimary: Color(0xFF000000),
+    primaryContainer: Color(0xFF0B2E66),
+    onPrimaryContainer: Color(0xFFFFFFFF),
+    secondary: Color(0xFFFFC999),
+    onSecondary: Color(0xFF000000),
+    secondaryContainer: Color(0xFF5A2A00),
+    onSecondaryContainer: Color(0xFFFFFFFF),
+    surface: Color(0xFF000000),
+    onSurface: Color(0xFFFFFFFF),
+    surfaceContainerLowest: Color(0xFF000000),
+    surfaceContainerLow: Color(0xFF0D0D0D),
+    surfaceContainer: Color(0xFF141414),
+    surfaceContainerHigh: Color(0xFF1C1C1C),
+    surfaceContainerHighest: Color(0xFF262626),
+    onSurfaceVariant: Color(0xFFE6E6E6),
+    outline: Color(0xFFE0E0E0),
+    outlineVariant: Color(0xFFA6A6A6),
+    error: Color(0xFFFFB4AB),
+    onError: Color(0xFF000000),
+    errorContainer: Color(0xFF8C0009),
+    onErrorContainer: Color(0xFFFFFFFF),
+    tertiary: Color(0xFF8EE6AE),
+    onTertiary: Color(0xFF000000),
+    tertiaryContainer: Color(0xFF004D22),
+    onTertiaryContainer: Color(0xFFFFFFFF),
+    inverseSurface: Color(0xFFF2F2F2),
+    onInverseSurface: Color(0xFF000000),
+    inversePrimary: Color(0xFF003A8C),
+  ),
+);
+
 /// All palettes, the default first.
 final sadhoPalettes = <SadhoPalette>[
   _marigold,
@@ -239,6 +332,7 @@ final sadhoPalettes = <SadhoPalette>[
   _tulsi,
   _twilight,
   _lotus,
+  _highContrast,
 ];
 
 SadhoPalette get defaultPalette => sadhoPalettes.first;

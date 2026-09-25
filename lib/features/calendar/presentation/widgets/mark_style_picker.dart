@@ -91,10 +91,14 @@ class _StyleTile extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // A fixed-size picture of a marked date: the sample "15" is
+              // not text to read (the tile is announced by its style name,
+              // which does follow the text size, below).
               SizedBox(
                 width: 44,
                 height: 44,
-                child: MarkGlyph(
+                child: MediaQuery.withNoTextScaling(
+                  child: MarkGlyph(
                   style: style,
                   types: const [MarkType.good],
                   child: Text('15',
@@ -105,6 +109,7 @@ class _StyleTile extends StatelessWidget {
                             : scheme.onSurface,
                         fontWeight: FontWeight.w600,
                       )),
+                  ),
                 ),
               ),
               const SizedBox(height: 4),

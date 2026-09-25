@@ -131,7 +131,9 @@ class _HealthRow extends StatelessWidget {
     final l = context.l10n;
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    final color = ok ? Colors.green.shade700 : scheme.error;
+    // A green that reads at 7:1 or more on every palette's card, light or
+    // dark (shade 700 was about 4:1).
+    final color = ok ? okGreen(theme.brightness) : scheme.error;
     return Card(
       key: ValueKey('health-$id'),
       margin: const EdgeInsets.symmetric(vertical: 6),
@@ -209,3 +211,8 @@ class AlarmsReliabilityCard extends ConsumerWidget {
     );
   }
 }
+
+/// The "OK" green of a health row, for [brightness].
+Color okGreen(Brightness brightness) => brightness == Brightness.dark
+    ? const Color(0xFF8FD694)
+    : const Color(0xFF14521A);

@@ -2119,4 +2119,10 @@ class AppLocalizationsKn extends AppLocalizations {
   String noteDeleteBody(String title) {
     return '“$title” ಈ ಫೋನ್‌ನಿಂದ ತೆಗೆದುಹಾಕಲಾಗುತ್ತದೆ. ಇದನ್ನು ಮರಳಿ ಪಡೆಯಲಾಗದು.';
   }
+
+  @override
+  String get paletteHighContrastName => 'ಹೆಚ್ಚಿನ ಕಾಂಟ್ರಾಸ್ಟ್';
+
+  @override
+  String get paletteHighContrastBlurb => 'ಅತಿ ಹೆಚ್ಚಿನ ವ್ಯತ್ಯಾಸ, ಸುಲಭ ಓದಿಗಾಗಿ';
 }

@@ -48,25 +48,27 @@ class _MantraLibraryScreenState extends ConsumerState<MantraLibraryScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
-            child: SearchBar(
+            // A text field rather than a SearchBar: its whole 56 dp box is
+            // the tap target, and screen readers hear what it is for.
+            child: TextField(
+              key: const ValueKey('library-search'),
               controller: _search,
-              hintText: context.l10n.searchHint,
-              leading: const Icon(Icons.search),
-              elevation: const WidgetStatePropertyAll(0),
-              backgroundColor: WidgetStatePropertyAll(
-                theme.colorScheme.surfaceContainerLow,
+              textInputAction: TextInputAction.search,
+              decoration: InputDecoration(
+                hintText: context.l10n.searchHint,
+                prefixIcon: const Icon(Icons.search),
+                fillColor: theme.colorScheme.surfaceContainerLow,
+                suffixIcon: _query.isEmpty
+                    ? null
+                    : IconButton(
+                        tooltip: context.l10n.actionClear,
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          _search.clear();
+                          setState(() => _query = '');
+                        },
+                      ),
               ),
-              trailing: [
-                if (_query.isNotEmpty)
-                  IconButton(
-                    tooltip: context.l10n.actionClear,
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                      _search.clear();
-                      setState(() => _query = '');
-                    },
-                  ),
-              ],
               onChanged: (v) => setState(() => _query = v),
             ),
           ),

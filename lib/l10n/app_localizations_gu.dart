@@ -2118,4 +2118,10 @@ class AppLocalizationsGu extends AppLocalizations {
   String noteDeleteBody(String title) {
     return '“$title” આ ફોન પરથી દૂર થશે. આ પાછું લાવી શકાશે નહીં.';
   }
+
+  @override
+  String get paletteHighContrastName => 'ઉચ્ચ કૉન્ટ્રાસ્ટ';
+
+  @override
+  String get paletteHighContrastBlurb => 'સૌથી વધુ તફાવત, સરળ વાંચન માટે';
 }

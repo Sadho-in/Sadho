@@ -54,6 +54,20 @@ class AppTheme {
       surfaceContainer: c.surfaceContainer,
       surfaceContainerHigh: c.surfaceContainerHigh,
       surfaceContainerHighest: c.surfaceContainerHighest,
+      onSurfaceVariant: c.onSurfaceVariant,
+      outline: c.outline,
+      outlineVariant: c.outlineVariant,
+      error: c.error,
+      onError: c.onError,
+      errorContainer: c.errorContainer,
+      onErrorContainer: c.onErrorContainer,
+      tertiary: c.tertiary,
+      onTertiary: c.onTertiary,
+      tertiaryContainer: c.tertiaryContainer,
+      onTertiaryContainer: c.onTertiaryContainer,
+      inverseSurface: c.inverseSurface,
+      onInverseSurface: c.onInverseSurface,
+      inversePrimary: c.inversePrimary,
     );
   }
 

@@ -46,12 +46,15 @@ class CountScopeControl extends ConsumerWidget {
         segments: segments,
         selected: {scope},
         showSelectedIcon: false,
+        // One line, but a full 48 dp high: the accessible tap-target size.
         style: compact
             ? const ButtonStyle(
-                visualDensity: VisualDensity(horizontal: -2, vertical: -3),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                visualDensity: VisualDensity(horizontal: -2),
+                minimumSize: WidgetStatePropertyAll(Size(48, 48)),
               )
-            : null,
+            : const ButtonStyle(
+                minimumSize: WidgetStatePropertyAll(Size(48, 48)),
+              ),
         onSelectionChanged: (v) => notifier.setCountScope(v.first),
       ),
     );

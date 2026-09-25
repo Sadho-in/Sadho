@@ -117,7 +117,7 @@ class MantraCard extends ConsumerWidget {
                               scale,
                             ),
                           ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 12),
                         Wrap(
                           spacing: 10,
                           runSpacing: 2,
@@ -165,8 +165,9 @@ class MantraCard extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      // A little air between the two, whatever the text size.
-                      const SizedBox(height: 16),
+                      // A little air between the two, whatever the text size
+                      // (their 48 dp tap targets add some of their own).
+                      const SizedBox(height: 12),
                       TextButton.icon(
                         key: const ValueKey('mantra-library-button'),
                         onPressed: () => pickMantra(context, ref),
@@ -175,10 +176,10 @@ class MantraCard extends ConsumerWidget {
                           size: 16,
                         ),
                         label: Text(context.l10n.libraryButton),
+                        // A full 48 dp to tap.
                         style: TextButton.styleFrom(
-                          visualDensity: VisualDensity.compact,
                           padding: const EdgeInsets.symmetric(horizontal: 8),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          minimumSize: const Size(48, 48),
                         ),
                       ),
                     ],
@@ -218,10 +219,10 @@ class _SizeButton extends StatelessWidget {
       onTap: () {},
       child: TextButton(
         onPressed: onPressed,
+        // 48×48: the accessible minimum tap target.
         style: TextButton.styleFrom(
-          minimumSize: const Size(38, 34),
+          minimumSize: const Size(48, 48),
           padding: const EdgeInsets.symmetric(horizontal: 6),
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
         child: Text(
           label,

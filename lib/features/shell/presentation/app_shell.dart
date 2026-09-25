@@ -139,24 +139,22 @@ class AppShell extends ConsumerWidget {
                 ref.read(themeModeProvider.notifier).toggle(theme.brightness),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 4, right: 12),
-            child: Tooltip(
-              message: l.tooltipProfile,
-              child: InkResponse(
-                radius: 22,
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(builder: (_) => const ProfilePage()),
-                ),
-                child: CircleAvatar(
-                  radius: 16,
-                  backgroundColor: theme.colorScheme.secondaryContainer,
-                  foregroundColor: theme.colorScheme.onSecondaryContainer,
-                  child: profile.hasName
-                      ? Text(profile.initial,
-                          key: const ValueKey('avatar-initial'),
-                          style: const TextStyle(fontWeight: FontWeight.w700))
-                      : const Icon(Icons.person, size: 20),
-                ),
+            padding: const EdgeInsets.only(right: 4),
+            // An IconButton: a 48 dp tap target, announced as a button.
+            child: IconButton(
+              tooltip: l.tooltipProfile,
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const ProfilePage()),
+              ),
+              icon: CircleAvatar(
+                radius: 16,
+                backgroundColor: theme.colorScheme.secondaryContainer,
+                foregroundColor: theme.colorScheme.onSecondaryContainer,
+                child: profile.hasName
+                    ? Text(profile.initial,
+                        key: const ValueKey('avatar-initial'),
+                        style: const TextStyle(fontWeight: FontWeight.w700))
+                    : const Icon(Icons.person, size: 20),
               ),
             ),
           ),

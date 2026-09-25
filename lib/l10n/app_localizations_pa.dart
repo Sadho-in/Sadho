@@ -2120,4 +2120,10 @@ class AppLocalizationsPa extends AppLocalizations {
   String noteDeleteBody(String title) {
     return '“$title” ਇਸ ਫ਼ੋਨ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਜਾਵੇਗਾ। ਇਹ ਵਾਪਸ ਨਹੀਂ ਹੋ ਸਕਦਾ।';
   }
+
+  @override
+  String get paletteHighContrastName => 'ਉੱਚ ਕੰਟ੍ਰਾਸਟ';
+
+  @override
+  String get paletteHighContrastBlurb => 'ਸਭ ਤੋਂ ਵੱਧ ਫ਼ਰਕ, ਸੌਖਾ ਪੜ੍ਹਨ ਲਈ';
 }

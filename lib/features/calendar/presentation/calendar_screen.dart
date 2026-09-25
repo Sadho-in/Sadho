@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../l10n/date_formats.dart';
 import '../../../l10n/l10n.dart';
 import '../application/calendar_marks_provider.dart';
 import '../application/mark_style_provider.dart';
@@ -43,11 +44,13 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 640),
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+          // 12 at the sides and none inside the month card: on a 360 dp phone
+          // that leaves seven 48 dp columns, the accessible tap-target size.
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 32),
           children: [
             Card(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
+                padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
                 child: Column(
                   children: [
                     Align(
@@ -58,7 +61,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                         icon: const Icon(Icons.today, size: 18),
                         label: Text(l.today),
                         style: TextButton.styleFrom(
-                          visualDensity: VisualDensity.compact,
+                          minimumSize: const Size(48, 48),
                         ),
                       ),
                     ),
@@ -79,6 +82,8 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                       startingDayOfWeek: StartingDayOfWeek.sunday,
                       onPageChanged: (d) => setState(() => _focused = d),
                       onDaySelected: (selected, focused) {
+                        // A blank day of the month before or after: nothing.
+                        if (selected.month != focused.month) return;
                         setState(() => _focused = focused);
                         showMarkEditor(context, date: selected);
                       },
@@ -99,18 +104,36 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                         weekendStyle: theme.textTheme.labelMedium!
                             .copyWith(color: scheme.onSurfaceVariant),
                       ),
+                      // The days before and after the month stay blank, but
+                      // are built (not blocked) so that the calendar labels
+                      // them with their date: a blocked day would still be a
+                      // tap target for screen readers, with no label. Taps on
+                      // them are ignored above.
                       calendarStyle:
-                          const CalendarStyle(outsideDaysVisible: false),
+                          const CalendarStyle(outsideDaysVisible: true),
                       calendarBuilders: CalendarBuilders(
+                        // The month title as a plain heading: the calendar's
+                        // own title is a tap target that does nothing.
+                        headerTitleBuilder: (context, month) => Semantics(
+                          header: true,
+                          child: Text(
+                            AppDates.of(context).monthYear(month),
+                            key: const ValueKey('month-title'),
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.titleLarge,
+                          ),
+                        ),
                         // One renderer for every date (weekends and today
                         // included), so marks always look the same.
                         prioritizedBuilder: (context, day, focusedDay) =>
-                            MarkDayCell(
-                          day: day,
-                          marks: marksOnDay(marks, day),
-                          style: style,
-                          isToday: isSameDay(day, now),
-                        ),
+                            day.month != focusedDay.month
+                                ? const SizedBox.expand()
+                                : MarkDayCell(
+                                    day: day,
+                                    marks: marksOnDay(marks, day),
+                                    style: style,
+                                    isToday: isSameDay(day, now),
+                                  ),
                       ),
                     ),
                   ],

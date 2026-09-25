@@ -2117,4 +2117,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String noteDeleteBody(String title) {
     return '“$title” will be removed from this phone. This cannot be undone.';
   }
+
+  @override
+  String get paletteHighContrastName => 'High contrast';
+
+  @override
+  String get paletteHighContrastBlurb => 'Strongest contrast, for easy reading';
 }

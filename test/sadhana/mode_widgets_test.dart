@@ -302,7 +302,9 @@ void main() {
       expect(find.byType(Text), findsNWidgets(2));
       expect(read(c).scope, CountScope.combined);
       final size = tester.getSize(find.byType(CountScopeControl));
-      expect(size.height, lessThan(44), reason: 'small, not a card');
+      // At most one 48 dp tap target high (was < 44 before P4.3-9 made every
+      // tap target at least 48 dp).
+      expect(size.height, lessThanOrEqualTo(48), reason: 'small, not a card');
     });
 
     testWidgets('the segmented control spans the row now that the label is gone',

@@ -2137,4 +2137,10 @@ class AppLocalizationsTa extends AppLocalizations {
   String noteDeleteBody(String title) {
     return '“$title” இந்த ஃபோனிலிருந்து நீக்கப்படும். இதைத் திரும்பப் பெற முடியாது.';
   }
+
+  @override
+  String get paletteHighContrastName => 'உயர் மாறுபாடு';
+
+  @override
+  String get paletteHighContrastBlurb => 'அதிகபட்ச வேறுபாடு, எளிதில் படிக்க';
 }

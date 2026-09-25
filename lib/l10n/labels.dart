@@ -335,6 +335,7 @@ extension SadhoPaletteL10n on SadhoPalette {
         'tulsi' => l.paletteTulsiName,
         'twilight' => l.paletteTwilightName,
         'lotus' => l.paletteLotusName,
+        'highContrast' => l.paletteHighContrastName,
         _ => name,
       };
 
@@ -344,6 +345,7 @@ extension SadhoPaletteL10n on SadhoPalette {
         'tulsi' => l.paletteTulsiBlurb,
         'twilight' => l.paletteTwilightBlurb,
         'lotus' => l.paletteLotusBlurb,
+        'highContrast' => l.paletteHighContrastBlurb,
         _ => blurb,
       };
 }

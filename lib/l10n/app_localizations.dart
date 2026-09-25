@@ -3699,6 +3699,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'“{title}” will be removed from this phone. This cannot be undone.'**
   String noteDeleteBody(String title);
+
+  /// Name of the high-contrast colour palette
+  ///
+  /// In en, this message translates to:
+  /// **'High contrast'**
+  String get paletteHighContrastName;
+
+  /// Under the high-contrast palette's name
+  ///
+  /// In en, this message translates to:
+  /// **'Strongest contrast, for easy reading'**
+  String get paletteHighContrastBlurb;
 }
 
 class _AppLocalizationsDelegate

@@ -2131,4 +2131,10 @@ class AppLocalizationsTe extends AppLocalizations {
   String noteDeleteBody(String title) {
     return '“$title” ఈ ఫోన్ నుండి తీసివేయబడుతుంది. దీన్ని తిరిగి పొందలేరు.';
   }
+
+  @override
+  String get paletteHighContrastName => 'అధిక కాంట్రాస్ట్';
+
+  @override
+  String get paletteHighContrastBlurb => 'అత్యధిక వ్యత్యాసం, సులభంగా చదవడానికి';
 }
