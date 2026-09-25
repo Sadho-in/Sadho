@@ -32,8 +32,9 @@ const seedMantras = <Mantra>[
   Mantra(
     id: 'seed_mool_mantar',
     title: 'Mool Mantar',
-    script: 'ੴ ਸਤਿ ਨਾਮੁ',
-    transliteration: 'Ik Onkar Sat Naam',
+    script: 'ੴ ਸਤਿ ਨਾਮੁ ਕਰਤਾ ਪੁਰਖੁ ਨਿਰਭਉ ਨਿਰਵੈਰੁ ਅਕਾਲ ਮੂਰਤਿ ਅਜੂਨੀ ਸੈਭੰ ਗੁਰ ਪ੍ਰਸਾਦਿ ॥',
+    transliteration:
+        'Ik Onkar Sat Naam Karta Purakh Nirbhau Nirvair Akaal Moorat Ajooni Saibhang Gur Prasad',
     tradition: 'Gurbani · Sikh',
     defaultCount: 11,
   ),

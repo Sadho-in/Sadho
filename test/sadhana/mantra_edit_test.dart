@@ -327,8 +327,8 @@ void main() {
       await openEdit(tester, 'Mool Mantar');
       expect(find.text('Edit mantra'), findsOneWidget);
       expect(valueOf(tester, 'Title *'), 'Mool Mantar');
-      expect(valueOf(tester, 'Script text'), 'ੴ ਸਤਿ ਨਾਮੁ');
-      expect(valueOf(tester, 'Transliteration'), 'Ik Onkar Sat Naam');
+      expect(valueOf(tester, 'Script text'), _mool.script);
+      expect(valueOf(tester, 'Transliteration'), _mool.transliteration);
       expect(valueOf(tester, 'Tradition / language'), 'Gurbani · Sikh');
       expect(valueOf(tester, 'Default count *'), '11');
       expect(find.text('Save changes'), findsOneWidget);
@@ -513,3 +513,6 @@ void main() {
     });
   });
 }
+
+/// The built-in Mool Mantar (its text changed in P4.3-8: the full Mool Mantar).
+final _mool = seedMantras.firstWhere((m) => m.id == 'seed_mool_mantar');

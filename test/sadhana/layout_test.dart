@@ -15,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'test_support.dart';
+import 'package:advance_calendar/features/sadhana/data/seed_mantras.dart';
 
 /// Phone screens (logical px), smallest to large. The test font draws every
 /// glyph as a full-width square, so these are pessimistic for text width.
@@ -239,7 +240,7 @@ void main() {
       await openShell(tester, _phones[3].$2);
       notifier().selectMantra('seed_mool_mantar', 11);
       await tester.pump();
-      expect(find.descendant(of: find.byType(MantraCard), matching: find.text('Ik Onkar Sat Naam')),
+      expect(find.descendant(of: find.byType(MantraCard), matching: find.text(seedMantras.firstWhere((m) => m.id == 'seed_mool_mantar').transliteration)),
           findsOneWidget);
       expect(find.descendant(of: find.byType(MantraCard), matching: find.text('Voice not trained')),
           findsOneWidget);

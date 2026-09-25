@@ -61,6 +61,23 @@ void main() {
     });
   });
 
+  testWidgets('Sadhana: the full Mool Mantar selected', (tester) async {
+    await auditApp(tester, 'Sadhana (Mool Mantar)', (rig) async {
+      await openSadhana(tester, rig);
+      session(rig).selectMantra('seed_mool_mantar', 11);
+      await settle(tester);
+    });
+  });
+
+  testWidgets('Focus mode: the full Mool Mantar', (tester) async {
+    await auditApp(tester, 'Focus mode (Mool Mantar)', (rig) async {
+      await openSadhana(tester, rig);
+      session(rig).selectMantra('seed_mool_mantar', 11);
+      openFocusMode(appContext(tester));
+      await settle(tester);
+    });
+  });
+
   testWidgets('Sadhana: Voice panel, mantra not trained', (tester) async {
     await auditApp(tester, 'Voice panel (untrained)', (rig) async {
       await openSadhana(tester, rig);

@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'test_support.dart';
+import 'package:advance_calendar/features/sadhana/data/seed_mantras.dart';
 
 void main() {
   late FakeVoice voice;
@@ -183,9 +184,9 @@ void main() {
     }
 
     // Mool Mantar: script / name / transliteration.
-    Finder script() => find.text('ੴ ਸਤਿ ਨਾਮੁ');
+    Finder script() => find.text(_mool.script);
     Finder name() => find.text('Mool Mantar');
-    Finder translit() => find.text('Ik Onkar Sat Naam');
+    Finder translit() => find.text(_mool.transliteration);
     double size(WidgetTester t, Finder f) => t.widget<Text>(f).style!.fontSize!;
 
     testWidgets('the default text is bigger than the old base size',
@@ -582,8 +583,12 @@ void main() {
 
     double ringHeight(WidgetTester t) => t.getSize(find.byType(ProgressRing)).height;
 
+    // Om Namah Shivaya: since P4.3-8 the Mool Mantar is the full Mool Mantar,
+    // whose card at the largest size is taller than this whole screen (see
+    // "the full Mool Mantar at the largest size" below).
     testWidgets('bigger text: taller card, smaller ring', (tester) async {
-      final c = await pumpScreen(tester, 360, 800);
+      final c = await pumpScreen(tester, 360, 800,
+          mantra: 'seed_om_namah_shivaya');
       sizer(c).set(0.8);
       await tester.pump();
       await tester.pump();
@@ -603,7 +608,8 @@ void main() {
     });
 
     testWidgets('a smaller card gives the ring its room back', (tester) async {
-      final c = await pumpScreen(tester, 360, 800);
+      final c = await pumpScreen(tester, 360, 800,
+          mantra: 'seed_om_namah_shivaya');
       sizer(c).set(2.0);
       await tester.pump();
       await tester.pump();
@@ -612,6 +618,21 @@ void main() {
       await tester.pump();
       await tester.pump();
       expect(ringHeight(tester), greaterThan(big));
+    });
+
+    testWidgets('the full Mool Mantar at the largest size: nothing overflows, '
+        'the ring keeps its minimum and is a scroll away', (tester) async {
+      final c = await pumpScreen(tester, 360, 800);
+      sizer(c).set(2.0);
+      await tester.pump();
+      await tester.pump();
+      expect(tester.takeException(), isNull);
+      expect(find.text(_mool.script), findsOneWidget, reason: 'never cut');
+      final ring = find.byType(ProgressRing);
+      await tester.scrollUntilVisible(ring, 200,
+          scrollable: find.byType(Scrollable).first);
+      await tester.pump();
+      expect(tester.getSize(ring).height, greaterThanOrEqualTo(120));
     });
 
     testWidgets('the ring never overflows or vanishes at any size or phone',
@@ -693,9 +714,9 @@ void main() {
         (tester) async {
       await openFocus(tester);
       final s = defaultMantraTextScale;
-      expect(focusSize(tester, 'ੴ ਸਤਿ ਨਾਮੁ'), closeTo(base.headlineMedium!.fontSize! * s, 1e-9));
+      expect(focusSize(tester, _mool.script), closeTo(base.headlineMedium!.fontSize! * s, 1e-9));
       expect(focusSize(tester, 'Mool Mantar'), closeTo(base.titleMedium!.fontSize! * s, 1e-9));
-      expect(focusSize(tester, 'Ik Onkar Sat Naam'), closeTo(base.bodyMedium!.fontSize! * s, 1e-9));
+      expect(focusSize(tester, _mool.transliteration), closeTo(base.bodyMedium!.fontSize! * s, 1e-9));
     });
 
     testWidgets('a size chosen on the card is what Focus shows', (tester) async {
@@ -762,3 +783,6 @@ void main() {
     });
   });
 }
+
+/// The built-in Mool Mantar (its text changed in P4.3-8: the full Mool Mantar).
+final _mool = seedMantras.firstWhere((m) => m.id == 'seed_mool_mantar');
