@@ -2181,4 +2181,52 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get malaScreenOffExplainer =>
       'ফোন লক করে গুনতে ভলিউম কী চাপুন। ব্যাটারি \'অপ্রতিবন্ধিত\' করুন।';
+
+  @override
+  String get calibrateTitle => 'কণ্ঠ ক্যালিব্রেট করুন';
+
+  @override
+  String calibrateIntro(int count) {
+    return 'আপনার মন্ত্র $count বার জপ করুন, যেমন সাধারণত করেন, প্রতিবার একটু থেমে। তারপর Sadho ঠিক করে কণ্ঠ কতটা কঠোর হবে, যাতে সবগুলো গোনা হয় আর ঘরের আওয়াজ নয়। কিছুই রেকর্ড বা রাখা হয় না।';
+  }
+
+  @override
+  String calibrateChantNow(int count) {
+    return 'এখন আপনার মন্ত্র $count বার জপ করুন';
+  }
+
+  @override
+  String calibrateHeard(int heard, int count) {
+    return '$count-এর মধ্যে $heard শোনা হয়েছে';
+  }
+
+  @override
+  String calibrateSkipped(int count) {
+    return 'এক জপ নয় এমন $countটি শব্দ বাদ দেওয়া হয়েছে';
+  }
+
+  @override
+  String get calibrateDone => 'ক্যালিব্রেট হয়েছে';
+
+  @override
+  String calibrateDoneBody(int count) {
+    return 'সব $countটি জপ গোনা হবে; ঘরের আওয়াজ নয়।';
+  }
+
+  @override
+  String get calibrateStart => 'ক্যালিব্রেশন শুরু করুন';
+
+  @override
+  String get calibrateSave => 'ক্যালিব্রেশন সংরক্ষণ করুন';
+
+  @override
+  String calibrationSaved(String mantra) {
+    return '“$mantra”-এর ক্যালিব্রেশন সংরক্ষিত';
+  }
+
+  @override
+  String get calibrateVoice => 'ক্যালিব্রেট করুন';
+
+  @override
+  String get recalibrateVoice => 'আবার ক্যালিব্রেট করুন';
 }

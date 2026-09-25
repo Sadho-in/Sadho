@@ -3795,6 +3795,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Lock the phone and press a volume key to count. Set battery to Unrestricted.'**
   String get malaScreenOffExplainer;
+
+  /// Title of the voice calibration screen (after training)
+  ///
+  /// In en, this message translates to:
+  /// **'Calibrate voice'**
+  String get calibrateTitle;
+
+  /// Explanation on the voice calibration screen
+  ///
+  /// In en, this message translates to:
+  /// **'Chant your mantra {count} times, the way you usually do, with a short pause after each. Sadho then sets how strict Voice is, so all of them count and the room\'s noise does not. Nothing is recorded or kept.'**
+  String calibrateIntro(int count);
+
+  /// Calibration headline
+  ///
+  /// In en, this message translates to:
+  /// **'Chant your mantra {count} times now'**
+  String calibrateChantNow(int count);
+
+  /// Calibration progress: how many repetitions were heard
+  ///
+  /// In en, this message translates to:
+  /// **'Heard {heard} of {count}'**
+  String calibrateHeard(int heard, int count);
+
+  /// Calibration: sounds too short or too long to be one repetition
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped {count} sounds that were not one repetition'**
+  String calibrateSkipped(int count);
+
+  /// Calibration finished headline
+  ///
+  /// In en, this message translates to:
+  /// **'Calibrated'**
+  String get calibrateDone;
+
+  /// Calibration finished explanation
+  ///
+  /// In en, this message translates to:
+  /// **'All {count} repetitions will count; the room\'s noise will not.'**
+  String calibrateDoneBody(int count);
+
+  /// Button that starts the calibration
+  ///
+  /// In en, this message translates to:
+  /// **'Start calibration'**
+  String get calibrateStart;
+
+  /// Button that saves the calibrated threshold
+  ///
+  /// In en, this message translates to:
+  /// **'Save calibration'**
+  String get calibrateSave;
+
+  /// Snackbar after saving a calibration
+  ///
+  /// In en, this message translates to:
+  /// **'Calibration saved for “{mantra}”'**
+  String calibrationSaved(String mantra);
+
+  /// Voice panel button: run the calibration (not calibrated yet)
+  ///
+  /// In en, this message translates to:
+  /// **'Calibrate'**
+  String get calibrateVoice;
+
+  /// Voice panel button: run the calibration again
+  ///
+  /// In en, this message translates to:
+  /// **'Re-calibrate'**
+  String get recalibrateVoice;
 }
 
 class _AppLocalizationsDelegate

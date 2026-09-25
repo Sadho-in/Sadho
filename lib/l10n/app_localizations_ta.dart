@@ -2198,4 +2198,52 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get malaScreenOffExplainer =>
       'ஃபோனைப் பூட்டி, எண்ண ஒலியளவு விசையை அழுத்தவும். பேட்டரியை \'கட்டுப்பாடற்றது\' ஆக்கவும்.';
+
+  @override
+  String get calibrateTitle => 'குரலை அளவீடு செய்';
+
+  @override
+  String calibrateIntro(int count) {
+    return 'உங்கள் மந்திரத்தை வழக்கம் போல் $count முறை ஜபியுங்கள், ஒவ்வொன்றுக்கும் பின் சிறு இடைவெளி விட்டு. பிறகு Sadho குரல் எவ்வளவு கண்டிப்பாக இருக்க வேண்டும் என அமைக்கும்; அனைத்தும் எண்ணப்படும், அறையின் சத்தம் அல்ல. எதுவும் பதிவு செய்யப்படுவதோ வைக்கப்படுவதோ இல்லை.';
+  }
+
+  @override
+  String calibrateChantNow(int count) {
+    return 'இப்போது உங்கள் மந்திரத்தை $count முறை ஜபியுங்கள்';
+  }
+
+  @override
+  String calibrateHeard(int heard, int count) {
+    return '$count-இல் $heard கேட்டது';
+  }
+
+  @override
+  String calibrateSkipped(int count) {
+    return 'ஒரு ஜபம் அல்லாத $count ஒலிகள் தவிர்க்கப்பட்டன';
+  }
+
+  @override
+  String get calibrateDone => 'அளவீடு முடிந்தது';
+
+  @override
+  String calibrateDoneBody(int count) {
+    return 'அனைத்து $count ஜபங்களும் எண்ணப்படும்; அறையின் சத்தம் அல்ல.';
+  }
+
+  @override
+  String get calibrateStart => 'அளவீட்டைத் தொடங்கு';
+
+  @override
+  String get calibrateSave => 'அளவீட்டைச் சேமி';
+
+  @override
+  String calibrationSaved(String mantra) {
+    return '“$mantra”-க்கான அளவீடு சேமிக்கப்பட்டது';
+  }
+
+  @override
+  String get calibrateVoice => 'அளவீடு செய்';
+
+  @override
+  String get recalibrateVoice => 'மீண்டும் அளவீடு';
 }

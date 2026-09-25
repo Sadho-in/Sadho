@@ -15,11 +15,18 @@ class VoiceTraining {
     required this.mantraId,
     required List<MfccSequence> templates,
     required this.trainedAt,
+    this.calibratedThreshold,
   }) : templates = List.unmodifiable(templates);
 
   final String mantraId;
   final List<MfccSequence> templates;
   final DateTime trainedAt;
+
+  /// Set by the "chant it 11 times" calibration; null until then (and after
+  /// the recordings change).
+  final double? calibratedThreshold;
+
+  bool get isCalibrated => calibratedThreshold != null;
 
   int get sampleCount => templates.length;
 
@@ -29,13 +36,22 @@ class VoiceTraining {
   /// How many more recordings could still be added ("Add more samples").
   int get roomForMore => maxTrainingSamples - templates.length;
 
-  MatchModel toModel() => MatchModel(templates);
+  MatchModel toModel() =>
+      MatchModel(templates, calibratedThreshold: calibratedThreshold);
+
+  VoiceTraining withCalibration(double? threshold) => VoiceTraining(
+        mantraId: mantraId,
+        templates: templates,
+        trainedAt: trainedAt,
+        calibratedThreshold: threshold,
+      );
 
   Map<String, dynamic> toMap() => {
         'v': 1,
         'dims': mfccDims,
         'trainedAt': trainedAt.millisecondsSinceEpoch,
         'templates': [for (final t in templates) t.toBytes()],
+        if (calibratedThreshold != null) 'threshold': calibratedThreshold,
       };
 
   /// Null if [m] is not readable; damaged templates inside it are skipped.
@@ -50,7 +66,10 @@ class VoiceTraining {
     ];
     if (templates.isEmpty) return null;
     final at = m['trainedAt'];
+    final thr = m['threshold'];
     return VoiceTraining(
+      calibratedThreshold:
+          thr is num && thr.isFinite && thr > 0 ? thr.toDouble() : null,
       mantraId: mantraId,
       templates: templates,
       trainedAt: at is int
@@ -90,6 +109,16 @@ class VoiceTrainingNotifier extends Notifier<Map<String, VoiceTraining>> {
         .put(mantraId, {'mantraId': mantraId, ...training.toMap()});
     state = {...state, mantraId: training};
     return training;
+  }
+
+  /// Stores the calibrated threshold for [mantraId] (null forgets it).
+  Future<void> setCalibration(String mantraId, double? threshold) async {
+    final t = state[mantraId];
+    if (t == null) return;
+    final next = t.withCalibration(threshold);
+    await AppStorage.voiceTemplates
+        .put(mantraId, {'mantraId': mantraId, ...next.toMap()});
+    state = {...state, mantraId: next};
   }
 
   /// Forgets the training for [mantraId] ("Clear training").

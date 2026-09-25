@@ -68,13 +68,15 @@ class VoiceEngine {
       ));
       return;
     }
-    final mfcc = _extractor.extract(u.samples);
-    final result = model.evaluate(mfcc, _sensitivity);
-    if (kDebugMode) {
-      debugPrint('voice: ${mfcc.frames} frames  d=${result.distance.toStringAsFixed(2)}'
-          '  thr=${result.threshold.toStringAsFixed(2)}'
-          '  ${result.matched ? 'COUNT' : 'ignore'}');
+    final mfcc = _extractor.extract(loudnessNormalized(u.samples));
+    // Usually one; several reps said in one breath come back one each.
+    for (final result in model.evaluateAll(mfcc, _sensitivity)) {
+      if (kDebugMode) {
+        debugPrint('voice: ${mfcc.frames} frames  d=${result.distance.toStringAsFixed(2)}'
+            '  thr=${result.threshold.toStringAsFixed(2)}'
+            '  ${result.matched ? 'COUNT' : 'ignore'}');
+      }
+      onCandidate?.call(result);
     }
-    onCandidate?.call(result);
   }
 }

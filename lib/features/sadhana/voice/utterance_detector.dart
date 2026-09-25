@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'dart:typed_data';
 
+import 'package:fftea/fftea.dart';
+
 /// Samples per detector frame: 10 ms at 16 kHz.
 const gateFrameSamples = 160;
 
@@ -17,6 +19,8 @@ class GateConfig {
     this.onsetMarginDb = 9,
     this.offsetMarginDb = 5,
     this.minOnsetDb = -50,
+    this.maxOnsetZcr = 0.3,
+    this.maxOnsetFlatness = 0.2,
   });
 
   /// Noise-floor calibration at the start (50 = 0.5 s).
@@ -50,6 +54,12 @@ class GateConfig {
   /// Never trigger below this level, however quiet the room is.
   final double minOnsetDb;
 
+  /// A frame can start an utterance only if it sounds like voice: few zero
+  /// crossings (a hiss or a breath crosses zero about every other sample) and
+  /// a peaky, harmonic spectrum (spectral flatness near 0; noise is near 0.5).
+  final double maxOnsetZcr;
+  final double maxOnsetFlatness;
+
   GateConfig copyWith({int? hangoverFrames, int? maxFrames}) => GateConfig(
         calibrationFrames: calibrationFrames,
         onsetFrames: onsetFrames,
@@ -61,6 +71,8 @@ class GateConfig {
         onsetMarginDb: onsetMarginDb,
         offsetMarginDb: offsetMarginDb,
         minOnsetDb: minOnsetDb,
+        maxOnsetZcr: maxOnsetZcr,
+        maxOnsetFlatness: maxOnsetFlatness,
       );
 }
 
@@ -83,13 +95,16 @@ enum GateEvent {
   forcedEnd,
 }
 
-/// Frame-level speech gate. Feed it one loudness value (dB) per 10 ms frame.
+/// Frame-level speech gate. Feed it one loudness value (dB) per 10 ms frame,
+/// and whether the frame sounds like voice ([FrameCues.speechLike]).
 ///
 /// 1. **Calibrating**: the first frames set the noise floor (a low quantile,
 ///    so speaking during calibration does not ruin it).
 /// 2. **Idle**: [GateConfig.onsetFrames] frames in a row above
-///    noise + [GateConfig.onsetMarginDb] start an utterance. While idle the
-///    floor slowly follows the room noise.
+///    noise + [GateConfig.onsetMarginDb] that sound like voice start an
+///    utterance (a breath or a noise burst is loud but not voice, so it never
+///    starts one). While idle the floor adapts to the room: it follows quiet
+///    frames, and rises (slowly) under loud noise that is not voice.
 /// 3. **Active**: it ends after [GateConfig.hangoverFrames] quiet frames, or
 ///    is cut at [GateConfig.maxFrames].
 class EnergyGate {
@@ -141,7 +156,7 @@ class EnergyGate {
     _run = _quiet = _voiced = 0;
   }
 
-  GateEvent step(double db) {
+  GateEvent step(double db, {bool speechLike = true}) {
     _frame++;
     switch (_state) {
       case _State.calibrating:
@@ -151,6 +166,13 @@ class EnergyGate {
         return GateEvent.calibrated;
 
       case _State.idle:
+        if (db > onsetDb && !speechLike) {
+          // Loud but not voice (a breath, a fan, a clatter): no onset, and the
+          // floor creeps up toward a noise that persists.
+          _run = 0;
+          _noiseDb += 0.03 * (db - _noiseDb);
+          return GateEvent.none;
+        }
         if (db > onsetDb) {
           if (++_run >= config.onsetFrames) {
             _state = _State.active;
@@ -232,8 +254,52 @@ class Utterance {
       Duration(microseconds: samples.length * 1000000 ~/ 16000);
 }
 
+/// Voice cues of one 10 ms frame: zero-crossing rate and spectral flatness.
+class FrameCues {
+  FrameCues._(this.zcr, this.flatness);
+
+  /// Share of neighbouring samples that change sign (0..1).
+  final double zcr;
+
+  /// Geometric / arithmetic mean of the power spectrum over 125 Hz..4 kHz:
+  /// near 0 for a voiced, harmonic sound, about 0.5 for white noise.
+  final double flatness;
+
+  bool speechLike(GateConfig c) =>
+      zcr <= c.maxOnsetZcr && flatness <= c.maxOnsetFlatness;
+
+  static final _fft = FFT(256);
+  static final _buffer = Float64List(256);
+
+  static FrameCues of(Float64List frame) {
+    var crossings = 0;
+    for (var i = 1; i < frame.length; i++) {
+      if ((frame[i] >= 0) != (frame[i - 1] >= 0)) crossings++;
+    }
+    final n = math.min(frame.length, 256);
+    for (var i = 0; i < 256; i++) {
+      _buffer[i] = i < n
+          ? frame[i] * (0.54 - 0.46 * math.cos(2 * math.pi * i / math.max(1, n - 1)))
+          : 0;
+    }
+    final spectrum = _fft.realFft(_buffer);
+    var logSum = 0.0, sum = 0.0, bins = 0;
+    for (var k = 2; k <= 64; k++) {
+      final c = spectrum[k];
+      final p = c.x * c.x + c.y * c.y + 1e-12;
+      logSum += math.log(p);
+      sum += p;
+      bins++;
+    }
+    final flatness = math.exp(logSum / bins) / (sum / bins);
+    return FrameCues._(
+        frame.length < 2 ? 0 : crossings / (frame.length - 1), flatness);
+  }
+}
+
 /// Turns a PCM16 16 kHz stream into [Utterance]s: computes 10 ms loudness
-/// values for an [EnergyGate] and keeps the audio of the active utterance.
+/// values and voice cues ([FrameCues]) for an [EnergyGate] and keeps the audio
+/// of the active utterance.
 class UtteranceDetector {
   UtteranceDetector({
     GateConfig config = const GateConfig(),
@@ -300,7 +366,11 @@ class UtteranceDetector {
     final keep = cfg.preRollFrames + cfg.onsetFrames + 1;
     if (_ring.length > keep) _ring.removeAt(0);
 
-    final event = _gate.step(db);
+    // The voice cues matter only for a loud frame that could start speech.
+    final speechLike = _gate.active || db <= _gate.onsetDb
+        ? true
+        : FrameCues.of(frame).speechLike(cfg);
+    final event = _gate.step(db, speechLike: speechLike);
     if (_gate.frame % 5 == 0) onLevel?.call(db);
 
     switch (event) {

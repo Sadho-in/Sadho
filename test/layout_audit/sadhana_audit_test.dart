@@ -2,7 +2,13 @@ import 'package:advance_calendar/features/sadhana/application/sadhana_session_pr
 import 'package:advance_calendar/features/sadhana/application/selected_mantra_provider.dart';
 import 'package:advance_calendar/features/sadhana/presentation/focus_mode_screen.dart';
 import 'package:advance_calendar/features/sadhana/presentation/mantra_library_screen.dart';
+import 'package:advance_calendar/features/sadhana/presentation/voice_calibration_screen.dart';
 import 'package:advance_calendar/features/sadhana/presentation/voice_training_screen.dart';
+import 'package:advance_calendar/features/sadhana/services/pcm_input.dart';
+import 'package:advance_calendar/features/sadhana/voice/calibration.dart';
+import 'package:advance_calendar/features/sadhana/voice/mfcc.dart';
+import 'package:advance_calendar/core/storage/app_storage.dart';
+import 'package:advance_calendar/features/sadhana/application/voice_training_provider.dart';
 import 'package:advance_calendar/features/sadhana/presentation/widgets/mantra_form_sheet.dart';
 import 'package:advance_calendar/features/sadhana/services/feedback_service.dart';
 import 'package:advance_calendar/features/sadhana/services/mala_background_service.dart';
@@ -10,12 +16,33 @@ import 'package:advance_calendar/features/shell/presentation/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../sadhana/synth.dart';
 import '../sadhana/test_support.dart'
-    show FakeFeedback, FakeMalaService, seedTrainedVoice;
+    show FakeFeedback, FakeMalaService, FakePcmInput, seedTrainedVoice;
 import 'audit_harness.dart';
 
 /// P4.3-2b: the Sadhana tab and everything it opens, in every language, text
 /// size and theme.
+/// A training made from synthetic chants, so synthetic chanting matches it.
+void seedSynthTraining(String mantraId) {
+  final ex = MfccExtractor();
+  AppStorage.voiceTemplates.put(mantraId, {
+    'mantraId': mantraId,
+    ...VoiceTraining(
+      mantraId: mantraId,
+      templates: [
+        for (var k = 1; k <= 3; k++)
+          ex.extract(loudnessNormalized(concat([
+            silence(100),
+            synthMantra(mantraA, seed: k),
+            silence(100),
+          ]))),
+      ],
+      trainedAt: DateTime(2026, 9, 1),
+    ).toMap(),
+  });
+}
+
 void main() {
   setUpAll(setUpLayoutAudit);
 
@@ -181,6 +208,36 @@ void main() {
         await settle(tester);
         expect(find.byType(VoiceTrainingScreen), findsOneWidget);
       }, prepare: trained ? seedTrainedVoice : null);
+    });
+  }
+
+  // P5-5: the voice calibration screen, before, while and after listening.
+  for (final stage in ['start', 'listening', 'done']) {
+    testWidgets('Sadhana: Voice calibration ($stage)', (tester) async {
+      await auditApp(tester, 'Voice calibration ($stage)', (rig) async {
+        final mantra = rig.container.read(selectedMantraProvider);
+        openVoiceCalibration(appContext(tester), mantra);
+        await settle(tester);
+        expect(find.byType(VoiceCalibrationScreen), findsOneWidget);
+        if (stage == 'start') return;
+        final mic = rig.container.read(pcmInputProvider) as FakePcmInput;
+        await tester.tap(find.byKey(const ValueKey('calibration-start')));
+        await settle(tester);
+        feedInChunks(toPcm(silence(calibrationQuietMs + 100)), mic.push);
+        // A too-short sound (skipped) and then some repetitions.
+        feedInChunks(toPcm(concat([tone(300, ms: 150), silence(700)])), mic.push);
+        final reps = stage == 'done' ? 30 : 2;
+        for (var i = 0; i < reps && mic.streaming; i++) {
+          feedInChunks(
+              toPcm(concat([synthMantra(mantraA, seed: i), silence(700)])),
+              mic.push);
+        }
+        await settle(tester);
+        expect(find.byKey(const ValueKey('calibration-headline')), findsOneWidget);
+        expect(
+            find.textContaining(stage == 'done' ? 'Calibrated' : 'Heard 2 of 11'),
+            findsOneWidget);
+      }, prepare: () => seedSynthTraining('seed_om_namah_shivaya'));
     });
   }
 

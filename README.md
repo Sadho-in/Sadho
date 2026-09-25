@@ -468,12 +468,32 @@ of your mantra*. That is why it works for any mantra in any language.
    redone.
 2. **Counting**. The same front end cuts the live stream into candidate
    utterances (short-time energy onset + ~300 ms of trailing silence, longer for
-   long verses; a length cap drops sentences). Each candidate is compared with
+   long verses; a length cap drops sentences). **Voice-activity detection**: a
+   loud frame can start an utterance only if it also sounds like voice (few
+   zero crossings and a peaky, harmonic spectrum: low spectral flatness), so
+   breaths, a clatter or a fan never start one; the noise floor adapts to the
+   room (it follows quiet frames and rises slowly under steady non-voice
+   noise). Each candidate is **loudness-normalised** before MFCC, and matched on
+   MFCCs **plus deltas and delta-deltas** (how the sound is changing), with
+   cepstral mean (and variance) normalisation per utterance; the quiet lead-in
+   and tail are trimmed so only the voiced part is compared. Templates are
+   still stored as the 13 static MFCCs, so older trainings keep working. Each candidate is compared with
    every template using **DTW** (dynamic time warping, so a slightly faster or
    slower chant still matches). If the best distance is under an **adaptive
    threshold** the rep counts **immediately**. The threshold comes from how much
    *your* recordings vary among themselves, scaled by the Sensitivity slider and
    kept inside fixed bounds. Everything runs per utterance on the phone's CPU.
+   **Several repetitions in one breath**: when an utterance is about N times the
+   trained length (N = 2 to 4) and is not one match, it is cut into N parts at
+   its quietest moments near the expected boundaries, and if every part matches,
+   N counts are made.
+   **Calibration**: right after training (and any time from the Voice panel,
+   *Calibrate*), "Chant your mantra 11 times now". Sadho first listens to 2 s of
+   room sound, then shows each repetition as it is heard, and sets the threshold
+   so all 11 count and the room's noise does not (a third of the way from the
+   loudest repeat toward the nearest noise). It is saved with the training and
+   cleared when the recordings change; the Strict ↔ Lenient slider moves it,
+   with the middle exactly at the calibrated value. No audio is kept.
 3. **Offline and private**: no network, no cloud, no speech service; the
    microphone is only open while Voice is listening or training.
 
@@ -483,9 +503,11 @@ of your mantra*. That is why it works for any mantra in any language.
   the phone). If it misses you, use **Add more samples** rather than starting over.
 - **Accuracy degrades in noise**: a noisy room, TV or other people chanting can
   cause missed or false counts. Strict misses more, Lenient counts more strangers.
-- **Leave a short pause between repetitions.** Reps are separated by silence, so
-  several repeats chanted in one unbroken breath are one utterance and are not
-  counted (use Tap, Rhythm or Mala for that).
+- **Leave a short pause between repetitions** where you can. Up to 4 repeats in
+  one breath are split and counted; more than that in one unbroken breath is
+  dropped as too long (use Tap, Rhythm or Mala for very fast japa).
+- **Calibrate** in the room and at the pace you will actually chant; re-run it
+  if the room or the phone changes.
 - It is tuned on synthetic speech-like audio in the tests; real voices, phones
   and rooms vary, so expect to adjust the slider and re-train if it misbehaves.
   Debug builds print each utterance's distance and threshold (`voice: … d= thr=`),

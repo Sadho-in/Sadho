@@ -2182,4 +2182,52 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get malaScreenOffExplainer =>
       'फ़ोन लॉक करें, गिनने के लिए वॉल्यूम की दबाएं। बैटरी \'अप्रतिबंधित\' करें।';
+
+  @override
+  String get calibrateTitle => 'आवाज़ कैलिब्रेट करें';
+
+  @override
+  String calibrateIntro(int count) {
+    return 'अपना मंत्र $count बार जपें, जैसे आप आमतौर पर करते हैं, हर बार के बाद थोड़ा रुककर। फिर Sadho तय करता है कि आवाज़ कितनी सख़्त हो, ताकि सभी गिने जाएँ और कमरे का शोर नहीं। कुछ भी रिकॉर्ड या रखा नहीं जाता।';
+  }
+
+  @override
+  String calibrateChantNow(int count) {
+    return 'अब अपना मंत्र $count बार जपें';
+  }
+
+  @override
+  String calibrateHeard(int heard, int count) {
+    return '$count में से $heard सुने गए';
+  }
+
+  @override
+  String calibrateSkipped(int count) {
+    return '$count आवाज़ें छोड़ी गईं जो एक जाप नहीं थीं';
+  }
+
+  @override
+  String get calibrateDone => 'कैलिब्रेट हो गया';
+
+  @override
+  String calibrateDoneBody(int count) {
+    return 'सभी $count जाप गिने जाएँगे; कमरे का शोर नहीं।';
+  }
+
+  @override
+  String get calibrateStart => 'कैलिब्रेशन शुरू करें';
+
+  @override
+  String get calibrateSave => 'कैलिब्रेशन सहेजें';
+
+  @override
+  String calibrationSaved(String mantra) {
+    return '“$mantra” के लिए कैलिब्रेशन सहेजा गया';
+  }
+
+  @override
+  String get calibrateVoice => 'कैलिब्रेट करें';
+
+  @override
+  String get recalibrateVoice => 'फिर से कैलिब्रेट करें';
 }

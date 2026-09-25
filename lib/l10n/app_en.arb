@@ -2493,5 +2493,86 @@
   "malaScreenOffExplainer": "Lock the phone and press a volume key to count. Set battery to Unrestricted.",
   "@malaScreenOffExplainer": {
     "description": "One-time explainer shown the first time Mala counts with the screen off (a short snackbar); its Check button opens Alarms & reliability, where the battery setting is"
+  },
+  "calibrateTitle": "Calibrate voice",
+  "@calibrateTitle": {
+    "description": "Title of the voice calibration screen (after training)"
+  },
+  "calibrateIntro": "Chant your mantra {count} times, the way you usually do, with a short pause after each. Sadho then sets how strict Voice is, so all of them count and the room's noise does not. Nothing is recorded or kept.",
+  "@calibrateIntro": {
+    "description": "Explanation on the voice calibration screen",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calibrateChantNow": "Chant your mantra {count} times now",
+  "@calibrateChantNow": {
+    "description": "Calibration headline",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calibrateHeard": "Heard {heard} of {count}",
+  "@calibrateHeard": {
+    "description": "Calibration progress: how many repetitions were heard",
+    "placeholders": {
+      "heard": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calibrateSkipped": "Skipped {count} sounds that were not one repetition",
+  "@calibrateSkipped": {
+    "description": "Calibration: sounds too short or too long to be one repetition",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calibrateDone": "Calibrated",
+  "@calibrateDone": {
+    "description": "Calibration finished headline"
+  },
+  "calibrateDoneBody": "All {count} repetitions will count; the room's noise will not.",
+  "@calibrateDoneBody": {
+    "description": "Calibration finished explanation",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calibrateStart": "Start calibration",
+  "@calibrateStart": {
+    "description": "Button that starts the calibration"
+  },
+  "calibrateSave": "Save calibration",
+  "@calibrateSave": {
+    "description": "Button that saves the calibrated threshold"
+  },
+  "calibrationSaved": "Calibration saved for “{mantra}”",
+  "@calibrationSaved": {
+    "description": "Snackbar after saving a calibration",
+    "placeholders": {
+      "mantra": {
+        "type": "String"
+      }
+    }
+  },
+  "calibrateVoice": "Calibrate",
+  "@calibrateVoice": {
+    "description": "Voice panel button: run the calibration (not calibrated yet)"
+  },
+  "recalibrateVoice": "Re-calibrate",
+  "@recalibrateVoice": {
+    "description": "Voice panel button: run the calibration again"
   }
 }

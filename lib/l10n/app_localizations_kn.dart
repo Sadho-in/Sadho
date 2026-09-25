@@ -2180,4 +2180,52 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get malaScreenOffExplainer =>
       'ಫೋನ್ ಲಾಕ್ ಮಾಡಿ, ಎಣಿಸಲು ವಾಲ್ಯೂಮ್ ಕೀ ಒತ್ತಿ. ಬ್ಯಾಟರಿ \'ಅನಿರ್ಬಂಧಿತ\' ಮಾಡಿ.';
+
+  @override
+  String get calibrateTitle => 'ಧ್ವನಿ ಮಾಪನ ಮಾಡಿ';
+
+  @override
+  String calibrateIntro(int count) {
+    return 'ನಿಮ್ಮ ಮಂತ್ರವನ್ನು ಎಂದಿನಂತೆ $count ಬಾರಿ ಜಪಿಸಿ, ಪ್ರತಿಯೊಂದರ ನಂತರ ಸ್ವಲ್ಪ ನಿಲ್ಲಿಸಿ. ನಂತರ Sadho ಧ್ವನಿ ಎಷ್ಟು ಕಟ್ಟುನಿಟ್ಟಾಗಿರಬೇಕು ಎಂದು ಹೊಂದಿಸುತ್ತದೆ, ಎಲ್ಲವೂ ಎಣಿಕೆಯಾಗುವಂತೆ, ಕೋಣೆಯ ಶಬ್ದ ಅಲ್ಲ. ಏನನ್ನೂ ರೆಕಾರ್ಡ್ ಮಾಡುವುದಿಲ್ಲ ಅಥವಾ ಇಡುವುದಿಲ್ಲ.';
+  }
+
+  @override
+  String calibrateChantNow(int count) {
+    return 'ಈಗ ನಿಮ್ಮ ಮಂತ್ರವನ್ನು $count ಬಾರಿ ಜಪಿಸಿ';
+  }
+
+  @override
+  String calibrateHeard(int heard, int count) {
+    return '$count ರಲ್ಲಿ $heard ಕೇಳಿಸಿತು';
+  }
+
+  @override
+  String calibrateSkipped(int count) {
+    return 'ಒಂದು ಜಪವಲ್ಲದ $count ಶಬ್ದಗಳನ್ನು ಬಿಡಲಾಗಿದೆ';
+  }
+
+  @override
+  String get calibrateDone => 'ಮಾಪನ ಆಯಿತು';
+
+  @override
+  String calibrateDoneBody(int count) {
+    return 'ಎಲ್ಲಾ $count ಜಪಗಳು ಎಣಿಕೆಯಾಗುತ್ತವೆ; ಕೋಣೆಯ ಶಬ್ದ ಅಲ್ಲ.';
+  }
+
+  @override
+  String get calibrateStart => 'ಮಾಪನ ಪ್ರಾರಂಭಿಸಿ';
+
+  @override
+  String get calibrateSave => 'ಮಾಪನ ಉಳಿಸಿ';
+
+  @override
+  String calibrationSaved(String mantra) {
+    return '“$mantra” ಗಾಗಿ ಮಾಪನ ಉಳಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String get calibrateVoice => 'ಮಾಪನ ಮಾಡಿ';
+
+  @override
+  String get recalibrateVoice => 'ಮತ್ತೆ ಮಾಪನ ಮಾಡಿ';
 }

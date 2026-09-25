@@ -8,6 +8,7 @@ import '../data/mantra.dart';
 import '../services/pcm_input.dart';
 import '../voice/match_model.dart';
 import '../voice/voice_trainer.dart';
+import 'voice_calibration_screen.dart';
 import 'widgets/script_text.dart';
 import 'widgets/voice_widgets.dart';
 import '../../../l10n/l10n.dart';
@@ -126,7 +127,11 @@ class _VoiceTrainingScreenState extends ConsumerState<VoiceTrainingScreen>
             ? context.l10n.addedRecordingsTo(added, widget.mantra.title, samples.length)
             : context.l10n.voiceTrainedFor(widget.mantra.title, samples.length)),
       ));
-    Navigator.of(context).pop();
+    // The calibration step comes next ("Chant your mantra 11 times now");
+    // it can be skipped with Later and re-run from the Voice panel.
+    await Navigator.of(context).pushReplacement(MaterialPageRoute<void>(
+      builder: (_) => VoiceCalibrationScreen(mantra: widget.mantra),
+    ));
   }
 
   Future<void> _clear() async {

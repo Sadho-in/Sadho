@@ -2178,4 +2178,52 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get malaScreenOffExplainer =>
       'Lock the phone and press a volume key to count. Set battery to Unrestricted.';
+
+  @override
+  String get calibrateTitle => 'Calibrate voice';
+
+  @override
+  String calibrateIntro(int count) {
+    return 'Chant your mantra $count times, the way you usually do, with a short pause after each. Sadho then sets how strict Voice is, so all of them count and the room\'s noise does not. Nothing is recorded or kept.';
+  }
+
+  @override
+  String calibrateChantNow(int count) {
+    return 'Chant your mantra $count times now';
+  }
+
+  @override
+  String calibrateHeard(int heard, int count) {
+    return 'Heard $heard of $count';
+  }
+
+  @override
+  String calibrateSkipped(int count) {
+    return 'Skipped $count sounds that were not one repetition';
+  }
+
+  @override
+  String get calibrateDone => 'Calibrated';
+
+  @override
+  String calibrateDoneBody(int count) {
+    return 'All $count repetitions will count; the room\'s noise will not.';
+  }
+
+  @override
+  String get calibrateStart => 'Start calibration';
+
+  @override
+  String get calibrateSave => 'Save calibration';
+
+  @override
+  String calibrationSaved(String mantra) {
+    return 'Calibration saved for “$mantra”';
+  }
+
+  @override
+  String get calibrateVoice => 'Calibrate';
+
+  @override
+  String get recalibrateVoice => 'Re-calibrate';
 }

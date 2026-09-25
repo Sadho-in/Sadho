@@ -2181,4 +2181,52 @@ class AppLocalizationsPa extends AppLocalizations {
   @override
   String get malaScreenOffExplainer =>
       'ਫ਼ੋਨ ਲਾਕ ਕਰੋ, ਗਿਣਨ ਲਈ ਵਾਲੀਅਮ ਕੁੰਜੀ ਦਬਾਓ। ਬੈਟਰੀ \'ਅਪ੍ਰਤਿਬੰਧਿਤ\' ਕਰੋ।';
+
+  @override
+  String get calibrateTitle => 'ਅਵਾਜ਼ ਕੈਲੀਬ੍ਰੇਟ ਕਰੋ';
+
+  @override
+  String calibrateIntro(int count) {
+    return 'ਆਪਣਾ ਮੰਤਰ $count ਵਾਰ ਜਪੋ, ਜਿਵੇਂ ਤੁਸੀਂ ਆਮ ਤੌਰ \'ਤੇ ਕਰਦੇ ਹੋ, ਹਰ ਵਾਰ ਤੋਂ ਬਾਅਦ ਥੋੜ੍ਹਾ ਰੁਕ ਕੇ। ਫਿਰ Sadho ਤੈਅ ਕਰਦਾ ਹੈ ਕਿ ਅਵਾਜ਼ ਕਿੰਨੀ ਸਖ਼ਤ ਹੋਵੇ, ਤਾਂ ਜੋ ਸਾਰੇ ਗਿਣੇ ਜਾਣ ਅਤੇ ਕਮਰੇ ਦਾ ਰੌਲਾ ਨਹੀਂ। ਕੁਝ ਵੀ ਰਿਕਾਰਡ ਜਾਂ ਰੱਖਿਆ ਨਹੀਂ ਜਾਂਦਾ।';
+  }
+
+  @override
+  String calibrateChantNow(int count) {
+    return 'ਹੁਣ ਆਪਣਾ ਮੰਤਰ $count ਵਾਰ ਜਪੋ';
+  }
+
+  @override
+  String calibrateHeard(int heard, int count) {
+    return '$count ਵਿੱਚੋਂ $heard ਸੁਣੇ';
+  }
+
+  @override
+  String calibrateSkipped(int count) {
+    return '$count ਅਵਾਜ਼ਾਂ ਛੱਡੀਆਂ ਜੋ ਇੱਕ ਜਾਪ ਨਹੀਂ ਸਨ';
+  }
+
+  @override
+  String get calibrateDone => 'ਕੈਲੀਬ੍ਰੇਟ ਹੋ ਗਿਆ';
+
+  @override
+  String calibrateDoneBody(int count) {
+    return 'ਸਾਰੇ $count ਜਾਪ ਗਿਣੇ ਜਾਣਗੇ; ਕਮਰੇ ਦਾ ਰੌਲਾ ਨਹੀਂ।';
+  }
+
+  @override
+  String get calibrateStart => 'ਕੈਲੀਬ੍ਰੇਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ';
+
+  @override
+  String get calibrateSave => 'ਕੈਲੀਬ੍ਰੇਸ਼ਨ ਸੰਭਾਲੋ';
+
+  @override
+  String calibrationSaved(String mantra) {
+    return '“$mantra” ਲਈ ਕੈਲੀਬ੍ਰੇਸ਼ਨ ਸੰਭਾਲੀ ਗਈ';
+  }
+
+  @override
+  String get calibrateVoice => 'ਕੈਲੀਬ੍ਰੇਟ ਕਰੋ';
+
+  @override
+  String get recalibrateVoice => 'ਮੁੜ ਕੈਲੀਬ੍ਰੇਟ ਕਰੋ';
 }

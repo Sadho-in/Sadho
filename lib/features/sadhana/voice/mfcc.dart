@@ -143,8 +143,45 @@ class MfccExtractor {
   }
 }
 
-/// Subtracts each coefficient's mean and divides by its (regularised) standard
-/// deviation, over the whole utterance.
+/// Loudness normalisation: [samples] scaled so their RMS is [targetRms]
+/// (about -20 dBFS), with the gain kept within 1/20..50 so digital silence is
+/// not blown up into noise. A soft and a loud repeat of the mantra then reach
+/// the front end (and its log floor) the same way.
+Float64List loudnessNormalized(Float64List samples, {double targetRms = 0.1}) {
+  if (samples.isEmpty) return samples;
+  var sum = 0.0;
+  for (final v in samples) {
+    sum += v * v;
+  }
+  final rms = math.sqrt(sum / samples.length);
+  if (rms < 1e-6) return samples;
+  final gain = (targetRms / rms).clamp(0.05, 50.0);
+  return Float64List.fromList([for (final v in samples) v * gain]);
+}
+
+/// Cepstral mean normalisation: each coefficient minus its mean over the
+/// utterance, which removes the microphone's (and the room's) fixed colouring.
+MfccSequence cepstralMeanNormalized(MfccSequence s) {
+  if (s.frames == 0) return s;
+  final d = s.dims;
+  final mean = Float64List(d);
+  for (var f = 0; f < s.frames; f++) {
+    for (var c = 0; c < d; c++) {
+      mean[c] += s.data[f * d + c];
+    }
+  }
+  final out = Float64List(s.data.length);
+  for (var f = 0; f < s.frames; f++) {
+    for (var c = 0; c < d; c++) {
+      out[f * d + c] = s.data[f * d + c] - mean[c] / s.frames;
+    }
+  }
+  return MfccSequence(s.frames, d, out);
+}
+
+/// Cepstral mean normalisation ([cepstralMeanNormalized]), then each
+/// coefficient divided by its (regularised) standard deviation, over the
+/// whole utterance.
 MfccSequence normalized(MfccSequence s) {
   if (s.frames < 2) return s;
   final d = s.dims;
@@ -220,3 +257,126 @@ List<Float64List> _dctMatrix(int coeffs, int inputs, double lifter) => [
                 (lifter > 0 ? 1 + lifter / 2 * math.sin(math.pi * c / lifter) : 1),
         ]),
     ];
+
+/// Weights of the static, delta and delta-delta parts in [withDeltas].
+const deltaWeight = 0.4;
+const deltaDeltaWeight = 0.25;
+
+/// The matching features of a (normalised) static MFCC sequence: the statics,
+/// their deltas (how each coefficient is changing, a ±[window]-frame
+/// regression) and delta-deltas (how that change is changing), 3 × dims per
+/// frame. The deltas are variance-normalised per utterance like the statics,
+/// weighted by [deltaWeight] / [deltaDeltaWeight], and the whole row scaled so
+/// a frame distance stays on the same scale as the statics alone (the
+/// thresholds were set on that scale).
+///
+/// Templates are stored as statics only (13 per frame) and extended here, so
+/// trainings saved before deltas existed keep working.
+MfccSequence withDeltas(MfccSequence s, {int window = 2}) {
+  final n = s.frames, d = s.dims;
+  if (n == 0) return MfccSequence(0, d * 3, Float64List(0));
+  final delta = _regression(s.data, n, d, window);
+  final ddelta = _regression(delta, n, d, window);
+  final dn = _varianceNormalized(delta, n, d);
+  final ddn = _varianceNormalized(ddelta, n, d);
+  final scale =
+      1 / math.sqrt(1 + deltaWeight * deltaWeight + deltaDeltaWeight * deltaDeltaWeight);
+  final out = Float64List(n * d * 3);
+  for (var f = 0; f < n; f++) {
+    for (var c = 0; c < d; c++) {
+      out[f * d * 3 + c] = s.data[f * d + c] * scale;
+      out[f * d * 3 + d + c] = dn[f * d + c] * deltaWeight * scale;
+      out[f * d * 3 + 2 * d + c] = ddn[f * d + c] * deltaDeltaWeight * scale;
+    }
+  }
+  return MfccSequence(n, d * 3, out);
+}
+
+/// The standard delta: sum_k k·(x[t+k] − x[t−k]) / (2·sum_k k²), edges clamped.
+Float64List _regression(Float64List x, int n, int d, int window) {
+  final out = Float64List(n * d);
+  var denom = 0.0;
+  for (var k = 1; k <= window; k++) {
+    denom += 2 * k * k;
+  }
+  for (var f = 0; f < n; f++) {
+    for (var c = 0; c < d; c++) {
+      var acc = 0.0;
+      for (var k = 1; k <= window; k++) {
+        final a = math.min(n - 1, f + k), b = math.max(0, f - k);
+        acc += k * (x[a * d + c] - x[b * d + c]);
+      }
+      out[f * d + c] = acc / denom;
+    }
+  }
+  return out;
+}
+
+Float64List _varianceNormalized(Float64List x, int n, int d) {
+  final out = Float64List(x.length);
+  if (n < 2) return out;
+  final mean = Float64List(d), variance = Float64List(d);
+  for (var f = 0; f < n; f++) {
+    for (var c = 0; c < d; c++) {
+      mean[c] += x[f * d + c] / n;
+    }
+  }
+  var avg = 0.0;
+  for (var f = 0; f < n; f++) {
+    for (var c = 0; c < d; c++) {
+      final v = x[f * d + c] - mean[c];
+      variance[c] += v * v / n;
+    }
+  }
+  for (var c = 0; c < d; c++) {
+    avg += variance[c] / d;
+  }
+  final eps = 0.01 * avg + 1e-9;
+  for (var f = 0; f < n; f++) {
+    for (var c = 0; c < d; c++) {
+      out[f * d + c] = (x[f * d + c] - mean[c]) / math.sqrt(variance[c] + eps);
+    }
+  }
+  return out;
+}
+
+/// Frames [from, to) of [s], normalised again on their own (a segment is
+/// matched as its own utterance).
+MfccSequence segmentOf(MfccSequence s, int from, int to) {
+  final d = s.dims;
+  final part = MfccSequence(
+      to - from, d, Float64List.sublistView(s.data, from * d, to * d));
+  return normalized(MfccSequence(part.frames, d, Float64List.fromList(part.data)));
+}
+
+/// [s] without the quiet frames at its start and end (lead-in and trailing
+/// silence), keeping [margin] frames of each: the voiced part is what is
+/// matched, whatever padding the recording or the live detector left around
+/// it. A frame is quiet when its c0 (log energy, normalised) is in the lowest
+/// [quietShare] of the utterance's range. Short or flat input is returned as is.
+MfccSequence trimmedToVoice(MfccSequence s,
+    {double quietShare = 0.25, int margin = 2}) {
+  if (s.frames < 10) return s;
+  var lo = double.infinity, hi = -double.infinity;
+  for (var f = 0; f < s.frames; f++) {
+    final c0 = s.at(f, 0);
+    if (c0 < lo) lo = c0;
+    if (c0 > hi) hi = c0;
+  }
+  if (hi - lo < 1e-6) return s;
+  final cut = lo + (hi - lo) * quietShare;
+  var first = 0, last = s.frames - 1;
+  while (first < last && s.at(first, 0) < cut) {
+    first++;
+  }
+  while (last > first && s.at(last, 0) < cut) {
+    last--;
+  }
+  first = math.max(0, first - margin);
+  last = math.min(s.frames - 1, last + margin);
+  if (last - first + 1 < s.frames ~/ 3) return s; // most of it is "quiet": keep
+  if (first == 0 && last == s.frames - 1) return s;
+  final d = s.dims;
+  return MfccSequence(last - first + 1, d,
+      Float64List.fromList(s.data.sublist(first * d, (last + 1) * d)));
+}

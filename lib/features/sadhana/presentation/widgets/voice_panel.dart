@@ -5,6 +5,7 @@ import '../../application/selected_mantra_provider.dart';
 import '../../application/voice_training_provider.dart';
 import '../../data/mantra.dart';
 import '../../voice/match_model.dart';
+import '../voice_calibration_screen.dart';
 import '../voice_training_screen.dart';
 import 'voice_widgets.dart';
 import '../../../../l10n/l10n.dart';
@@ -22,6 +23,8 @@ class VoicePanel extends ConsumerWidget {
     final count = ref.watch(
         voiceTrainingProvider.select((m) => m[mantra.id]?.sampleCount ?? 0));
     final room = maxTrainingSamples - count;
+    final calibrated = ref.watch(voiceTrainingProvider
+        .select((m) => m[mantra.id]?.isCalibrated ?? false));
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
 
@@ -83,6 +86,15 @@ class VoicePanel extends ConsumerWidget {
                   onPressed: () => openVoiceTraining(context, mantra),
                   icon: const Icon(Icons.mic, size: 18),
                   label: Text(context.l10n.trainVoice),
+                ),
+              if (trained)
+                OutlinedButton.icon(
+                  key: const ValueKey('voice-calibrate'),
+                  onPressed: () => openVoiceCalibration(context, mantra),
+                  icon: Icon(calibrated ? Icons.tune : Icons.graphic_eq, size: 18),
+                  label: Text(calibrated
+                      ? context.l10n.recalibrateVoice
+                      : context.l10n.calibrateVoice),
                 ),
               if (trained)
                 TextButton.icon(

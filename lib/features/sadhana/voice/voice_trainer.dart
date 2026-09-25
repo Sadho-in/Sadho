@@ -158,7 +158,7 @@ class VoiceTrainer extends ChangeNotifier {
       _say('That ran too long. Say the mantra once, then stop.');
       return;
     }
-    final mfcc = _extractor.extract(u.samples);
+    final mfcc = _extractor.extract(loudnessNormalized(u.samples));
     if (mfcc.frames < 25) {
       _say('That was too short. Say the whole mantra.');
       return;
