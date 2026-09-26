@@ -628,6 +628,46 @@ flutter run          # Android
 flutter test
 ```
 
+## Releasing
+
+**Upload key.** The upload keystore is
+`/Users/amitpalsingh/sadho-keys/sadho-upload.jks` (alias `upload`), kept
+**outside** the project. Its details are in `android/key.properties`, which is
+**git-ignored** (as are `*.jks` and `*.keystore`) and must never be committed:
+
+```properties
+storePassword=<fill in>
+keyPassword=<fill in>
+keyAlias=upload
+storeFile=/Users/amitpalsingh/sadho-keys/sadho-upload.jks
+```
+
+Fill in the two passwords yourself (they are never written anywhere else).
+`android/app/build.gradle.kts` signs release builds with this key when the
+file is complete and the keystore exists; otherwise it falls back to the debug
+key and Gradle prints "WARNING: release build is NOT upload-signed" — such a
+build must not be uploaded.
+
+**Build the bundle:**
+
+```sh
+flutter build appbundle --release
+```
+
+The file is `build/app/outputs/bundle/release/app-release.aab`; upload it in
+Play Console.
+
+**Back up the keystore and its passwords** (e.g. a password manager plus an
+offline copy). With **Play App Signing** (on by default for new apps) Google
+holds the real app-signing key and this is only the *upload* key, so a lost
+upload key can be reset through Play support — but it takes time, so do not
+lose it.
+
+**Version numbers.** Every upload needs a higher build number: `version:` in
+`pubspec.yaml` is `name+build`, starting at `1.0.0+1`; bump the `+N` for every
+upload (and the name for user-visible releases; keep `AppConstants.version` in
+step with the name, a test checks it).
+
 ## Release notes (Play Console)
 
 **Foreground service (specialUse) declaration — Mala with the screen off.**

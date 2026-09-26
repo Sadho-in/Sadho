@@ -1,7 +1,35 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+}
+
+// Release signing: the upload key's details live in android/key.properties,
+// which is git-ignored (never committed). Without it, or with its passwords
+// still empty, release builds fall back to the debug key (so
+// `flutter run --release` keeps working) and Gradle says so loudly: such a
+// build must not be uploaded to Play. See README "Releasing".
+val keystoreProperties = Properties().apply {
+    val f = rootProject.file("key.properties")
+    if (f.exists()) FileInputStream(f).use { load(it) }
+}
+val uploadKeyReady = listOf("storePassword", "keyPassword", "keyAlias", "storeFile")
+    .all { !keystoreProperties.getProperty(it).isNullOrBlank() } &&
+    file(keystoreProperties.getProperty("storeFile")).exists()
+
+if (!uploadKeyReady) {
+    gradle.taskGraph.whenReady {
+        if (allTasks.any { it.name.contains("Release") }) {
+            logger.warn(
+                "WARNING: release build is NOT upload-signed (android/key.properties " +
+                    "is missing, incomplete or its storeFile does not exist). It is " +
+                    "signed with the DEBUG key and must not be uploaded to Google Play.",
+            )
+        }
+    }
 }
 
 android {
@@ -31,11 +59,27 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        if (uploadKeyReady) {
+            create("release") {
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            // The upload key when android/key.properties is filled in; the
+            // debug key otherwise (with the warning above). Resource shrinking
+            // keeps the ringtones and the notification icon (res/raw/keep.xml).
+            signingConfig = if (uploadKeyReady) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
     }
 }

@@ -46,3 +46,8 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Release signing (P6-5): the upload key and its passwords are NEVER committed.
+android/key.properties
+*.jks
+*.keystore
