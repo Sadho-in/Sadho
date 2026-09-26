@@ -10,7 +10,6 @@ import 'package:advance_calendar/features/shell/presentation/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../profile/profile_support.dart';
 import 'test_support.dart';
@@ -19,7 +18,6 @@ import 'test_support.dart';
 /// stopped; vibration: Once / Until stopped), the Stop control, and that
 /// Reset and leaving the screen silence it too.
 void main() {
-  setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
 
   late FakeHaptics haptics;
   late FakeSound sound;

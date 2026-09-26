@@ -8,13 +8,11 @@ import 'package:advance_calendar/core/storage/app_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:integration_test/integration_test.dart';
 
 /// Call once per test file, before `main()`'s tests run.
 void setUpIntegrationTest() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  GoogleFonts.config.allowRuntimeFetching = false; // no network on a test run
   setUpAll(() async {
     await AppStorage.init();
   });

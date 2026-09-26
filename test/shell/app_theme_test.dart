@@ -6,14 +6,12 @@ import 'package:advance_calendar/features/profile/application/daily_reminder_pro
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../profile/profile_support.dart';
 
 /// The real app root (`SadhoApp`): what the palette and the Light / Dark /
 /// System choice do to the whole app.
 void main() {
-  setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false); // no network in tests
 
   Future<ProfileRig> open(WidgetTester tester, {ProfileRig? rig}) async {
     final r = rig ?? profileRig(saved: {'onboarding.done': true});

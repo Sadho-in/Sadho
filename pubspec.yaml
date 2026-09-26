@@ -39,7 +39,6 @@ dependencies:
   hive_flutter: ^1.1.0
   vibration: ^3.2.1
   audioplayers: ^6.8.1
-  google_fonts: ^8.2.1
   permission_handler: ^12.0.1 # 13.x needs compileSdk 37, above what AGP 9.1 supports
   volume_button_listener: ^0.3.2
   record: ^7.1.1
@@ -88,6 +87,10 @@ flutter:
   assets:
     - assets/sounds/
     - assets/branding/icon-1024.png
+    # The fonts' SIL Open Font License texts, shown on the licences page.
+    - assets/fonts/OFL-Fraunces.txt
+    - assets/fonts/OFL-Karla.txt
+    - assets/fonts/OFL-NotoSans.txt
 
   # Noto Sans for every non-Latin script the app is (or will be) translated
   # into: see lib/l10n/fonts.dart for how each is picked, by UI language for
@@ -95,6 +98,37 @@ flutter:
   # (ScriptText). Each is a single variable-font file (one file, every
   # weight). SIL Open Font License — see assets/fonts/OFL-NotoSans.txt.
   fonts:
+    # The app's own fonts, bundled so nothing is fetched at runtime (SIL OFL,
+    # assets/fonts/OFL-Fraunces.txt and OFL-Karla.txt): the same per-weight
+    # files Google Fonts serves, for every weight the theme uses.
+    - family: Fraunces
+      fonts:
+        - asset: assets/fonts/Fraunces-300.ttf
+          weight: 300
+        - asset: assets/fonts/Fraunces-400.ttf
+          weight: 400
+        - asset: assets/fonts/Fraunces-500.ttf
+          weight: 500
+        - asset: assets/fonts/Fraunces-600.ttf
+          weight: 600
+        - asset: assets/fonts/Fraunces-700.ttf
+          weight: 700
+        - asset: assets/fonts/Fraunces-800.ttf
+          weight: 800
+    - family: Karla
+      fonts:
+        - asset: assets/fonts/Karla-300.ttf
+          weight: 300
+        - asset: assets/fonts/Karla-400.ttf
+          weight: 400
+        - asset: assets/fonts/Karla-500.ttf
+          weight: 500
+        - asset: assets/fonts/Karla-600.ttf
+          weight: 600
+        - asset: assets/fonts/Karla-700.ttf
+          weight: 700
+        - asset: assets/fonts/Karla-800.ttf
+          weight: 800
     - family: NotoSansDevanagari
       fonts:
         - asset: assets/fonts/NotoSansDevanagari-VF.ttf

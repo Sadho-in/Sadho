@@ -5,7 +5,6 @@ import 'package:advance_calendar/features/calendar/services/reminder_scheduler.d
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../profile/profile_support.dart';
 import '../sadhana/test_support.dart';
@@ -13,7 +12,6 @@ import '../sadhana/test_support.dart';
 /// P4.3-2e: the lock-screen alarm screen and "Alarms & reliability" at a
 /// large text size on a small phone.
 void main() {
-  setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
 
   void smallPhoneLargeText(WidgetTester tester) {
     phoneScreen(tester, width: 360, height: 640);

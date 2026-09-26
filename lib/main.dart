@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
 import 'core/app_restart.dart';
+import 'core/licenses.dart';
 import 'core/storage/app_storage.dart';
 import 'features/calendar/services/local_notifications_scheduler.dart';
 import 'features/calendar/services/reminder_scheduler.dart';
@@ -15,6 +16,8 @@ import 'l10n/date_formats.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppStorage.init();
+  // The bundled fonts' licences, for the open-source licences page.
+  registerFontLicenses();
   // Month and weekday names for all nine app languages.
   initAppDateFormatting();
 

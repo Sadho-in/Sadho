@@ -1,7 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.VIBRATE"/>
     <!-- Voice counting (record): the microphone is analysed on the device and
-         never uploaded. INTERNET is only for downloading Google Fonts. -->
+         never uploaded. INTERNET: since P6-2 the fonts are bundled and no app
+         code uses the network any more; it is kept for now (see README
+         "Fonts"), pending a decision to remove it. -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- Alarms and reminders (flutter_local_notifications): show notifications

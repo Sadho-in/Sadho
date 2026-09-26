@@ -5,7 +5,6 @@ import 'package:advance_calendar/features/shell/presentation/language_sheet.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../profile/profile_support.dart';
 
@@ -15,7 +14,6 @@ import '../profile/profile_support.dart';
 /// reachable by scrolling, on both language pickers: first-launch onboarding
 /// and the Profile → Language sheet.
 void main() {
-  setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false); // no network in tests
 
   void useSmallScreenWithLargeFont(WidgetTester tester) {
     phoneScreen(tester, width: 360, height: 640);

@@ -12,7 +12,6 @@ import 'package:advance_calendar/features/shell/presentation/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../profile/profile_support.dart';
 import 'test_support.dart';
@@ -23,7 +22,6 @@ import 'test_support.dart';
 /// closed; it rings exactly once; and the session catches up with the real
 /// clock on return. Plus the keep-screen-on setting.
 void main() {
-  setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
 
   late FakeHaptics haptics;
   late FakeSound sound;

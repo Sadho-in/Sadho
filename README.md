@@ -411,7 +411,7 @@ edit.
 ## Tech
 
 Flutter (stable) · Dart · Material 3 · `flutter_riverpod` · `hive` /
-`hive_flutter` · `vibration` · `audioplayers` · `google_fonts` ·
+`hive_flutter` · `vibration` · `audioplayers` ·
 `record` (PCM16 16 kHz microphone stream) · `fftea` (FFT) ·
 `permission_handler` · `volume_button_listener` · `table_calendar` ·
 `flutter_local_notifications` · `timezone` · `flutter_timezone` · `geolocator` ·
@@ -420,7 +420,7 @@ implemented in Dart in this repo (`lib/features/sadhana/voice/`).
 
 **Permissions**: Android `RECORD_AUDIO`, `ACCESS_COARSE_LOCATION`, `POST_NOTIFICATIONS`,
 `RECEIVE_BOOT_COMPLETED`, `SCHEDULE_EXACT_ALARM` (+ `VIBRATE`; `INTERNET` is only
-for Google Fonts), `FOREGROUND_SERVICE` + `FOREGROUND_SERVICE_SPECIAL_USE` (Mala
+for Google Fonts; since P6-2 nothing uses it, see "Fonts"), `FOREGROUND_SERVICE` + `FOREGROUND_SERVICE_SPECIAL_USE` (Mala
 with the screen off), `ACCESS_NOTIFICATION_POLICY` (quiet mode); iOS `NSMicrophoneUsageDescription` and `NSLocationWhenInUseUsageDescription`. Voice needs no speech
 recognition permission or service. The Android build enables core-library
 desugaring and registers the plugin's alarm and boot receivers (required by
@@ -554,8 +554,21 @@ of your mantra*. That is why it works for any mantra in any language.
 - On iOS, if `permission_handler` is ever used there, add
   `PERMISSION_MICROPHONE=1` to the Podfile.
 
-Google Fonts are fetched at runtime on first launch (internet needed once; the
-system font is used until then).
+### Fonts
+
+Fraunces (headings) and Karla (everything else) are **bundled** in
+`assets/fonts/` (the same per-weight files Google Fonts serves, weights 300 to
+800), next to the Noto fonts for the Indian scripts. Nothing is fetched at
+runtime; the `google_fonts` package is no longer used. All are under the SIL
+Open Font License (`assets/fonts/OFL-*.txt`), registered with
+`LicenseRegistry` (`lib/core/licenses.dart`) so they appear on the open-source
+licences page.
+
+**INTERNET permission**: no app code uses the network any more (no fonts, no
+servers, no analytics; opening a link in the browser needs no
+permission). The permission is still in the manifest; it can be removed from
+`android/app/src/main/AndroidManifest.xml` (debug builds keep their own for
+hot reload).
 
 ```
 lib/

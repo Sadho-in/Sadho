@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../profile/profile_support.dart';
 import '../sadhana/test_support.dart';
@@ -18,7 +17,6 @@ import '../sadhana/test_support.dart';
 /// a live status and a Fix button that opens the right settings page; and the
 /// one-time explainer the first time a session will ring like an alarm.
 void main() {
-  setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
   setUp(resetStorage);
 
   late FakeAlarmHealth health;

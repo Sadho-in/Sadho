@@ -8,7 +8,6 @@ import 'package:advance_calendar/features/profile/presentation/widgets/about_car
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image/image.dart' as img;
 
 import '../profile/profile_support.dart';
@@ -16,7 +15,6 @@ import '../profile/profile_support.dart';
 /// P6-1: the app icon, the notification icon and the logo in the app, all
 /// driven from the four files in assets/branding/.
 void main() {
-  setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
 
   String read(String path) => File(path).readAsStringSync();
   img.Image png(String path) => img.decodePng(File(path).readAsBytesSync())!;

@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../profile/profile_support.dart';
 import '../sadhana/test_support.dart' show FakeLockScreen;
@@ -55,11 +54,10 @@ List<AuditCombo> auditCombos({
           for (final b in brightnesses) AuditCombo(l, s, b),
     ];
 
-/// The bundled Noto fonts (so Indic text is measured with its real shapes,
-/// not one test-font box per code point) and no runtime font fetching.
-/// Call from `setUpAll`.
+/// The bundled fonts: Noto (so Indic text is measured with its real shapes,
+/// not one test-font box per code point) and the app's own Fraunces and Karla
+/// (so Latin text is measured at its real widths). Call from `setUpAll`.
 Future<void> setUpLayoutAudit() async {
-  GoogleFonts.config.allowRuntimeFetching = false; // no network in tests
   if (_fontsLoaded) return;
   const families = {
     'NotoSansDevanagari': 'assets/fonts/NotoSansDevanagari-VF.ttf',
@@ -72,6 +70,13 @@ Future<void> setUpLayoutAudit() async {
   };
   for (final e in families.entries) {
     final loader = FontLoader(e.key)..addFont(rootBundle.load(e.value));
+    await loader.load();
+  }
+  for (final family in ['Fraunces', 'Karla']) {
+    final loader = FontLoader(family);
+    for (final w in [300, 400, 500, 600, 700, 800]) {
+      loader.addFont(rootBundle.load('assets/fonts/$family-$w.ttf'));
+    }
     await loader.load();
   }
   _fontsLoaded = true;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../l10n/fonts.dart';
 import 'palettes.dart';
@@ -134,12 +133,16 @@ class AppTheme {
     );
   }
 
+  /// The bundled font families (pubspec.yaml; nothing is fetched at runtime).
+  static const headingFont = 'Fraunces';
+  static const bodyFont = 'Karla';
+
   /// Fraunces for display/headline/large titles, Karla for everything else —
   /// each with [languageCode]'s bundled Noto font (if any) added as a
   /// fallback, so every style keeps rendering that language's script.
   static TextTheme _textTheme(TextTheme base, String? languageCode) {
-    final body = GoogleFonts.karlaTextTheme(base);
-    final heading = GoogleFonts.frauncesTextTheme(base);
+    final body = base.apply(fontFamily: bodyFont);
+    final heading = base.apply(fontFamily: headingFont);
     final noto = languageCode == null ? null : ScriptFonts.forLanguage(languageCode);
     return _withFallback(
       body.copyWith(

@@ -8,7 +8,6 @@ import 'package:advance_calendar/features/sadhana/services/dnd_driver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:advance_calendar/app.dart';
 import 'package:advance_calendar/features/shell/presentation/app_shell.dart';
@@ -284,7 +283,6 @@ void main() {
   });
 
   testWidgets('in the app: leaving the Sadhana tab restores it', (tester) async {
-    GoogleFonts.config.allowRuntimeFetching = false;
     final rig = profileRig(
         saved: {'onboarding.done': true, 'completion.quietDuringSession': true},
         extra: [dndDriverProvider.overrideWithValue(dnd)]);

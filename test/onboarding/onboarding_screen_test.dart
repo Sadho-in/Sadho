@@ -10,12 +10,10 @@ import 'package:advance_calendar/features/shell/presentation/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../profile/profile_support.dart';
 
 void main() {
-  setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false); // no network in tests
 
   Future<ProfileRig> open(WidgetTester tester,
       {ProfileRig? rig, Locale deviceLocale = const Locale('en')}) async {

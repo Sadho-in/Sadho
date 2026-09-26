@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../profile/profile_support.dart';
 
@@ -25,7 +24,6 @@ import '../profile/profile_support.dart';
 const _translatedCodes = ['hi', 'pa', 'mr', 'bn', 'gu', 'ta', 'te', 'kn'];
 
 void main() {
-  setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false); // no network in tests
 
   group('every supported locale loads with no missing-key errors', () {
     test('app_<code>.arb has a non-empty value for every app_en.arb key', () {

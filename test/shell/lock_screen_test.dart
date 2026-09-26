@@ -10,7 +10,6 @@ import 'package:advance_calendar/features/shell/presentation/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../profile/profile_support.dart';
 import '../sadhana/test_support.dart';
@@ -20,7 +19,6 @@ import '../sadhana/test_support.dart';
 /// screen in any way switches it off first; the rest of the app needs the
 /// phone unlocked.
 void main() {
-  setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false);
 
   test('the manifest never lets the whole app show over the lock screen', () {
     final manifest = File('android/app/src/main/AndroidManifest.xml').readAsStringSync();

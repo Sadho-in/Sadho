@@ -14,7 +14,6 @@ import 'package:advance_calendar/features/sadhana/presentation/focus_mode_screen
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../profile/profile_support.dart';
 
@@ -40,7 +39,6 @@ class _PendingScheduler extends FakeScheduler {
 /// platform-channel message — not by popping a [Navigator] directly, so this
 /// exercises exactly what a real back-button press exercises.
 void main() {
-  setUpAll(() => GoogleFonts.config.allowRuntimeFetching = false); // no network in tests
 
   Future<ProfileRig> open(WidgetTester tester,
       {ProfileRig? rig, double height = 3000}) async {
