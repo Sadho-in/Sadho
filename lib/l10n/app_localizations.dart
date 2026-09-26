@@ -4005,6 +4005,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Trained with the phone mic — train again with these earphones'**
   String get voiceTrainedWithPhone;
+
+  /// Calibration step 2 headline: say other words (not the mantra) this many times
+  ///
+  /// In en, this message translates to:
+  /// **'Now say something else {count} times'**
+  String calibrateOthersNow(int count);
+
+  /// Calibration step 2 hint: what to say
+  ///
+  /// In en, this message translates to:
+  /// **'Other words or another mantra, at the same pace, with a short pause after each.'**
+  String get calibrateOthersHint;
+
+  /// Button: skip calibration step 2 (other words)
+  ///
+  /// In en, this message translates to:
+  /// **'Skip this step'**
+  String get calibrateSkipOthers;
+
+  /// Calibration result: how many mantra repetitions and how many other words the new setting counts
+  ///
+  /// In en, this message translates to:
+  /// **'{mantra} of {reps} mantra counted · {others} of {otherReps} other words counted'**
+  String calibrateResult(int mantra, int reps, int others, int otherReps);
+
+  /// Voice panel: a trained mantra has no calibration yet
+  ///
+  /// In en, this message translates to:
+  /// **'Calibrate for better accuracy'**
+  String get voiceCalibratePrompt;
+
+  /// Voice panel help: honest limit of voice counting
+  ///
+  /// In en, this message translates to:
+  /// **'Voice learns how YOUR chant of this mantra sounds. It can\'t check pronunciation against the written text.'**
+  String get voiceHonestNote;
 }
 
 class _AppLocalizationsDelegate

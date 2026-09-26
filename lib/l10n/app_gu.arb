@@ -649,5 +649,11 @@
   "quietModeChip": "શાંત મોડ ચાલુ",
   "voiceInputLevel": "માઇક્રોફોન સ્તર",
   "voiceTrainedWithHeadset": "ઇયરફોનથી તાલીમ આપેલ — ફોનના માઇકથી ફરી તાલીમ આપો",
-  "voiceTrainedWithPhone": "ફોનના માઇકથી તાલીમ આપેલ — આ ઇયરફોનથી ફરી તાલીમ આપો"
+  "voiceTrainedWithPhone": "ફોનના માઇકથી તાલીમ આપેલ — આ ઇયરફોનથી ફરી તાલીમ આપો",
+  "calibrateOthersNow": "હવે બીજું કંઈક {count} વાર બોલો",
+  "calibrateOthersHint": "બીજા શબ્દો અથવા બીજો મંત્ર, એ જ ગતિએ, દરેક પછી થોડું અટકીને.",
+  "calibrateSkipOthers": "આ પગલું છોડો",
+  "calibrateResult": "{reps} માંથી {mantra} મંત્ર ગણાયા · {otherReps} માંથી {others} અન્ય શબ્દો ગણાયા",
+  "voiceCalibratePrompt": "વધુ ચોકસાઈ માટે કેલિબ્રેટ કરો",
+  "voiceHonestNote": "Voice શીખે છે કે આ મંત્રનો તમારો જાપ કેવો સંભળાય છે. તે લખેલા લખાણ સાથે ઉચ્ચાર ચકાસી શકતું નથી."
 }

@@ -207,7 +207,8 @@ void main() {
       expect(find.text('Sensitivity'), findsNothing);
     });
 
-    testWidgets('Sensitivity: Strict ↔ Lenient, default medium, persisted',
+    testWidgets('Sensitivity: Strict ↔ Lenient, default one step toward Strict, '
+        'persisted',
         (tester) async {
       seedTrainedVoice();
       final c = await pump(tester, const ModeSection());
@@ -217,7 +218,9 @@ void main() {
       expect(find.text('Strict'), findsOneWidget);
       expect(find.text('Lenient'), findsOneWidget);
       final slider = find.byType(Slider);
-      expect(tester.widget<Slider>(slider).value, 0.5, reason: 'medium');
+      // P5.1: one step (a quarter) from the middle toward Strict.
+      expect(tester.widget<Slider>(slider).value, 0.25,
+          reason: 'one step toward Strict');
 
       // Drag to the Strict end.
       await tester.drag(slider, const Offset(-2000, 0));

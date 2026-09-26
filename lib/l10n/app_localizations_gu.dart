@@ -2308,4 +2308,28 @@ class AppLocalizationsGu extends AppLocalizations {
   @override
   String get voiceTrainedWithPhone =>
       'ફોનના માઇકથી તાલીમ આપેલ — આ ઇયરફોનથી ફરી તાલીમ આપો';
+
+  @override
+  String calibrateOthersNow(int count) {
+    return 'હવે બીજું કંઈક $count વાર બોલો';
+  }
+
+  @override
+  String get calibrateOthersHint =>
+      'બીજા શબ્દો અથવા બીજો મંત્ર, એ જ ગતિએ, દરેક પછી થોડું અટકીને.';
+
+  @override
+  String get calibrateSkipOthers => 'આ પગલું છોડો';
+
+  @override
+  String calibrateResult(int mantra, int reps, int others, int otherReps) {
+    return '$reps માંથી $mantra મંત્ર ગણાયા · $otherReps માંથી $others અન્ય શબ્દો ગણાયા';
+  }
+
+  @override
+  String get voiceCalibratePrompt => 'વધુ ચોકસાઈ માટે કેલિબ્રેટ કરો';
+
+  @override
+  String get voiceHonestNote =>
+      'Voice શીખે છે કે આ મંત્રનો તમારો જાપ કેવો સંભળાય છે. તે લખેલા લખાણ સાથે ઉચ્ચાર ચકાસી શકતું નથી.';
 }

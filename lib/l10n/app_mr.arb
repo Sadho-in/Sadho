@@ -649,5 +649,11 @@
   "quietModeChip": "शांत मोड सुरू",
   "voiceInputLevel": "मायक्रोफोन पातळी",
   "voiceTrainedWithHeadset": "इअरफोनने प्रशिक्षित — फोनच्या माइकने पुन्हा प्रशिक्षित करा",
-  "voiceTrainedWithPhone": "फोनच्या माइकने प्रशिक्षित — या इअरफोनने पुन्हा प्रशिक्षित करा"
+  "voiceTrainedWithPhone": "फोनच्या माइकने प्रशिक्षित — या इअरफोनने पुन्हा प्रशिक्षित करा",
+  "calibrateOthersNow": "आता दुसरे काहीतरी {count} वेळा बोला",
+  "calibrateOthersHint": "इतर शब्द किंवा दुसरा मंत्र, त्याच गतीने, प्रत्येक वेळी थोडे थांबून.",
+  "calibrateSkipOthers": "ही पायरी वगळा",
+  "calibrateResult": "{reps} पैकी {mantra} मंत्र मोजले · {otherReps} पैकी {others} इतर शब्द मोजले",
+  "voiceCalibratePrompt": "अधिक अचूकतेसाठी कॅलिब्रेट करा",
+  "voiceHonestNote": "Voice शिकतो की या मंत्राचा तुमचा जप कसा ऐकू येतो. तो लिहिलेल्या मजकुराशी उच्चार तपासू शकत नाही."
 }

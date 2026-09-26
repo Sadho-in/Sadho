@@ -6,6 +6,7 @@ import 'package:advance_calendar/features/sadhana/presentation/voice_calibration
 import 'package:advance_calendar/features/sadhana/presentation/voice_training_screen.dart';
 import 'package:advance_calendar/features/sadhana/presentation/widgets/mode_section.dart';
 import 'package:advance_calendar/features/sadhana/voice/calibration.dart';
+import 'package:advance_calendar/features/sadhana/voice/match_model.dart';
 import 'package:advance_calendar/features/sadhana/voice/mfcc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -94,8 +95,22 @@ void main() {
       chant(100 + i);
     }
     await tester.pump();
+    // P5.1: the second step, other words.
+    expect(find.text('Now say something else 5 times'), findsOneWidget);
+    expect(find.byKey(const ValueKey('calibration-level')), findsOneWidget);
+    for (var i = 0; i < 5; i++) {
+      feedInChunks(
+          toPcm(concat([
+            synthMantra(mantraB, seed: 300 + i),
+            silence(700, seed: 300 + i),
+          ])),
+          mic.push);
+    }
+    await tester.pump();
     expect(find.text('Calibrated'), findsOneWidget);
-    expect(find.textContaining('All 11 repetitions will count'), findsOneWidget);
+    expect(
+        find.text('11 of 11 mantra counted · 0 of 5 other words counted'),
+        findsOneWidget);
     expect(mic.streaming, isFalse);
 
     await tester.tap(find.byKey(const ValueKey('calibration-save')));
@@ -104,7 +119,8 @@ void main() {
     expect(find.textContaining('Calibration saved for'), findsOneWidget);
     final t = c.read(voiceTrainingProvider)['seed_waheguru']!;
     expect(t.calibratedThreshold, isNotNull);
-    expect(t.toModel().thresholdFor(0.5), closeTo(t.calibratedThreshold!, 1e-9));
+    expect(t.toModel().thresholdFor(defaultVoiceSensitivity),
+        closeTo(t.calibratedThreshold!, 1e-9));
   });
 
   testWidgets('Later leaves without changing anything', (tester) async {

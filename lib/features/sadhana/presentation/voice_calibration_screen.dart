@@ -172,7 +172,17 @@ class _Stage extends StatelessWidget {
           l.calibrateChantNow(c.reps),
           l.calibrateHeard(heard, c.reps),
         ),
-      CalibrationPhase.done => (l.calibrateDone, l.calibrateDoneBody(c.reps)),
+      CalibrationPhase.others => (
+          l.calibrateOthersNow(c.otherReps),
+          '${l.calibrateOthersHint}\n${l.calibrateHeard(c.others.length, c.otherReps)}',
+        ),
+      CalibrationPhase.done => (
+          l.calibrateDone,
+          c.skippedOthers || c.others.isEmpty
+              ? l.calibrateDoneBody(c.reps)
+              : l.calibrateResult(
+                  c.mantraCounted, c.reps, c.othersCounted, c.otherReps),
+        ),
       CalibrationPhase.error => (
           l.cannotUseMicrophone,
           c.error == null ? null : sadhanaEngineMessage(l, c.error!),
@@ -264,6 +274,14 @@ class _Stage extends StatelessWidget {
                 c.startResult == VoiceStartResult.permanentlyDenied)
               TextButton(
                   onPressed: openAppSettings, child: Text(l.openSettingsAction)),
+            if (c.phase == CalibrationPhase.others) ...[
+              TextButton(
+                key: const ValueKey('calibration-skip-others'),
+                onPressed: c.skipOthers,
+                child: Text(l.calibrateSkipOthers),
+              ),
+              const SizedBox(height: 4),
+            ],
             if (c.listening)
               OutlinedButton(onPressed: onStop, child: Text(l.stop)),
             if (c.phase == CalibrationPhase.done) ...[

@@ -2328,4 +2328,29 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get voiceTrainedWithPhone =>
       'போனின் மைக்கில் பயிற்றுவிக்கப்பட்டது — இந்த இயர்போனில் மீண்டும் பயிற்றுவிக்கவும்';
+
+  @override
+  String calibrateOthersNow(int count) {
+    return 'இப்போது வேறு ஏதாவது $count முறை சொல்லுங்கள்';
+  }
+
+  @override
+  String get calibrateOthersHint =>
+      'வேறு சொற்கள் அல்லது வேறு மந்திரம், அதே வேகத்தில், ஒவ்வொன்றுக்கும் பின் சிறு இடைவெளியுடன்.';
+
+  @override
+  String get calibrateSkipOthers => 'இந்தப் படியைத் தவிர்';
+
+  @override
+  String calibrateResult(int mantra, int reps, int others, int otherReps) {
+    return '$reps இல் $mantra மந்திரம் எண்ணப்பட்டது · $otherReps இல் $others வேறு சொற்கள் எண்ணப்பட்டன';
+  }
+
+  @override
+  String get voiceCalibratePrompt =>
+      'சிறந்த துல்லியத்துக்கு அளவீடு செய்யுங்கள்';
+
+  @override
+  String get voiceHonestNote =>
+      'இந்த மந்திரத்தை நீங்கள் ஜபிக்கும் ஒலியை Voice கற்றுக்கொள்கிறது. எழுதிய உரையுடன் உச்சரிப்பை அது சரிபார்க்க முடியாது.';
 }

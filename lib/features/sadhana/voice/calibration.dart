@@ -14,12 +14,18 @@ import 'voice_trainer.dart' show voiceStartMessage;
 /// Repetitions asked for by the calibration ("Chant your mantra 11 times").
 const calibrationReps = 11;
 
+/// Then "Now say something else 5 times": other words or another mantra, at
+/// the same pace. What "not your mantra" scores from this speaker, here.
+const calibrationOtherReps = 5;
+
 /// Room sound recorded first (the user stays quiet), in ms.
 const calibrationQuietMs = 2000;
 
 /// The threshold that counts every one of [same] (the user's own repeats,
-/// just chanted) and none of [different] (room noise / silence), from their
-/// DTW distances to the trained mantra.
+/// just chanted) and none of [different] (room noise / silence) or [others]
+/// (other words said at the same pace), from their DTW distances to the
+/// trained mantra. The other words are what makes it reject speech that is
+/// not the mantra: without them only the room's noise sets the upper side.
 ///
 /// With a clear gap it sits a third of the way from the loudest "same" toward
 /// the nearest "different" (misses cost more than a rare false count, and the
@@ -30,11 +36,14 @@ const calibrationQuietMs = 2000;
 double? calibrateThreshold({
   required List<double> same,
   required List<double> different,
+  List<double> others = const [],
 }) {
   final s = same.where((d) => d.isFinite).toList()..sort();
   if (s.isEmpty) return null;
   final sameMax = s.last;
-  final diffMin = different.where((d) => d.isFinite).fold(double.infinity, math.min);
+  final diffMin = [...different, ...others]
+      .where((d) => d.isFinite)
+      .fold(double.infinity, math.min);
   double t;
   if (!diffMin.isFinite) {
     t = sameMax * 1.15;
@@ -71,6 +80,9 @@ enum CalibrationPhase {
   /// Waiting for the repetitions.
   chanting,
 
+  /// Waiting for [calibrationOtherReps] other words (can be skipped).
+  others,
+
   /// All heard; [VoiceCalibrator.threshold] is ready to save.
   done,
 
@@ -98,6 +110,7 @@ class VoiceCalibrator extends ChangeNotifier {
     required this._input,
     required this.model,
     this.reps = calibrationReps,
+    this.otherReps = calibrationOtherReps,
   }) : _extractor = MfccExtractor() {
     _detector = UtteranceDetector(
       config: VoiceEngine.gateConfigFor(model),
@@ -118,7 +131,12 @@ class VoiceCalibrator extends ChangeNotifier {
   final MfccExtractor _extractor;
   final MatchModel model;
   final int reps;
+  final int otherReps;
   late final UtteranceDetector _detector;
+
+  /// Distances of the other words heard (infinity: not even a candidate).
+  final List<double> _others = [];
+  bool _skippedOthers = false;
 
   CalibrationPhase _phase = CalibrationPhase.idle;
   final List<HeardRep> _heard = [];
@@ -146,13 +164,51 @@ class VoiceCalibrator extends ChangeNotifier {
   String? get error => _error;
 
   bool get listening =>
-      _phase == CalibrationPhase.quiet || _phase == CalibrationPhase.chanting;
+      _phase == CalibrationPhase.quiet ||
+      _phase == CalibrationPhase.chanting ||
+      _phase == CalibrationPhase.others;
+
+  /// The other words heard so far (their distances to the mantra).
+  List<double> get others => List.unmodifiable(_others);
+
+  /// The "something else" step was skipped.
+  bool get skippedOthers => _skippedOthers;
+
+  /// With the calibrated threshold: how many mantra repetitions count...
+  int get mantraCounted {
+    final t = _threshold;
+    return t == null ? 0 : _heard.where((h) => h.distance <= t).length;
+  }
+
+  /// ...and how many of the other words would (ideally none).
+  int get othersCounted {
+    final t = _threshold;
+    return t == null ? 0 : _others.where((d) => d <= t).length;
+  }
+
+  /// Ends the "something else" step early and works out the threshold.
+  void skipOthers() {
+    if (_phase != CalibrationPhase.others) return;
+    _skippedOthers = true;
+    _finish();
+  }
+
+  void _finish() {
+    unawaited(_input.stop());
+    _threshold = calibrateThreshold(
+        same: [for (final h in _heard) h.distance],
+        different: _noise,
+        others: _others);
+    _set(CalibrationPhase.done);
+  }
 
   Future<VoiceStartResult> start() async {
     if (listening || _phase == CalibrationPhase.starting) {
       return VoiceStartResult.started;
     }
     _heard.clear();
+    _others.clear();
+    _skippedOthers = false;
     _ignored = 0;
     _noise = const [];
     _threshold = null;
@@ -216,6 +272,21 @@ class VoiceCalibrator extends ChangeNotifier {
   }
 
   void _onUtterance(Utterance u) {
+    if (_phase == CalibrationPhase.others) {
+      // Anything said now is "not the mantra", whatever its length.
+      var d = double.infinity;
+      if (!u.forced) {
+        final mfcc = _extractor.extract(loudnessNormalized(u.samples));
+        if (model.lengthPlausible(mfcc.frames)) d = model.distanceTo(mfcc);
+      }
+      _others.add(d);
+      if (_others.length >= otherReps) {
+        _finish();
+      } else {
+        notifyListeners();
+      }
+      return;
+    }
     if (_phase != CalibrationPhase.chanting) return;
     if (u.forced) {
       _ignored++;
@@ -232,10 +303,12 @@ class VoiceCalibrator extends ChangeNotifier {
     _heard.add(HeardRep(d,
         countedBefore: d <= model.thresholdFor(defaultVoiceSensitivity)));
     if (_heard.length >= reps) {
-      unawaited(_input.stop());
-      _threshold = calibrateThreshold(
-          same: [for (final h in _heard) h.distance], different: _noise);
-      _set(CalibrationPhase.done);
+      // Second step: other words, so the threshold rejects them too.
+      if (otherReps > 0) {
+        _set(CalibrationPhase.others);
+      } else {
+        _finish();
+      }
       return;
     }
     notifyListeners();

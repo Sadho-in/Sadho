@@ -2309,4 +2309,28 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get voiceTrainedWithPhone =>
       'ফোনের মাইকে শেখানো — এই ইয়ারফোনে আবার শেখান';
+
+  @override
+  String calibrateOthersNow(int count) {
+    return 'এবার অন্য কিছু $count বার বলুন';
+  }
+
+  @override
+  String get calibrateOthersHint =>
+      'অন্য শব্দ বা অন্য মন্ত্র, একই গতিতে, প্রতিবার একটু থেমে।';
+
+  @override
+  String get calibrateSkipOthers => 'এই ধাপ বাদ দিন';
+
+  @override
+  String calibrateResult(int mantra, int reps, int others, int otherReps) {
+    return '$reps-এর মধ্যে $mantra মন্ত্র গোনা হয়েছে · $otherReps-এর মধ্যে $others অন্য শব্দ গোনা হয়েছে';
+  }
+
+  @override
+  String get voiceCalibratePrompt => 'আরও নির্ভুলতার জন্য ক্যালিব্রেট করুন';
+
+  @override
+  String get voiceHonestNote =>
+      'Voice শেখে এই মন্ত্রে আপনার জপ কেমন শোনায়। এটি লেখা পাঠের সঙ্গে উচ্চারণ যাচাই করতে পারে না।';
 }

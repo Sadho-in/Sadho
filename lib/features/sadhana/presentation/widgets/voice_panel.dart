@@ -175,10 +175,31 @@ class _VoicePanelState extends ConsumerState<VoicePanel>
                 ),
             ],
           ),
+          if (trained && !calibrated) ...[
+            const SizedBox(height: 4),
+            Row(
+              key: const ValueKey('voice-calibrate-prompt'),
+              children: [
+                Icon(Icons.info_outline, size: 16, color: scheme.primary),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(context.l10n.voiceCalibratePrompt,
+                      style: theme.textTheme.bodySmall),
+                ),
+              ],
+            ),
+          ],
           const SizedBox(height: 8),
           const VoiceSensitivitySlider(),
           Text(
             context.l10n.voiceBetaNote,
+            style: theme.textTheme.bodySmall
+                ?.copyWith(color: scheme.onSurfaceVariant),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            context.l10n.voiceHonestNote,
+            key: const ValueKey('voice-honest-note'),
             style: theme.textTheme.bodySmall
                 ?.copyWith(color: scheme.onSurfaceVariant),
           ),

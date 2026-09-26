@@ -2679,5 +2679,48 @@
   "voiceTrainedWithPhone": "Trained with the phone mic — train again with these earphones",
   "@voiceTrainedWithPhone": {
     "description": "Voice panel: the mantra was trained with the phone's own mic but earphones are in use now"
+  },
+  "calibrateOthersNow": "Now say something else {count} times",
+  "@calibrateOthersNow": {
+    "description": "Calibration step 2 headline: say other words (not the mantra) this many times",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "calibrateOthersHint": "Other words or another mantra, at the same pace, with a short pause after each.",
+  "@calibrateOthersHint": {
+    "description": "Calibration step 2 hint: what to say"
+  },
+  "calibrateSkipOthers": "Skip this step",
+  "@calibrateSkipOthers": {
+    "description": "Button: skip calibration step 2 (other words)"
+  },
+  "calibrateResult": "{mantra} of {reps} mantra counted · {others} of {otherReps} other words counted",
+  "@calibrateResult": {
+    "description": "Calibration result: how many mantra repetitions and how many other words the new setting counts",
+    "placeholders": {
+      "mantra": {
+        "type": "int"
+      },
+      "reps": {
+        "type": "int"
+      },
+      "others": {
+        "type": "int"
+      },
+      "otherReps": {
+        "type": "int"
+      }
+    }
+  },
+  "voiceCalibratePrompt": "Calibrate for better accuracy",
+  "@voiceCalibratePrompt": {
+    "description": "Voice panel: a trained mantra has no calibration yet"
+  },
+  "voiceHonestNote": "Voice learns how YOUR chant of this mantra sounds. It can't check pronunciation against the written text.",
+  "@voiceHonestNote": {
+    "description": "Voice panel help: honest limit of voice counting"
   }
 }

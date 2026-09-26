@@ -13,8 +13,10 @@ const maxTrainingSamples = 7;
 /// A good number to aim for; more is more accurate, up to [maxTrainingSamples].
 const recommendedTrainingSamples = 5;
 
-/// Slider default: halfway between Strict and Lenient.
-const defaultVoiceSensitivity = 0.5;
+/// Slider default: one step (a quarter of the slider) from the middle toward
+/// Strict (P5.1: it counted other words and similar-length sounds at 0.5).
+/// A calibrated threshold is exactly the threshold at this default.
+const defaultVoiceSensitivity = 0.25;
 
 /// Outcome of comparing one detected utterance with the trained mantra.
 class VoiceCandidate {

@@ -335,7 +335,20 @@ void main() {
             mic.push);
         if (i == 4) expect(c.heard, hasLength(5));
       }
+      // P5.1: then "Now say something else 5 times".
+      expect(c.phase, CalibrationPhase.others);
+      for (var i = 0; i < calibrationOtherReps; i++) {
+        feedInChunks(
+            toPcm(concat([
+              synthMantra(mantraB, seed: 300 + i),
+              silence(600, seed: 400 + i),
+            ])),
+            mic.push);
+      }
       expect(c.phase, CalibrationPhase.done);
+      expect(c.others, hasLength(calibrationOtherReps));
+      expect(c.mantraCounted, calibrationReps);
+      expect(c.othersCounted, 0);
       expect(mic.streaming, isFalse, reason: 'microphone released');
       final t = c.threshold!;
       final sameMax = c.heard.map((h) => h.distance).reduce(math.max);
@@ -381,7 +394,11 @@ void main() {
       await store.save('m', templates);
       await store.setCalibration('m', 1.6);
       expect(container.read(voiceTrainingProvider)['m']!.calibratedThreshold, 1.6);
-      expect(container.read(voiceTrainingProvider)['m']!.toModel().thresholdFor(0.5),
+      expect(
+          container
+              .read(voiceTrainingProvider)['m']!
+              .toModel()
+              .thresholdFor(defaultVoiceSensitivity),
           closeTo(1.6, 1e-9));
       // Read back from storage.
       final again = ProviderContainer();

@@ -2323,4 +2323,29 @@ class AppLocalizationsTe extends AppLocalizations {
   @override
   String get voiceTrainedWithPhone =>
       'ఫోన్ మైక్‌తో శిక్షణ ఇచ్చారు — ఈ ఇయర్‌ఫోన్‌లతో మళ్లీ శిక్షణ ఇవ్వండి';
+
+  @override
+  String calibrateOthersNow(int count) {
+    return 'ఇప్పుడు వేరే ఏదైనా $count సార్లు చెప్పండి';
+  }
+
+  @override
+  String get calibrateOthersHint =>
+      'ఇతర పదాలు లేదా వేరే మంత్రం, అదే వేగంతో, ప్రతిసారి తర్వాత చిన్న విరామంతో.';
+
+  @override
+  String get calibrateSkipOthers => 'ఈ దశను దాటవేయండి';
+
+  @override
+  String calibrateResult(int mantra, int reps, int others, int otherReps) {
+    return '$reps లో $mantra మంత్రాలు లెక్కించబడ్డాయి · $otherReps లో $others ఇతర పదాలు లెక్కించబడ్డాయి';
+  }
+
+  @override
+  String get voiceCalibratePrompt =>
+      'మెరుగైన ఖచ్చితత్వం కోసం క్యాలిబ్రేట్ చేయండి';
+
+  @override
+  String get voiceHonestNote =>
+      'ఈ మంత్రాన్ని మీరు జపించే ధ్వనిని Voice నేర్చుకుంటుంది. రాసిన పాఠంతో ఉచ్చారణను అది తనిఖీ చేయలేదు.';
 }

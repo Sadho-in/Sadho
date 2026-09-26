@@ -2306,4 +2306,28 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get voiceTrainedWithPhone =>
       'Trained with the phone mic — train again with these earphones';
+
+  @override
+  String calibrateOthersNow(int count) {
+    return 'Now say something else $count times';
+  }
+
+  @override
+  String get calibrateOthersHint =>
+      'Other words or another mantra, at the same pace, with a short pause after each.';
+
+  @override
+  String get calibrateSkipOthers => 'Skip this step';
+
+  @override
+  String calibrateResult(int mantra, int reps, int others, int otherReps) {
+    return '$mantra of $reps mantra counted · $others of $otherReps other words counted';
+  }
+
+  @override
+  String get voiceCalibratePrompt => 'Calibrate for better accuracy';
+
+  @override
+  String get voiceHonestNote =>
+      'Voice learns how YOUR chant of this mantra sounds. It can\'t check pronunciation against the written text.';
 }
