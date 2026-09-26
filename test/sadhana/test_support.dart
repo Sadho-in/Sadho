@@ -672,6 +672,20 @@ class FakeDnd implements DndDriver {
   bool access;
   int filter;
 
+  /// False: the phone accepts a change but ignores it (read back unchanged).
+  bool applies = true;
+
+  /// The user's own policy (what the phone had before quiet mode).
+  static const userPolicy = {
+    'categories': 6,
+    'callSenders': 1,
+    'messageSenders': 1,
+    'suppressed': 0,
+    'conversationSenders': 2,
+  };
+  Map<String, int> policy = {...userPolicy};
+  final policySets = <Map<String, int>>[];
+
   /// Every mode set, in order.
   final sets = <int>[];
   int settingsOpened = 0;
@@ -689,7 +703,18 @@ class FakeDnd implements DndDriver {
   Future<bool> setFilter(int f) async {
     if (!access) return false;
     sets.add(f);
-    filter = f;
+    if (applies) filter = f;
+    return true;
+  }
+
+  @override
+  Future<Map<String, int>?> currentPolicy() async => {...policy};
+
+  @override
+  Future<bool> setPolicy(Map<String, int> p) async {
+    if (!access) return false;
+    policySets.add({...p});
+    if (applies) policy = {...p};
     return true;
   }
 

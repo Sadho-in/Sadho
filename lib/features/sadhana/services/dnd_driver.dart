@@ -12,6 +12,35 @@ abstract final class DndFilter {
   static const alarms = 4;
 }
 
+/// A Do Not Disturb policy (NotificationManager.Policy): which kinds of
+/// interruption get through, from whom, and what an interruption that is
+/// blocked may still show. Kept as a plain map so it can be saved and put
+/// back exactly: categories, callSenders, messageSenders, suppressed,
+/// conversationSenders (-1 where the phone has none).
+typedef DndPolicy = Map<String, int>;
+
+/// Android's NotificationManager.Policy constants used by quiet mode.
+abstract final class DndPolicyBits {
+  static const categoryAlarms = 32; // PRIORITY_CATEGORY_ALARMS
+  static const effectLights = 8; // SUPPRESSED_EFFECT_LIGHTS
+  static const effectPeek = 16; // SUPPRESSED_EFFECT_PEEK (pop-ups)
+  static const effectStatusBar = 32; // SUPPRESSED_EFFECT_STATUS_BAR
+  static const conversationsNone = 3; // CONVERSATION_SENDERS_NONE
+}
+
+/// Quiet mode's policy: only alarms get through (no priority senders, no
+/// repeat callers, no conversations), and what is blocked neither pops up,
+/// shows a status-bar icon nor blinks the light.
+const DndPolicy quietPolicy = {
+  'categories': DndPolicyBits.categoryAlarms,
+  'callSenders': 0,
+  'messageSenders': 0,
+  'suppressed': DndPolicyBits.effectPeek |
+      DndPolicyBits.effectStatusBar |
+      DndPolicyBits.effectLights,
+  'conversationSenders': DndPolicyBits.conversationsNone,
+};
+
 /// The phone's Do Not Disturb. A seam, so tests run without a phone.
 abstract class DndDriver {
   /// False where there is no such thing (iOS, web, desktop, tests).
@@ -26,6 +55,12 @@ abstract class DndDriver {
 
   /// Sets the mode. False if it could not (no access).
   Future<bool> setFilter(int filter);
+
+  /// The current policy, or null if unknown.
+  Future<DndPolicy?> currentPolicy();
+
+  /// Sets the policy. False if it could not.
+  Future<bool> setPolicy(DndPolicy policy);
 
   /// Opens the phone's "Do Not Disturb access" settings page (or, failing
   /// that, the app's settings). False if nothing opened.
@@ -46,6 +81,12 @@ class NoopDndDriver implements DndDriver {
 
   @override
   Future<bool> setFilter(int filter) async => false;
+
+  @override
+  Future<DndPolicy?> currentPolicy() async => null;
+
+  @override
+  Future<bool> setPolicy(DndPolicy policy) async => false;
 
   @override
   Future<bool> openAccessSettings() async => false;
@@ -88,6 +129,28 @@ class AndroidDndDriver implements DndDriver {
       return await _channel.invokeMethod<bool>('dndSetFilter', filter) ?? false;
     } catch (e) {
       debugPrint('Could not change Do Not Disturb: $e');
+      return false;
+    }
+  }
+
+  @override
+  Future<DndPolicy?> currentPolicy() async {
+    try {
+      final m = await _channel.invokeMapMethod<String, Object?>('dndPolicy');
+      if (m == null) return null;
+      return {for (final e in m.entries) if (e.value is int) e.key: e.value as int};
+    } catch (e) {
+      debugPrint('quiet: policy unavailable: $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<bool> setPolicy(DndPolicy policy) async {
+    try {
+      return await _channel.invokeMethod<bool>('dndSetPolicy', policy) ?? false;
+    } catch (e) {
+      debugPrint('quiet: could not set the policy: $e');
       return false;
     }
   }

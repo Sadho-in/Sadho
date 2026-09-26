@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../application/quiet_mode_provider.dart';
 import '../application/sadhana_session_provider.dart';
+import '../../../l10n/l10n.dart';
 import '../services/screen_awake.dart';
 
 import 'widgets/completion_settings_card.dart';
@@ -99,6 +101,7 @@ class _SadhanaScreenState extends ConsumerState<SadhanaScreen> {
                   child: MantraCard(key: _cardKey),
                 ),
               ),
+              const _QuietChip(),
               const SizedBox(height: 6),
               const CountScopeControl(compact: true),
               const SizedBox(height: 6),
@@ -116,5 +119,26 @@ class _SadhanaScreenState extends ConsumerState<SadhanaScreen> {
         ),
       );
     }));
+  }
+}
+
+/// "Quiet mode on" while quiet mode holds Do Not Disturb for this session.
+class _QuietChip extends ConsumerWidget {
+  const _QuietChip();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (!ref.watch(quietModeProvider)) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: Center(
+        child: Chip(
+          key: const ValueKey('quiet-mode-chip'),
+          avatar: const Icon(Icons.do_not_disturb_on_outlined, size: 18),
+          label: Text(context.l10n.quietModeChip),
+          visualDensity: VisualDensity.compact,
+        ),
+      ),
+    );
   }
 }

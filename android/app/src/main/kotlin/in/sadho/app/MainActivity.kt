@@ -307,6 +307,64 @@ class MainActivity : FlutterActivity() {
                         result.success(false)
                     }
                 }
+                // The whole Do Not Disturb policy (what gets through, and the
+                // visual effects of what does not), to save and restore it.
+                "dndPolicy" -> {
+                    val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        val p = nm.notificationPolicy
+                        result.success(
+                            mapOf(
+                                "categories" to p.priorityCategories,
+                                "callSenders" to p.priorityCallSenders,
+                                "messageSenders" to p.priorityMessageSenders,
+                                "suppressed" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    p.suppressedVisualEffects
+                                } else {
+                                    0
+                                },
+                                "conversationSenders" to if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                    p.priorityConversationSenders
+                                } else {
+                                    -1
+                                },
+                            ),
+                        )
+                    } else {
+                        result.success(null)
+                    }
+                }
+                "dndSetPolicy" -> {
+                    val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    val a = call.arguments as? Map<*, *>
+                    fun n(k: String, d: Int) = (a?.get(k) as? Number)?.toInt() ?: d
+                    if (a == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.N ||
+                        !nm.isNotificationPolicyAccessGranted
+                    ) {
+                        result.success(false)
+                    } else {
+                        try {
+                            val policy = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R &&
+                                n("conversationSenders", -1) >= 0
+                            ) {
+                                NotificationManager.Policy(
+                                    n("categories", 0), n("callSenders", 0), n("messageSenders", 0),
+                                    n("suppressed", 0), n("conversationSenders", 0),
+                                )
+                            } else {
+                                NotificationManager.Policy(
+                                    n("categories", 0), n("callSenders", 0), n("messageSenders", 0),
+                                    n("suppressed", 0),
+                                )
+                            }
+                            nm.notificationPolicy = policy
+                            result.success(true)
+                        } catch (e: Exception) {
+                            android.util.Log.w("SadhoQuiet", "could not set the policy", e)
+                            result.success(false)
+                        }
+                    }
+                }
                 "openDndSettings" -> result.success(openSettings("dnd"))
                 // The alarm channels must still alert (heads-up / full screen):
                 // the first one the user turned down, or null if all is well.

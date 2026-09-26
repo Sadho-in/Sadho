@@ -3975,6 +3975,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This phone did not open the page. On a Samsung phone:\n1. Open Settings › Apps › Sadho.\n2. Notifications: allow, and set “Sadhana alarm” and “Alarms and timers” to Alert.\n3. Alarms & reminders: allow.\n4. Battery: Unrestricted.\n5. Full-screen notifications: Settings › Apps › ⋮ › Special access › allow Sadho.\n6. Do Not Disturb access: Settings › Notifications › Do Not Disturb › App access (only for quiet mode).'**
   String get healthFixManualBody;
+
+  /// Notice: quiet mode tried to turn on Do Not Disturb and it did not apply (no access, or the phone refused)
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet mode could not turn on Do Not Disturb'**
+  String get quietModeFailed;
+
+  /// Small chip on the Sadhana screen while quiet mode (Do Not Disturb) is applied
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet mode on'**
+  String get quietModeChip;
 }
 
 class _AppLocalizationsDelegate
