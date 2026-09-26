@@ -36,10 +36,23 @@ class AlarmScreenNotifier extends Notifier<String?> {
   /// leaving).
   bool _unlocking = false;
 
+  late AlarmRing _ring;
+
+  /// The phone's ring is going (read from the native ring, so it is right
+  /// after the activity was recreated too).
+  bool _ringing = false;
+
+  /// The app is in the background (the screen went off, or the keyguard).
+  bool _away = false;
+
   @override
   String? build() {
     _lock = ref.read(lockScreenProvider);
     _lock.listen((group) => unawaited(_opened(group)));
+    _ring = ref.read(alarmRingProvider);
+    final unlisten = _ring.listen(_onRing);
+    ref.onDispose(unlisten);
+    unawaited(_ring.current().then((r) => _ringing = r.ringing));
     try {
       _watcher = _Watcher(this);
       // Registered before the app's own navigator, so the back button reaches
@@ -126,13 +139,34 @@ class AlarmScreenNotifier extends Notifier<String?> {
     if (ref.mounted) state = null;
   }
 
+  /// The native ring started or stopped (its Stop, unlocking, the limit).
+  void _onRing(RingState r) {
+    _ringing = r.ringing;
+    // Stopped while the phone shows the keyguard over us: nothing to show.
+    if (!r.ringing && _away && !_unlocking) unawaited(_leave());
+  }
+
   void _lifecycle(AppLifecycleState s) {
-    // Leaving the screen (switching away, the screen going off) ends it.
     if (s == AppLifecycleState.paused || s == AppLifecycleState.hidden) {
-      if (!_unlocking) unawaited(_leave());
+      _away = true;
+      // Leaving the screen (switching away, the screen going off) ends it,
+      // UNLESS the alarm is still ringing: turning the screen on for an alarm
+      // can pause the activity for a moment (keyguard / always-on display),
+      // and closing the screen then is what made it show "only sometimes".
+      // Only the finished screen is ever shown over the lock screen.
+      if (!_unlocking && !_ringing) unawaited(_leave());
     } else if (s == AppLifecycleState.resumed) {
-      unawaited(_checkLaunch());
+      _away = false;
+      unawaited(_resumed());
     }
+  }
+
+  Future<void> _resumed() async {
+    // Unlocked meanwhile (PIN on the keyguard): the app itself may show now.
+    if (state != null && !_unlocking && _opening == 0 && !await _lock.isLocked()) {
+      await _leave();
+    }
+    await _checkLaunch();
   }
 
   bool _back() {

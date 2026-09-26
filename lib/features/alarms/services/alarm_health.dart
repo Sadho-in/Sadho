@@ -130,8 +130,26 @@ class DeviceAlarmHealth implements AlarmHealth {
   @override
   Future<void> fixExactAlarms() => _scheduler.requestExactAlarms();
 
+  /// Opens a settings page natively ([kind]: notifications, exact,
+  /// fullscreen, `channel:<id>`, dnd, battery), with fallbacks (the app's
+  /// notification settings, then its details page). False if nothing opened.
+  static Future<bool> openSettings(String kind) async {
+    try {
+      final ok = await _native.invokeMethod<bool>('openSettings', kind) ?? false;
+      debugPrint('fix: $kind -> ${ok ? 'opened' : 'nothing opened'}');
+      return ok;
+    } catch (e) {
+      debugPrint('fix: $kind failed: $e');
+      return false;
+    }
+  }
+
+  /// Android 14+: the "Full-screen notifications" switch for Sadho
+  /// (ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT). The notification plugin's
+  /// request opened nothing when it was already allowed, or while an earlier
+  /// request was still pending.
   @override
-  Future<void> fixFullScreen() => _scheduler.requestFullScreen();
+  Future<void> fixFullScreen() => openSettings('fullscreen');
 
   @override
   Future<void> fixBattery() async {

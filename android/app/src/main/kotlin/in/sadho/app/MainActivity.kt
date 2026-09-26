@@ -3,6 +3,7 @@ package `in`.sadho.app
 import android.app.ActivityManager
 import android.app.KeyguardManager
 import android.app.NotificationManager
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -315,6 +316,10 @@ class MainActivity : FlutterActivity() {
                     }
                     result.success(null)
                 }
+                // A Fix button: the specific settings page, then the app's
+                // notification settings, then the app's details page. True
+                // if one opened (false: the app shows written steps).
+                "openSettings" -> result.success(openSettings(call.arguments as? String ?: ""))
                 // The app's own info page, where Battery is one tap away.
                 "openBatterySettings" -> {
                     startActivity(
@@ -328,6 +333,57 @@ class MainActivity : FlutterActivity() {
                 else -> result.notImplemented()
             }
         }
+    }
+
+    private fun pkgUri(): Uri = Uri.parse("package:$packageName")
+
+    /** The page a Fix button should open first, for [kind]. */
+    private fun specificSettings(kind: String): Intent? = when {
+        kind == "notifications" && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
+            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+        kind == "exact" && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+            Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, pkgUri())
+        kind == "fullscreen" && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE ->
+            Intent(Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT, pkgUri())
+        kind.startsWith("channel:") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
+            Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                .putExtra(Settings.EXTRA_CHANNEL_ID, kind.removePrefix("channel:"))
+        kind == "dnd" && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
+            Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+        kind == "battery" -> Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, pkgUri())
+        else -> null
+    }
+
+    /**
+     * Opens [kind]'s settings page, falling back to the app's notification
+     * settings and then the app's details page. Every failure is caught and
+     * logged; never silent: false means nothing opened.
+     */
+    private fun openSettings(kind: String): Boolean {
+        val chain = listOfNotNull(
+            specificSettings(kind),
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                    .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+            } else {
+                null
+            },
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, pkgUri()),
+        )
+        for (intent in chain) {
+            try {
+                startActivity(intent)
+                android.util.Log.i("SadhoFix", "$kind: opened ${intent.action}")
+                return true
+            } catch (e: ActivityNotFoundException) {
+                android.util.Log.w("SadhoFix", "$kind: no page for ${intent.action}")
+            } catch (e: SecurityException) {
+                android.util.Log.w("SadhoFix", "$kind: not allowed to open ${intent.action}")
+            }
+        }
+        return false
     }
 
     companion object {
