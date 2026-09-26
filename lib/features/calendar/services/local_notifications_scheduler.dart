@@ -26,6 +26,12 @@ AndroidScheduleMode scheduleModeFor({required bool alarm, required bool exact}) 
   return alarm ? AndroidScheduleMode.alarmClock : AndroidScheduleMode.exactAllowWhileIdle;
 }
 
+/// The small icon of EVERY Sadho notification (res/drawable-*/ic_stat_sadho,
+/// made from assets/branding/notification-icon.png), and its accent colour:
+/// saffron, from the logo's bead. The Mala service uses the same pair.
+const notificationIcon = 'ic_stat_sadho';
+const notificationAccent = Color(0xFFFF9933);
+
 /// The Android notification channel of a Sadhana completion alarm with
 /// [style]. Android fixes a channel's sound and vibration when it is first
 /// created, so every combination gets its own channel (e.g. "Sadhana alarm ·
@@ -93,7 +99,7 @@ class LocalNotificationsScheduler implements ReminderScheduler {
     }
     await _plugin.initialize(
       settings: const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        android: AndroidInitializationSettings(notificationIcon),
         // Permission is asked when the first reminder is saved, not at launch.
         iOS: DarwinInitializationSettings(
           requestAlertPermission: false,
@@ -132,6 +138,8 @@ class LocalNotificationsScheduler implements ReminderScheduler {
         _channelId,
         l.channelCalendarRemindersName,
         channelDescription: l.channelCalendarRemindersDesc,
+        icon: notificationIcon,
+        color: notificationAccent,
         importance: Importance.high,
         priority: Priority.high,
       ),
@@ -148,6 +156,8 @@ class LocalNotificationsScheduler implements ReminderScheduler {
         _alarmChannelId,
         l.channelAlarmsName,
         channelDescription: l.channelAlarmsDesc,
+        icon: notificationIcon,
+        color: notificationAccent,
         importance: Importance.max,
         priority: Priority.max,
         category: AndroidNotificationCategory.alarm,
@@ -170,6 +180,8 @@ class LocalNotificationsScheduler implements ReminderScheduler {
         channel.id,
         channel.name,
         channelDescription: channel.description,
+        icon: notificationIcon,
+        color: notificationAccent,
         importance: Importance.max,
         priority: Priority.max,
         category: AndroidNotificationCategory.alarm,

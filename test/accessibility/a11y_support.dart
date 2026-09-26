@@ -14,7 +14,15 @@ List<String> tapTargetProblems(WidgetTester tester, {double min = 48}) {
     final data = node.getSemanticsData();
     final tappable = data.hasAction(SemanticsAction.tap) ||
         data.hasAction(SemanticsAction.longPress);
+    // A target cut off by a scroll view's edge (half scrolled out of view)
+    // reports only its visible sliver; it is judged where it is fully shown.
+    final clip = node.parentPaintClipRect;
+    final cutByClip = clip != null &&
+        ((node.rect.bottom - clip.bottom).abs() < 0.5 ||
+            (node.rect.top - clip.top).abs() < 0.5) &&
+        node.rect.height < min - 0.01;
     if (tappable &&
+        !cutByClip &&
         !node.isMergedIntoParent &&
         !node.isInvisible &&
         !data.flagsCollection.isHidden &&

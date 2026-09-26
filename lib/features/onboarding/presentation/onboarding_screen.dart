@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/widgets/sadho_logo.dart';
 import '../../../l10n/l10n.dart';
 import '../../../l10n/labels.dart';
 import '../../home/application/tradition_provider.dart';
@@ -52,6 +53,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
               children: [
+                const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: SadhoLogo(size: 72),
+                ),
+                const SizedBox(height: 16),
                 Text(l.onboardingTitle, style: theme.textTheme.headlineSmall),
                 const SizedBox(height: 8),
                 Text(

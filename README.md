@@ -12,6 +12,25 @@ Android/iOS display name and the in-app title are **Sadho**.
 > package (android/app/src/main/kotlin/in/sadho/app) and the Android
 > `namespace` match it; the Dart package name does not need to.
 
+## App icon
+
+Everything comes from four files in `assets/branding/`:
+`icon-1024.png` (full icon, iOS and legacy Android), `icon-foreground.png`
+(adaptive foreground, artwork inside the safe zone, transparent),
+`icon-monochrome.png` (silhouette for the Android 13 themed icon, transparent)
+and `notification-icon.png` (white silhouette, transparent). The adaptive
+background colour is indigo `#4B4691` (the `flutter_launcher_icons:` block in
+`pubspec.yaml`); notifications use the saffron accent `#FF9933`.
+
+**To change the logo: replace the 4 files in assets/branding/, run
+`dart run flutter_launcher_icons`**, then `dart run tool/notification_icon.dart`
+for the notification small icon (`res/drawable-*/ic_stat_sadho.png`, used by
+every notification). `flutter_launcher_icons` also edits
+`ios/Runner.xcodeproj/project.pbxproj` (it changes
+`ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS` to `AppIcon`);
+discard that change with `git checkout ios/Runner.xcodeproj/project.pbxproj`.
+The same logo is shown on the first-launch screen and in Profile > About.
+
 ## Phase 1 — what is delivered
 
 **App shell**

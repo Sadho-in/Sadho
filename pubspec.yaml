@@ -67,6 +67,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+  image: ^4.10.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -85,6 +87,7 @@ flutter:
 
   assets:
     - assets/sounds/
+    - assets/branding/icon-1024.png
 
   # Noto Sans for every non-Latin script the app is (or will be) translated
   # into: see lib/l10n/fonts.dart for how each is picked, by UI language for
@@ -144,3 +147,19 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# App icon: generated from the logo files in assets/branding/ by
+# `dart run flutter_launcher_icons` (Android legacy + adaptive + Android 13
+# themed icon, iOS icon set). The notification icon comes from the same folder:
+# `dart run tool/notification_icon.dart`. See README "App icon".
+flutter_launcher_icons:
+  image_path: "assets/branding/icon-1024.png"
+  android: "ic_launcher"
+  min_sdk_android: 21
+  adaptive_icon_background: "#4B4691"
+  adaptive_icon_foreground: "assets/branding/icon-foreground.png"
+  adaptive_icon_monochrome: "assets/branding/icon-monochrome.png"
+  # The artwork is already drawn inside the adaptive safe zone.
+  adaptive_icon_foreground_inset: 0
+  ios: true
+  remove_alpha_ios: true

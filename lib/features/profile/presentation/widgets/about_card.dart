@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/widgets/sadho_logo.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../sadhana/presentation/widgets/section_card.dart';
 
@@ -34,6 +35,10 @@ class AboutCard extends StatelessWidget {
       title: l.aboutTitle,
       child: Column(
         children: [
+          const Padding(
+            padding: EdgeInsets.only(bottom: 8),
+            child: SadhoLogo(size: 64),
+          ),
           row(Icons.self_improvement, l.appLabel, AppConstants.appName, 'about-app'),
           row(Icons.language, l.websiteLabel, AppConstants.website, 'about-website'),
           row(Icons.info_outline, l.versionLabel, AppConstants.version, 'about-version'),

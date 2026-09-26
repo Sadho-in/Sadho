@@ -330,7 +330,8 @@ class MalaCounterService : Service() {
         }
         val open = alarmIntent()
         val builder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_stat_sadho)
+            .setColor(NOTIFICATION_ACCENT)
             .setContentTitle(prefs.getString(K_RING_TITLE, null) ?: "Sadhana complete")
             .setContentText(prefs.getString(K_RING_BODY, null) ?: "")
             .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -430,7 +431,8 @@ class MalaCounterService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
         val builder = NotificationCompat.Builder(this, COUNTER_CHANNEL)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_stat_sadho)
+            .setColor(NOTIFICATION_ACCENT)
             .setContentTitle(title)
             .setContentText(text)
             .setOngoing(true)
@@ -497,6 +499,9 @@ class MalaCounterService : Service() {
 
         const val MIN_GAP_MS = 120L
         const val AUTO_STOP_AFTER_TARGET_MS = 10 * 60 * 1000L
+
+        /** Saffron, from the logo's bead (as notificationAccent in Dart). */
+        private const val NOTIFICATION_ACCENT = 0xFFFF9933.toInt()
 
         private val ALARM_VIBRATION = longArrayOf(0, 700, 300, 700, 300, 1200)
 
