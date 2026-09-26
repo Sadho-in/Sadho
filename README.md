@@ -668,6 +668,30 @@ lose it.
 upload (and the name for user-visible releases; keep `AppConstants.version` in
 step with the name, a test checks it).
 
+## Build health
+
+Checked in P6-6 (Flutter 3.47.4, not upgraded):
+
+- **SDK levels** (Flutter's defaults, used by `android/app/build.gradle.kts`):
+  **targetSdk 36** (Android 16, required by Google Play for new apps since
+  31 Aug 2026), **compileSdk 36**, **minSdk 24** (Android 7.0).
+- **`flutter pub outdated`**: every direct dependency is at its latest except
+  `permission_handler`, held at 12.x on purpose: 13.x pulls in
+  `permission_handler_android` 14, which requires compileSdk 37 (Flutter builds
+  with 36 and AGP 9.1 does not support 37). Some transitive packages
+  (`code_assets`, `hooks`, `meta`, `vector_math`...) have newer versions pinned
+  by the Flutter SDK or other packages; they follow Flutter upgrades.
+- **"Old Kotlin Gradle Plugin" warning** for `flutter_timezone` and
+  `flutter_volume_controller`: both are already at their latest versions
+  (5.1.0 and 2.0.2), and both already support AGP 9's built-in Kotlin. They
+  apply the old plugin only because `android/gradle.properties` has
+  `android.builtInKotlin=false` (a Flutter template default, kept so plugins
+  that have not migrated, such as `integration_test`, still build). The fix is
+  to set it to `true` once a full debug and release build has been checked with
+  it (a Gradle change that `flutter test` cannot verify).
+  `flutter_volume_controller` is still used: `volume_button_listener` (the
+  in-app Mala fallback) depends on it.
+
 ## Release notes (Play Console)
 
 **Foreground service (specialUse) declaration — Mala with the screen off.**

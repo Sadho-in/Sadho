@@ -39,7 +39,9 @@ dependencies:
   hive_flutter: ^1.1.0
   vibration: ^3.2.1
   audioplayers: ^6.8.1
-  permission_handler: ^12.0.1 # 13.x needs compileSdk 37, above what AGP 9.1 supports
+  # Held at 12.x: 13.x brings permission_handler_android 14, which requires
+  # compileSdk 37; Flutter 3.47 builds with 36 and AGP 9.1 does not go to 37.
+  permission_handler: ^12.0.1
   volume_button_listener: ^0.3.2
   record: ^7.1.1
   fftea: ^1.5.0+1
@@ -190,7 +192,7 @@ flutter:
 flutter_launcher_icons:
   image_path: "assets/branding/icon-1024.png"
   android: "ic_launcher"
-  min_sdk_android: 21
+  min_sdk_android: 24 # = flutter.minSdkVersion (Flutter 3.47)
   adaptive_icon_background: "#4B4691"
   adaptive_icon_foreground: "assets/branding/icon-foreground.png"
   adaptive_icon_monochrome: "assets/branding/icon-monochrome.png"
