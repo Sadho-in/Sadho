@@ -668,6 +668,36 @@ lose it.
 upload (and the name for user-visible releases; keep `AppConstants.version` in
 step with the name, a test checks it).
 
+## Phone smoke test (after every build)
+
+Ten minutes on a real phone, in this order. If any step fails, do not ship.
+
+1. **Tap count:** Sadhana › Tap, target 5. Tap 5 times: it rings once, the
+   count stops at 5, and Stop silences it.
+2. **Rhythm, phone locked:** Rhythm, time target 1 minute, Start, lock the
+   phone. At the end it rings loudly (alarm volume) and the alarm screen shows
+   over the lock screen. Tap Stop: sound and vibration stop.
+3. **Unlock to open:** repeat step 2, but tap "Unlock to open Sadho" and enter
+   the PIN. The app opens on Sadhana with the red Stop button and the "Sadhana
+   complete" banner; one tap removes both.
+4. **Mala, screen off:** Mala, target 5, Start, turn the screen off. Press a
+   volume key 5 times: it rings at once at 5. Stop it from the alarm screen.
+5. **Clock timer, locked:** Clock › timer 1 minute, lock the phone. It rings
+   and shows the alarm screen; Stop works.
+6. **Calendar reminder:** add a mark with a reminder 2 minutes ahead. The
+   notification arrives on time.
+7. **Voice on the phone mic:** no earphones. Train a mantra, calibrate (11 ×
+   the mantra, then 5 × other words), Start Voice: the level bar moves, the
+   mantra counts, other words do not.
+8. **Quiet mode:** turn on "Silence other notifications", start a session and
+   send yourself a WhatsApp message: no sound, vibration or pop-up; the "Quiet
+   mode on" chip shows. Stop the session: your Do Not Disturb is back.
+9. **Alarms & reliability:** Profile › Alarms & reliability. Every Fix button
+   opens a settings page; coming back re-checks the rows.
+10. **Language:** switch to Hindi and to Tamil and back; every tab reads right.
+11. **Backup:** Profile › Backup: export, then restore the file. Everything is
+    still there.
+
 ## Build health
 
 Checked in P6-6 (Flutter 3.47.4, not upgraded):
