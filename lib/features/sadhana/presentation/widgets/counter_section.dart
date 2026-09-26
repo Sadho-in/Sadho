@@ -101,6 +101,8 @@ class CounterSection extends ConsumerWidget {
             ),
           ],
         ),
+        // While something rings, Stop is the main button (full width, first).
+        const StopAlertButton(),
         if (s.usesRunToggle) ...[
           const SizedBox(height: 6),
           SizedBox(
@@ -134,7 +136,6 @@ class CounterSection extends ConsumerWidget {
                 )
               : const SizedBox(width: double.infinity),
         ),
-        const StopAlertButton(),
         if (s.alarmMayBeLate && s.running) const AlarmLateNote(),
       ],
     );

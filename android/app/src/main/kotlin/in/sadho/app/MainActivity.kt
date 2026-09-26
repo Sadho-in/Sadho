@@ -34,7 +34,11 @@ class MainActivity : FlutterActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Before the activity resumes: turnScreenOn only applies on resume.
-        takeAlarmIntent(intent)
+        // A RECREATED activity (savedInstanceState != null) gets the intent
+        // it was first opened with again: that alarm was already handled, so
+        // it must not put the app over the lock screen a second time. The
+        // ring's state is read back by the app from AlarmRinger instead.
+        if (savedInstanceState == null) takeAlarmIntent(intent)
         super.onCreate(savedInstanceState)
     }
 

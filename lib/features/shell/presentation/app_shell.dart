@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/constants/app_constants.dart';
+import '../../alarms/application/ring_controller.dart';
 import '../../alarms/presentation/alarms_reliability_page.dart';
 import '../../calendar/services/reminder_scheduler.dart';
 import '../../../core/theme/theme_provider.dart';
@@ -19,6 +20,7 @@ import '../../sadhana/presentation/sadhana_screen.dart';
 import '../../sadhana/presentation/voice_training_screen.dart';
 import '../../profile/application/profile_provider.dart';
 import 'language_sheet.dart';
+import 'ring_banner.dart';
 
 /// The bottom navigation, left to right. Home is first and opens by default.
 ///
@@ -90,6 +92,15 @@ class AppShell extends ConsumerWidget {
         ref.read(quietModeProvider.notifier).leftSadhana();
       }
     });
+    // A finished Sadhana session still unacknowledged (read back from the
+    // phone's ring, also after the app was recreated): open where its Stop is.
+    ref.listen<RingStatus>(ringControllerProvider, (prev, next) {
+      final appeared = !(prev?.showStop ?? false) && next.showStop;
+      if (appeared && next.isSadhana && next.native.unacknowledged) {
+        ref.read(shellTabProvider.notifier).select(ShellTab.sadhana);
+      }
+    });
+
     // Quiet mode lives as long as the app (and restores a leftover at start).
     ref.listen<bool>(quietModeProvider, (_, _) {});
 
@@ -165,15 +176,23 @@ class AppShell extends ConsumerWidget {
           ),
         ],
       ),
-      // IndexedStack keeps the Sadhana tab's local UI state alive.
-      body: IndexedStack(
-        index: tab.index,
-        // In the same order as [ShellTab].
-        children: const [
-          HomeScreen(),
-          SadhanaScreen(),
-          CalendarScreen(),
-          ClockScreen(),
+      body: Column(
+        children: [
+          // "Sadhana complete — Stop" on every tab while something rings.
+          const RingBanner(),
+          Expanded(
+            // IndexedStack keeps the Sadhana tab's local UI state alive.
+            child: IndexedStack(
+              index: tab.index,
+              // In the same order as [ShellTab].
+              children: const [
+                HomeScreen(),
+                SadhanaScreen(),
+                CalendarScreen(),
+                ClockScreen(),
+              ],
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: NavigationBar(
