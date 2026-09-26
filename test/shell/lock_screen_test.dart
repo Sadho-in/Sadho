@@ -238,10 +238,13 @@ void main() {
               'android/app/src/main/kotlin/in/sadho/app/MalaCounterService.kt')
           .readAsStringSync();
       expect(service, contains('const val MALA_GROUP = "$malaGroup"'));
-      // The same alarm style as the Sadhana finish alarm.
-      expect(service, contains('FLAG_INSISTENT'));
-      expect(service, contains('setFullScreenIntent'));
-      expect(service, contains('USAGE_ALARM'));
+      // The same alarm as the Sadhana finish alarm: since P5.1 both ring
+      // through the one AlarmRinger (full screen, alarm stream).
+      expect(service, contains('AlarmRinger.start('));
+      final ringer = File('android/app/src/main/kotlin/in/sadho/app/AlarmRinger.kt')
+          .readAsStringSync();
+      expect(ringer, contains('setFullScreenIntent'));
+      expect(ringer, contains('USAGE_ALARM'));
     });
   });
 

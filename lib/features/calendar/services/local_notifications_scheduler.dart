@@ -8,6 +8,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../../../l10n/app_localizations.dart';
 import '../../../l10n/labels.dart';
+import '../../alarms/services/alarm_ring.dart';
 import '../../clock/services/tz_init.dart';
 import '../data/calendar_mark.dart';
 import 'reminder_planner.dart';
@@ -49,16 +50,42 @@ const notificationAccent = Color(0xFFFF9933);
   );
 }
 
+/// [a] as the phone's one alarm ring rings it (AlarmRinger.kt): a Sadhana
+/// alarm with its chosen ringtone and repeat settings; the Clock timer and the
+/// sun alarm with the phone's alarm tone until stopped, like an alarm clock.
+NativeAlarm nativeAlarmFor(ScheduledAlert a, {required String stopLabel}) {
+  final style = a.style;
+  return NativeAlarm(
+    id: a.id,
+    when: a.when,
+    title: a.title,
+    body: a.body,
+    sound: style == null ? ringDefaultSound : style.sound,
+    vibrate: style?.vibrate ?? true,
+    soundRepeat: style?.soundRepeat ?? RingRepeat.until,
+    vibrationRepeat: style?.vibrationRepeat ?? RingRepeat.until,
+    stopLabel: stopLabel,
+    daily: a.repeatsDaily,
+  );
+}
+
 /// Real reminders through `flutter_local_notifications` + `timezone`.
 ///
 /// Reminders are local to the phone: they need no account or network, and are
 /// rebuilt on every app start. Android rings at the exact minute when the user
 /// has allowed exact alarms and otherwise a little flexibly.
 class LocalNotificationsScheduler implements ReminderScheduler {
-  LocalNotificationsScheduler({FlutterLocalNotificationsPlugin? plugin})
-      : _plugin = plugin ?? FlutterLocalNotificationsPlugin();
+  LocalNotificationsScheduler({
+    FlutterLocalNotificationsPlugin? plugin,
+    this._ring = const NoopAlarmRing(),
+  }) : _plugin = plugin ?? FlutterLocalNotificationsPlugin();
 
   final FlutterLocalNotificationsPlugin _plugin;
+
+  /// Android: every alarm-style alert rings through the one native ring
+  /// (AlarmManager.setAlarmClock -> AlarmRingService), not as a notification
+  /// sound. Calendar reminders and gentle alerts stay notifications.
+  final AlarmRing _ring;
   bool? _exactAllowed;
 
   static const _channelId = 'calendar_reminders';
@@ -252,6 +279,11 @@ class LocalNotificationsScheduler implements ReminderScheduler {
 
   @override
   Future<void> dismissShown(String group) async {
+    // The app was opened: a native ring of this group stops (not while the
+    // phone is locked: the alarm screen's Stop decides then).
+    if (_ring.isSupported && alertGroups.contains(group)) {
+      await _ring.silenceIfUnlocked(group);
+    }
     try {
       final shown = await _plugin.getActiveNotifications();
       for (final n in shown) {
@@ -313,7 +345,18 @@ class LocalNotificationsScheduler implements ReminderScheduler {
   @override
   Future<void> replaceAlerts(String group, List<ScheduledAlert> alerts) async {
     await _cancelWhere((p) => p == group);
+    var native = false;
+    if (_ring.isSupported) {
+      final l = currentL10n();
+      unawaited(_ring.setChannelNames(
+          sadhana: l.channelSadhanaAlarmV2Name, alarms: l.channelAlarmsName));
+      native = await _ring.replaceGroup(group, [
+        for (final a in alerts)
+          if (!a.gentle) nativeAlarmFor(a, stopLabel: l.stopAlert),
+      ]);
+    }
     for (final a in alerts) {
+      if (native && !a.gentle) continue; // rung natively
       try {
         await _zonedAt(
           id: a.id,

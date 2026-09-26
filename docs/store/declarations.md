@@ -51,6 +51,17 @@ full-screen intent.
 
 ---
 
+## 3a. Foreground service — `FOREGROUND_SERVICE_SYSTEM_EXEMPTED` (alarm ring, since P5.1)
+
+**Type:** systemExempted. Allowed for apps that hold `USE_EXACT_ALARM` /
+`SCHEDULE_EXACT_ALARM` and use a foreground service to continue an alarm.
+`AlarmRingService` starts only when one of the user's alarms fires (Sadhana
+finish, Clock timer, sun alarm), plays the chosen ringtone on the alarm stream
+and vibrates, shows the full-screen alarm with Stop, and stops on Stop,
+unlocking, opening the app, or after at most 5 minutes. **[CHECK]** list it in
+the Play Console foreground-service declaration with a short video of an alarm
+ringing with the screen off and being stopped.
+
 ## 3. Foreground service — `FOREGROUND_SERVICE_SPECIAL_USE` (Mala)
 
 **Type:** specialUse. **Subtype (manifest):** "Counts mala repetitions from

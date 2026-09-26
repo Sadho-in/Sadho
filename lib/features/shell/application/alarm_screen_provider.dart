@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../alarms/services/alarm_ring.dart';
 import '../../calendar/services/reminder_scheduler.dart';
 import '../../sadhana/services/feedback_service.dart';
 import '../../sadhana/services/mala_background_service.dart';
@@ -87,6 +88,8 @@ class AlarmScreenNotifier extends Notifier<String?> {
     final group = state;
     if (group == null) return;
     ref.read(feedbackServiceProvider).stopAlert();
+    // The phone's ring (sound, vibration, notification), even while locked.
+    unawaited(ref.read(alarmRingProvider).stop().catchError((Object _) {}));
     unawaited(ref
         .read(reminderSchedulerProvider)
         .dismissShown(group)

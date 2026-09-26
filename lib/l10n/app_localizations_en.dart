@@ -2272,4 +2272,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String onboardingLegalNotice(String terms, String privacy) {
     return 'Your practice, calendar, voice training and location stay on this phone. By continuing you agree to the $terms and have read the $privacy.';
   }
+
+  @override
+  String get channelSadhanaAlarmV2Name => 'Sadhana alarm';
 }

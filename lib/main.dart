@@ -5,6 +5,7 @@ import 'app.dart';
 import 'core/app_restart.dart';
 import 'core/licenses.dart';
 import 'core/storage/app_storage.dart';
+import 'features/alarms/services/alarm_ring.dart';
 import 'features/calendar/services/local_notifications_scheduler.dart';
 import 'features/calendar/services/reminder_scheduler.dart';
 import 'features/sadhana/services/dnd_driver.dart';
@@ -24,10 +25,15 @@ Future<void> main() async {
   // Calendar reminders are local notifications. If they cannot be set up (an
   // unsupported platform, a plugin failure) the calendar still works, just
   // without reminders.
+  // The one native alarm ring (Android): every alarm-style finish.
+  final AlarmRing ring = AndroidAlarmRing.platformSupported
+      ? AndroidAlarmRing()
+      : const NoopAlarmRing();
+
   ReminderScheduler scheduler = NoopReminderScheduler();
   if (LocalNotificationsScheduler.platformSupported) {
     try {
-      final real = LocalNotificationsScheduler();
+      final real = LocalNotificationsScheduler(ring: ring);
       await real.init();
       scheduler = real;
     } catch (e) {
@@ -45,6 +51,7 @@ Future<void> main() async {
       overrides: [
         reminderSchedulerProvider.overrideWithValue(scheduler),
         malaBackgroundServiceProvider.overrideWithValue(mala),
+        alarmRingProvider.overrideWithValue(ring),
         // Quiet mode during sadhana (Do Not Disturb), Android only.
         if (AndroidDndDriver.platformSupported)
           dndDriverProvider.overrideWithValue(const AndroidDndDriver()),

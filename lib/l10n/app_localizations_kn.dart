@@ -2274,4 +2274,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String onboardingLegalNotice(String terms, String privacy) {
     return 'ನಿಮ್ಮ ಸಾಧನೆ, ಕ್ಯಾಲೆಂಡರ್, ಧ್ವನಿ ತರಬೇತಿ ಮತ್ತು ಸ್ಥಳ ಈ ಫೋನ್‌ನಲ್ಲೇ ಇರುತ್ತವೆ. ಮುಂದುವರಿಯುವ ಮೂಲಕ ನೀವು $terms ಒಪ್ಪುತ್ತೀರಿ ಮತ್ತು $privacy ಓದಿದ್ದೀರಿ.';
   }
+
+  @override
+  String get channelSadhanaAlarmV2Name => 'ಸಾಧನಾ ಅಲಾರಂ';
 }

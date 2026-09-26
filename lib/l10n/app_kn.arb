@@ -1,6 +1,6 @@
 {
   "@@locale": "kn",
-  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review. Strings added in P4.3 (High contrast palette and accessibility labels) are also first-pass and need native review. Strings added in P5 (Mala with the screen off, quiet mode, voice calibration) are also first-pass and need native review. Strings added in P6 (legal links, licences, first-launch notice) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Kannada, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review. Strings added in P4.3 (High contrast palette and accessibility labels) are also first-pass and need native review. Strings added in P5 (Mala with the screen off, quiet mode, voice calibration) are also first-pass and need native review. Strings added in P6 (legal links, licences, first-launch notice) are also first-pass and need native review. Strings added in P5.1 (alarm ring, Fix buttons, quiet mode, voice on the phone mic, calibration with other words, Stop banner) are also first-pass and need native review.",
   "navHome": "ಮುಖಪುಟ",
   "navSadhana": "ಸಾಧನೆ",
   "navCalendar": "ಕ್ಯಾಲೆಂಡರ್",
@@ -639,5 +639,6 @@
   "legalDeleteData": "ನಿಮ್ಮ ಡೇಟಾ ಅಳಿಸಿ",
   "legalLicenses": "ಓಪನ್-ಸೋರ್ಸ್ ಪರವಾನಗಿಗಳು",
   "linkOpenFailed": "{url} ತೆರೆಯಲಾಗಲಿಲ್ಲ",
-  "onboardingLegalNotice": "ನಿಮ್ಮ ಸಾಧನೆ, ಕ್ಯಾಲೆಂಡರ್, ಧ್ವನಿ ತರಬೇತಿ ಮತ್ತು ಸ್ಥಳ ಈ ಫೋನ್‌ನಲ್ಲೇ ಇರುತ್ತವೆ. ಮುಂದುವರಿಯುವ ಮೂಲಕ ನೀವು {terms} ಒಪ್ಪುತ್ತೀರಿ ಮತ್ತು {privacy} ಓದಿದ್ದೀರಿ."
+  "onboardingLegalNotice": "ನಿಮ್ಮ ಸಾಧನೆ, ಕ್ಯಾಲೆಂಡರ್, ಧ್ವನಿ ತರಬೇತಿ ಮತ್ತು ಸ್ಥಳ ಈ ಫೋನ್‌ನಲ್ಲೇ ಇರುತ್ತವೆ. ಮುಂದುವರಿಯುವ ಮೂಲಕ ನೀವು {terms} ಒಪ್ಪುತ್ತೀರಿ ಮತ್ತು {privacy} ಓದಿದ್ದೀರಿ.",
+  "channelSadhanaAlarmV2Name": "ಸಾಧನಾ ಅಲಾರಂ"
 }

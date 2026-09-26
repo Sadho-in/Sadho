@@ -2275,4 +2275,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String onboardingLegalNotice(String terms, String privacy) {
     return 'আপনার সাধনা, ক্যালেন্ডার, কণ্ঠ প্রশিক্ষণ ও অবস্থান এই ফোনেই থাকে। চালিয়ে গেলে আপনি $terms মেনে নিচ্ছেন এবং $privacy পড়েছেন।';
   }
+
+  @override
+  String get channelSadhanaAlarmV2Name => 'সাধনা অ্যালার্ম';
 }

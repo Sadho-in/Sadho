@@ -2273,4 +2273,7 @@ class AppLocalizationsGu extends AppLocalizations {
   String onboardingLegalNotice(String terms, String privacy) {
     return 'તમારી સાધના, કૅલેન્ડર, અવાજ તાલીમ અને સ્થાન આ જ ફોન પર રહે છે. આગળ વધીને તમે $terms સાથે સંમત થાઓ છો અને $privacy વાંચી છે.';
   }
+
+  @override
+  String get channelSadhanaAlarmV2Name => 'સાધના એલાર્મ';
 }

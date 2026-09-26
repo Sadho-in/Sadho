@@ -2276,4 +2276,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String onboardingLegalNotice(String terms, String privacy) {
     return 'आपकी साधना, कैलेंडर, आवाज़ प्रशिक्षण और स्थान इसी फ़ोन पर रहते हैं। जारी रखकर आप $terms से सहमत होते हैं और आपने $privacy पढ़ ली है।';
   }
+
+  @override
+  String get channelSadhanaAlarmV2Name => 'साधना अलार्म';
 }

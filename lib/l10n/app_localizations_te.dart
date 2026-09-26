@@ -2288,4 +2288,7 @@ class AppLocalizationsTe extends AppLocalizations {
   String onboardingLegalNotice(String terms, String privacy) {
     return 'మీ సాధన, క్యాలెండర్, వాయిస్ శిక్షణ మరియు స్థానం ఈ ఫోన్‌లోనే ఉంటాయి. కొనసాగించడం ద్వారా మీరు $termsకు అంగీకరిస్తున్నారు మరియు $privacy చదివారు.';
   }
+
+  @override
+  String get channelSadhanaAlarmV2Name => 'సాధన అలారం';
 }

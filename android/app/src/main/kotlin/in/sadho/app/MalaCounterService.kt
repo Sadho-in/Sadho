@@ -10,7 +10,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
 import android.media.AudioAttributes
-import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
@@ -111,6 +110,10 @@ class MalaCounterService : Service() {
     }
 
     fun stopCounting() {
+        // Stop in the counter's notification also silences the Mala ring.
+        if (AlarmRinger.ringingGroup(this) == MALA_GROUP) {
+            AlarmRinger.stop(this, AlarmRinger.REASON_USER)
+        }
         setStatus(STATUS_STOPPED)
         releaseSession()
         main.removeCallbacks(autoStop)
@@ -292,85 +295,27 @@ class MalaCounterService : Service() {
     }
 
     /**
-     * The target was reached with the app in the background: the same
-     * alarm-style notification as the Sadhana finish alarm (its channel,
-     * ringtone, vibration, "until stopped" = insistent), full screen over the
-     * lock screen where allowed, opening the app's "finished" screen.
+     * The target was reached with the app in the background: rung at once,
+     * here, through the same ring as every other alarm ([AlarmRinger]: the
+     * chosen ringtone on the ALARM stream, the long alarm vibration, the
+     * full-screen alarm screen). No round trip through Flutter.
      */
     private fun postRing() {
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelId = prefs.getString(K_ALARM_CHANNEL, null) ?: "sadhana_alarm_silent_v"
-        val sound = prefs.getString(K_ALARM_SOUND, null)
-        val vibrate = prefs.getBoolean(K_ALARM_VIBRATE, true)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-            manager.getNotificationChannel(channelId) == null
-        ) {
-            // Normally already made by the app's own alarm; the same settings.
-            val channel = NotificationChannel(
-                channelId,
-                prefs.getString(K_ALARM_CHANNEL_NAME, null) ?: "Sadhana alarm",
-                NotificationManager.IMPORTANCE_HIGH,
-            )
-            channel.description = prefs.getString(K_ALARM_CHANNEL_DESC, null)
-            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-            if (sound != null) {
-                channel.setSound(
-                    soundUri(sound),
-                    AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_ALARM)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .build(),
-                )
-            } else {
-                channel.setSound(null, null)
-            }
-            channel.enableVibration(vibrate)
-            if (vibrate) channel.vibrationPattern = ALARM_VIBRATION
-            manager.createNotificationChannel(channel)
-        }
-        val open = alarmIntent()
-        val builder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_stat_sadho)
-            .setColor(NOTIFICATION_ACCENT)
-            .setContentTitle(prefs.getString(K_RING_TITLE, null) ?: "Sadhana complete")
-            .setContentText(prefs.getString(K_RING_BODY, null) ?: "")
-            .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setCategory(NotificationCompat.CATEGORY_ALARM)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setAutoCancel(true)
-            .setContentIntent(open)
-            .setFullScreenIntent(open, true)
-        if (sound != null) {
-            @Suppress("DEPRECATION")
-            builder.setSound(soundUri(sound), android.media.AudioManager.STREAM_ALARM)
-        }
-        if (vibrate) builder.setVibrate(ALARM_VIBRATION)
-        val notification = builder.build()
-        notification.extras.putString(PAYLOAD, MALA_GROUP)
-        if (prefs.getBoolean(K_ALARM_INSISTENT, false)) {
-            notification.flags = notification.flags or Notification.FLAG_INSISTENT
-        }
-        try {
-            NotificationManagerCompat.from(this).notify(RING_NOTIFICATION_ID, notification)
-        } catch (_: SecurityException) {
-            // Notifications not allowed: the app rings on return instead.
-            prefs.edit().putBoolean(K_RANG, false).apply()
-        }
-    }
-
-    private fun soundUri(raw: String): Uri =
-        Uri.parse("android.resource://$packageName/raw/$raw")
-
-    /** Opens the app as an alarm does (MainActivity shows it over the lock screen). */
-    private fun alarmIntent(): PendingIntent {
-        val intent = Intent(this, MainActivity::class.java)
-            .setAction(SELECT_NOTIFICATION)
-            .putExtra(PAYLOAD, MALA_GROUP)
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        return PendingIntent.getActivity(
-            this, RING_NOTIFICATION_ID, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        val insistent = prefs.getBoolean(K_ALARM_INSISTENT, false)
+        val spec = RingSpec(
+            key = "mala:${prefs.getString(K_SESSION, null) ?: ""}:${prefs.getInt(K_TARGET, 108)}",
+            group = MALA_GROUP,
+            title = prefs.getString(K_RING_TITLE, null) ?: "Sadhana complete",
+            body = prefs.getString(K_RING_BODY, null) ?: "",
+            sound = prefs.getString(K_ALARM_SOUND, null),
+            vibrate = prefs.getBoolean(K_ALARM_VIBRATE, true),
+            soundRepeat = prefs.getString(K_ALARM_SOUND_REPEAT, null)
+                ?: if (insistent) "until" else "once",
+            vibrationRepeat = prefs.getString(K_ALARM_VIBRATION_REPEAT, null)
+                ?: if (insistent) "until" else "once",
+            stopLabel = prefs.getString(K_TEXT_STOP, null) ?: "Stop",
         )
+        AlarmRinger.start(this, spec)
     }
 
     // ---- the ongoing notification -------------------------------------------
@@ -487,23 +432,18 @@ class MalaCounterService : Service() {
 
         const val PREFS = "sadho_mala"
         const val NOTIFICATION_ID = 71080
-        const val RING_NOTIFICATION_ID = 71081
+        /** The target ring's notification (the shared alarm ring's). */
+        const val RING_NOTIFICATION_ID = AlarmRinger.NOTIFICATION_ID
         private const val COUNTER_CHANNEL = "mala_counter"
 
         /** The alarm group of the target ring (see alarm_screen_provider.dart). */
         const val MALA_GROUP = "mala"
-
-        /** flutter_local_notifications' action and extra for opening the app. */
-        private const val SELECT_NOTIFICATION = "SELECT_NOTIFICATION"
-        private const val PAYLOAD = "payload"
 
         const val MIN_GAP_MS = 120L
         const val AUTO_STOP_AFTER_TARGET_MS = 10 * 60 * 1000L
 
         /** Saffron, from the logo's bead (as notificationAccent in Dart). */
         private const val NOTIFICATION_ACCENT = 0xFFFF9933.toInt()
-
-        private val ALARM_VIBRATION = longArrayOf(0, 700, 300, 700, 300, 1200)
 
         const val STATUS_RUNNING = "running"
         const val STATUS_PAUSED = "paused"
@@ -534,6 +474,8 @@ class MalaCounterService : Service() {
         const val K_ALARM_SOUND = "alarmSound"
         const val K_ALARM_VIBRATE = "alarmVibrate"
         const val K_ALARM_INSISTENT = "alarmInsistent"
+        const val K_ALARM_SOUND_REPEAT = "alarmSoundRepeat"
+        const val K_ALARM_VIBRATION_REPEAT = "alarmVibrationRepeat"
         const val K_RING_TITLE = "ringTitle"
         const val K_RING_BODY = "ringBody"
 
@@ -556,7 +498,7 @@ class MalaCounterService : Service() {
         )
         private val STRING_KEYS = setOf(
             K_SESSION, K_ALARM_CHANNEL, K_ALARM_CHANNEL_NAME, K_ALARM_CHANNEL_DESC,
-            K_ALARM_SOUND, K_RING_TITLE, K_RING_BODY, K_TEXT_CHANNEL, K_TEXT_TITLE,
+            K_ALARM_SOUND, K_ALARM_SOUND_REPEAT, K_ALARM_VIBRATION_REPEAT, K_RING_TITLE, K_RING_BODY, K_TEXT_CHANNEL, K_TEXT_TITLE,
             K_TEXT_RUNNING, K_TEXT_PAUSED, K_TEXT_DONE, K_TEXT_PAUSE, K_TEXT_RESUME,
             K_TEXT_STOP,
         )

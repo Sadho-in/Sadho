@@ -25,6 +25,7 @@ sent off it is **not "collected"**; data the user sends somewhere themselves
 | Notifications (`POST_NOTIFICATIONS`) | Alarms, timers, calendar reminders, the daily reminder, the Mala counter notification. Local notifications only; no push service. | **No** |
 | Exact alarms, full screen, boot (`USE_EXACT_ALARM`, `USE_FULL_SCREEN_INTENT`, `RECEIVE_BOOT_COMPLETED`) | Ring alarms on time, over the lock screen, and keep them after a restart. | **No** |
 | Foreground service (`FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE`) | Mala counting with the screen off. | **No** |
+| Alarm ring service (`FOREGROUND_SERVICE_SYSTEM_EXEMPTED`) | Keeps a scheduled alarm (Sadhana finish, Clock timer, sun alarm) ringing for up to 5 minutes with the screen off. | **No** |
 | Do Not Disturb (`ACCESS_NOTIFICATION_POLICY`) | Optional quiet mode during a session. | **No** |
 | Vibration, wake lock | Feedback; keep the screen on during a session. | **No** |
 | Name and email (Profile) | Optional, typed by the user, stored only on the phone (no account behind it). | **No** |

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/storage/app_storage.dart';
 import '../../alarms/services/alarm_health.dart';
+import '../../alarms/services/alarm_ring.dart' show RingRepeat;
 import '../../calendar/services/local_notifications_scheduler.dart'
     show sadhanaAlarmChannel;
 import '../../calendar/services/reminder_planner.dart' show reminderId;
@@ -944,6 +945,15 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
       vibrate: vib,
       insistent: (ring && c.soundRepeat == SoundRepeat.untilStopped) ||
           (vib && c.vibrationRepeat == VibrationRepeat.untilStopped),
+      soundRepeat: switch (c.soundRepeat) {
+        SoundRepeat.once => RingRepeat.once,
+        SoundRepeat.repeat => RingRepeat.repeat,
+        SoundRepeat.untilStopped => RingRepeat.until,
+      },
+      vibrationRepeat: switch (c.vibrationRepeat) {
+        VibrationRepeat.once => RingRepeat.once,
+        VibrationRepeat.untilStopped => RingRepeat.until,
+      },
     );
   }
 
@@ -1296,6 +1306,8 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
         sound: style.sound,
         vibrate: style.vibrate,
         insistent: style.insistent,
+        soundRepeat: style.soundRepeat,
+        vibrationRepeat: style.vibrationRepeat,
         title: l.malaRingTitle,
         body: l.malaRingBody(s.targetCount),
       ),

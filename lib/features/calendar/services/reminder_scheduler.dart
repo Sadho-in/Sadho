@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../alarms/services/alarm_ring.dart';
 import '../data/calendar_mark.dart';
 
 /// One alarm-style notification: the sun alarm ringing, a timer finishing.
@@ -44,6 +45,8 @@ class AlarmStyle {
     required this.soundLabel,
     required this.vibrate,
     required this.insistent,
+    this._soundRepeat,
+    this._vibrationRepeat,
   });
 
   /// Android raw resource name of the ringtone (e.g. `temple_bell`), or null
@@ -58,15 +61,30 @@ class AlarmStyle {
   /// Keeps ringing (and vibrating) until dismissed.
   final bool insistent;
 
+  /// Named `soundRepeat` / `vibrationRepeat` in the constructor.
+  final String? _soundRepeat;
+  final String? _vibrationRepeat;
+
+  /// How often the ringtone plays ([RingRepeat]); from [insistent] if not given.
+  String get soundRepeat =>
+      _soundRepeat ?? (insistent ? RingRepeat.until : RingRepeat.once);
+
+  /// How long the vibration goes on ([RingRepeat]).
+  String get vibrationRepeat =>
+      _vibrationRepeat ?? (insistent ? RingRepeat.until : RingRepeat.once);
+
   @override
   bool operator ==(Object other) =>
       other is AlarmStyle &&
       other.sound == sound &&
       other.vibrate == vibrate &&
-      other.insistent == insistent;
+      other.insistent == insistent &&
+      other.soundRepeat == soundRepeat &&
+      other.vibrationRepeat == vibrationRepeat;
 
   @override
-  int get hashCode => Object.hash(sound, vibrate, insistent);
+  int get hashCode =>
+      Object.hash(sound, vibrate, insistent, soundRepeat, vibrationRepeat);
 }
 
 /// Groups of alerts (they share a notification payload, so a whole group can

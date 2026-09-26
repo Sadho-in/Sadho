@@ -2639,5 +2639,9 @@
         "type": "String"
       }
     }
+  },
+  "channelSadhanaAlarmV2Name": "Sadhana alarm",
+  "@channelSadhanaAlarmV2Name": {
+    "description": "Name of the one Sadhana alarm notification channel (Android settings), since P5.1"
   }
 }

@@ -3945,6 +3945,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your practice, calendar, voice training and location stay on this phone. By continuing you agree to the {terms} and have read the {privacy}.'**
   String onboardingLegalNotice(String terms, String privacy);
+
+  /// Name of the one Sadhana alarm notification channel (Android settings), since P5.1
+  ///
+  /// In en, this message translates to:
+  /// **'Sadhana alarm'**
+  String get channelSadhanaAlarmV2Name;
 }
 
 class _AppLocalizationsDelegate

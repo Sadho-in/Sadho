@@ -2292,4 +2292,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String onboardingLegalNotice(String terms, String privacy) {
     return 'உங்கள் சாதனை, நாட்காட்டி, குரல் பயிற்சி மற்றும் இருப்பிடம் இந்த ஃபோனிலேயே இருக்கும். தொடர்வதன் மூலம் நீங்கள் $terms ஏற்கிறீர்கள், $privacy படித்துள்ளீர்கள்.';
   }
+
+  @override
+  String get channelSadhanaAlarmV2Name => 'சாதனா அலாரம்';
 }

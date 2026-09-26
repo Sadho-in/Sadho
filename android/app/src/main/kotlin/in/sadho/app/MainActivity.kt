@@ -26,6 +26,7 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterActivity() {
     private var channel: MethodChannel? = null
     private var malaChannel: MethodChannel? = null
+    private var ringChannel: MethodChannel? = null
 
     /** The alarm group this activity was just opened for (until Dart takes it). */
     private var alarmLaunch: String? = null
@@ -82,6 +83,7 @@ class MainActivity : FlutterActivity() {
 
     override fun onDestroy() {
         MalaCounterService.listener = null
+        AlarmRinger.listener = null
         super.onDestroy()
     }
 
@@ -149,9 +151,56 @@ class MainActivity : FlutterActivity() {
                     result.success(null)
                 }
                 "currentState" -> result.success(MalaCounterService.readState(this))
+                // The app is back: a Mala ring still sounding stops (unless
+                // the phone is locked and the alarm screen shows it).
                 "dismissRing" -> {
-                    (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
-                        .cancel(MalaCounterService.RING_NOTIFICATION_ID)
+                    AlarmRinger.silenceIfUnlocked(this, MalaCounterService.MALA_GROUP)
+                    result.success(null)
+                }
+                else -> result.notImplemented()
+            }
+        }
+    }
+
+    /**
+     * "sadho/ring": the one alarm ring (AlarmRinger) and the alarms that
+     * start it (AlarmScheduler). Its state lives natively, so the app reads it
+     * back after its activity or process was recreated.
+     */
+    private fun configureRing(flutterEngine: FlutterEngine) {
+        val ch = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "sadho/ring")
+        ringChannel = ch
+        AlarmRinger.listener = { state -> ch.invokeMethod("ringChanged", state) }
+        AlarmRinger.ensureChannels(this)
+        ch.setMethodCallHandler { call, result ->
+            when (call.method) {
+                "replaceGroup" -> {
+                    val args = call.arguments as? Map<*, *>
+                    val group = args?.get("group") as? String
+                    val alarms = (args?.get("alarms") as? List<*>)?.filterIsInstance<Map<*, *>>()
+                    if (group == null || alarms == null) {
+                        result.success(false)
+                    } else {
+                        AlarmScheduler.replaceGroup(this, group, alarms)
+                        result.success(true)
+                    }
+                }
+                "canScheduleExact" -> result.success(AlarmScheduler.canScheduleExact(this))
+                "state" -> result.success(AlarmRinger.state(this))
+                // A Stop button in the app: silences and acknowledges.
+                "stop" -> {
+                    AlarmRinger.acknowledge(this)
+                    result.success(null)
+                }
+                "silenceIfUnlocked" -> {
+                    AlarmRinger.silenceIfUnlocked(this, call.arguments as? String)
+                    result.success(null)
+                }
+                "setChannelNames" -> {
+                    val args = call.arguments as? Map<*, *>
+                    AlarmRinger.setChannelNames(
+                        this, args?.get("sadhana") as? String, args?.get("alarms") as? String,
+                    )
                     result.success(null)
                 }
                 else -> result.notImplemented()
@@ -165,6 +214,7 @@ class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         configureMala(flutterEngine)
+        configureRing(flutterEngine)
         val ch = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "sadho/alarm")
         channel = ch
         ch.setMethodCallHandler { call, result ->

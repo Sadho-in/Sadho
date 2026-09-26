@@ -43,6 +43,12 @@
          The user grants this access in the phone's settings; Sadho never
          changes Do Not Disturb without it. -->
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+    <!-- The alarm ring (AlarmRingService): a short-lived foreground service
+         that keeps a scheduled alarm ringing (ringtone on the alarm stream,
+         vibration) with the screen off. Type systemExempted: allowed for apps
+         holding USE_EXACT_ALARM / SCHEDULE_EXACT_ALARM that use a foreground
+         service to continue an alarm. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED"/>
     <application
         android:label="Sadho"
         android:name="${applicationName}"
@@ -77,6 +83,20 @@
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="Counts mala repetitions from hardware volume-key presses while the screen is off, and rings when the user's target is reached (hands-free japa counter)."/>
         </service>
+        <!-- The one alarm ring (AlarmRinger): AlarmManager.setAlarmClock fires
+             AlarmReceiver, which starts AlarmRingService. -->
+        <service
+            android:name=".AlarmRingService"
+            android:exported="false"
+            android:foregroundServiceType="systemExempted"/>
+        <receiver android:exported="false" android:name=".AlarmReceiver"/>
+        <receiver android:exported="false" android:name=".AlarmBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
             <intent-filter>

@@ -2275,4 +2275,7 @@ class AppLocalizationsPa extends AppLocalizations {
   String onboardingLegalNotice(String terms, String privacy) {
     return 'ਤੁਹਾਡੀ ਸਾਧਨਾ, ਕੈਲੰਡਰ, ਅਵਾਜ਼ ਸਿਖਲਾਈ ਅਤੇ ਟਿਕਾਣਾ ਇਸੇ ਫ਼ੋਨ \'ਤੇ ਰਹਿੰਦੇ ਹਨ। ਜਾਰੀ ਰੱਖ ਕੇ ਤੁਸੀਂ $terms ਨਾਲ ਸਹਿਮਤ ਹੁੰਦੇ ਹੋ ਅਤੇ ਤੁਸੀਂ $privacy ਪੜ੍ਹ ਲਈ ਹੈ।';
   }
+
+  @override
+  String get channelSadhanaAlarmV2Name => 'ਸਾਧਨਾ ਅਲਾਰਮ';
 }

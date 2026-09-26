@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:advance_calendar/core/links.dart';
 import 'package:advance_calendar/core/storage/app_storage.dart';
 import 'package:advance_calendar/features/alarms/services/alarm_health.dart';
+import 'package:advance_calendar/features/alarms/services/alarm_ring.dart';
 import 'package:advance_calendar/features/calendar/application/now_provider.dart';
 import 'package:advance_calendar/features/sadhana/application/voice_training_provider.dart';
 import 'package:advance_calendar/features/sadhana/data/ringtone.dart';
@@ -681,6 +682,78 @@ class FakeDnd implements DndDriver {
   Future<void> openAccessSettings() async => settingsOpened++;
 }
 
+/// Stand-in for the one native alarm ring (AlarmRinger.kt / AlarmScheduler.kt).
+/// Behaves like it: a ring is unacknowledged until an explicit Stop; opening
+/// the app silences it only while the phone is unlocked.
+class FakeAlarmRing implements AlarmRing {
+  FakeAlarmRing({this.supported = true, this.replaceOk = true});
+
+  bool supported;
+  bool replaceOk;
+  bool locked = false;
+  RingState state = RingState.idle;
+
+  /// The alarms set per group (the last replaceGroup of each).
+  final groups = <String, List<NativeAlarm>>{};
+  int stops = 0;
+  final silenced = <String>[];
+  ({String sadhana, String alarms})? channelNames;
+  final _listeners = <void Function(RingState)>[];
+
+  /// An alarm of [group] starts ringing (the native side fired it).
+  void ring(String group) => _set(RingState(ringing: true, unacknowledged: true, group: group));
+
+  /// The phone was unlocked (ACTION_USER_PRESENT): silenced, not acknowledged.
+  void unlock() {
+    locked = false;
+    if (state.ringing) {
+      _set(RingState(unacknowledged: state.unacknowledged, group: state.group));
+    }
+  }
+
+  void _set(RingState s) {
+    state = s;
+    for (final l in [..._listeners]) {
+      l(s);
+    }
+  }
+
+  @override
+  bool get isSupported => supported;
+
+  @override
+  Future<bool> replaceGroup(String group, List<NativeAlarm> alarms) async {
+    groups[group] = alarms;
+    return replaceOk;
+  }
+
+  @override
+  Future<RingState> current() async => state;
+
+  @override
+  Future<void> stop() async {
+    stops++;
+    _set(RingState(group: state.group));
+  }
+
+  @override
+  Future<void> silenceIfUnlocked(String group) async {
+    silenced.add(group);
+    if (locked || !state.ringing || state.group != group) return;
+    _set(RingState(unacknowledged: state.unacknowledged, group: state.group));
+  }
+
+  @override
+  Future<void> setChannelNames({required String sadhana, required String alarms}) async =>
+      channelNames = (sadhana: sadhana, alarms: alarms);
+
+  @override
+  VoidCallback listen(void Function(RingState state) onChange) {
+    _listeners.add(onChange);
+    return () => _listeners.remove(onChange);
+  }
+}
+
 /// Provider overrides that replace every plugin-backed service.
 ///
 /// Pass [haptics] and/or [sound] to run the REAL feedback service (settings
@@ -698,9 +771,11 @@ List<Override> testOverrides({
   FakeAlarmHealth? alarmHealth,
   FakeMalaService? mala,
   FakeDnd? dnd,
+  FakeAlarmRing? ring,
 }) =>
     [
       if (dnd != null) dndDriverProvider.overrideWithValue(dnd),
+      if (ring != null) alarmRingProvider.overrideWithValue(ring),
       if (mala != null) malaBackgroundServiceProvider.overrideWithValue(mala),
       alarmHealthProvider.overrideWithValue(alarmHealth ?? FakeAlarmHealth()),
       lockScreenProvider.overrideWithValue(lockScreen ?? FakeLockScreen()),

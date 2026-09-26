@@ -141,6 +141,8 @@ class MalaRing {
     required this.insistent,
     required this.title,
     required this.body,
+    this.soundRepeat,
+    this.vibrationRepeat,
   });
 
   final String channelId;
@@ -155,6 +157,11 @@ class MalaRing {
   final bool insistent;
   final String title;
   final String body;
+
+  /// How often the ringtone / vibration repeat (RingRepeat: once, repeat,
+  /// until). Null: from [insistent].
+  final String? soundRepeat;
+  final String? vibrationRepeat;
 }
 
 /// Everything the service needs: the count and target, and how it should buzz,
@@ -207,6 +214,8 @@ class MalaServiceConfig {
         'alarmSound': ring.sound,
         'alarmVibrate': ring.vibrate,
         'alarmInsistent': ring.insistent,
+        'alarmSoundRepeat': ring.soundRepeat,
+        'alarmVibrationRepeat': ring.vibrationRepeat,
         'ringTitle': ring.title,
         'ringBody': ring.body,
         'textChannel': text.channel,
