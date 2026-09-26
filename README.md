@@ -683,12 +683,15 @@ Checked in P6-6 (Flutter 3.47.4, not upgraded):
   by the Flutter SDK or other packages; they follow Flutter upgrades.
 - **"Old Kotlin Gradle Plugin" warning** for `flutter_timezone` and
   `flutter_volume_controller`: both are already at their latest versions
-  (5.1.0 and 2.0.2), and both already support AGP 9's built-in Kotlin. They
-  apply the old plugin only because `android/gradle.properties` has
-  `android.builtInKotlin=false` (a Flutter template default, kept so plugins
-  that have not migrated, such as `integration_test`, still build). The fix is
-  to set it to `true` once a full debug and release build has been checked with
-  it (a Gradle change that `flutter test` cannot verify).
+  (5.1.0 and 2.0.2), and both support AGP 9's built-in Kotlin. Since P5.1-8
+  `android/gradle.properties` has `android.builtInKotlin=true`, so neither
+  applies the old plugin any more; `flutter build apk --debug` (which includes
+  `integration_test`) and `--release` both build with it. Flutter 3.47 still
+  PRINTS the warning, because it decides by scanning each plugin's
+  `build.gradle` text for `apply plugin: 'kotlin-android'`, and both plugins
+  keep that line inside an `if (agpMajor < 9 || !builtInKotlinEnabled)` that is
+  now skipped. The message goes away only when those plugins drop the line (or
+  Flutter's check reads the flag); nothing more can be done in this app.
   `flutter_volume_controller` is still used: `volume_button_listener` (the
   in-app Mala fallback) depends on it.
 

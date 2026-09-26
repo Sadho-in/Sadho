@@ -45,4 +45,12 @@ void main() {
     expect(read('android/gradle.properties'), contains('android.builtInKotlin'));
     expect(read('README.md'), contains('## Build health'));
   });
+
+  test('P5.1-8: built-in Kotlin is on (plugins skip the old Kotlin plugin)', () {
+    expect(read('android/gradle.properties'),
+        contains(RegExp(r'^android\.builtInKotlin=true$', multiLine: true)));
+    final app = read('android/app/build.gradle.kts');
+    expect(app, isNot(contains('kotlin-android')),
+        reason: 'the app itself never applies the old plugin');
+  });
 }
