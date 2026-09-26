@@ -2267,4 +2267,29 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String get healthDndBody =>
       'அமர்வின் போது பிற அறிவிப்புகளை அமைதியாக்கத் தேவை. இது இல்லாமல் Sadho \'தொந்தரவு செய்யாதே\'-ஐத் தொடாது.';
+
+  @override
+  String get legalPrivacyPolicy => 'தனியுரிமைக் கொள்கை';
+
+  @override
+  String get legalTermsOfUse => 'பயன்பாட்டு விதிமுறைகள்';
+
+  @override
+  String get legalContact => 'தொடர்பு & குறைதீர்ப்பு';
+
+  @override
+  String get legalDeleteData => 'உங்கள் தரவை நீக்கு';
+
+  @override
+  String get legalLicenses => 'திறமூல உரிமங்கள்';
+
+  @override
+  String linkOpenFailed(String url) {
+    return '$url ஐத் திறக்க முடியவில்லை';
+  }
+
+  @override
+  String onboardingLegalNotice(String terms, String privacy) {
+    return 'உங்கள் சாதனை, நாட்காட்டி, குரல் பயிற்சி மற்றும் இருப்பிடம் இந்த ஃபோனிலேயே இருக்கும். தொடர்வதன் மூலம் நீங்கள் $terms ஏற்கிறீர்கள், $privacy படித்துள்ளீர்கள்.';
+  }
 }

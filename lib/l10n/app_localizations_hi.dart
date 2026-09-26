@@ -2251,4 +2251,29 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get healthDndBody =>
       'सत्र के दौरान अन्य सूचनाएँ शांत करने के लिए ज़रूरी। इसके बिना Sadho \'परेशान न करें\' को नहीं छूता।';
+
+  @override
+  String get legalPrivacyPolicy => 'गोपनीयता नीति';
+
+  @override
+  String get legalTermsOfUse => 'उपयोग की शर्तें';
+
+  @override
+  String get legalContact => 'संपर्क और शिकायत';
+
+  @override
+  String get legalDeleteData => 'अपना डेटा हटाएं';
+
+  @override
+  String get legalLicenses => 'ओपन-सोर्स लाइसेंस';
+
+  @override
+  String linkOpenFailed(String url) {
+    return '$url नहीं खुल सका';
+  }
+
+  @override
+  String onboardingLegalNotice(String terms, String privacy) {
+    return 'आपकी साधना, कैलेंडर, आवाज़ प्रशिक्षण और स्थान इसी फ़ोन पर रहते हैं। जारी रखकर आप $terms से सहमत होते हैं और आपने $privacy पढ़ ली है।';
+  }
 }

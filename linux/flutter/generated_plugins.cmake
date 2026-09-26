@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   flutter_timezone
   flutter_volume_controller
   record_linux
+  url_launcher_linux
   volume_button_listener
 )
 

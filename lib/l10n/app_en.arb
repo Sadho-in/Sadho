@@ -2598,5 +2598,46 @@
   "healthDndBody": "Needed to silence other notifications during a session. Without it, Sadho leaves Do Not Disturb alone.",
   "@healthDndBody": {
     "description": "Alarms & reliability row body for Do Not Disturb access"
+  },
+  "legalPrivacyPolicy": "Privacy policy",
+  "@legalPrivacyPolicy": {
+    "description": "Link to the privacy policy web page (Profile > About, and the first-launch notice)"
+  },
+  "legalTermsOfUse": "Terms of use",
+  "@legalTermsOfUse": {
+    "description": "Link to the terms of use web page"
+  },
+  "legalContact": "Contact & grievance",
+  "@legalContact": {
+    "description": "Link to the contact and grievance officer web page"
+  },
+  "legalDeleteData": "Delete your data",
+  "@legalDeleteData": {
+    "description": "Link to the web page explaining how to delete your data"
+  },
+  "legalLicenses": "Open-source licences",
+  "@legalLicenses": {
+    "description": "Opens the list of open-source licences (packages and fonts)"
+  },
+  "linkOpenFailed": "Could not open {url}",
+  "@linkOpenFailed": {
+    "description": "Snackbar when a web link could not be opened",
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingLegalNotice": "Your practice, calendar, voice training and location stay on this phone. By continuing you agree to the {terms} and have read the {privacy}.",
+  "@onboardingLegalNotice": {
+    "description": "Short privacy/terms notice under Continue on the first-launch screen. {terms} and {privacy} are replaced by the linked names 'Terms of use' and 'Privacy policy' (legalTermsOfUse / legalPrivacyPolicy); place them where your grammar needs them.",
+    "placeholders": {
+      "terms": {
+        "type": "String"
+      },
+      "privacy": {
+        "type": "String"
+      }
+    }
   }
 }

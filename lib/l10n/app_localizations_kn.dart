@@ -2249,4 +2249,29 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get healthDndBody =>
       'ಅವಧಿಯಲ್ಲಿ ಇತರ ಅಧಿಸೂಚನೆಗಳನ್ನು ನಿಶ್ಯಬ್ದಗೊಳಿಸಲು ಅಗತ್ಯ. ಇದಿಲ್ಲದೆ Sadho \'ಅಡಚಣೆ ಮಾಡಬೇಡಿ\' ಅನ್ನು ಮುಟ್ಟುವುದಿಲ್ಲ.';
+
+  @override
+  String get legalPrivacyPolicy => 'ಗೌಪ್ಯತಾ ನೀತಿ';
+
+  @override
+  String get legalTermsOfUse => 'ಬಳಕೆಯ ನಿಯಮಗಳು';
+
+  @override
+  String get legalContact => 'ಸಂಪರ್ಕ ಮತ್ತು ದೂರು';
+
+  @override
+  String get legalDeleteData => 'ನಿಮ್ಮ ಡೇಟಾ ಅಳಿಸಿ';
+
+  @override
+  String get legalLicenses => 'ಓಪನ್-ಸೋರ್ಸ್ ಪರವಾನಗಿಗಳು';
+
+  @override
+  String linkOpenFailed(String url) {
+    return '$url ತೆರೆಯಲಾಗಲಿಲ್ಲ';
+  }
+
+  @override
+  String onboardingLegalNotice(String terms, String privacy) {
+    return 'ನಿಮ್ಮ ಸಾಧನೆ, ಕ್ಯಾಲೆಂಡರ್, ಧ್ವನಿ ತರಬೇತಿ ಮತ್ತು ಸ್ಥಳ ಈ ಫೋನ್‌ನಲ್ಲೇ ಇರುತ್ತವೆ. ಮುಂದುವರಿಯುವ ಮೂಲಕ ನೀವು $terms ಒಪ್ಪುತ್ತೀರಿ ಮತ್ತು $privacy ಓದಿದ್ದೀರಿ.';
+  }
 }

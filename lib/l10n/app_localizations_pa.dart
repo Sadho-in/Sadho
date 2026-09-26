@@ -2250,4 +2250,29 @@ class AppLocalizationsPa extends AppLocalizations {
   @override
   String get healthDndBody =>
       'ਸੈਸ਼ਨ ਦੌਰਾਨ ਹੋਰ ਸੂਚਨਾਵਾਂ ਚੁੱਪ ਕਰਨ ਲਈ ਲੋੜੀਂਦਾ। ਇਸ ਤੋਂ ਬਿਨਾਂ Sadho \'ਪਰੇਸ਼ਾਨ ਨਾ ਕਰੋ\' ਨੂੰ ਨਹੀਂ ਛੇੜਦਾ।';
+
+  @override
+  String get legalPrivacyPolicy => 'ਪਰਦੇਦਾਰੀ ਨੀਤੀ';
+
+  @override
+  String get legalTermsOfUse => 'ਵਰਤੋਂ ਦੀਆਂ ਸ਼ਰਤਾਂ';
+
+  @override
+  String get legalContact => 'ਸੰਪਰਕ ਅਤੇ ਸ਼ਿਕਾਇਤ';
+
+  @override
+  String get legalDeleteData => 'ਆਪਣਾ ਡਾਟਾ ਮਿਟਾਓ';
+
+  @override
+  String get legalLicenses => 'ਓਪਨ-ਸੋਰਸ ਲਾਇਸੈਂਸ';
+
+  @override
+  String linkOpenFailed(String url) {
+    return '$url ਨਹੀਂ ਖੁੱਲ੍ਹ ਸਕਿਆ';
+  }
+
+  @override
+  String onboardingLegalNotice(String terms, String privacy) {
+    return 'ਤੁਹਾਡੀ ਸਾਧਨਾ, ਕੈਲੰਡਰ, ਅਵਾਜ਼ ਸਿਖਲਾਈ ਅਤੇ ਟਿਕਾਣਾ ਇਸੇ ਫ਼ੋਨ \'ਤੇ ਰਹਿੰਦੇ ਹਨ। ਜਾਰੀ ਰੱਖ ਕੇ ਤੁਸੀਂ $terms ਨਾਲ ਸਹਿਮਤ ਹੁੰਦੇ ਹੋ ਅਤੇ ਤੁਸੀਂ $privacy ਪੜ੍ਹ ਲਈ ਹੈ।';
+  }
 }

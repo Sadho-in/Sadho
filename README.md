@@ -176,8 +176,17 @@ relaunch, and their reminders are rebuilt every time the app starts.
 - **Account**: *Change password* checks your entries but does nothing yet, and
   says so; *Sign out* says there is no account to sign out of yet.
   TODO(auth): both become real with accounts (Supabase).
-- **About**: Sadho, sadho.in, version (kept equal to `pubspec.yaml`; a test
-  checks it).
+- **About**: the logo, Sadho, sadho.in, version (kept equal to `pubspec.yaml`;
+  a test checks it), and links that open in the browser: **Privacy policy**
+  (sadho.in/privacy), **Terms of use** (/terms), **Contact & grievance**
+  (/contact), **Delete your data** (/delete-data), plus **Open-source
+  licences** (Flutter's licence page: every package, and the bundled fonts'
+  OFL licences).
+- **First-launch notice**: under Continue on the first screen, "Your practice,
+  calendar, voice training and location stay on this phone. By continuing you
+  agree to the Terms of use and have read the Privacy policy." (both linked,
+  translated). When it was first shown and when the user continued are saved
+  in Hive (`legal.noticeShownAt`, `legal.noticeAcceptedAt`).
 - **Danger zone** (red, at the bottom): **Delete account** asks "Are you sure?
   Yes / No". Only Yes does anything: it erases everything saved on this phone
   (profile, plans, marks, mantras, voice training, settings), cancels every
@@ -415,7 +424,8 @@ Flutter (stable) · Dart · Material 3 · `flutter_riverpod` · `hive` /
 `record` (PCM16 16 kHz microphone stream) · `fftea` (FFT) ·
 `permission_handler` · `volume_button_listener` · `table_calendar` ·
 `flutter_local_notifications` · `timezone` · `flutter_timezone` · `geolocator` ·
-`intl` · `file_picker`. MFCC and DTW are
+`intl` · `file_picker` · `url_launcher` (legal links open in the browser).
+MFCC and DTW are
 implemented in Dart in this repo (`lib/features/sadhana/voice/`).
 
 **Permissions**: Android `RECORD_AUDIO`, `ACCESS_COARSE_LOCATION`, `POST_NOTIFICATIONS`,

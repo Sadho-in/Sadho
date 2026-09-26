@@ -2247,4 +2247,29 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get healthDndBody =>
       'Needed to silence other notifications during a session. Without it, Sadho leaves Do Not Disturb alone.';
+
+  @override
+  String get legalPrivacyPolicy => 'Privacy policy';
+
+  @override
+  String get legalTermsOfUse => 'Terms of use';
+
+  @override
+  String get legalContact => 'Contact & grievance';
+
+  @override
+  String get legalDeleteData => 'Delete your data';
+
+  @override
+  String get legalLicenses => 'Open-source licences';
+
+  @override
+  String linkOpenFailed(String url) {
+    return 'Could not open $url';
+  }
+
+  @override
+  String onboardingLegalNotice(String terms, String privacy) {
+    return 'Your practice, calendar, voice training and location stay on this phone. By continuing you agree to the $terms and have read the $privacy.';
+  }
 }

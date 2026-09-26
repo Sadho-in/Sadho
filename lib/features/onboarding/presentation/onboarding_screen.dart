@@ -1,7 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/constants/app_constants.dart';
 import '../../../core/widgets/sadho_logo.dart';
+import '../../clock/application/clock_source.dart';
+import '../../profile/presentation/widgets/about_card.dart' show openLink;
 import '../../../l10n/l10n.dart';
 import '../../../l10n/labels.dart';
 import '../../home/application/tradition_provider.dart';
@@ -24,6 +28,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       initialLanguageCode(ref.read(devicePlatformLocaleProvider));
   Tradition _tradition = Tradition.hindu;
 
+  @override
+  void initState() {
+    super.initState();
+    // The privacy / terms notice below Continue is on screen from now.
+    LegalNotice.markShown(ref.read(clockNowProvider)());
+  }
+
   void _selectLanguage(String? code) {
     if (code == null) return;
     setState(() => _languageCode = code);
@@ -37,6 +48,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     // default was left as-is): make sure it is actually saved.
     ref.read(languageProvider.notifier).set(_languageCode);
     ref.read(traditionProvider.notifier).set(_tradition);
+    LegalNotice.markAccepted(ref.read(clockNowProvider)());
     ref.read(onboardingCompleteProvider.notifier).complete();
   }
 
@@ -111,11 +123,68 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     child: Text(l.continueAction),
                   ),
                 ),
+                const SizedBox(height: 12),
+                const _LegalNoticeText(),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// "Your practice ... stay on this phone. By continuing you agree to the Terms
+/// of use and have read the Privacy policy.", with both as links.
+class _LegalNoticeText extends ConsumerStatefulWidget {
+  const _LegalNoticeText();
+
+  @override
+  ConsumerState<_LegalNoticeText> createState() => _LegalNoticeTextState();
+}
+
+class _LegalNoticeTextState extends ConsumerState<_LegalNoticeText> {
+  late final _terms = TapGestureRecognizer()
+    ..onTap = () => openLink(context, ref, AppConstants.termsUrl);
+  late final _privacy = TapGestureRecognizer()
+    ..onTap = () => openLink(context, ref, AppConstants.privacyUrl);
+
+  @override
+  void dispose() {
+    _terms.dispose();
+    _privacy.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = context.l10n;
+    final theme = Theme.of(context);
+    final style = theme.textTheme.bodySmall
+        ?.copyWith(color: theme.colorScheme.onSurfaceVariant);
+    final linkStyle = style?.copyWith(
+      color: theme.colorScheme.primary,
+      decoration: TextDecoration.underline,
+      fontWeight: FontWeight.w600,
+    );
+    // The sentence is translated as a whole; the two link names are put in
+    // where the translation places them.
+    const termsMark = '\u0001', privacyMark = '\u0002';
+    final sentence = l.onboardingLegalNotice(termsMark, privacyMark);
+    final spans = <InlineSpan>[];
+    for (final part in sentence.split(RegExp('(?=[\u0001\u0002])|(?<=[\u0001\u0002])'))) {
+      if (part == termsMark) {
+        spans.add(TextSpan(text: l.legalTermsOfUse, style: linkStyle, recognizer: _terms));
+      } else if (part == privacyMark) {
+        spans.add(TextSpan(
+            text: l.legalPrivacyPolicy, style: linkStyle, recognizer: _privacy));
+      } else if (part.isNotEmpty) {
+        spans.add(TextSpan(text: part));
+      }
+    }
+    return Text.rich(
+      TextSpan(style: style, children: spans),
+      key: const ValueKey('onboarding-legal-notice'),
     );
   }
 }

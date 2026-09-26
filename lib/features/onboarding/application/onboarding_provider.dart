@@ -19,6 +19,31 @@ class OnboardingNotifier extends Notifier<bool> {
   }
 }
 
+/// The first-launch privacy / terms notice (under Continue): when it was
+/// first shown and when the user continued past it (ms since the epoch), kept
+/// in Hive as a record of the notice.
+abstract final class LegalNotice {
+  static const shownAtKey = 'legal.noticeShownAt';
+  static const acceptedAtKey = 'legal.noticeAcceptedAt';
+
+  /// Records the first time the notice was shown (later showings keep it).
+  static void markShown(DateTime now) {
+    if (AppStorage.settings.get(shownAtKey) is int) return;
+    AppStorage.settings.put(shownAtKey, now.millisecondsSinceEpoch);
+  }
+
+  static void markAccepted(DateTime now) =>
+      AppStorage.settings.put(acceptedAtKey, now.millisecondsSinceEpoch);
+
+  static DateTime? _at(String key) {
+    final v = AppStorage.settings.get(key);
+    return v is int ? DateTime.fromMillisecondsSinceEpoch(v) : null;
+  }
+
+  static DateTime? get shownAt => _at(shownAtKey);
+  static DateTime? get acceptedAt => _at(acceptedAtKey);
+}
+
 final onboardingCompleteProvider =
     NotifierProvider<OnboardingNotifier, bool>(OnboardingNotifier.new);
 

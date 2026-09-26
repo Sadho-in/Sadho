@@ -2247,4 +2247,29 @@ class AppLocalizationsMr extends AppLocalizations {
   @override
   String get healthDndBody =>
       'सत्रादरम्यान इतर सूचना शांत करण्यासाठी आवश्यक. याशिवाय Sadho \'व्यत्यय आणू नका\' ला हात लावत नाही.';
+
+  @override
+  String get legalPrivacyPolicy => 'गोपनीयता धोरण';
+
+  @override
+  String get legalTermsOfUse => 'वापराच्या अटी';
+
+  @override
+  String get legalContact => 'संपर्क आणि तक्रार';
+
+  @override
+  String get legalDeleteData => 'तुमचा डेटा हटवा';
+
+  @override
+  String get legalLicenses => 'ओपन-सोर्स परवाने';
+
+  @override
+  String linkOpenFailed(String url) {
+    return '$url उघडता आले नाही';
+  }
+
+  @override
+  String onboardingLegalNotice(String terms, String privacy) {
+    return 'तुमची साधना, कॅलेंडर, आवाज प्रशिक्षण आणि स्थान याच फोनवर राहतात. पुढे जाऊन तुम्ही $terms मान्य करता आणि $privacy वाचले आहे.';
+  }
 }

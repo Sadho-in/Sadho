@@ -3903,6 +3903,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Needed to silence other notifications during a session. Without it, Sadho leaves Do Not Disturb alone.'**
   String get healthDndBody;
+
+  /// Link to the privacy policy web page (Profile > About, and the first-launch notice)
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get legalPrivacyPolicy;
+
+  /// Link to the terms of use web page
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of use'**
+  String get legalTermsOfUse;
+
+  /// Link to the contact and grievance officer web page
+  ///
+  /// In en, this message translates to:
+  /// **'Contact & grievance'**
+  String get legalContact;
+
+  /// Link to the web page explaining how to delete your data
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your data'**
+  String get legalDeleteData;
+
+  /// Opens the list of open-source licences (packages and fonts)
+  ///
+  /// In en, this message translates to:
+  /// **'Open-source licences'**
+  String get legalLicenses;
+
+  /// Snackbar when a web link could not be opened
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open {url}'**
+  String linkOpenFailed(String url);
+
+  /// Short privacy/terms notice under Continue on the first-launch screen. {terms} and {privacy} are replaced by the linked names 'Terms of use' and 'Privacy policy' (legalTermsOfUse / legalPrivacyPolicy); place them where your grammar needs them.
+  ///
+  /// In en, this message translates to:
+  /// **'Your practice, calendar, voice training and location stay on this phone. By continuing you agree to the {terms} and have read the {privacy}.'**
+  String onboardingLegalNotice(String terms, String privacy);
 }
 
 class _AppLocalizationsDelegate

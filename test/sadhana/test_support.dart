@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'dart:typed_data';
 
+import 'package:advance_calendar/core/links.dart';
 import 'package:advance_calendar/core/storage/app_storage.dart';
 import 'package:advance_calendar/features/alarms/services/alarm_health.dart';
 import 'package:advance_calendar/features/calendar/application/now_provider.dart';
@@ -630,6 +631,20 @@ class FakeMalaService implements MalaBackgroundService {
     for (final l in [..._listeners]) {
       l(e);
     }
+  }
+}
+
+/// Stand-in for the browser: records every page asked for.
+class FakeLinks implements LinkLauncher {
+  FakeLinks({this.succeeds = true});
+
+  bool succeeds;
+  final opened = <Uri>[];
+
+  @override
+  Future<bool> open(Uri url) async {
+    opened.add(url);
+    return succeeds;
   }
 }
 

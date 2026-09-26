@@ -2250,4 +2250,29 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get healthDndBody =>
       'সেশনের সময় অন্যান্য বিজ্ঞপ্তি নীরব করতে দরকার। এটি ছাড়া Sadho \'বিরক্ত করবেন না\' ছোঁয় না।';
+
+  @override
+  String get legalPrivacyPolicy => 'গোপনীয়তা নীতি';
+
+  @override
+  String get legalTermsOfUse => 'ব্যবহারের শর্তাবলি';
+
+  @override
+  String get legalContact => 'যোগাযোগ ও অভিযোগ';
+
+  @override
+  String get legalDeleteData => 'আপনার ডেটা মুছুন';
+
+  @override
+  String get legalLicenses => 'ওপেন-সোর্স লাইসেন্স';
+
+  @override
+  String linkOpenFailed(String url) {
+    return '$url খোলা যায়নি';
+  }
+
+  @override
+  String onboardingLegalNotice(String terms, String privacy) {
+    return 'আপনার সাধনা, ক্যালেন্ডার, কণ্ঠ প্রশিক্ষণ ও অবস্থান এই ফোনেই থাকে। চালিয়ে গেলে আপনি $terms মেনে নিচ্ছেন এবং $privacy পড়েছেন।';
+  }
 }

@@ -2263,4 +2263,29 @@ class AppLocalizationsTe extends AppLocalizations {
   @override
   String get healthDndBody =>
       'సెషన్ సమయంలో ఇతర నోటిఫికేషన్‌లను నిశ్శబ్దం చేయడానికి అవసరం. ఇది లేకుండా Sadho \'అంతరాయం కలిగించవద్దు\'ను తాకదు.';
+
+  @override
+  String get legalPrivacyPolicy => 'గోప్యతా విధానం';
+
+  @override
+  String get legalTermsOfUse => 'వినియోగ నిబంధనలు';
+
+  @override
+  String get legalContact => 'సంప్రదింపు & ఫిర్యాదు';
+
+  @override
+  String get legalDeleteData => 'మీ డేటాను తొలగించండి';
+
+  @override
+  String get legalLicenses => 'ఓపెన్-సోర్స్ లైసెన్స్‌లు';
+
+  @override
+  String linkOpenFailed(String url) {
+    return '$url తెరవడం సాధ్యం కాలేదు';
+  }
+
+  @override
+  String onboardingLegalNotice(String terms, String privacy) {
+    return 'మీ సాధన, క్యాలెండర్, వాయిస్ శిక్షణ మరియు స్థానం ఈ ఫోన్‌లోనే ఉంటాయి. కొనసాగించడం ద్వారా మీరు $termsకు అంగీకరిస్తున్నారు మరియు $privacy చదివారు.';
+  }
 }

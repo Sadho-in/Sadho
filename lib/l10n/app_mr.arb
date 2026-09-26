@@ -1,6 +1,6 @@
 {
   "@@locale": "mr",
-  "@@x-machine-translation": "First-pass machine translation into Marathi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review. Strings added in P4.3 (High contrast palette and accessibility labels) are also first-pass and need native review. Strings added in P5 (Mala with the screen off, quiet mode, voice calibration) are also first-pass and need native review.",
+  "@@x-machine-translation": "First-pass machine translation into Marathi, generated for i18n Step 4. NOT yet reviewed by a native speaker - please review before relying on it in production. See README.md's Localization section. Strings added in P4.4/P4.4a/P4.4b/P4.4c (completion repeat, Stop, keep-screen-on, Sadhana alarm, lock-screen alarm screen, Alarms & reliability) are also first-pass and need native review. Strings added in P4.3 (custom timer duration) are also first-pass and need native review. Strings added in P4.3 (collapsible Sadhana cards) are also first-pass and need native review. Strings added in P4.3 (Notepad) are also first-pass and need native review. Strings added in P4.3 (High contrast palette and accessibility labels) are also first-pass and need native review. Strings added in P5 (Mala with the screen off, quiet mode, voice calibration) are also first-pass and need native review. Strings added in P6 (legal links, licences, first-launch notice) are also first-pass and need native review.",
   "navHome": "होम",
   "navSadhana": "साधना",
   "navCalendar": "कॅलेंडर",
@@ -632,5 +632,12 @@
   "quietModeAccessTitle": "'व्यत्यय आणू नका' प्रवेश द्या",
   "quietModeAccessBody": "साधनेदरम्यान इतर सूचना शांत करण्यासाठी Sadho ला 'व्यत्यय आणू नका' प्रवेश हवा. पुढील स्क्रीनवर Sadho शोधा आणि परवानगी द्या. Sadho फक्त सत्र सुरू असताना 'फक्त अलार्म' मोड सुरू करते आणि नंतर तुमची सेटिंग परत करते.",
   "healthDndTitle": "'व्यत्यय आणू नका' प्रवेश",
-  "healthDndBody": "सत्रादरम्यान इतर सूचना शांत करण्यासाठी आवश्यक. याशिवाय Sadho 'व्यत्यय आणू नका' ला हात लावत नाही."
+  "healthDndBody": "सत्रादरम्यान इतर सूचना शांत करण्यासाठी आवश्यक. याशिवाय Sadho 'व्यत्यय आणू नका' ला हात लावत नाही.",
+  "legalPrivacyPolicy": "गोपनीयता धोरण",
+  "legalTermsOfUse": "वापराच्या अटी",
+  "legalContact": "संपर्क आणि तक्रार",
+  "legalDeleteData": "तुमचा डेटा हटवा",
+  "legalLicenses": "ओपन-सोर्स परवाने",
+  "linkOpenFailed": "{url} उघडता आले नाही",
+  "onboardingLegalNotice": "तुमची साधना, कॅलेंडर, आवाज प्रशिक्षण आणि स्थान याच फोनवर राहतात. पुढे जाऊन तुम्ही {terms} मान्य करता आणि {privacy} वाचले आहे."
 }

@@ -2248,4 +2248,29 @@ class AppLocalizationsGu extends AppLocalizations {
   @override
   String get healthDndBody =>
       'સત્ર દરમિયાન અન્ય સૂચનાઓ શાંત કરવા જરૂરી. તેના વિના Sadho \'ખલેલ પાડશો નહીં\'ને અડતું નથી.';
+
+  @override
+  String get legalPrivacyPolicy => 'ગોપનીયતા નીતિ';
+
+  @override
+  String get legalTermsOfUse => 'ઉપયોગની શરતો';
+
+  @override
+  String get legalContact => 'સંપર્ક અને ફરિયાદ';
+
+  @override
+  String get legalDeleteData => 'તમારો ડેટા કાઢી નાખો';
+
+  @override
+  String get legalLicenses => 'ઓપન-સોર્સ લાઇસન્સ';
+
+  @override
+  String linkOpenFailed(String url) {
+    return '$url ખોલી શકાયું નહીં';
+  }
+
+  @override
+  String onboardingLegalNotice(String terms, String privacy) {
+    return 'તમારી સાધના, કૅલેન્ડર, અવાજ તાલીમ અને સ્થાન આ જ ફોન પર રહે છે. આગળ વધીને તમે $terms સાથે સંમત થાઓ છો અને $privacy વાંચી છે.';
+  }
 }
