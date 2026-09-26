@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../voice/match_model.dart';
+import '../voice/utterance_detector.dart' show levelFromDb;
 import '../voice/voice_engine.dart';
 import 'pcm_input.dart';
 
@@ -38,6 +40,9 @@ abstract class VoiceCounterService {
   /// Applies a new Strict ↔ Lenient value to a running session.
   void setSensitivity(double value);
 
+  /// Live input loudness 0..1 while listening (0 when not), for the level bar.
+  ValueListenable<double> get level;
+
   Future<void> stop();
 }
 
@@ -70,6 +75,7 @@ class DeviceVoiceCounterService
       model: model,
       sensitivity: sensitivity,
       onCandidate: onCandidate,
+      onLevel: (db) => _level.value = levelFromDb(db),
     );
     _engine = engine;
     _onStopped = onStopped;
@@ -93,11 +99,17 @@ class DeviceVoiceCounterService
   @override
   void setSensitivity(double value) => _engine?.sensitivity = value;
 
+  final _level = ValueNotifier<double>(0);
+
+  @override
+  ValueListenable<double> get level => _level;
+
   @override
   Future<void> stop() async {
     _wanted = false;
     _suspended = false;
     _engine = null;
+    _level.value = 0;
     WidgetsBinding.instance.removeObserver(this);
     await _input.stop();
   }

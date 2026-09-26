@@ -2299,4 +2299,15 @@ class AppLocalizationsPa extends AppLocalizations {
 
   @override
   String get quietModeChip => 'ਸ਼ਾਂਤ ਮੋਡ ਚਾਲੂ';
+
+  @override
+  String get voiceInputLevel => 'ਮਾਈਕ੍ਰੋਫ਼ੋਨ ਪੱਧਰ';
+
+  @override
+  String get voiceTrainedWithHeadset =>
+      'ਈਅਰਫ਼ੋਨ ਨਾਲ ਸਿਖਾਇਆ — ਫ਼ੋਨ ਦੇ ਮਾਈਕ ਨਾਲ ਦੁਬਾਰਾ ਸਿਖਾਓ';
+
+  @override
+  String get voiceTrainedWithPhone =>
+      'ਫ਼ੋਨ ਦੇ ਮਾਈਕ ਨਾਲ ਸਿਖਾਇਆ — ਇਹਨਾਂ ਈਅਰਫ਼ੋਨਾਂ ਨਾਲ ਦੁਬਾਰਾ ਸਿਖਾਓ';
 }

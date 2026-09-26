@@ -55,6 +55,12 @@ class _VoiceTrainingScreenState extends ConsumerState<VoiceTrainingScreen>
   bool _append = false;
   VoiceStartResult? _lastStart;
 
+  /// The microphone this recording session uses (its set is saved for it).
+  VoiceInput? _recordInput;
+
+  /// Adding to a set saved before inputs were told apart.
+  bool _appendToUnknown = false;
+
   VoiceTraining? get _saved =>
       ref.read(voiceTrainingProvider)[widget.mantra.id];
 
@@ -88,13 +94,26 @@ class _VoiceTrainingScreenState extends ConsumerState<VoiceTrainingScreen>
   Future<void> _begin({bool? append}) async {
     ref.read(sadhanaSessionProvider.notifier).pause();
     final wantAppend = append ?? _append;
-    final saved = _saved;
+    // Which microphone: the recordings are kept per input (phone / headset).
+    final input =
+        await ref.read(voiceTrainingProvider.notifier).refreshInput();
+    if (!mounted) return;
+    _recordInput = input;
+    final current = _saved;
+    // Only a set made with this same microphone is added to.
+    final saved = current != null &&
+            (current.input == input ||
+                current.input == VoiceInput.unknown ||
+                input == VoiceInput.unknown)
+        ? current
+        : null;
     final old = _trainer;
     await old.stop();
     old.dispose();
     if (!mounted) return;
     setState(() {
       _append = wantAppend && saved != null;
+      _appendToUnknown = _append && saved?.input == VoiceInput.unknown;
       _trainer = VoiceTrainer(
         input: ref.read(pcmInputProvider),
         existing: _append ? saved!.templates : const [],
@@ -118,7 +137,8 @@ class _VoiceTrainingScreenState extends ConsumerState<VoiceTrainingScreen>
     await _trainer.stop();
     await ref
         .read(voiceTrainingProvider.notifier)
-        .save(widget.mantra.id, samples);
+        .save(widget.mantra.id, samples,
+            input: _recordInput, fromUnknown: appended && _appendToUnknown);
     if (!mounted) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
@@ -446,10 +466,9 @@ class _Stage extends StatelessWidget {
               const SizedBox(height: 12),
             ],
             if (t.listening) ...[
-              LinearProgressIndicator(
-                value: t.phase == TrainerPhase.calibrating ? null : t.level,
-                minHeight: 8,
-                borderRadius: BorderRadius.circular(4),
+              InputLevelBar(
+                key: const ValueKey('training-level'),
+                level: t.phase == TrainerPhase.calibrating ? null : t.level,
               ),
               const SizedBox(height: 16),
             ],

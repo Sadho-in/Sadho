@@ -50,7 +50,7 @@ class VoiceTrainer extends ChangeNotifier {
       onUtterance: _onUtterance,
       onTooShort: () => _say('That was too short. Say the whole mantra.'),
       onLevel: (db) {
-        _level = ((db + 60) / 45).clamp(0.0, 1.0);
+        _level = levelFromDb(db);
         notifyListeners();
       },
     );

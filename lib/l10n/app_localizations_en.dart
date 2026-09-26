@@ -2295,4 +2295,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quietModeChip => 'Quiet mode on';
+
+  @override
+  String get voiceInputLevel => 'Microphone level';
+
+  @override
+  String get voiceTrainedWithHeadset =>
+      'Trained with earphones — train again with the phone mic';
+
+  @override
+  String get voiceTrainedWithPhone =>
+      'Trained with the phone mic — train again with these earphones';
 }

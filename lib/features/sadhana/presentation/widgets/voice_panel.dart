@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../application/sadhana_session_provider.dart';
 import '../../application/selected_mantra_provider.dart';
 import '../../application/voice_training_provider.dart';
 import '../../data/mantra.dart';
+import '../../services/pcm_input.dart';
+import '../../services/voice_counter_service.dart';
 import '../../voice/match_model.dart';
 import '../voice_calibration_screen.dart';
 import '../voice_training_screen.dart';
@@ -13,11 +16,41 @@ import '../../../../l10n/l10n.dart';
 /// Shown in the Counting card while Voice is the active mode: whether the
 /// selected mantra is trained, Train / Re-train / Clear, the sensitivity
 /// slider, and the honest Beta caveats.
-class VoicePanel extends ConsumerWidget {
+class VoicePanel extends ConsumerStatefulWidget {
   const VoicePanel({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<VoicePanel> createState() => _VoicePanelState();
+}
+
+class _VoicePanelState extends ConsumerState<VoicePanel>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    // Which microphone is in use: its own training is picked.
+    Future.microtask(_refreshInput);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _refreshInput();
+  }
+
+  Future<void> _refreshInput() async {
+    if (!mounted) return;
+    await ref.read(voiceTrainingProvider.notifier).refreshInput();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final mantra = ref.watch(selectedMantraProvider);
     final trained = ref.watch(mantraTrainedProvider(mantra.id));
     final count = ref.watch(
@@ -25,6 +58,9 @@ class VoicePanel extends ConsumerWidget {
     final room = maxTrainingSamples - count;
     final calibrated = ref.watch(voiceTrainingProvider
         .select((m) => m[mantra.id]?.isCalibrated ?? false));
+    final otherInput = ref.watch(trainedWithOtherInputProvider(mantra.id));
+    final listening = ref.watch(sadhanaSessionProvider
+        .select((s) => s.mode == CountMode.voice && s.inputActive));
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
 
@@ -63,6 +99,41 @@ class VoicePanel extends ConsumerWidget {
             style: theme.textTheme.bodySmall
                 ?.copyWith(color: scheme.onSurfaceVariant),
           ),
+          if (otherInput != null) ...[
+            const SizedBox(height: 8),
+            Row(
+              key: const ValueKey('voice-other-input'),
+              children: [
+                Icon(Icons.headset_off_outlined, size: 18, color: scheme.error),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    otherInput == VoiceInput.headset
+                        ? context.l10n.voiceTrainedWithHeadset
+                        : context.l10n.voiceTrainedWithPhone,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+              ],
+            ),
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: TextButton.icon(
+                key: const ValueKey('voice-train-this-input'),
+                onPressed: () => openVoiceTraining(context, mantra),
+                icon: const Icon(Icons.mic, size: 18),
+                label: Text(context.l10n.trainVoice),
+              ),
+            ),
+          ],
+          if (listening) ...[
+            const SizedBox(height: 8),
+            ValueListenableBuilder<double>(
+              valueListenable: ref.read(voiceCounterServiceProvider).level,
+              builder: (context, level, _) => InputLevelBar(
+                  key: const ValueKey('voice-level'), level: level),
+            ),
+          ],
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,

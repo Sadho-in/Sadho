@@ -606,7 +606,11 @@ void main() {
       final saved = c.read(voiceTrainingProvider)['seed_waheguru']!;
       expect(saved.sampleCount, 7);
       expect(saved.isUsable, isTrue);
-      expect(AppStorage.voiceTemplates.get('seed_waheguru'), isNotNull);
+      // Kept per microphone since P5.1 (the fake phone reports its own mic).
+      expect(
+          AppStorage.voiceTemplates
+              .get(voiceTrainingKey('seed_waheguru', VoiceInput.phone)),
+          isNotNull);
     });
 
     for (final n in [3, 4, 5, 6]) {

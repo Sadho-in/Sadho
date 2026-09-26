@@ -331,6 +331,9 @@ class FakeVoice implements VoiceCounterService {
   void setSensitivity(double value) => lastSensitivity = value;
 
   @override
+  final ValueNotifier<double> level = ValueNotifier<double>(0);
+
+  @override
   Future<void> stop() async {
     stops++;
     listening = false;
@@ -382,6 +385,9 @@ class FakePcmInput implements PcmInput {
   int starts = 0;
   int stops = 0;
   bool streaming = false;
+
+  /// The microphone the phone reports.
+  VoiceInput input = VoiceInput.phone;
   void Function(Int16List)? _onSamples;
   void Function(String)? _onError;
 
@@ -406,6 +412,9 @@ class FakePcmInput implements PcmInput {
     stops++;
     streaming = false;
   }
+
+  @override
+  Future<VoiceInput> currentInput() async => input;
 
   /// Audio arriving from the microphone (dropped when not streaming).
   void push(Int16List pcm) {

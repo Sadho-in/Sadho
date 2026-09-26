@@ -3,6 +3,11 @@ import 'dart:typed_data';
 
 import 'package:fftea/fftea.dart';
 
+/// A frame's loudness (dBFS) as 0..1 for a level meter: -70 dB (a quiet
+/// room on a phone's own microphone) is empty, -15 dB is full. Wide enough
+/// that a soft chant on a built-in mic still moves the bar.
+double levelFromDb(double db) => ((db + 70) / 55).clamp(0.0, 1.0);
+
 /// Samples per detector frame: 10 ms at 16 kHz.
 const gateFrameSamples = 160;
 
@@ -19,6 +24,8 @@ class GateConfig {
     this.onsetMarginDb = 9,
     this.offsetMarginDb = 5,
     this.minOnsetDb = -50,
+    this.quietMicFloorDb = -68,
+    this.minOnsetAboveNoiseDb = 15,
     this.maxOnsetZcr = 0.3,
     this.maxOnsetFlatness = 0.2,
   });
@@ -51,8 +58,18 @@ class GateConfig {
   final double onsetMarginDb;
   final double offsetMarginDb;
 
-  /// Never trigger below this level, however quiet the room is.
+  /// The lowest level that can start an utterance, before the noise floor
+  /// is known (and the most it is ever raised to by a quiet room).
   final double minOnsetDb;
+
+  /// A quiet built-in microphone (VOICE_RECOGNITION, no automatic gain)
+  /// records a soft chant well under [minOnsetDb]. Once the noise floor is
+  /// measured, the minimum follows it: noise + [minOnsetAboveNoiseDb], but
+  /// never below [quietMicFloorDb] (digital silence must not make any
+  /// whisper an utterance). The voice cues (few zero crossings, a peaky
+  /// spectrum) still decide whether a loud frame can start one.
+  final double quietMicFloorDb;
+  final double minOnsetAboveNoiseDb;
 
   /// A frame can start an utterance only if it sounds like voice: few zero
   /// crossings (a hiss or a breath crosses zero about every other sample) and
@@ -71,6 +88,8 @@ class GateConfig {
         onsetMarginDb: onsetMarginDb,
         offsetMarginDb: offsetMarginDb,
         minOnsetDb: minOnsetDb,
+        quietMicFloorDb: quietMicFloorDb,
+        minOnsetAboveNoiseDb: minOnsetAboveNoiseDb,
         maxOnsetZcr: maxOnsetZcr,
         maxOnsetFlatness: maxOnsetFlatness,
       );
@@ -129,12 +148,20 @@ class EnergyGate {
   bool get calibrated => _calibrated;
   double get noiseDb => _noiseDb;
 
+  /// The absolute minimum for an onset: [GateConfig.minOnsetDb] until the
+  /// noise floor is measured, then adapted to it (a quieter microphone gets
+  /// a lower minimum, see [GateConfig.quietMicFloorDb]).
+  double get minOnsetDb => _calibrated
+      ? (_noiseDb + config.minOnsetAboveNoiseDb)
+          .clamp(config.quietMicFloorDb, config.minOnsetDb)
+      : config.minOnsetDb;
+
   /// Level a frame must exceed to start an utterance.
   double get onsetDb => math.max(
-      config.minOnsetDb, _noiseDb + math.max(config.onsetMarginDb, 3 * _spreadDb));
+      minOnsetDb, _noiseDb + math.max(config.onsetMarginDb, 3 * _spreadDb));
 
   /// Level below which a frame counts as silence while an utterance is active.
-  double get offsetDb => math.max(config.minOnsetDb - 3,
+  double get offsetDb => math.max(minOnsetDb - 3,
       _noiseDb + math.max(config.offsetMarginDb, 2 * _spreadDb));
 
   bool get active => _state == _State.active;

@@ -2317,4 +2317,15 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String get quietModeChip => 'அமைதி பயன்முறை இயக்கத்தில்';
+
+  @override
+  String get voiceInputLevel => 'மைக்ரோஃபோன் அளவு';
+
+  @override
+  String get voiceTrainedWithHeadset =>
+      'இயர்போனில் பயிற்றுவிக்கப்பட்டது — போனின் மைக்கில் மீண்டும் பயிற்றுவிக்கவும்';
+
+  @override
+  String get voiceTrainedWithPhone =>
+      'போனின் மைக்கில் பயிற்றுவிக்கப்பட்டது — இந்த இயர்போனில் மீண்டும் பயிற்றுவிக்கவும்';
 }

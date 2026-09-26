@@ -2297,4 +2297,15 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get quietModeChip => 'ಶಾಂತ ಮೋಡ್ ಆನ್';
+
+  @override
+  String get voiceInputLevel => 'ಮೈಕ್ರೊಫೋನ್ ಮಟ್ಟ';
+
+  @override
+  String get voiceTrainedWithHeadset =>
+      'ಇಯರ್‌ಫೋನ್‌ನಿಂದ ತರಬೇತಿ — ಫೋನ್ ಮೈಕ್‌ನಿಂದ ಮತ್ತೆ ತರಬೇತಿ ನೀಡಿ';
+
+  @override
+  String get voiceTrainedWithPhone =>
+      'ಫೋನ್ ಮೈಕ್‌ನಿಂದ ತರಬೇತಿ — ಈ ಇಯರ್‌ಫೋನ್‌ನಿಂದ ಮತ್ತೆ ತರಬೇತಿ ನೀಡಿ';
 }

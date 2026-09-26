@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/storage/app_storage.dart';
+import '../services/pcm_input.dart';
 import '../voice/match_model.dart';
 import '../voice/mfcc.dart';
 
@@ -10,15 +11,24 @@ import '../voice/mfcc.dart';
 ///
 /// Only feature numbers are stored (a few KB per recording). The audio is
 /// never kept, so nothing here can be played back or leave the device.
+///
+/// Since P5.1 each mantra can have one set per microphone ([VoiceInput]): the
+/// phone's own microphone and a headset sound very different, so a training
+/// made with earphones barely matches on the phone mic. Trainings saved before
+/// that have no input recorded ([VoiceInput.unknown]) and are still used.
 class VoiceTraining {
   VoiceTraining({
     required this.mantraId,
     required List<MfccSequence> templates,
     required this.trainedAt,
     this.calibratedThreshold,
+    this.input = VoiceInput.unknown,
   }) : templates = List.unmodifiable(templates);
 
   final String mantraId;
+
+  /// The microphone these recordings were made with.
+  final VoiceInput input;
   final List<MfccSequence> templates;
   final DateTime trainedAt;
 
@@ -44,10 +54,12 @@ class VoiceTraining {
         templates: templates,
         trainedAt: trainedAt,
         calibratedThreshold: threshold,
+        input: input,
       );
 
   Map<String, dynamic> toMap() => {
         'v': 1,
+        if (input != VoiceInput.unknown) 'input': input.name,
         'dims': mfccDims,
         'trainedAt': trainedAt.millisecondsSinceEpoch,
         'templates': [for (final t in templates) t.toBytes()],
@@ -68,6 +80,8 @@ class VoiceTraining {
     final at = m['trainedAt'];
     final thr = m['threshold'];
     return VoiceTraining(
+      input: VoiceInput.values.firstWhere((i) => i.name == m['input'],
+          orElse: () => VoiceInput.unknown),
       calibratedThreshold:
           thr is num && thr.isFinite && thr > 0 ? thr.toDouble() : null,
       mantraId: mantraId,
@@ -79,23 +93,75 @@ class VoiceTraining {
   }
 }
 
-/// Trained voices for every mantra, keyed by mantra id.
+/// Storage key of [mantraId]'s set for [input] (the plain id for trainings
+/// made before inputs were told apart).
+String voiceTrainingKey(String mantraId, VoiceInput input) =>
+    input == VoiceInput.unknown ? mantraId : '$mantraId@${input.name}';
+
+/// Trained voices for every mantra, keyed by mantra id: for each mantra, the
+/// set that fits the microphone in use now ([currentInput]): its own set if
+/// there is one, else one of unknown input (older trainings), else the other
+/// microphone's (better than nothing; the Voice panel says to train again).
 class VoiceTrainingNotifier extends Notifier<Map<String, VoiceTraining>> {
+  /// Every stored set: mantra id -> input -> training.
+  final _all = <String, Map<VoiceInput, VoiceTraining>>{};
+
+  VoiceInput _current = VoiceInput.unknown;
+
+  /// The microphone in use now (as last detected).
+  VoiceInput get currentInput => _current;
+
   @override
   Map<String, VoiceTraining> build() {
+    _all.clear();
     // The box exposes values only, so each record carries its mantra id.
-    final out = <String, VoiceTraining>{};
     for (final v in AppStorage.voiceTemplates.values) {
       if (v is! Map || v['mantraId'] is! String) continue;
       final id = v['mantraId'] as String;
       final t = VoiceTraining.fromMap(id, v);
-      if (t != null) out[id] = t;
+      if (t != null) (_all[id] ??= {})[t.input] = t;
     }
-    return out;
+    return _pick();
   }
 
-  /// Saves (replacing) the templates for [mantraId].
-  Future<VoiceTraining> save(String mantraId, List<MfccSequence> templates) async {
+  Map<String, VoiceTraining> _pick() => {
+        for (final e in _all.entries) e.key: ?_best(e.value),
+      };
+
+  VoiceTraining? _best(Map<VoiceInput, VoiceTraining> sets) =>
+      sets[_current] ??
+      sets[VoiceInput.unknown] ??
+      (sets.values.isEmpty ? null : sets.values.first);
+
+  /// Every set stored for [mantraId], by input.
+  Map<VoiceInput, VoiceTraining> setsFor(String mantraId) =>
+      Map.unmodifiable(_all[mantraId] ?? const {});
+
+  /// The microphone changed (earphones plugged in or out): pick the matching
+  /// sets.
+  void setCurrentInput(VoiceInput input) {
+    if (input == _current) return;
+    _current = input;
+    state = _pick();
+  }
+
+  /// Asks the phone which microphone is in use now.
+  Future<VoiceInput> refreshInput() async {
+    VoiceInput input;
+    try {
+      input = await ref.read(pcmInputProvider).currentInput();
+    } catch (_) {
+      input = VoiceInput.unknown;
+    }
+    if (ref.mounted && input != VoiceInput.unknown) setCurrentInput(input);
+    return input;
+  }
+
+  /// Saves (replacing) the templates for [mantraId] and [input] (by default
+  /// the microphone in use now). [fromUnknown]: these extend an older set of
+  /// unknown input ("Add more samples"), which now becomes this input's set.
+  Future<VoiceTraining> save(String mantraId, List<MfccSequence> templates,
+      {VoiceInput? input, bool fromUnknown = false}) async {
     // Never more than the maximum (keep the newest if given too many).
     final capped = templates.length > maxTrainingSamples
         ? templates.sublist(templates.length - maxTrainingSamples)
@@ -104,27 +170,39 @@ class VoiceTrainingNotifier extends Notifier<Map<String, VoiceTraining>> {
       mantraId: mantraId,
       templates: capped,
       trainedAt: DateTime.now(),
+      input: input ?? _current,
     );
-    await AppStorage.voiceTemplates
-        .put(mantraId, {'mantraId': mantraId, ...training.toMap()});
-    state = {...state, mantraId: training};
+    if (fromUnknown && training.input != VoiceInput.unknown) {
+      await AppStorage.voiceTemplates
+          .delete(voiceTrainingKey(mantraId, VoiceInput.unknown));
+      _all[mantraId]?.remove(VoiceInput.unknown);
+    }
+    await _store(training);
     return training;
   }
 
-  /// Stores the calibrated threshold for [mantraId] (null forgets it).
+  Future<void> _store(VoiceTraining t) async {
+    await AppStorage.voiceTemplates.put(
+        voiceTrainingKey(t.mantraId, t.input), {'mantraId': t.mantraId, ...t.toMap()});
+    (_all[t.mantraId] ??= {})[t.input] = t;
+    state = _pick();
+  }
+
+  /// Stores the calibrated threshold for [mantraId]'s set in use (null
+  /// forgets it).
   Future<void> setCalibration(String mantraId, double? threshold) async {
     final t = state[mantraId];
     if (t == null) return;
-    final next = t.withCalibration(threshold);
-    await AppStorage.voiceTemplates
-        .put(mantraId, {'mantraId': mantraId, ...next.toMap()});
-    state = {...state, mantraId: next};
+    await _store(t.withCalibration(threshold));
   }
 
-  /// Forgets the training for [mantraId] ("Clear training").
+  /// Forgets every training for [mantraId] ("Clear training").
   Future<void> clear(String mantraId) async {
-    await AppStorage.voiceTemplates.delete(mantraId);
-    state = {...state}..remove(mantraId);
+    for (final input in VoiceInput.values) {
+      await AppStorage.voiceTemplates.delete(voiceTrainingKey(mantraId, input));
+    }
+    _all.remove(mantraId);
+    state = _pick();
   }
 
   bool isTrained(String mantraId) => state[mantraId]?.isUsable ?? false;
@@ -134,6 +212,18 @@ final voiceTrainingProvider =
     NotifierProvider<VoiceTrainingNotifier, Map<String, VoiceTraining>>(
   VoiceTrainingNotifier.new,
 );
+
+/// The mantra's training in use was made with a DIFFERENT microphone than
+/// the one in use now (the Voice panel suggests training again); null if it
+/// fits, or its input is unknown.
+final trainedWithOtherInputProvider = Provider.family<VoiceInput?, String>((ref, id) {
+  final t = ref.watch(voiceTrainingProvider)[id];
+  final now = ref.read(voiceTrainingProvider.notifier).currentInput;
+  if (t == null || t.input == VoiceInput.unknown || now == VoiceInput.unknown) {
+    return null;
+  }
+  return t.input == now ? null : t.input;
+});
 
 /// Whether one mantra has a usable trained voice.
 final mantraTrainedProvider = Provider.family<bool, String>(

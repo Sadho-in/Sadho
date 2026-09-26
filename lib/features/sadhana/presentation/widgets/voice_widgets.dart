@@ -97,6 +97,24 @@ class VoiceSensitivitySlider extends ConsumerWidget {
   }
 }
 
+/// A live input-level bar: can the phone hear you? [level] is 0..1.
+class InputLevelBar extends StatelessWidget {
+  const InputLevelBar({super.key, required this.level});
+
+  final double? level;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+        label: context.l10n.voiceInputLevel,
+        value: level == null ? null : '${(level! * 100).round()}%',
+        child: LinearProgressIndicator(
+          value: level,
+          minHeight: 8,
+          borderRadius: BorderRadius.circular(4),
+        ),
+      );
+}
+
 /// Asks before wiping a mantra's trained voice. Returns true if cleared.
 Future<bool> confirmClearTraining(
     BuildContext context, WidgetRef ref, Mantra mantra) async {

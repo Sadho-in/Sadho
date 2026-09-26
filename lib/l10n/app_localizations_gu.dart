@@ -2297,4 +2297,15 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get quietModeChip => 'શાંત મોડ ચાલુ';
+
+  @override
+  String get voiceInputLevel => 'માઇક્રોફોન સ્તર';
+
+  @override
+  String get voiceTrainedWithHeadset =>
+      'ઇયરફોનથી તાલીમ આપેલ — ફોનના માઇકથી ફરી તાલીમ આપો';
+
+  @override
+  String get voiceTrainedWithPhone =>
+      'ફોનના માઇકથી તાલીમ આપેલ — આ ઇયરફોનથી ફરી તાલીમ આપો';
 }

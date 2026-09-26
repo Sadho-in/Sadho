@@ -2299,4 +2299,15 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get quietModeChip => 'शांत मोड चालू';
+
+  @override
+  String get voiceInputLevel => 'माइक्रोफ़ोन स्तर';
+
+  @override
+  String get voiceTrainedWithHeadset =>
+      'ईयरफ़ोन से प्रशिक्षित — फ़ोन के माइक से फिर प्रशिक्षित करें';
+
+  @override
+  String get voiceTrainedWithPhone =>
+      'फ़ोन के माइक से प्रशिक्षित — इन ईयरफ़ोन से फिर प्रशिक्षित करें';
 }

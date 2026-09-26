@@ -102,8 +102,17 @@ class VoiceCalibrator extends ChangeNotifier {
     _detector = UtteranceDetector(
       config: VoiceEngine.gateConfigFor(model),
       onUtterance: _onUtterance,
+      onLevel: (db) {
+        _level = levelFromDb(db);
+        notifyListeners();
+      },
     );
   }
+
+  double _level = 0;
+
+  /// Live loudness 0..1 for a level meter (can the phone hear you?).
+  double get level => _level;
 
   final PcmInput _input;
   final MfccExtractor _extractor;

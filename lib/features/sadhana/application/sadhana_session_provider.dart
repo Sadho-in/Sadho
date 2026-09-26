@@ -1101,6 +1101,8 @@ class SadhanaSessionNotifier extends Notifier<SadhanaState> {
   Future<void> _startVoice() async {
     _voiceActive = true;
     final gen = ++_voiceGen;
+    // The microphone may have changed (earphones): its own set next time.
+    unawaited(ref.read(voiceTrainingProvider.notifier).refreshInput());
     final training = ref.read(voiceTrainingProvider)[state.mantraId];
     if (training == null || !training.isUsable) {
       // Cleared while paused, or reached without going through Start.

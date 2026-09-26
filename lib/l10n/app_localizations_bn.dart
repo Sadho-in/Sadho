@@ -2298,4 +2298,15 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get quietModeChip => 'নীরব মোড চালু';
+
+  @override
+  String get voiceInputLevel => 'মাইক্রোফোন লেভেল';
+
+  @override
+  String get voiceTrainedWithHeadset =>
+      'ইয়ারফোনে শেখানো — ফোনের মাইকে আবার শেখান';
+
+  @override
+  String get voiceTrainedWithPhone =>
+      'ফোনের মাইকে শেখানো — এই ইয়ারফোনে আবার শেখান';
 }

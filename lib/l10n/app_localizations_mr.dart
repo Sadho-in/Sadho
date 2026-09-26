@@ -2296,4 +2296,15 @@ class AppLocalizationsMr extends AppLocalizations {
 
   @override
   String get quietModeChip => 'शांत मोड सुरू';
+
+  @override
+  String get voiceInputLevel => 'मायक्रोफोन पातळी';
+
+  @override
+  String get voiceTrainedWithHeadset =>
+      'इअरफोनने प्रशिक्षित — फोनच्या माइकने पुन्हा प्रशिक्षित करा';
+
+  @override
+  String get voiceTrainedWithPhone =>
+      'फोनच्या माइकने प्रशिक्षित — या इअरफोनने पुन्हा प्रशिक्षित करा';
 }

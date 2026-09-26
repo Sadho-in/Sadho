@@ -2667,5 +2667,17 @@
   "quietModeChip": "Quiet mode on",
   "@quietModeChip": {
     "description": "Small chip on the Sadhana screen while quiet mode (Do Not Disturb) is applied"
+  },
+  "voiceInputLevel": "Microphone level",
+  "@voiceInputLevel": {
+    "description": "Screen-reader label of the live microphone level bar (Voice panel, training, calibration)"
+  },
+  "voiceTrainedWithHeadset": "Trained with earphones — train again with the phone mic",
+  "@voiceTrainedWithHeadset": {
+    "description": "Voice panel: the mantra was trained with earphones but the phone's own mic is in use now"
+  },
+  "voiceTrainedWithPhone": "Trained with the phone mic — train again with these earphones",
+  "@voiceTrainedWithPhone": {
+    "description": "Voice panel: the mantra was trained with the phone's own mic but earphones are in use now"
   }
 }

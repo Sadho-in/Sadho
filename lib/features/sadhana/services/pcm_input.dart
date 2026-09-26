@@ -22,6 +22,54 @@ enum VoiceStartResult {
   unavailable,
 }
 
+/// Which microphone Voice hears through. Trainings are kept per input: a
+/// headset mic and the phone's own mic sound very different.
+enum VoiceInput {
+  /// The phone's built-in microphone.
+  phone,
+
+  /// A wired, USB or Bluetooth headset / earphones.
+  headset,
+
+  /// Not known (trainings made before P5.1, or the phone would not say).
+  unknown,
+}
+
+/// The input Android records from, given the connected input devices: a
+/// headset whenever one is connected (Android routes the default source to
+/// it), otherwise the phone's own microphone.
+VoiceInput voiceInputFrom(Iterable<InputDeviceType> types) {
+  const headsets = {
+    InputDeviceType.wiredHeadset,
+    InputDeviceType.usb,
+    InputDeviceType.bluetoothSco,
+    InputDeviceType.bluetoothLe,
+  };
+  if (types.any(headsets.contains)) return VoiceInput.headset;
+  if (types.contains(InputDeviceType.builtIn)) return VoiceInput.phone;
+  return VoiceInput.unknown;
+}
+
+/// The recording settings Voice uses (training, calibration and counting).
+///
+/// Android audio source: VOICE_RECOGNITION. Until P5.1 it was the default
+/// source (MediaRecorder.AudioSource.DEFAULT, which is MIC): on many phones,
+/// Samsung among them, the built-in mic then gets the call-style processing
+/// (heavy noise suppression and automatic gain) that squashes a soft, steady
+/// chant into near silence, while a headset mic bypasses it; that is why Voice
+/// counted with wired earphones and barely with the phone's own mic.
+/// VOICE_RECOGNITION is tuned for speech recognisers: flat gain, no noise
+/// suppression, so the chant's level and spectrum reach the matcher intact.
+/// Still 16 kHz mono PCM16 (the matcher's format).
+const voiceRecordConfig = RecordConfig(
+  encoder: AudioEncoder.pcm16bits,
+  sampleRate: 16000,
+  numChannels: 1,
+  androidConfig: AndroidRecordConfig(
+    audioSource: AndroidAudioSource.voiceRecognition,
+  ),
+);
+
 /// A live microphone as 16 kHz mono PCM16 chunks. Voice counting and Voice
 /// training both read from this, so tests can swap in scripted audio.
 abstract class PcmInput {
@@ -37,6 +85,9 @@ abstract class PcmInput {
   });
 
   Future<void> stop();
+
+  /// The microphone that would be recorded from now.
+  Future<VoiceInput> currentInput();
 }
 
 /// `record`-backed microphone (Android and iOS). Nothing here touches the
@@ -77,11 +128,7 @@ class DeviceRecordInput implements PcmInput {
 
     final Stream<Uint8List> stream;
     try {
-      stream = await _recorder.startStream(const RecordConfig(
-        encoder: AudioEncoder.pcm16bits,
-        sampleRate: 16000,
-        numChannels: 1,
-      ));
+      stream = await _recorder.startStream(voiceRecordConfig);
     } catch (e) {
       debugPrint('Microphone start failed: $e');
       return VoiceStartResult.unavailable;
@@ -142,6 +189,18 @@ class DeviceRecordInput implements PcmInput {
       if (await _recorder.isRecording()) await _recorder.stop();
     } catch (e) {
       debugPrint('Microphone stop failed: $e');
+    }
+  }
+
+  @override
+  Future<VoiceInput> currentInput() async {
+    if (!isSupported) return VoiceInput.unknown;
+    try {
+      final devices = await _recorder.listInputDevices();
+      return voiceInputFrom(devices.map((d) => d.type));
+    } catch (e) {
+      debugPrint('Could not list the microphones: $e');
+      return VoiceInput.unknown;
     }
   }
 

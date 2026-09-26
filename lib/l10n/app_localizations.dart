@@ -3987,6 +3987,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quiet mode on'**
   String get quietModeChip;
+
+  /// Screen-reader label of the live microphone level bar (Voice panel, training, calibration)
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone level'**
+  String get voiceInputLevel;
+
+  /// Voice panel: the mantra was trained with earphones but the phone's own mic is in use now
+  ///
+  /// In en, this message translates to:
+  /// **'Trained with earphones — train again with the phone mic'**
+  String get voiceTrainedWithHeadset;
+
+  /// Voice panel: the mantra was trained with the phone's own mic but earphones are in use now
+  ///
+  /// In en, this message translates to:
+  /// **'Trained with the phone mic — train again with these earphones'**
+  String get voiceTrainedWithPhone;
 }
 
 class _AppLocalizationsDelegate

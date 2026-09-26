@@ -2312,4 +2312,15 @@ class AppLocalizationsTe extends AppLocalizations {
 
   @override
   String get quietModeChip => 'నిశ్శబ్ద మోడ్ ఆన్';
+
+  @override
+  String get voiceInputLevel => 'మైక్రోఫోన్ స్థాయి';
+
+  @override
+  String get voiceTrainedWithHeadset =>
+      'ఇయర్‌ఫోన్‌లతో శిక్షణ ఇచ్చారు — ఫోన్ మైక్‌తో మళ్లీ శిక్షణ ఇవ్వండి';
+
+  @override
+  String get voiceTrainedWithPhone =>
+      'ఫోన్ మైక్‌తో శిక్షణ ఇచ్చారు — ఈ ఇయర్‌ఫోన్‌లతో మళ్లీ శిక్షణ ఇవ్వండి';
 }

@@ -244,6 +244,11 @@ class _Stage extends StatelessWidget {
                 ],
               ),
             ),
+            if (c.listening) ...[
+              const SizedBox(height: 12),
+              InputLevelBar(
+                  key: const ValueKey('calibration-level'), level: c.level),
+            ],
             const SizedBox(height: 16),
             if (c.phase == CalibrationPhase.idle ||
                 c.phase == CalibrationPhase.error)
