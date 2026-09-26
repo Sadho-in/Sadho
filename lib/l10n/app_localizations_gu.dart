@@ -2276,4 +2276,18 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get channelSadhanaAlarmV2Name => 'સાધના એલાર્મ';
+
+  @override
+  String get healthChannelTitle => 'એલાર્મ સૂચનાઓ: \'અલર્ટ\' પર રાખો';
+
+  @override
+  String get healthChannelBody =>
+      '“સાધના એલાર્મ” અને “એલાર્મ અને ટાઇમર” સૂચનાઓ સ્ક્રીન પર દેખાવી જોઈએ, નહીં તો એલાર્મ સ્ક્રીન લૉક સ્ક્રીન પર દેખાઈ શકતી નથી.';
+
+  @override
+  String get healthFixManualTitle => 'સેટિંગ્સ જાતે ખોલો';
+
+  @override
+  String get healthFixManualBody =>
+      'ફોને આ પેજ ખોલ્યું નહીં. Samsung ફોન પર:\n1. સેટિંગ્સ › ઍપ્સ › Sadho ખોલો.\n2. સૂચનાઓ: મંજૂરી આપો, અને “સાધના એલાર્મ” તથા “એલાર્મ અને ટાઇમર” \'અલર્ટ\' પર રાખો.\n3. એલાર્મ અને રિમાઇન્ડર: મંજૂરી આપો.\n4. બૅટરી: અપ્રતિબંધિત.\n5. પૂર્ણ-સ્ક્રીન સૂચનાઓ: સેટિંગ્સ › ઍપ્સ › ⋮ › વિશેષ ઍક્સેસ › Sadhoને મંજૂરી આપો.\n6. \'ખલેલ પાડશો નહીં\' ઍક્સેસ: સેટિંગ્સ › સૂચનાઓ › ખલેલ પાડશો નહીં › ઍપ ઍક્સેસ (ફક્ત શાંત મોડ માટે).';
 }

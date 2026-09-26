@@ -2278,4 +2278,18 @@ class AppLocalizationsPa extends AppLocalizations {
 
   @override
   String get channelSadhanaAlarmV2Name => 'ਸਾਧਨਾ ਅਲਾਰਮ';
+
+  @override
+  String get healthChannelTitle => 'ਅਲਾਰਮ ਸੂਚਨਾਵਾਂ: \'ਅਲਰਟ\' \'ਤੇ ਰੱਖੋ';
+
+  @override
+  String get healthChannelBody =>
+      '“ਸਾਧਨਾ ਅਲਾਰਮ” ਅਤੇ “ਅਲਾਰਮ ਅਤੇ ਟਾਈਮਰ” ਸੂਚਨਾਵਾਂ ਸਕ੍ਰੀਨ \'ਤੇ ਆਉਣੀਆਂ ਚਾਹੀਦੀਆਂ ਹਨ, ਨਹੀਂ ਤਾਂ ਅਲਾਰਮ ਸਕ੍ਰੀਨ ਲੌਕ ਸਕ੍ਰੀਨ \'ਤੇ ਨਹੀਂ ਦਿਸ ਸਕਦੀ।';
+
+  @override
+  String get healthFixManualTitle => 'ਸੈਟਿੰਗਾਂ ਆਪ ਖੋਲ੍ਹੋ';
+
+  @override
+  String get healthFixManualBody =>
+      'ਫ਼ੋਨ ਨੇ ਇਹ ਪੰਨਾ ਨਹੀਂ ਖੋਲ੍ਹਿਆ। Samsung ਫ਼ੋਨ \'ਤੇ:\n1. ਸੈਟਿੰਗਾਂ › ਐਪਾਂ › Sadho ਖੋਲ੍ਹੋ।\n2. ਸੂਚਨਾਵਾਂ: ਇਜਾਜ਼ਤ ਦਿਓ, ਅਤੇ “ਸਾਧਨਾ ਅਲਾਰਮ” ਤੇ “ਅਲਾਰਮ ਅਤੇ ਟਾਈਮਰ” ਨੂੰ \'ਅਲਰਟ\' \'ਤੇ ਰੱਖੋ।\n3. ਅਲਾਰਮ ਅਤੇ ਰੀਮਾਈਂਡਰ: ਇਜਾਜ਼ਤ ਦਿਓ।\n4. ਬੈਟਰੀ: ਬਿਨਾਂ ਪਾਬੰਦੀ।\n5. ਪੂਰੀ-ਸਕ੍ਰੀਨ ਸੂਚਨਾਵਾਂ: ਸੈਟਿੰਗਾਂ › ਐਪਾਂ › ⋮ › ਖ਼ਾਸ ਪਹੁੰਚ › Sadho ਨੂੰ ਇਜਾਜ਼ਤ ਦਿਓ।\n6. \'ਪਰੇਸ਼ਾਨ ਨਾ ਕਰੋ\' ਪਹੁੰਚ: ਸੈਟਿੰਗਾਂ › ਸੂਚਨਾਵਾਂ › ਪਰੇਸ਼ਾਨ ਨਾ ਕਰੋ › ਐਪ ਪਹੁੰਚ (ਸਿਰਫ਼ ਸ਼ਾਂਤ ਮੋਡ ਲਈ)।';
 }

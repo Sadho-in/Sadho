@@ -27,8 +27,9 @@ abstract class DndDriver {
   /// Sets the mode. False if it could not (no access).
   Future<bool> setFilter(int filter);
 
-  /// Opens the phone's "Do Not Disturb access" settings page.
-  Future<void> openAccessSettings();
+  /// Opens the phone's "Do Not Disturb access" settings page (or, failing
+  /// that, the app's settings). False if nothing opened.
+  Future<bool> openAccessSettings();
 }
 
 class NoopDndDriver implements DndDriver {
@@ -47,7 +48,7 @@ class NoopDndDriver implements DndDriver {
   Future<bool> setFilter(int filter) async => false;
 
   @override
-  Future<void> openAccessSettings() async {}
+  Future<bool> openAccessSettings() async => false;
 }
 
 /// Through MainActivity ("sadho/alarm": dndStatus, dndSetFilter,
@@ -92,11 +93,12 @@ class AndroidDndDriver implements DndDriver {
   }
 
   @override
-  Future<void> openAccessSettings() async {
+  Future<bool> openAccessSettings() async {
     try {
-      await _channel.invokeMethod<void>('openDndSettings');
+      return await _channel.invokeMethod<bool>('openDndSettings') ?? false;
     } catch (e) {
       debugPrint('Could not open the Do Not Disturb settings: $e');
+      return false;
     }
   }
 }

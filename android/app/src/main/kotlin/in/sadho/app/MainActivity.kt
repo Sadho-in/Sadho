@@ -307,29 +307,30 @@ class MainActivity : FlutterActivity() {
                         result.success(false)
                     }
                 }
-                "openDndSettings" -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        startActivity(
-                            Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                        )
+                "openDndSettings" -> result.success(openSettings("dnd"))
+                // The alarm channels must still alert (heads-up / full screen):
+                // the first one the user turned down, or null if all is well.
+                "alarmChannelProblem" -> {
+                    var bad: String? = null
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        AlarmRinger.ensureChannels(this)
+                        for (id in listOf(AlarmRinger.CHANNEL_SADHANA, AlarmRinger.CHANNEL_ALARMS)) {
+                            val ch = nm.getNotificationChannel(id) ?: continue
+                            if (ch.importance < NotificationManager.IMPORTANCE_HIGH) {
+                                bad = id
+                                break
+                            }
+                        }
                     }
-                    result.success(null)
+                    result.success(bad)
                 }
                 // A Fix button: the specific settings page, then the app's
                 // notification settings, then the app's details page. True
                 // if one opened (false: the app shows written steps).
                 "openSettings" -> result.success(openSettings(call.arguments as? String ?: ""))
                 // The app's own info page, where Battery is one tap away.
-                "openBatterySettings" -> {
-                    startActivity(
-                        Intent(
-                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                            Uri.parse("package:$packageName"),
-                        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                    )
-                    result.success(null)
-                }
+                "openBatterySettings" -> result.success(openSettings("battery"))
                 else -> result.notImplemented()
             }
         }

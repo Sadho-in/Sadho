@@ -2279,4 +2279,18 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get channelSadhanaAlarmV2Name => 'साधना अलार्म';
+
+  @override
+  String get healthChannelTitle => 'अलार्म सूचनाएँ: \'अलर्ट\' पर रखें';
+
+  @override
+  String get healthChannelBody =>
+      '“साधना अलार्म” और “अलार्म और टाइमर” सूचनाएँ स्क्रीन पर दिखनी चाहिए, वरना अलार्म स्क्रीन लॉक स्क्रीन पर नहीं दिख सकती।';
+
+  @override
+  String get healthFixManualTitle => 'सेटिंग्स स्वयं खोलें';
+
+  @override
+  String get healthFixManualBody =>
+      'फ़ोन ने यह पेज नहीं खोला। Samsung फ़ोन पर:\n1. सेटिंग्स › ऐप्स › Sadho खोलें।\n2. सूचनाएँ: अनुमति दें, और “साधना अलार्म” व “अलार्म और टाइमर” को \'अलर्ट\' पर रखें।\n3. अलार्म और रिमाइंडर: अनुमति दें।\n4. बैटरी: अप्रतिबंधित।\n5. फ़ुल-स्क्रीन सूचनाएँ: सेटिंग्स › ऐप्स › ⋮ › विशेष एक्सेस › Sadho को अनुमति दें।\n6. \'परेशान न करें\' एक्सेस: सेटिंग्स › सूचनाएँ › परेशान न करें › ऐप एक्सेस (केवल शांत मोड के लिए)।';
 }

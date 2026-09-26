@@ -189,9 +189,11 @@ class FakeAlarmHealth implements AlarmHealth {
     this.fullScreen = true,
     this.battery = true,
     this.samsung = false,
+    this.alarmChannel = true,
   });
 
   bool android, notifications, exactAlarms, fullScreen, battery, samsung;
+  bool alarmChannel;
   int checks = 0;
 
   /// Which Fix buttons opened a settings page, in order.
@@ -207,20 +209,33 @@ class FakeAlarmHealth implements AlarmHealth {
       fullScreen: fullScreen,
       battery: battery,
       samsung: samsung,
+      alarmChannel: alarmChannel,
+      alarmChannelId: alarmChannel ? null : 'sadhana_alarm_v2',
     );
   }
 
-  @override
-  Future<void> fixNotifications() async => fixes.add('notifications');
+  /// Whether a Fix finds a settings page to open (false: written steps).
+  bool opens = true;
+
+  bool _fix(String what) {
+    fixes.add(what);
+    return opens;
+  }
 
   @override
-  Future<void> fixExactAlarms() async => fixes.add('exact');
+  Future<bool> fixNotifications() async => _fix('notifications');
 
   @override
-  Future<void> fixFullScreen() async => fixes.add('fullscreen');
+  Future<bool> fixExactAlarms() async => _fix('exact');
 
   @override
-  Future<void> fixBattery() async => fixes.add('battery');
+  Future<bool> fixFullScreen() async => _fix('fullscreen');
+
+  @override
+  Future<bool> fixAlarmChannel(String? channelId) async => _fix('channel:$channelId');
+
+  @override
+  Future<bool> fixBattery() async => _fix('battery');
 }
 
 /// Stand-in for the phone's lock screen (see MainActivity).
@@ -678,8 +693,14 @@ class FakeDnd implements DndDriver {
     return true;
   }
 
+  /// Whether the access page can be opened.
+  bool opens = true;
+
   @override
-  Future<void> openAccessSettings() async => settingsOpened++;
+  Future<bool> openAccessSettings() async {
+    settingsOpened++;
+    return opens;
+  }
 }
 
 /// Stand-in for the one native alarm ring (AlarmRinger.kt / AlarmScheduler.kt).

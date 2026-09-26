@@ -3951,6 +3951,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sadhana alarm'**
   String get channelSadhanaAlarmV2Name;
+
+  /// Alarms & reliability row: the alarm notification channels still pop on screen
+  ///
+  /// In en, this message translates to:
+  /// **'Alarm notifications: set to Alert'**
+  String get healthChannelTitle;
+
+  /// Alarms & reliability row body: why the alarm channel must stay on Alert
+  ///
+  /// In en, this message translates to:
+  /// **'The “Sadhana alarm” and “Alarms and timers” notifications must pop on screen, or the alarm screen cannot show over the lock screen.'**
+  String get healthChannelBody;
+
+  /// Dialog title when no settings page could be opened by a Fix button
+  ///
+  /// In en, this message translates to:
+  /// **'Open the settings yourself'**
+  String get healthFixManualTitle;
+
+  /// Step-by-step text (Samsung) shown when no settings page could be opened
+  ///
+  /// In en, this message translates to:
+  /// **'This phone did not open the page. On a Samsung phone:\n1. Open Settings › Apps › Sadho.\n2. Notifications: allow, and set “Sadhana alarm” and “Alarms and timers” to Alert.\n3. Alarms & reminders: allow.\n4. Battery: Unrestricted.\n5. Full-screen notifications: Settings › Apps › ⋮ › Special access › allow Sadho.\n6. Do Not Disturb access: Settings › Notifications › Do Not Disturb › App access (only for quiet mode).'**
+  String get healthFixManualBody;
 }
 
 class _AppLocalizationsDelegate

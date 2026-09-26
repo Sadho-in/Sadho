@@ -51,9 +51,28 @@ class _AlarmsReliabilityPageState extends ConsumerState<AlarmsReliabilityPage>
     await ref.read(alarmHealthStatusProvider.notifier).refresh();
   }
 
-  Future<void> _fix(Future<void> Function(AlarmHealth) fix) async {
-    await fix(ref.read(alarmHealthProvider));
+  Future<void> _fix(Future<bool> Function(AlarmHealth) fix) async {
+    final opened = await fix(ref.read(alarmHealthProvider));
+    if (!opened) await _showManualSteps();
     await _refresh(); // a dialog answered in place (no trip to settings)
+  }
+
+  /// Nothing could be opened: say how to get there by hand, never nothing.
+  Future<void> _showManualSteps() async {
+    if (!mounted) return;
+    final l = context.l10n;
+    await showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        key: const ValueKey('health-manual-steps'),
+        title: Text(l.healthFixManualTitle),
+        content: SingleChildScrollView(child: Text(l.healthFixManualBody)),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx), child: Text(l.actionOk)),
+        ],
+      ),
+    );
   }
 
   @override
@@ -69,8 +88,11 @@ class _AlarmsReliabilityPageState extends ConsumerState<AlarmsReliabilityPage>
       appBar: AppBar(title: Text(l.alarmsReliabilityTitle)),
       body: status == null
           ? const Center(child: CircularProgressIndicator())
-          : ListView(
+          // Six rows at most: all built, whatever the scroll position.
+          : SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+              child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(l.alarmsReliabilityIntro,
                     style: Theme.of(context).textTheme.bodyMedium),
@@ -101,6 +123,15 @@ class _AlarmsReliabilityPageState extends ConsumerState<AlarmsReliabilityPage>
                     onFix: () => _fix((h) => h.fixFullScreen()),
                   ),
                   _HealthRow(
+                    id: 'channel',
+                    icon: Icons.notifications_paused_outlined,
+                    title: l.healthChannelTitle,
+                    body: l.healthChannelBody,
+                    ok: status.alarmChannel,
+                    onFix: () =>
+                        _fix((h) => h.fixAlarmChannel(status.alarmChannelId)),
+                  ),
+                  _HealthRow(
                     id: 'battery',
                     icon: Icons.battery_charging_full,
                     title: l.healthBatteryTitle,
@@ -118,12 +149,11 @@ class _AlarmsReliabilityPageState extends ConsumerState<AlarmsReliabilityPage>
                     title: l.healthDndTitle,
                     body: l.healthDndBody,
                     ok: dndOk ?? true,
-                    onFix: () async {
-                      await ref.read(dndDriverProvider).openAccessSettings();
-                      await _refresh();
-                    },
+                    onFix: () => _fix((_) =>
+                        ref.read(dndDriverProvider).openAccessSettings()),
                   ),
               ],
+              ),
             ),
     );
   }

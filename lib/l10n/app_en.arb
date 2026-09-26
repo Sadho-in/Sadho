@@ -2643,5 +2643,21 @@
   "channelSadhanaAlarmV2Name": "Sadhana alarm",
   "@channelSadhanaAlarmV2Name": {
     "description": "Name of the one Sadhana alarm notification channel (Android settings), since P5.1"
+  },
+  "healthChannelTitle": "Alarm notifications: set to Alert",
+  "@healthChannelTitle": {
+    "description": "Alarms & reliability row: the alarm notification channels still pop on screen"
+  },
+  "healthChannelBody": "The “Sadhana alarm” and “Alarms and timers” notifications must pop on screen, or the alarm screen cannot show over the lock screen.",
+  "@healthChannelBody": {
+    "description": "Alarms & reliability row body: why the alarm channel must stay on Alert"
+  },
+  "healthFixManualTitle": "Open the settings yourself",
+  "@healthFixManualTitle": {
+    "description": "Dialog title when no settings page could be opened by a Fix button"
+  },
+  "healthFixManualBody": "This phone did not open the page. On a Samsung phone:\n1. Open Settings › Apps › Sadho.\n2. Notifications: allow, and set “Sadhana alarm” and “Alarms and timers” to Alert.\n3. Alarms & reminders: allow.\n4. Battery: Unrestricted.\n5. Full-screen notifications: Settings › Apps › ⋮ › Special access › allow Sadho.\n6. Do Not Disturb access: Settings › Notifications › Do Not Disturb › App access (only for quiet mode).",
+  "@healthFixManualBody": {
+    "description": "Step-by-step text (Samsung) shown when no settings page could be opened"
   }
 }

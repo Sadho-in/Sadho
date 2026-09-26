@@ -2278,4 +2278,18 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get channelSadhanaAlarmV2Name => 'সাধনা অ্যালার্ম';
+
+  @override
+  String get healthChannelTitle => 'অ্যালার্ম বিজ্ঞপ্তি: \'অ্যালার্ট\'-এ রাখুন';
+
+  @override
+  String get healthChannelBody =>
+      '“সাধনা অ্যালার্ম” ও “অ্যালার্ম ও টাইমার” বিজ্ঞপ্তি স্ক্রিনে ভেসে উঠতে হবে, নইলে লক স্ক্রিনে অ্যালার্ম স্ক্রিন দেখা যাবে না।';
+
+  @override
+  String get healthFixManualTitle => 'নিজে সেটিংস খুলুন';
+
+  @override
+  String get healthFixManualBody =>
+      'ফোনটি পেজটি খোলেনি। Samsung ফোনে:\n১. সেটিংস › অ্যাপ › Sadho খুলুন।\n২. বিজ্ঞপ্তি: অনুমতি দিন, এবং “সাধনা অ্যালার্ম” ও “অ্যালার্ম ও টাইমার” \'অ্যালার্ট\'-এ রাখুন।\n৩. অ্যালার্ম ও রিমাইন্ডার: অনুমতি দিন।\n৪. ব্যাটারি: সীমাহীন।\n৫. পূর্ণ-স্ক্রিন বিজ্ঞপ্তি: সেটিংস › অ্যাপ › ⋮ › বিশেষ অ্যাক্সেস › Sadho-কে অনুমতি দিন।\n৬. \'বিরক্ত করবেন না\' অ্যাক্সেস: সেটিংস › বিজ্ঞপ্তি › বিরক্ত করবেন না › অ্যাপ অ্যাক্সেস (শুধু নীরব মোডের জন্য)।';
 }

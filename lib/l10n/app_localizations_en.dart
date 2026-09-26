@@ -2275,4 +2275,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get channelSadhanaAlarmV2Name => 'Sadhana alarm';
+
+  @override
+  String get healthChannelTitle => 'Alarm notifications: set to Alert';
+
+  @override
+  String get healthChannelBody =>
+      'The “Sadhana alarm” and “Alarms and timers” notifications must pop on screen, or the alarm screen cannot show over the lock screen.';
+
+  @override
+  String get healthFixManualTitle => 'Open the settings yourself';
+
+  @override
+  String get healthFixManualBody =>
+      'This phone did not open the page. On a Samsung phone:\n1. Open Settings › Apps › Sadho.\n2. Notifications: allow, and set “Sadhana alarm” and “Alarms and timers” to Alert.\n3. Alarms & reminders: allow.\n4. Battery: Unrestricted.\n5. Full-screen notifications: Settings › Apps › ⋮ › Special access › allow Sadho.\n6. Do Not Disturb access: Settings › Notifications › Do Not Disturb › App access (only for quiet mode).';
 }

@@ -15,6 +15,8 @@ class AlarmHealthStatus {
     required this.fullScreen,
     required this.battery,
     this.samsung = false,
+    this.alarmChannel = true,
+    this.alarmChannelId,
   });
 
   /// The Android-only rows (exact alarms, full screen, battery) apply.
@@ -31,8 +33,15 @@ class AlarmHealthStatus {
   /// A Samsung phone: its "Sleeping apps" list can also hold alarms back.
   final bool samsung;
 
+  /// The alarm notification channels still pop on screen (importance High);
+  /// a channel turned down in the settings silences the heads-up and the
+  /// full-screen alarm. [alarmChannelId] is the one to fix.
+  final bool alarmChannel;
+  final String? alarmChannelId;
+
   bool get allOk =>
-      notifications && (!android || (exactAlarms && fullScreen && battery));
+      notifications &&
+      (!android || (exactAlarms && fullScreen && battery && alarmChannel));
 
   static const unknownOk = AlarmHealthStatus(
       android: false,
@@ -44,12 +53,15 @@ class AlarmHealthStatus {
 
 /// Checks and fixes. The fixes only ever OPEN the phone's own settings page
 /// (or its permission dialog); none of them needs a restricted permission.
+/// Each returns whether something opened: false means nothing could, and the
+/// page shows written steps instead (never a silent no-op).
 abstract class AlarmHealth {
   Future<AlarmHealthStatus> check();
-  Future<void> fixNotifications();
-  Future<void> fixExactAlarms();
-  Future<void> fixFullScreen();
-  Future<void> fixBattery();
+  Future<bool> fixNotifications();
+  Future<bool> fixExactAlarms();
+  Future<bool> fixFullScreen();
+  Future<bool> fixAlarmChannel(String? channelId);
+  Future<bool> fixBattery();
 }
 
 class DeviceAlarmHealth implements AlarmHealth {
@@ -100,8 +112,14 @@ class DeviceAlarmHealth implements AlarmHealth {
       unrestricted = b?['unrestricted'] != false;
       samsung = b?['samsung'] == true;
     } catch (_) {}
+    String? badChannel;
+    try {
+      badChannel = await _native.invokeMethod<String>('alarmChannelProblem');
+    } catch (_) {}
     return AlarmHealthStatus(
       android: true,
+      alarmChannel: badChannel == null,
+      alarmChannelId: badChannel,
       notifications: notifications,
       exactAlarms: await _scheduler.canScheduleExact(),
       fullScreen: await _scheduler.canUseFullScreen(),
@@ -112,23 +130,33 @@ class DeviceAlarmHealth implements AlarmHealth {
     );
   }
 
+  // Why Fix used to do nothing on three rows: they called the notification
+  // plugin's permission REQUESTS, which open nothing when the permission is
+  // already granted (USE_EXACT_ALARM is always granted on Android 13+, and
+  // notifications usually are), and refuse to open anything while an earlier
+  // request is still "in progress" (its answer lost when the activity was
+  // recreated). Now every Fix opens its settings page natively.
+
   @override
-  Future<void> fixNotifications() async {
-    // Never asked: the system dialog. Refused before: the settings page.
-    if (await _scheduler.requestPermission()) return;
-    try {
-      if (_android) {
-        await _androidPlugin?.openAppNotificationSettings();
-      } else {
-        await _iosPlugin?.openAppNotificationSettings();
-      }
-    } catch (e) {
-      debugPrint('Could not open the notification settings: $e');
+  Future<bool> fixNotifications() async {
+    // Never asked before: the system dialog. Otherwise the settings page.
+    if (!await _notificationsOn() && await _scheduler.requestPermission()) {
+      return true;
     }
+    if (!_android) {
+      try {
+        await _iosPlugin?.openAppNotificationSettings();
+        return true;
+      } catch (e) {
+        debugPrint('fix: notifications failed: $e');
+        return false;
+      }
+    }
+    return openSettings('notifications');
   }
 
   @override
-  Future<void> fixExactAlarms() => _scheduler.requestExactAlarms();
+  Future<bool> fixExactAlarms() => openSettings('exact');
 
   /// Opens a settings page natively ([kind]: notifications, exact,
   /// fullscreen, `channel:<id>`, dnd, battery), with fallbacks (the app's
@@ -149,16 +177,14 @@ class DeviceAlarmHealth implements AlarmHealth {
   /// request opened nothing when it was already allowed, or while an earlier
   /// request was still pending.
   @override
-  Future<void> fixFullScreen() => openSettings('fullscreen');
+  Future<bool> fixFullScreen() => openSettings('fullscreen');
 
   @override
-  Future<void> fixBattery() async {
-    try {
-      await _native.invokeMethod<void>('openBatterySettings');
-    } catch (e) {
-      debugPrint('Could not open the battery settings: $e');
-    }
-  }
+  Future<bool> fixAlarmChannel(String? channelId) =>
+      openSettings(channelId == null ? 'notifications' : 'channel:$channelId');
+
+  @override
+  Future<bool> fixBattery() => openSettings('battery');
 }
 
 final alarmHealthProvider = Provider<AlarmHealth>(
